@@ -211,16 +211,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	protected function replaceImages($root, $content) {
 		$plugin = $this;
 		$ret = preg_replace_callback('#(<img .* src=")([^"]+)#', function($matches) use ($plugin, $root) {
-			$rootParts = explode('/', trim($root, '/')); // Take care of removing leading and trailing slashes
-			$imgParts = explode('/', $matches[2]);
-			$image = '';
-			for ($i = 0; $i < count($imgParts); $i++) {
-				if ($imgParts[$i] == '..') {
-					array_pop($rootParts);
-				} else {
-					$image = '/' . implode('/', $rootParts) . '/' . implode('/', array_slice($imgParts, $i - 1));
-				}
-			}
+			$image = '/' . $plugin->relativeToAbsolute(substr($root, 1), $matches[2]);
 			$conf = array(
 				'file' => substr($image, strlen(PATH_site)),
 			);
