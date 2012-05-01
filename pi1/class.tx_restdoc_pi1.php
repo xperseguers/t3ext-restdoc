@@ -165,9 +165,13 @@ class tx_restdoc_pi1 extends tslib_pibase {
 				)
 			);
 		}
-		$link = $this->pi_getPageLink($GLOBALS['TSFE']->id, '', $conf);
-		if ($anchor !== '') {
-			$link .= '#' . $anchor;
+		if (substr($document, 0, 11) === '_downloads/') {
+			$link = $this->cObj->typoLink_URL(array('parameter' => rtrim($this->conf['path'], '/') . '/' . $document));
+		} else {
+			$link = $this->pi_getPageLink($GLOBALS['TSFE']->id, '', $conf);
+			if ($anchor !== '') {
+				$link .= '#' . $anchor;
+			}
 		}
 		return $link;
 	}
