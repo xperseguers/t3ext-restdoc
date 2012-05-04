@@ -46,7 +46,7 @@ class tx_restdoc_realurl {
 		return array_merge_recursive($params['config'], array(
 			'postVarSets' => array(
 				'_DEFAULT' => array(
-					'doc' => array(
+					'chapter' => array(
 						array(
 							'GETvar' => 'tx_restdoc_pi1[doc]',
 						),
