@@ -1,5 +1,6 @@
 2012-05-04  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK][SECURITY] Prevent access outside of document root
 	* [TASK] Localize hard-coded texts
 	* [TASK] Use TypoScript to generate the TOC
 	* [TASK] #36836: Respect maximum image width from styles.content.imgtext.maxW

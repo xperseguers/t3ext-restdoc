@@ -58,7 +58,6 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		$documentRoot = PATH_site . rtrim($this->conf['path'], '/') . '/';
 		$document = 'index/';
 		if (isset($this->piVars['doc']) && strpos($this->piVars['doc'], '..') === FALSE) {
-			// TODO: Add further security checks here!
 			$document = $this->piVars['doc'];
 		}
 
@@ -69,6 +68,12 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		}
 		if (!is_file($documentRoot . $jsonFile)) {
 			return 'Invalid path for the reST documentation: ' . $this->conf['path'];
+		}
+
+			// Security check
+		if (substr(realpath($documentRoot . $jsonFile), 0, strlen(realpath($documentRoot))) !== realpath($documentRoot)) {
+			$document = 'index/';
+			$jsonFile = 'index.fjson';
 		}
 
 		$content = file_get_contents($documentRoot . $jsonFile);
