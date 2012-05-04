@@ -72,48 +72,18 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		}
 
 		$content = file_get_contents($documentRoot . $jsonFile);
-		$content = json_decode($content, TRUE);
+		$jsonData = json_decode($content, TRUE);
 
-		if (isset($content['genindexentries'])) {
+		if (isset($jsonData['genindexentries'])) {
 			return 'TODO: generate index';
 		}
 
 		switch ($this->conf['mode']) {
 			case 'TOC':
-				// Replace links in table of contents
-				$toc = $this->replaceLinks($documentRoot, $document, $content['toc']);
-				// Remove empty sublevels
-				$toc = preg_replace('#<ul>\s*</ul>#', '', $toc);
-				$output = '<h2 class="title-format-1">Table of Contents</h2>';
-				$output .= preg_replace('#^<ul>\s*<li>#', '<ul class="list m-r"><li class="current">', $toc);
-
-				if (isset($content['prev'])) {
-					$output .= '<h2 class="title-format-1">Previous topic</h2>';
-					$link = $content['prev']['link'];
-					$absolute = $this->relativeToAbsolute($documentRoot . $document, '../' . $link);
-					$link = $this->getLink(substr($absolute, strlen($documentRoot)));
-
-					$output .= '<ul class="list m-r"><li><a href="' . $link . '">' . $content['prev']['title'] . '</a></li></ul>';
-				}
-
-				if (isset($content['next'])) {
-					$output .= '<h2 class="title-format-1">Next topic</h2>';
-					$link = $content['next']['link'];
-					$absolute = $this->relativeToAbsolute($documentRoot . $document, '../' . $link);
-					$link = $this->getLink(substr($absolute, strlen($documentRoot)));
-
-					$output .= '<ul class="list m-r"><li><a href="' . $link . '">' . $content['next']['title'] . '</a></li></ul>';
-				}
+				$output = $this->generateTableOfContents($documentRoot, $document, $jsonData);
 				break;
 			case 'BODY':
-				$this->renderingConfig = $this->conf['setup.']['BODY.'];
-				// Remove permanent links in body
-				$body = preg_replace('#<a class="headerlink" [^>]+>[^<]+</a>#', '', $content['body']);
-				// Replace links in body
-				$body = $this->replaceLinks($documentRoot, $document, $body);
-				// Replace images in body
-				$body = $this->replaceImages($documentRoot . $document, $body);
-				$output = $body;
+				$output = $this->generateBody($documentRoot, $document, $jsonData);
 				break;
 			default:
 				$output = '';
@@ -121,6 +91,63 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		}
 
 		return $this->pi_wrapInBaseClass($output);
+	}
+
+	/**
+	 * Generates the Table of Contents.
+	 *
+	 * @param string $documentRoot
+	 * @param string $document
+	 * @param array $jsonData
+	 * @return string
+	 */
+	protected function generateTableOfContents($documentRoot, $document, array $jsonData) {
+			// Replace links in table of contents
+		$toc = $this->replaceLinks($documentRoot, $document, $jsonData['toc']);
+			// Remove empty sublevels
+		$toc = preg_replace('#<ul>\s*</ul>#', '', $toc);
+		$output = '<h2 class="title-format-1">Table of Contents</h2>';
+		$output .= preg_replace('#^<ul>\s*<li>#', '<ul class="list m-r"><li class="current">', $toc);
+
+		if (isset($jsonData['prev'])) {
+			$output .= '<h2 class="title-format-1">Previous topic</h2>';
+			$link = $jsonData['prev']['link'];
+			$absolute = $this->relativeToAbsolute($documentRoot . $document, '../' . $link);
+			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
+
+			$output .= '<ul class="list m-r"><li><a href="' . $link . '">' . $jsonData['prev']['title'] . '</a></li></ul>';
+		}
+
+		if (isset($jsonData['next'])) {
+			$output .= '<h2 class="title-format-1">Next topic</h2>';
+			$link = $jsonData['next']['link'];
+			$absolute = $this->relativeToAbsolute($documentRoot . $document, '../' . $link);
+			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
+
+			$output .= '<ul class="list m-r"><li><a href="' . $link . '">' . $jsonData['next']['title'] . '</a></li></ul>';
+		}
+
+		return $output;
+	}
+
+	/**
+	 * Generates the Body.
+	 *
+	 * @param string $documentRoot
+	 * @param string $document
+	 * @param array $jsonData
+	 * @return string
+	 */
+	protected function generateBody($documentRoot, $document, array $jsonData) {
+		$this->renderingConfig = $this->conf['setup.']['BODY.'];
+			// Remove permanent links in body
+		$body = preg_replace('#<a class="headerlink" [^>]+>[^<]+</a>#', '', $jsonData['body']);
+			// Replace links in body
+		$body = $this->replaceLinks($documentRoot, $document, $body);
+			// Replace images in body
+		$body = $this->replaceImages($documentRoot . $document, $body);
+
+		return $body;
 	}
 
 	/**

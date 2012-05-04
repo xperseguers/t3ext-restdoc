@@ -2,9 +2,11 @@ plugin.tx_restdoc_pi1 {
 	setup.BODY {
 		image {
 			renderObj = IMAGE
-			renderObj.file.import.field = src
-			renderObj.maxW < tt_content.image.20.maxW
-			renderObj.altText.field = alt
+			renderObj {
+				file.import.field = src
+				maxW < tt_content.image.20.maxW
+				altText.field = alt
+			}
 		}
 	}
 }
