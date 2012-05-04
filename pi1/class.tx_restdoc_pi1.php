@@ -39,6 +39,9 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	public $extKey        = 'restdoc';
 	public $pi_checkCHash = TRUE;
 
+	/** @var string */
+	protected $defaultFile = 'index';
+
 	/** @var array */
 	public $renderingConfig = array();
 
@@ -55,16 +58,23 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		$this->pi_loadLL();
 		$this->pi_USER_INT_obj = 1;    // USER_INT object
 
+		if (isset($this->conf['setup.']['defaultFile'])) {
+			$this->defaultFile = $this->conf['setup.']['defaultFile'];
+		}
+		if (isset($this->conf['setup.']['defaultFile.'])) {
+			$this->defaultFile = $this->cObj->stdWrap($this->defaultFile, $this->conf['setup.']['defaultFile.']);
+		}
+
 		$documentRoot = PATH_site . rtrim($this->conf['path'], '/') . '/';
-		$document = 'index/';
+		$document = $this->defaultFile . '/';
 		if (isset($this->piVars['doc']) && strpos($this->piVars['doc'], '..') === FALSE) {
 			$document = $this->piVars['doc'];
 		}
 
 		$jsonFile = substr($document, 0, strlen($document) - 1) . '.fjson';
 		if (!is_file($documentRoot . $jsonFile)) {
-			$document = 'index/';
-			$jsonFile = 'index.fjson';
+			$document = $this->defaultFile . '/';
+			$jsonFile = $this->defaultFile . '.fjson';
 		}
 		if (!is_file($documentRoot . $jsonFile)) {
 			return 'Invalid path for the reST documentation: ' . $this->conf['path'];
@@ -72,8 +82,8 @@ class tx_restdoc_pi1 extends tslib_pibase {
 
 			// Security check
 		if (substr(realpath($documentRoot . $jsonFile), 0, strlen(realpath($documentRoot))) !== realpath($documentRoot)) {
-			$document = 'index/';
-			$jsonFile = 'index.fjson';
+			$document = $this->defaultFile . '/';
+			$jsonFile = $this->defaultFile . '.fjson';
 		}
 
 		$content = file_get_contents($documentRoot . $jsonFile);
@@ -145,7 +155,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		}
 
 		if (isset($jsonData['next'])) {
-			$nextDocument = $document === 'index/' ? $documentRoot : $documentRoot . $document;
+			$nextDocument = $document === $this->defaultFile . '/' ? $documentRoot : $documentRoot . $document;
 			$absolute = $this->relativeToAbsolute($nextDocument, '../' . $jsonData['next']['link']);
 			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 

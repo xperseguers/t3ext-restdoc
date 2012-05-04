@@ -1,5 +1,6 @@
 2012-05-04  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] Allow default file (index.fjson) to be changed (e.g., to handle FLOW3 CGL)
 	* [TASK] Mark the first TOC entry as 'active'
 	* [TASK] Add RealURL auto-configuration
 	* [BUGFIX] Invalid link to next topic from main document
