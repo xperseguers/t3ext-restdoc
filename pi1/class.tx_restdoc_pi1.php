@@ -39,6 +39,9 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	public $extKey        = 'restdoc';
 	public $pi_checkCHash = TRUE;
 
+	/** @var array */
+	public $renderingConfig = array();
+
 	/**
 	 * The main method of the Plugin.
 	 *
@@ -103,6 +106,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 				}
 				break;
 			case 'BODY':
+				$this->renderingConfig = $this->conf['setup.']['BODY.'];
 				// Remove permanent links in body
 				$body = preg_replace('#<a class="headerlink" [^>]+>[^<]+</a>#', '', $content['body']);
 				// Replace links in body
@@ -218,18 +222,57 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	 * @param string $root absolute root of the document
 	 * @param string $content
 	 * @return string
+	 * @link http://w-shadow.com/blog/2009/10/20/how-to-extract-html-tags-and-their-attributes-with-php/
 	 */
 	protected function replaceImages($root, $content) {
 			// $root's last part is a document, not a directory
 		$root = substr($root, 0, strrpos(rtrim($root, '/'), '/'));
 		$plugin = $this;
-		$ret = preg_replace_callback('#(<img .* src=")([^"]+)#', function($matches) use ($plugin, $root) {
-			$image = $plugin->relativeToAbsolute($root, $matches[2]);
-			$conf = array(
-				'file' => substr($image, strlen(PATH_site)),
-			);
-			return $matches[1] . $plugin->cObj->IMG_RESOURCE($conf);
+		$tagPattern =
+			'@<img                      # <img
+			(?P<attributes>\s[^>]+)?    # attributes, if any
+			\s*/>                       # />
+			@xsi';
+		$attributePattern =
+			'@
+				(?P<name>\w+)                                           # attribute name
+				\s*=\s*
+				(
+					(?P<quote>[\"\'])(?P<value_quoted>.*?)(?P=quote)    # a quoted value
+					|                                                   # or
+					(?P<value_unquoted>[^\s"\']+?)(?:\s+|$)             # an unquoted value (terminated by whitespace or EOF)
+				)
+			@xsi';
+
+		$ret = preg_replace_callback($tagPattern, function($matches) use ($plugin, $root, $attributePattern) {
+				// Parse tag attributes, if any
+			$attributes = array();
+			if (!empty($matches['attributes'][0])) {
+				if (preg_match_all($attributePattern, $matches['attributes'], $attributeData, PREG_SET_ORDER)) {
+						// Turn the attribute data into a name->value array
+					foreach ($attributeData as $attr) {
+						if (!empty($attr['value_quoted'])) {
+							$value = $attr['value_quoted'];
+						} elseif (!empty($attr['value_unquoted'])) {
+							$value = $attr['value_unquoted'];
+						} else {
+							$value = '';
+						}
+
+						$value = html_entity_decode( $value, ENT_QUOTES, 'utf-8');
+						$attributes[$attr['name']] = $value;
+					}
+				}
+			}
+			$src = $plugin->relativeToAbsolute($root, $attributes['src']);
+			$attributes['src'] = substr($src, strlen(PATH_site));
+
+			/** @var $contentObj tslib_cObj */
+			$contentObj = t3lib_div::makeInstance('tslib_cObj');
+			$contentObj->start($attributes);
+			return $contentObj->cObjGetSingle($plugin->renderingConfig['image.']['renderObj'], $plugin->renderingConfig['image.']['renderObj.']);
 		}, $content);
+
 		return $ret;
 	}
 

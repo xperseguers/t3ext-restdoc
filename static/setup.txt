@@ -1,0 +1,10 @@
+plugin.tx_restdoc_pi1 {
+	setup.BODY {
+		image {
+			renderObj = IMAGE
+			renderObj.file.import.field = src
+			renderObj.maxW < tt_content.image.20.maxW
+			renderObj.altText.field = alt
+		}
+	}
+}
