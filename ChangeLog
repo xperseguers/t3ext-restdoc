@@ -1,5 +1,6 @@
 2012-05-04  Xavier Perseguers  <xavier@causal.ch>
 
+	* [BUGFIX] Invalid link to next topic from main document
 	* [TASK][SECURITY] Prevent access outside of document root
 	* [TASK] Localize hard-coded texts
 	* [TASK] Use TypoScript to generate the TOC

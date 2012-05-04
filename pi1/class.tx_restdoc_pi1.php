@@ -142,7 +142,8 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		}
 
 		if (isset($jsonData['next'])) {
-			$absolute = $this->relativeToAbsolute($documentRoot . $document, '../' . $jsonData['next']['link']);
+			$nextDocument = $document === 'index/' ? $documentRoot : $documentRoot . $document;
+			$absolute = $this->relativeToAbsolute($nextDocument, '../' . $jsonData['next']['link']);
 			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 
 			$data['next'] = array(
