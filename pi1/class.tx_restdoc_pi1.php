@@ -129,6 +129,9 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		$data = array();
 		$data['menu'] = $this->getMenuData($this->xmlstr_to_array($toc));
 
+			// Mark the first entry as 'active'
+		$data['menu'][0]['ITEM_STATE'] = 'CUR';
+
 		if (isset($jsonData['prev'])) {
 			$absolute = $this->relativeToAbsolute($documentRoot . $document, '../' . $jsonData['prev']['link']);
 			$link = $this->getLink(substr($absolute, strlen($documentRoot)));

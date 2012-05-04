@@ -1,5 +1,6 @@
 2012-05-04  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] Mark the first TOC entry as 'active'
 	* [TASK] Add RealURL auto-configuration
 	* [BUGFIX] Invalid link to next topic from main document
 	* [TASK][SECURITY] Prevent access outside of document root
