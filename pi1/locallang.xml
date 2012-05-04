@@ -6,7 +6,9 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="foo">Foo</label>
+			<label index="header_toc">Table of Contents</label>
+			<label index="header_previous_topic">Previous Topic</label>
+			<label index="header_next_topic">Next Topic</label>
 		</languageKey>
 	</data>
 </T3locallang>

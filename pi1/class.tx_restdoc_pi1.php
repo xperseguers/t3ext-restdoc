@@ -339,7 +339,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			/** @var $plugin tx_restdoc_pi1 */
 			$anchor = '';
 			if (preg_match('#^[a-zA-Z]+://#', $matches[2])) {
-				// External URL
+					// External URL
 				return $matches[0];
 			} elseif ($matches[2]{0} === '#') {
 				$anchor = $matches[2];

@@ -14,7 +14,6 @@ plugin.tx_restdoc_pi1 {
 		renderObj = COA
 		renderObj {
 			10 = HMENU
-			10.stdWrap.wrap = <h2>Table of Contents</h2> |
 			10 {
 				special = userfunction
 				special.userFunc = tx_restdoc_pi1->makeMenuArray
@@ -26,16 +25,20 @@ plugin.tx_restdoc_pi1 {
 					NO.wrapItemAndSub = <li>|</li>
 				}
 				2 < .1
+
+				stdWrap.preCObject = TEXT
+				stdWrap.preCObject.data = LLL:EXT:restdoc/pi1/locallang.xml:header_toc
+				stdWrap.preCObject.wrap = <h2>|</h2>
 			}
 
 			20 < .10
-			20.stdWrap.wrap = <h3>Previous Topic</h3> |
+			20.stdWrap.preCObject.data = LLL:EXT:restdoc/pi1/locallang.xml:header_previous_topic
+			20.stdWrap.preCObject.wrap = <h3>|</h3>
 			20.stdWrap.required = 1
 			20.special.userFunc.type = previous
 
-			30 < .10
-			30.stdWrap.wrap = <h3>Next Topic</h3> |
-			30.stdWrap.required = 1
+			30 < .20
+			30.stdWrap.preCObject.data = LLL:EXT:restdoc/pi1/locallang.xml:header_next_topic
 			30.special.userFunc.type = next
 		}
 	}
