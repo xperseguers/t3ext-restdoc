@@ -83,18 +83,22 @@ class tx_restdoc_pi1 extends tslib_pibase {
 				$toc = preg_replace('#<ul>\s*</ul>#', '', $toc);
 				$output = '<h2 class="title-format-1">Table of Contents</h2>';
 				$output .= preg_replace('#^<ul>\s*<li>#', '<ul class="list m-r"><li class="current">', $toc);
+
 				if (isset($content['prev'])) {
 					$output .= '<h2 class="title-format-1">Previous topic</h2>';
 					$link = $content['prev']['link'];
-					$absolute = $this->relativeToAbsolute($documentRoot . $document, $link);
+					$absolute = $this->relativeToAbsolute($documentRoot . $document, '../' . $link);
 					$link = $this->getLink(substr($absolute, strlen($documentRoot)));
+
 					$output .= '<ul class="list m-r"><li><a href="' . $link . '">' . $content['prev']['title'] . '</a></li></ul>';
 				}
+
 				if (isset($content['next'])) {
 					$output .= '<h2 class="title-format-1">Next topic</h2>';
 					$link = $content['next']['link'];
-					$absolute = $this->relativeToAbsolute($documentRoot . $document, $link);
+					$absolute = $this->relativeToAbsolute($documentRoot . $document, '../' . $link);
 					$link = $this->getLink(substr($absolute, strlen($documentRoot)));
+
 					$output .= '<ul class="list m-r"><li><a href="' . $link . '">' . $content['next']['title'] . '</a></li></ul>';
 				}
 				break;

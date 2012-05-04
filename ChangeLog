@@ -1,5 +1,6 @@
 2012-05-04  Xavier Perseguers  <xavier@causal.ch>
 
+	* [BUGFIX] Previous/Next links in TOC are wrong
 	* [BUGFIX] Images from main document are not rendered
 
 2012-05-01  Xavier Perseguers  <xavier@causal.ch>
