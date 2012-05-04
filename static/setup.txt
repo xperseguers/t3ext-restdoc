@@ -9,4 +9,34 @@ plugin.tx_restdoc_pi1 {
 			}
 		}
 	}
+
+	setup.TOC {
+		renderObj = COA
+		renderObj {
+			10 = HMENU
+			10.stdWrap.wrap = <h2>Table of Contents</h2> |
+			10 {
+				special = userfunction
+				special.userFunc = tx_restdoc_pi1->makeMenuArray
+				special.userFunc.type = menu
+
+				1 = TMENU
+				1 {
+					wrap = <ul>|</ul>
+					NO.wrapItemAndSub = <li>|</li>
+				}
+				2 < .1
+			}
+
+			20 < .10
+			20.stdWrap.wrap = <h3>Previous Topic</h3> |
+			20.stdWrap.required = 1
+			20.special.userFunc.type = previous
+
+			30 < .10
+			30.stdWrap.wrap = <h3>Next Topic</h3> |
+			30.stdWrap.required = 1
+			30.special.userFunc.type = next
+		}
+	}
 }

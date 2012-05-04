@@ -94,6 +94,18 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	}
 
 	/**
+	 * Generates the array for rendering the reST menu in TypoScript.
+	 *
+	 * @param string $content
+	 * @param array $conf
+	 * @return array
+	 */
+	public function makeMenuArray($content, array $conf) {
+		$type = isset($conf['userFunc.']['type']) ? $conf['userFunc.']['type'] : 'menu';
+		return $this->cObj->data[$type];
+	}
+
+	/**
 	 * Generates the Table of Contents.
 	 *
 	 * @param string $documentRoot
@@ -102,31 +114,134 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	 * @return string
 	 */
 	protected function generateTableOfContents($documentRoot, $document, array $jsonData) {
+		$this->renderingConfig = $this->conf['setup.']['TOC.'];
+
 			// Replace links in table of contents
 		$toc = $this->replaceLinks($documentRoot, $document, $jsonData['toc']);
 			// Remove empty sublevels
 		$toc = preg_replace('#<ul>\s*</ul>#', '', $toc);
-		$output = '<h2 class="title-format-1">Table of Contents</h2>';
-		$output .= preg_replace('#^<ul>\s*<li>#', '<ul class="list m-r"><li class="current">', $toc);
+
+		$data = array();
+		$data['menu'] = $this->getMenuData($this->xmlstr_to_array($toc));
 
 		if (isset($jsonData['prev'])) {
-			$output .= '<h2 class="title-format-1">Previous topic</h2>';
-			$link = $jsonData['prev']['link'];
-			$absolute = $this->relativeToAbsolute($documentRoot . $document, '../' . $link);
+			$absolute = $this->relativeToAbsolute($documentRoot . $document, '../' . $jsonData['prev']['link']);
 			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 
-			$output .= '<ul class="list m-r"><li><a href="' . $link . '">' . $jsonData['prev']['title'] . '</a></li></ul>';
+			$data['previous'] = array(
+				array(
+					'title' => $jsonData['prev']['title'],
+					'_OVERRIDE_HREF' => $link,
+				)
+			);
 		}
 
 		if (isset($jsonData['next'])) {
-			$output .= '<h2 class="title-format-1">Next topic</h2>';
-			$link = $jsonData['next']['link'];
-			$absolute = $this->relativeToAbsolute($documentRoot . $document, '../' . $link);
+			$absolute = $this->relativeToAbsolute($documentRoot . $document, '../' . $jsonData['next']['link']);
 			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 
-			$output .= '<ul class="list m-r"><li><a href="' . $link . '">' . $jsonData['next']['title'] . '</a></li></ul>';
+			$data['next'] = array(
+				array(
+					'title' => $jsonData['next']['title'],
+					'_OVERRIDE_HREF' => $link,
+				)
+			);
 		}
 
+		/** @var $contentObj tslib_cObj */
+		$contentObj = t3lib_div::makeInstance('tslib_cObj');
+		$contentObj->start($data);
+		$output = $contentObj->cObjGetSingle($this->renderingConfig['renderObj'], $this->renderingConfig['renderObj.']);
+
+		return $output;
+	}
+
+	/**
+	 * Returns a TYPO3-compatible list of menu entries.
+	 *
+	 * @param array $entries
+	 * @return array
+	 */
+	protected function getMenuData(array $entries) {
+		$menu = array();
+		$entries = isset($entries['li'][0]) ? $entries['li'] : array($entries['li']);
+		foreach ($entries as $entry) {
+			$menuEntry = array(
+				'title' => $entry['a']['@content'],
+				'_OVERRIDE_HREF' => $entry['a']['@attributes']['href'],
+			);
+			if (isset($entry['ul'])) {
+				$menuEntry['_SUB_MENU'] = $this->getMenuData($entry['ul']);
+			}
+
+			$menu[] = $menuEntry;
+		}
+
+		return $menu;
+	}
+
+	/**
+	 * Converts an XML string to a PHP array - useful to get a serializable value.
+	 *
+	 * @param string $xmlstr
+	 * @return array
+	 * @link https://github.com/gaarf/XML-string-to-PHP-array/blob/master/xmlstr_to_array.php
+	 */
+	protected function xmlstr_to_array($xmlstr) {
+		$doc = new DOMDocument();
+		$doc->loadXML($xmlstr);
+		return $this->domnode_to_array($doc->documentElement);
+	}
+
+	/**
+	 * Converts a DOM node into an array.
+	 *
+	 * @param DOMNode $node
+	 * @return array
+	 */
+	protected function domnode_to_array(DOMNode $node) {
+		$output = array();
+		switch ($node->nodeType) {
+
+			case XML_CDATA_SECTION_NODE:
+			case XML_TEXT_NODE:
+				$output = trim($node->textContent);
+				break;
+
+			case XML_ELEMENT_NODE:
+				for ($i = 0, $m = $node->childNodes->length; $i < $m; $i++) {
+					$child = $node->childNodes->item($i);
+					$v = $this->domnode_to_array($child);
+					if (isset($child->tagName)) {
+						$t = $child->tagName;
+						if (!isset($output[$t])) {
+							$output[$t] = array();
+						}
+						$output[$t][] = $v;
+					}
+					elseif ($v || $v === '0') {
+						$output = (string) $v;
+					}
+				}
+				if ($node->attributes->length && !is_array($output)) { // Has attributes but isn't an array
+					$output = array('@content' => $output); // Change output into an array.
+				}
+				if (is_array($output)) {
+					if ($node->attributes->length) {
+						$a = array();
+						foreach($node->attributes as $attrName => $attrNode) {
+							$a[$attrName] = (string) $attrNode->value;
+						}
+						$output['@attributes'] = $a;
+					}
+					foreach ($output as $t => $v) {
+						if (is_array($v) && count($v)==1 && $t !== '@attributes') {
+							$output[$t] = $v[0];
+						}
+					}
+				}
+				break;
+		}
 		return $output;
 	}
 
