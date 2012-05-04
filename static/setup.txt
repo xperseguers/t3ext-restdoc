@@ -7,7 +7,7 @@ plugin.tx_restdoc_pi1 {
 			renderObj = IMAGE
 			renderObj {
 				file.import.field = src
-				maxW < tt_content.image.20.maxW
+				file.maxW < tt_content.image.20.maxW
 				altText.field = alt
 			}
 		}
