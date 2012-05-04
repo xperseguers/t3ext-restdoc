@@ -61,6 +61,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 
 		$jsonFile = substr($document, 0, strlen($document) - 1) . '.fjson';
 		if (!is_file($documentRoot . $jsonFile)) {
+			$document = 'index/';
 			$jsonFile = 'index.fjson';
 		}
 		if (!is_file($documentRoot . $jsonFile)) {
@@ -77,7 +78,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		switch ($this->conf['mode']) {
 			case 'TOC':
 				// Replace links in table of contents
-				$toc = $this->replaceLinks($document, $content['toc']);
+				$toc = $this->replaceLinks($documentRoot, $document, $content['toc']);
 				// Remove empty sublevels
 				$toc = preg_replace('#<ul>\s*</ul>#', '', $toc);
 				$output = '<h2 class="title-format-1">Table of Contents</h2>';
@@ -85,15 +86,15 @@ class tx_restdoc_pi1 extends tslib_pibase {
 				if (isset($content['prev'])) {
 					$output .= '<h2 class="title-format-1">Previous topic</h2>';
 					$link = $content['prev']['link'];
-					$link = $this->relativeToAbsolute($document, $link);
-					$link = $this->getLink($link);
+					$absolute = $this->relativeToAbsolute($documentRoot . $document, $link);
+					$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 					$output .= '<ul class="list m-r"><li><a href="' . $link . '">' . $content['prev']['title'] . '</a></li></ul>';
 				}
 				if (isset($content['next'])) {
 					$output .= '<h2 class="title-format-1">Next topic</h2>';
 					$link = $content['next']['link'];
-					$link = $this->relativeToAbsolute($document, $link);
-					$link = $this->getLink($link);
+					$absolute = $this->relativeToAbsolute($documentRoot . $document, $link);
+					$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 					$output .= '<ul class="list m-r"><li><a href="' . $link . '">' . $content['next']['title'] . '</a></li></ul>';
 				}
 				break;
@@ -101,7 +102,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 				// Remove permanent links in body
 				$body = preg_replace('#<a class="headerlink" [^>]+>[^<]+</a>#', '', $content['body']);
 				// Replace links in body
-				$body = $this->replaceLinks($document, $body);
+				$body = $this->replaceLinks($documentRoot, $document, $body);
 				// Replace images in body
 				$body = $this->replaceImages($documentRoot . $document, $body);
 				$output = $body;
@@ -117,32 +118,30 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	/**
 	 * Converts a relative path to an absolute one.
 	 *
-	 * @param string $path
-	 * @param string $reference
+	 * @param string $fullPath
+	 * @param string $relative
 	 * @private This method is made public to be accessible from a lambda-function scope
 	 */
-	public function relativeToAbsolute($path, $reference) {
+	public function relativeToAbsolute($fullPath, $relative) {
 		$absolute = '';
-		$path = rtrim($path, '/');
-		$pathParts = explode('/', $path);
-		$referenceParts = explode('/', $reference);
-		$isRelative = FALSE;
+		$fullPath = rtrim($fullPath, '/');
+		$fullPathParts = explode('/', $fullPath);
+			// We need an additional directory for parent paths to work (as we trimmed document name from $fullPath
+			// in the caller method
+		$fullPathParts[] = '';
+		$relativeParts = explode('/', $relative);
 
-		for ($i = 0; $i < count($referenceParts); $i++) {
-			if ($referenceParts[$i] == '..' && count($pathParts) > 0) {
-				$isRelative = TRUE;
-				array_pop($pathParts);
+		for ($i = 0; $i < count($relativeParts); $i++) {
+			if ($relativeParts[$i] == '..' && count($fullPathParts) > 0) {
+				array_pop($fullPathParts);
 			} else {
-				if ($isRelative) {
-					$absolute = implode('/', $pathParts) . '/';
-				}
-				$absolute .= implode('/', array_slice($referenceParts, $i));
-				$absolute = ltrim($absolute, '/');
+				$absolute = implode('/', $fullPathParts) . '/';
+				$absolute .= implode('/', array_slice($relativeParts, $i));
 				break;
 			}
 		}
 
-		return $absolute;
+		return str_replace('//', '/', $absolute);
 	}
 
 	/**
@@ -179,13 +178,14 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	/**
 	 * Replaces links in a reST document.
 	 *
+	 * @param string $root
 	 * @param string $document
 	 * @param string $content
 	 * @return string
 	 */
-	protected function replaceLinks($document, $content) {
+	protected function replaceLinks($root, $document, $content) {
 		$plugin = $this;
-		$ret = preg_replace_callback('#(<a .* href=")([^"]+)#', function($matches) use ($plugin, $document) {
+		$ret = preg_replace_callback('#(<a .* href=")([^"]+)#', function($matches) use ($plugin, $root, $document) {
 			/** @var $plugin tx_restdoc_pi1 */
 			$anchor = '';
 			if (preg_match('#^[a-zA-Z]+://#', $matches[2])) {
@@ -198,7 +198,10 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			if ($anchor !== '') {
 				$document .= $anchor;
 			} else {
-				$document = $plugin->relativeToAbsolute($document, $matches[2]);
+					// $document's last part is a document, not a directory
+				$document = substr($document, 0, strrpos(rtrim($document, '/'), '/'));
+				$absolute = $plugin->relativeToAbsolute($root . $document, $matches[2]);
+				$document = substr($absolute, strlen($root));
 			}
 			return $matches[1] . $plugin->getLink($document);
 		}, $content);
@@ -208,14 +211,16 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	/**
 	 * Replaces images in a reST document.
 	 *
-	 * @param string $root
+	 * @param string $root absolute root of the document
 	 * @param string $content
 	 * @return string
 	 */
 	protected function replaceImages($root, $content) {
+			// $root's last part is a document, not a directory
+		$root = substr($root, 0, strrpos(rtrim($root, '/'), '/'));
 		$plugin = $this;
 		$ret = preg_replace_callback('#(<img .* src=")([^"]+)#', function($matches) use ($plugin, $root) {
-			$image = '/' . $plugin->relativeToAbsolute(substr($root, 1), $matches[2]);
+			$image = $plugin->relativeToAbsolute($root, $matches[2]);
 			$conf = array(
 				'file' => substr($image, strlen(PATH_site)),
 			);

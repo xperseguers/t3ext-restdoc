@@ -1,3 +1,7 @@
+2012-05-04  Xavier Perseguers  <xavier@causal.ch>
+
+	* [BUGFIX] Images from main document are not rendered
+
 2012-05-01  Xavier Perseguers  <xavier@causal.ch>
 
 	* [BUGFIX] Fix generated link for static resources
