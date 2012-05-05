@@ -1,3 +1,7 @@
+2012-05-05  Xavier Perseguers  <xavier@causal.ch>
+
+	* [TASK][DOC] Add basic documentation
+
 2012-05-04  Xavier Perseguers  <xavier@causal.ch>
 
 	* [TASK] Allow default file (index.fjson) to be changed (e.g., to handle FLOW3 CGL)
