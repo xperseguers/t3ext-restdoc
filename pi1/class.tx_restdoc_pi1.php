@@ -109,11 +109,9 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['renderHook'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['renderHook'] as $classRef) {
 				$hookObject = t3lib_div::getUserObj($classRef);
-
-				if (is_callable(array($hookObject, 'postProcess'))) {
-					$hookObject->postProcess($this->conf['mode'], $documentRoot, $document, $output, $this);
+				if (is_callable(array($hookObject, 'postProcessOutput'))) {
+					$hookObject->postProcessOutput($this->conf['mode'], $documentRoot, $document, $output, $this);
 				}
-
 			}
 		}
 
@@ -177,6 +175,16 @@ class tx_restdoc_pi1 extends tslib_pibase {
 					'_OVERRIDE_HREF' => $link,
 				)
 			);
+		}
+
+			// Hook for post-processing the menu entries
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['tocHook'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['tocHook'] as $classRef) {
+				$hookObject = t3lib_div::getUserObj($classRef);
+				if (is_callable(array($hookObject, 'postProcessTOC'))) {
+					$hookObject->postProcessTOC($document, $data, $this);
+				}
+			}
 		}
 
 		/** @var $contentObj tslib_cObj */
