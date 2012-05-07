@@ -105,6 +105,18 @@ class tx_restdoc_pi1 extends tslib_pibase {
 				break;
 		}
 
+			// Hook for post-processing the output
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['renderHook'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['renderHook'] as $classRef) {
+				$hookObject = t3lib_div::getUserObj($classRef);
+
+				if (is_callable(array($hookObject, 'postProcess'))) {
+					$hookObject->postProcess($this->conf['mode'], $documentRoot, $document, $output, $this);
+				}
+
+			}
+		}
+
 		return $this->pi_wrapInBaseClass($output);
 	}
 

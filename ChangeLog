@@ -1,3 +1,7 @@
+2012-05-07  Xavier Perseguers  <xavier@causal.ch>
+
+	* [TASK] Add hook for arbitrary post-processing
+
 2012-05-05  Xavier Perseguers  <xavier@causal.ch>
 
 	* [TASK] Raise version to 0.1.0 (alpha)
