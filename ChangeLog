@@ -1,3 +1,7 @@
+2012-05-09  Xavier Perseguers  <xavier@causal.ch>
+
+	* [BUGFIX] Some internal links are not detected
+
 2012-05-07  Xavier Perseguers  <xavier@causal.ch>
 
 	* [TASK] Add hook for arbitrary post-processing

@@ -374,7 +374,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	 */
 	protected function replaceLinks($root, $document, $content) {
 		$plugin = $this;
-		$ret = preg_replace_callback('#(<a .* href=")([^"]+)#', function($matches) use ($plugin, $root, $document) {
+		$ret = preg_replace_callback('#(<a .*? href=")([^"]+)#', function($matches) use ($plugin, $root, $document) {
 			/** @var $plugin tx_restdoc_pi1 */
 			$anchor = '';
 			if (preg_match('#^[a-zA-Z]+://#', $matches[2])) {
