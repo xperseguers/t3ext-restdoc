@@ -1,3 +1,7 @@
+2012-05-22  Xavier Perseguers  <xavier@causal.ch>
+
+	* [BUGFIX] Generated chapter URL are not compatible with .html as file extension when using RealURL
+
 2012-05-09  Xavier Perseguers  <xavier@causal.ch>
 
 	* [BUGFIX] Some internal links are not detected

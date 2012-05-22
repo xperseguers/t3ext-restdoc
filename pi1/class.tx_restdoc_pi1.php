@@ -68,7 +68,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		$documentRoot = PATH_site . rtrim($this->conf['path'], '/') . '/';
 		$document = $this->defaultFile . '/';
 		if (isset($this->piVars['doc']) && strpos($this->piVars['doc'], '..') === FALSE) {
-			$document = $this->piVars['doc'];
+			$document = str_replace('\\', '/', $this->piVars['doc']) . '/';
 		}
 
 		$jsonFile = substr($document, 0, strlen($document) - 1) . '.fjson';
@@ -349,7 +349,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			}
 			$conf = array(
 				$this->prefixId => array(
-					'doc' => $document,
+					'doc' => str_replace('/', '\\', substr($document, 0, strlen($document) - 1)),
 				)
 			);
 		}
