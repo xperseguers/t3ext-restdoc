@@ -115,7 +115,14 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			}
 		}
 
-		return $this->pi_wrapInBaseClass($output);
+			// Wrap the whole result, with baseWrap if defined, else with standard pi_wrapInBaseClass() call
+		if (isset($this->conf['baseWrap.'])) {
+			$output = $this->cObj->stdWrap($output, $this->conf['baseWrap.']);
+		} else {
+			$output = $this->pi_wrapInBaseClass($output);
+		}
+
+		return $output;
 	}
 
 	/**
