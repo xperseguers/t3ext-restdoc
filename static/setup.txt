@@ -25,6 +25,7 @@ plugin.tx_restdoc_pi1 {
 				1 = TMENU
 				1 {
 					wrap = <ul>|</ul>
+					noBlur = 1
 					NO.wrapItemAndSub = <li>|</li>
 
 					CUR = 1
