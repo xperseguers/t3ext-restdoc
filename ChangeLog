@@ -1,3 +1,7 @@
+2013-02-14  Xavier Perseguers  <xavier@causal.ch>
+
+	* [BUGFIX] Sphinx does not generate XML-compliant URL in TOC
+
 2012-05-22  Xavier Perseguers  <xavier@causal.ch>
 
 	* [BUGFIX] Generated chapter URL are not compatible with .html as file extension when using RealURL

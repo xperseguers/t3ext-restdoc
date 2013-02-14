@@ -145,6 +145,12 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		$toc = $this->replaceLinks($documentRoot, $document, $jsonData['toc']);
 			// Remove empty sublevels
 		$toc = preg_replace('#<ul>\s*</ul>#', '', $toc);
+			// Fix TOC to make it XML compliant
+		$toc = preg_replace_callback('# href="([^"]+)"#', function($matches) {
+			$url = str_replace('&amp;', '&', $matches[1]);
+			$url = str_replace('&', '&amp;', $url);
+			return ' href="' . $url . '"';
+		}, $toc);
 
 		$data = array();
 		$data['menu'] = $this->getMenuData($this->xmlstr_to_array($toc));
