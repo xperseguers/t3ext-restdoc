@@ -1,5 +1,6 @@
 2013-02-16  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] Add support for extracting title
 	* [TASK] Use constants for path/mode of the plugin when used in TS
 
 2013-02-14  Xavier Perseguers  <xavier@causal.ch>

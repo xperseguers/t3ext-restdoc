@@ -2,6 +2,6 @@ plugin.tx_restdoc {
 	# Path to the reST documentation
 	path =
 
-	# mode of the plugin (BODY | TOC)
+	# mode of the plugin (BODY | TOC | TITLE)
 	mode =
 }

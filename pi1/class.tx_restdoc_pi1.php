@@ -100,6 +100,9 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			case 'BODY':
 				$output = $this->generateBody($documentRoot, $document, $jsonData);
 				break;
+			case 'TITLE':
+				$output = isset($jsonData['title']) ? $jsonData['title'] : '';
+				break;
 			default:
 				$output = '';
 				break;
