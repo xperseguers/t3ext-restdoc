@@ -48,11 +48,11 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	/**
 	 * The main method of the Plugin.
 	 *
-	 * @param string $foo The plugin content
+	 * @param string $content The plugin content
 	 * @param array $conf The plugin configuration
 	 * @return string The content that is displayed on the website
 	 */
-	public function main($foo, array $conf) {
+	public function main($content, array $conf) {
 		$this->init($conf);
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
@@ -102,6 +102,9 @@ class tx_restdoc_pi1 extends tslib_pibase {
 				break;
 			case 'TITLE':
 				$output = isset($jsonData['title']) ? $jsonData['title'] : '';
+				break;
+			case 'QUICK_NAVIGATION':
+				$output = $this->generateQuickNavigation($documentRoot, $document, $jsonData);
 				break;
 			default:
 				$output = '';
@@ -198,6 +201,59 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['tocHook'] as $classRef) {
 				$hookObject = t3lib_div::getUserObj($classRef);
 				if (is_callable(array($hookObject, 'postProcessTOC'))) {
+					$hookObject->postProcessTOC($document, $data, $this);
+				}
+			}
+		}
+
+		/** @var $contentObj tslib_cObj */
+		$contentObj = t3lib_div::makeInstance('tslib_cObj');
+		$contentObj->start($data);
+		$output = $contentObj->cObjGetSingle($this->renderingConfig['renderObj'], $this->renderingConfig['renderObj.']);
+
+		return $output;
+	}
+
+	/**
+	 * Generates the Quick Navigation.
+	 *
+	 * @param string $documentRoot
+	 * @param string $document
+	 * @param array $jsonData
+	 * @return string
+	 */
+	protected function generateQuickNavigation($documentRoot, $document, array $jsonData) {
+		$this->renderingConfig = $this->conf['setup.']['QUICK_NAVIGATION.'];
+
+		$data = array();
+		$data['home_title'] = 'n/a';
+		$data['home_uri'] = $this->getLink('');
+
+		if (isset($jsonData['prev'])) {
+			$absolute = $this->relativeToAbsolute($documentRoot . $document, '../' . $jsonData['prev']['link']);
+			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
+
+			$data['previous_title'] = $jsonData['prev']['title'];
+			$data['previous_uri']   = $link;
+		}
+
+		if (isset($jsonData['next'])) {
+			$nextDocument = $document === $this->defaultFile . '/' ? $documentRoot : $documentRoot . $document;
+			$absolute = $this->relativeToAbsolute($nextDocument, '../' . $jsonData['next']['link']);
+			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
+
+			$data['next_title'] = $jsonData['next']['title'];
+			$data['next_uri']   = $link;
+		}
+
+		$data['has_previous'] = !empty($data['previous_title']) ? 1 : 0;
+		$data['has_next'] = !empty($data['next_title']) ? 1 : 0;
+
+		// Hook for post-processing the quick navigation
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['quickNavigationHook'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['quickNavigationHook'] as $classRef) {
+				$hookObject = t3lib_div::getUserObj($classRef);
+				if (is_callable(array($hookObject, 'postProcessQUICK_NAVIGATION'))) {
 					$hookObject->postProcessTOC($document, $data, $this);
 				}
 			}
@@ -325,6 +381,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	 *
 	 * @param string $fullPath
 	 * @param string $relative
+	 * @return string
 	 * @private This method is made public to be accessible from a lambda-function scope
 	 */
 	public function relativeToAbsolute($fullPath, $relative) {
@@ -353,6 +410,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	 * Generates a link to navigate within a reST documentation project.
 	 *
 	 * @param string $document Target document
+	 * @return string
 	 * @private This method is made public to be accessible from a lambda-function scope
 	 */
 	public function getLink($document) {

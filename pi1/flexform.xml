@@ -50,6 +50,10 @@
 										<numIndex index="0">LLL:EXT:restdoc/locallang_db.xml:pi_flexform.mode.TOC</numIndex>
 										<numIndex index="1">TOC</numIndex>
 									</numIndex>
+									<numIndex index="3" type="array">
+										<numIndex index="0">LLL:EXT:restdoc/locallang_db.xml:pi_flexform.mode.QUICK_NAVIGATION</numIndex>
+										<numIndex index="1">QUICK_NAVIGATION</numIndex>
+									</numIndex>
 								</items>
 								<size>1</size>
 								<maxitems>1</maxitems>
