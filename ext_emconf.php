@@ -12,7 +12,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'reST Documentation Viewer',
-	'description' => 'Integrates a reST documentation (generated as JSON) into a TYPO3 website.',
+	'description' => 'Integrates a reStructuredText documentation (generated as JSON) into a TYPO3 website.',
 	'category' => 'plugin',
 	'author' => 'Xavier Perseguers',
 	'author_company' => 'Causal Sàrl',
