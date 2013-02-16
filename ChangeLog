@@ -1,5 +1,6 @@
 2013-02-16  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] Raise version to 1.0.0 (stable)
 	* [TASK] Add mode "quick navigation"
 	* [TASK] Add support for extracting title
 	* [TASK] Use constants for path/mode of the plugin when used in TS
