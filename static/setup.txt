@@ -1,4 +1,13 @@
 plugin.tx_restdoc_pi1 {
+	# baseWrap supports stdWrap properties, if set will replace the default wrap
+	# around the plugin: <div class="tx-restdoc-pi1"> ... </div>
+	baseWrap {
+		#wrap = <div> | </div>
+	}
+
+	path = {$plugin.tx_restdoc.path}
+	mode = {$plugin.tx_restdoc.mode}
+
 	// stdWrap functions being applied to setup.defaultFile
 	setup.defaultFile = index
 
