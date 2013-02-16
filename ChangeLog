@@ -7,7 +7,7 @@
 
 2013-02-14  Xavier Perseguers  <xavier@causal.ch>
 
-	* [TASK] Allow baseWrap to be overriden
+	* [TASK] Allow baseWrap to be overridden
 	* [BUGFIX] Sphinx does not generate XML-compliant URL in TOC
 
 2012-05-22  Xavier Perseguers  <xavier@causal.ch>
