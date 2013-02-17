@@ -89,35 +89,38 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		$content = file_get_contents($documentRoot . $jsonFile);
 		$jsonData = json_decode($content, TRUE);
 
-		if (isset($jsonData['genindexentries'])) {
-			if ($this->conf['mode'] === 'BODY') {
-				return '
-				Sorry, showing the index is not yet supported. Please see
-				<a href="http://forge.typo3.org/issues/36850" target="_blank">Feature #36850</a>
-				for more information.
-			';
-			} else {
-				$this->piVars['doc'] = '';
-				return $this->main('', $conf);
+		if (!isset($jsonData['genindexentries'])) {
+			switch ($this->conf['mode']) {
+				case 'TOC':
+					$output = $this->generateTableOfContents($documentRoot, $document, $jsonData);
+					break;
+				case 'BODY':
+					$output = $this->generateBody($documentRoot, $document, $jsonData);
+					break;
+				case 'TITLE':
+					$output = isset($jsonData['title']) ? $jsonData['title'] : '';
+					break;
+				case 'QUICK_NAVIGATION':
+					$output = $this->generateQuickNavigation($documentRoot, $document, $jsonData);
+					break;
+				default:
+					$output = '';
+					break;
 			}
-		}
-
-		switch ($this->conf['mode']) {
-			case 'TOC':
-				$output = $this->generateTableOfContents($documentRoot, $document, $jsonData);
-				break;
-			case 'BODY':
-				$output = $this->generateBody($documentRoot, $document, $jsonData);
-				break;
-			case 'TITLE':
-				$output = isset($jsonData['title']) ? $jsonData['title'] : '';
-				break;
-			case 'QUICK_NAVIGATION':
-				$output = $this->generateQuickNavigation($documentRoot, $document, $jsonData);
-				break;
-			default:
-				$output = '';
-				break;
+		} else {
+			switch ($this->conf['mode']) {
+				case 'BODY':
+					// Generating output for the general index
+					$output = $this->generateIndex($documentRoot, $document, $jsonData);
+					break;
+				case 'TITLE':
+					$output = 'Index';
+					break;
+				default:
+					// Generating TOC, ... for the root document instead
+					$this->piVars['doc'] = '';
+					return $this->main('', $conf);
+			}
 		}
 
 			// Hook for post-processing the output
@@ -235,7 +238,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		$this->renderingConfig = $this->conf['setup.']['QUICK_NAVIGATION.'];
 
 		$data = array();
-		$data['home_title'] = 'n/a';
+		$data['home_title'] = 'home';
 		$data['home_uri'] = $this->getLink('');
 
 		if (isset($jsonData['prev'])) {
@@ -280,6 +283,91 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		$contentObj = t3lib_div::makeInstance('tslib_cObj');
 		$contentObj->start($data);
 		$output = $contentObj->cObjGetSingle($this->renderingConfig['renderObj'], $this->renderingConfig['renderObj.']);
+
+		return $output;
+	}
+
+	/**
+	 * Generates the general index.
+	 *
+	 * @param string $documentRoot
+	 * @param string $document
+	 * @param array $jsonData
+	 * @return string
+	 */
+	protected function generateIndex($documentRoot, $document, array $jsonData) {
+		$linksCategories = array();
+		$contentCategories = array();
+
+		foreach ($jsonData['genindexentries'] as $indexGroup) {
+			$category = $indexGroup[0];
+			$anchor = 'tx-restdoc-index-' . htmlspecialchars($category);
+
+			$conf = array(
+				$this->prefixId => array(
+					'doc' => str_replace('/', '\\', substr($document, 0, strlen($document) - 1)),
+				)
+			);
+			$link = $this->pi_getPageLink($GLOBALS['TSFE']->id, '', $conf);
+			$link .= '#' . $anchor;
+
+			$linksCategories[] = '<a href="' . $link . '"><strong>' . htmlspecialchars($category) . '</strong></a>';
+
+			$contentCategory = '<h2 id="' . $anchor . '">' . htmlspecialchars($category) . '</h2>' . LF;
+			$contentCategory .= '<div class="tx-restdoc-genindextable">' . LF;
+			$contentCategory .= $this->getIndexDefinitionList($documentRoot, $indexGroup[1]);
+			$contentCategory .= '</div>' . LF;
+
+			$contentCategories[] = $contentCategory;
+		}
+
+		$output = '<h1>Index</h1>' . LF;
+		$output .= '<div class="tx-restdoc-genindex-jumpbox">' . implode(' | ', $linksCategories) . '</div>' . LF;
+		$output .= implode(LF, $contentCategories);
+
+		return $output;
+	}
+
+	/**
+	 * Returns an index definition list as HTML.
+	 *
+	 * @param string $documentRoot
+	 * @param array $index
+	 * @return string
+	 */
+	protected function getIndexDefinitionList($documentRoot, array $index) {
+		$output = '<dl>' . LF;
+		foreach ($index as $dt) {
+			$relativeLink = '';
+			if (!empty($dt[1][0]) && t3lib_div::isFirstPartOfStr($dt[1][0][1], '../')) {
+				$relativeLink = substr($dt[1][0][1], 3);
+			}
+
+			$output .= '<dt>' . LF;
+			if ($relativeLink) {
+				$link = $this->getLink($relativeLink);
+				$output .= '<a href="' . $link . '">' . htmlspecialchars($dt[0]) . '</a>' . LF;
+			} else {
+				$output .= htmlspecialchars($dt[0]) . LF;
+			}
+			$output .= '</dt>' . LF;
+
+			$terms = $dt[1];
+			if (!is_array($terms)) {
+				// TODO: handle multiple links for one index entry
+				return;
+			}
+			array_shift($terms);
+
+			if ($terms) {
+				$output .= '<dd>' . LF;
+				foreach ($terms as $term) {
+					$output .= $this->getIndexDefinitionList($documentRoot, $term);
+				}
+				$output .= '</dd>' . LF;
+			}
+		}
+		$output .= '</dl>' . LF;
 
 		return $output;
 	}
