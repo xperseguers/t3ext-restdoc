@@ -4,7 +4,7 @@ plugin.tx_restdoc_pi1.setup.BODY.image.renderObj {
 		preCObject = TEXT
 		preCObject.value = <div style="text-align:center;">
 		preCObject.if.value.data = TSFE:lastImageInfo|0
-		preCObject.if.isGreaterThan = 100
+		preCObject.if.isLessThan = 100
 		
 		postCObject < .preCObject
 		postCObject.value = </div>
