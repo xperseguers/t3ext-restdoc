@@ -338,30 +338,51 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	protected function getIndexDefinitionList($documentRoot, array $index) {
 		$output = '<dl>' . LF;
 		foreach ($index as $dt) {
-			$relativeLink = '';
-			if (!empty($dt[1][0]) && t3lib_div::isFirstPartOfStr($dt[1][0][1], '../')) {
-				$relativeLink = substr($dt[1][0][1], 3);
+			$relativeLinks = array();
+			for ($i = 0; $i < count($dt[1]); $i++) {
+				if (!empty($dt[1][$i]) && t3lib_div::isFirstPartOfStr($dt[1][$i][1], '../')) {
+					$relativeLinks[] = array(
+						'title' => $dt[1][$i][0],
+						'link'  => substr($dt[1][$i][1], 3),
+					);
+				} elseif ($i == 0 && !empty($dt[1][$i]) && is_array($dt[1][$i][0]) && t3lib_div::isFirstPartOfStr($dt[1][$i][0][1], '../')) {
+					$relativeLinks[] = array(
+						'title' => $dt[1][$i][0][0],
+						'link'  => substr($dt[1][$i][0][1], 3),
+					);
+				} else {
+					// No more entry links, we have subentries from now on
+					break;
+				}
+			}
+			// Remove category links from the list of subentries, first subentry is always a link, possibly empty
+			for ($i = 0; $i < max(1, count($relativeLinks)); $i++) {
+				array_shift($dt[1]);
 			}
 
-			$output .= '<dt>' . LF;
-			if ($relativeLink) {
-				$link = $this->getLink($relativeLink);
-				$output .= '<a href="' . $link . '">' . htmlspecialchars($dt[0]) . '</a>' . LF;
+			$output .= '<dt>';
+			if ($relativeLinks) {
+				for ($i = 0; $i < count($relativeLinks); $i++) {
+					$link = $this->getLink($relativeLinks[$i]['link']);
+					if ($i == 0) {
+						$title = htmlspecialchars($dt[0]);
+					} else {
+						$output .= ', ';
+						$title = '[' . $i . ']';
+					}
+					if ($relativeLinks[$i]['title'] === 'main') {
+						$title = '<strong>' . $title . '</strong>';
+					}
+					$output .= '<a href="' . $link . '">' . $title . '</a>';
+				}
 			} else {
-				$output .= htmlspecialchars($dt[0]) . LF;
+				$output .= htmlspecialchars($dt[0]);
 			}
 			$output .= '</dt>' . LF;
 
-			$terms = $dt[1];
-			if (!is_array($terms)) {
-				// TODO: handle multiple links for one index entry
-				return;
-			}
-			array_shift($terms);
-
-			if ($terms) {
+			if ($dt[1]) {
 				$output .= '<dd>' . LF;
-				foreach ($terms as $term) {
+				foreach ($dt[1] as $term) {
 					$output .= $this->getIndexDefinitionList($documentRoot, $term);
 				}
 				$output .= '</dd>' . LF;

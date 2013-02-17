@@ -1,5 +1,6 @@
 2013-02-17  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] #36850: Handle multiple links for one index entry
 	* [FEATURE] #36850: Add support for index
 	* [TASK] #36850 (in progress): Linking index to quick navigation
 
