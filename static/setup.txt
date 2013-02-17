@@ -92,6 +92,17 @@ plugin.tx_restdoc_pi1 {
 				typolink.title.field = next_title
 				if.isTrue.field = has_next
 			}
+			31 < .11
+			31.if.isTrue.field = has_index
+
+			40 = TEXT
+			40 {
+				data = LLL:EXT:restdoc/pi1/locallang.xml:quicknavigation_index
+				typolink.parameter.field = index_uri
+				typolink.title.data < .data
+				if.isTrue.field = has_index
+			}
+
 		}
 	}
 

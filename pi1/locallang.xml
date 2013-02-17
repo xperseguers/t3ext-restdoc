@@ -12,6 +12,7 @@
 			<label index="quicknavigation_home">home</label>
 			<label index="quicknavigation_previous_topic">previous</label>
 			<label index="quicknavigation_next_topic">next</label>
+			<label index="quicknavigation_index">index</label>
 		</languageKey>
 	</data>
 </T3locallang>

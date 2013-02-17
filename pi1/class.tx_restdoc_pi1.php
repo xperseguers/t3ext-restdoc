@@ -90,7 +90,16 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		$jsonData = json_decode($content, TRUE);
 
 		if (isset($jsonData['genindexentries'])) {
-			return 'TODO: generate index';
+			if ($this->conf['mode'] === 'BODY') {
+				return '
+				Sorry, showing the index is not yet supported. Please see
+				<a href="http://forge.typo3.org/issues/36850" target="_blank">Feature #36850</a>
+				for more information.
+			';
+			} else {
+				$this->piVars['doc'] = '';
+				return $this->main('', $conf);
+			}
 		}
 
 		switch ($this->conf['mode']) {
@@ -246,8 +255,16 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			$data['next_uri']   = $link;
 		}
 
-		$data['has_previous'] = !empty($data['previous_title']) ? 1 : 0;
-		$data['has_next'] = !empty($data['next_title']) ? 1 : 0;
+		if (is_file($documentRoot . 'genindex.fjson')) {
+			$link = $this->getLink('genindex/');
+
+			$data['index_title'] = 'index';
+			$data['index_uri'] = $link;
+		}
+
+		$data['has_previous'] = !empty($data['previous_uri']) ? 1 : 0;
+		$data['has_next']     = !empty($data['next_uri'])     ? 1 : 0;
+		$data['has_index']    = !empty($data['index_uri'])    ? 1 : 0;
 
 		// Hook for post-processing the quick navigation
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['quickNavigationHook'])) {
