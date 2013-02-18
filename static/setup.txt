@@ -7,6 +7,7 @@ plugin.tx_restdoc_pi1 {
 
 	path = {$plugin.tx_restdoc.path}
 	mode = {$plugin.tx_restdoc.mode}
+	pathSeparator = {$plugin.tx_restdoc.pathSeparator}
 
 	// stdWrap functions being applied to setup.defaultFile
 	setup.defaultFile = index

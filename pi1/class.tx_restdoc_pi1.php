@@ -68,7 +68,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		$documentRoot = PATH_site . rtrim($this->conf['path'], '/') . '/';
 		$document = $this->defaultFile . '/';
 		if (isset($this->piVars['doc']) && strpos($this->piVars['doc'], '..') === FALSE) {
-			$document = str_replace('\\', '/', $this->piVars['doc']) . '/';
+			$document = str_replace($this->conf['pathSeparator'], '/', $this->piVars['doc']) . '/';
 		}
 
 		$jsonFile = substr($document, 0, strlen($document) - 1) . '.fjson';
@@ -357,7 +357,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 
 			$conf = array(
 				$this->prefixId => array(
-					'doc' => str_replace('/', '\\', substr($document, 0, strlen($document) - 1)),
+					'doc' => str_replace('/', $this->conf['pathSeparator'], substr($document, 0, strlen($document) - 1)),
 				)
 			);
 			$link = $this->pi_getPageLink($GLOBALS['TSFE']->id, '', $conf);
@@ -604,7 +604,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			}
 			$conf = array(
 				$this->prefixId => array(
-					'doc' => str_replace('/', '\\', substr($document, 0, strlen($document) - 1)),
+					'doc' => str_replace('/', $this->conf['pathSeparator'], substr($document, 0, strlen($document) - 1)),
 				)
 			);
 		}
@@ -758,6 +758,11 @@ class tx_restdoc_pi1 extends tslib_pibase {
 					}
 				}
 			}
+		}
+
+		if (empty($this->conf['pathSeparator'])) {
+			// The path separator CANNOT be empty
+			$this->conf['pathSeparator'] = '|';
 		}
 	}
 

@@ -4,4 +4,7 @@ plugin.tx_restdoc {
 
 	# mode of the plugin (BODY | TOC | TITLE | QUICK_NAVIGATION)
 	mode =
+
+	# separator for the documentation's directory (see http://forge.typo3.org/issues/45560)
+	pathSeparator = |
 }
