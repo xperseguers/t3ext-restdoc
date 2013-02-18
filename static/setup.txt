@@ -33,23 +33,23 @@ plugin.tx_restdoc_pi1 {
 
 				1 = TMENU
 				1 {
-					wrap = <ul>|</ul>
+					wrap = <ul> | </ul>
 					noBlur = 1
-					NO.wrapItemAndSub = <li>|</li>
+					NO.wrapItemAndSub = <li> | </li>
 
 					CUR = 1
-					CUR.wrapItemAndSub = <li class="current">|</li>
+					CUR.wrapItemAndSub = <li class="current"> | </li>
 				}
 				2 < .1
 
 				stdWrap.preCObject = TEXT
 				stdWrap.preCObject.data = LLL:EXT:restdoc/pi1/locallang.xml:header_toc
-				stdWrap.preCObject.wrap = <h2>|</h2>
+				stdWrap.preCObject.wrap = <h2> | </h2>
 			}
 
 			20 < .10
 			20.stdWrap.preCObject.data = LLL:EXT:restdoc/pi1/locallang.xml:header_previous_topic
-			20.stdWrap.preCObject.wrap = <h3>|</h3>
+			20.stdWrap.preCObject.wrap = <h3> | </h3>
 			20.stdWrap.required = 1
 			20.special.userFunc.type = previous
 
