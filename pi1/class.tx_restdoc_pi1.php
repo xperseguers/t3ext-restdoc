@@ -277,7 +277,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['quickNavigationHook'] as $classRef) {
 				$hookObject = t3lib_div::getUserObj($classRef);
 				if (is_callable(array($hookObject, 'postProcessQUICK_NAVIGATION'))) {
-					$hookObject->postProcessTOC($document, $data, $this);
+					$hookObject->postProcessQUICK_NAVIGATION($document, $data, $this);
 				}
 			}
 		}

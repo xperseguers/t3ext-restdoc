@@ -1,5 +1,6 @@
 2013-02-18  Xavier Perseguers  <xavier@causal.ch>
 
+	* [BUGFIX] Invalid hook method called to post-process the quick navigation
 	* [FEATURE] #45555: Add support for breadcrumb
 	* [BUGFIX] "&" is not always properly XML-encoded
 
