@@ -88,6 +88,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 
 		$content = file_get_contents($documentRoot . $jsonFile);
 		$jsonData = json_decode($content, TRUE);
+		$skipDefaultWrap = FALSE;
 
 		if (!isset($jsonData['genindexentries'])) {
 			switch ($this->conf['mode']) {
@@ -99,6 +100,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 					break;
 				case 'TITLE':
 					$output = isset($jsonData['title']) ? $jsonData['title'] : '';
+					$skipDefaultWrap = TRUE;
 					break;
 				case 'QUICK_NAVIGATION':
 					$output = $this->generateQuickNavigation($documentRoot, $document, $jsonData);
@@ -118,6 +120,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 					break;
 				case 'TITLE':
 					$output = 'Index';
+					$skipDefaultWrap = TRUE;
 					break;
 				default:
 					// Generating TOC, ... for the root document instead
@@ -136,10 +139,10 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			}
 		}
 
-			// Wrap the whole result, with baseWrap if defined, else with standard pi_wrapInBaseClass() call
+		// Wrap the whole result, with baseWrap if defined, else with standard pi_wrapInBaseClass() call
 		if (isset($this->conf['baseWrap.'])) {
 			$output = $this->cObj->stdWrap($output, $this->conf['baseWrap.']);
-		} else {
+		} elseif (!$skipDefaultWrap) {
 			$output = $this->pi_wrapInBaseClass($output);
 		}
 
