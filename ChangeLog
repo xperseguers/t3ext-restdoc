@@ -1,5 +1,6 @@
 2013-02-18  Xavier Perseguers  <xavier@causal.ch>
 
+	* [FEATURE] Add mode FILENAME
 	* [TASK] TITLE output should not be wrapped by default
 	* [!!!][BUGFIX] #45560: Using backslash (\) as separator may fail with Chrome
 	* [BUGFIX] #45561: Breadcrumb menu misses current page

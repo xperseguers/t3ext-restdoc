@@ -2,7 +2,7 @@ plugin.tx_restdoc {
 	# Path to the reST documentation
 	path =
 
-	# mode of the plugin (BODY | TOC | TITLE | QUICK_NAVIGATION | BREADCRUMB)
+	# mode of the plugin (BODY | TOC | TITLE | QUICK_NAVIGATION | BREADCRUMB | FILENAME)
 	mode =
 
 	# separator for the documentation's directory (see http://forge.typo3.org/issues/45560)

@@ -108,6 +108,10 @@ class tx_restdoc_pi1 extends tslib_pibase {
 				case 'BREADCRUMB':
 					$output = $this->generateBreadcrumbMenu($documentRoot, $document, $jsonData);
 					break;
+				case 'FILENAME':
+					$output = $jsonFile;
+					$skipDefaultWrap = TRUE;
+					break;
 				default:
 					$output = '';
 					break;
@@ -120,6 +124,10 @@ class tx_restdoc_pi1 extends tslib_pibase {
 					break;
 				case 'TITLE':
 					$output = 'Index';
+					$skipDefaultWrap = TRUE;
+					break;
+				case 'FILENAME':
+					$output = $jsonFile;
 					$skipDefaultWrap = TRUE;
 					break;
 				default:
