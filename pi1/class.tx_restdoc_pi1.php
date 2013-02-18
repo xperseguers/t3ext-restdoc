@@ -363,7 +363,6 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			$output .= '<dt>';
 			if ($relativeLinks) {
 				for ($i = 0; $i < count($relativeLinks); $i++) {
-					$link = $this->getLink($relativeLinks[$i]['link']);
 					if ($i == 0) {
 						$title = htmlspecialchars($dt[0]);
 					} else {
@@ -373,6 +372,10 @@ class tx_restdoc_pi1 extends tslib_pibase {
 					if ($relativeLinks[$i]['title'] === 'main') {
 						$title = '<strong>' . $title . '</strong>';
 					}
+					$link = $this->getLink($relativeLinks[$i]['link']);
+					$link = str_replace('&amp;', '&', $link);
+					$link = str_replace('&', '&amp;', $link);
+
 					$output .= '<a href="' . $link . '">' . $title . '</a>';
 				}
 			} else {
@@ -592,7 +595,10 @@ class tx_restdoc_pi1 extends tslib_pibase {
 				$absolute = $plugin->relativeToAbsolute($root . $document, $matches[2]);
 				$document = substr($absolute, strlen($root));
 			}
-			return $matches[1] . $plugin->getLink($document);
+			$url = $plugin->getLink($document);
+			$url = str_replace('&amp;', '&', $url);
+			$url = str_replace('&', '&amp;', $url);
+			return $matches[1] . $url;
 		}, $content);
 		return $ret;
 	}

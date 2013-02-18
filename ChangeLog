@@ -1,3 +1,7 @@
+2013-02-18  Xavier Perseguers  <xavier@causal.ch>
+
+	* [BUGFIX] "&" is not always properly XML-encoded
+
 2013-02-17  Xavier Perseguers  <xavier@causal.ch>
 
 	* [TASK] #36850: Handle multiple links for one index entry
