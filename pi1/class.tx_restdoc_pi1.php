@@ -103,6 +103,9 @@ class tx_restdoc_pi1 extends tslib_pibase {
 				case 'QUICK_NAVIGATION':
 					$output = $this->generateQuickNavigation($documentRoot, $document, $jsonData);
 					break;
+				case 'BREADCRUMB':
+					$output = $this->generateBreadcrumbMenu($documentRoot, $document, $jsonData);
+					break;
 				default:
 					$output = '';
 					break;
@@ -275,6 +278,48 @@ class tx_restdoc_pi1 extends tslib_pibase {
 				$hookObject = t3lib_div::getUserObj($classRef);
 				if (is_callable(array($hookObject, 'postProcessQUICK_NAVIGATION'))) {
 					$hookObject->postProcessTOC($document, $data, $this);
+				}
+			}
+		}
+
+		/** @var $contentObj tslib_cObj */
+		$contentObj = t3lib_div::makeInstance('tslib_cObj');
+		$contentObj->start($data);
+		$output = $contentObj->cObjGetSingle($this->renderingConfig['renderObj'], $this->renderingConfig['renderObj.']);
+
+		return $output;
+	}
+
+	/**
+	 * Generates the Breadcrumb Menu.
+	 *
+	 * @param string $documentRoot
+	 * @param string $document
+	 * @param array $jsonData
+	 * @return string
+	 */
+	protected function generateBreadcrumbMenu($documentRoot, $document, array $jsonData) {
+		$this->renderingConfig = $this->conf['setup.']['BREADCRUMB.'];
+
+		$data = array(
+			'breadcrumb' => array(),
+		);
+		foreach ($jsonData['parents'] as $parent) {
+			$absolute = $this->relativeToAbsolute($documentRoot . $document, '../' . $parent['link']);
+			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
+
+			$data['breadcrumb'][] = array(
+				'title' => $parent['title'],
+				'_OVERRIDE_HREF' => $link,
+			);
+		}
+
+		// Hook for post-processing the breadcrumb menu entries
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['breadcrumbHook'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['breadcrumbHook'] as $classRef) {
+				$hookObject = t3lib_div::getUserObj($classRef);
+				if (is_callable(array($hookObject, 'postProcessBREADCRUMB'))) {
+					$hookObject->postProcessBREADCRUMB($document, $data, $this);
 				}
 			}
 		}

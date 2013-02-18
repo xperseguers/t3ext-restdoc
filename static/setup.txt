@@ -106,4 +106,20 @@ plugin.tx_restdoc_pi1 {
 		}
 	}
 
+	setup.BREADCRUMB {
+		renderObj = HMENU
+		renderObj {
+			special = userfunction
+			special.userFunc = tx_restdoc_pi1->makeMenuArray
+			special.userFunc.type = breadcrumb
+
+			1 = TMENU
+			1 {
+				noBlur = 1
+				NO.linkWrap = | &raquo; |*||*| |
+				NO.stdWrap.noTrimWrap = | | |
+			}
+		}
+	}
+
 }
