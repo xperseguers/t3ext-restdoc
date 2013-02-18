@@ -314,6 +314,13 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			);
 		}
 
+		// Add current page to breadcrumb menu
+		$data['breadcrumb'][] = array(
+			'title' => $jsonData['title'],
+			'_OVERRIDE_HREF' => $this->getLink($document),
+			'ITEM_STATE' => 'CUR',
+		);
+
 		// Hook for post-processing the breadcrumb menu entries
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['breadcrumbHook'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['breadcrumbHook'] as $classRef) {

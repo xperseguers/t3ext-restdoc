@@ -118,6 +118,10 @@ plugin.tx_restdoc_pi1 {
 				noBlur = 1
 				NO.linkWrap = | &raquo; |*||*| |
 				NO.stdWrap.noTrimWrap = | | |
+
+				CUR < .NO
+				CUR = 1
+				CUR.doNotLinkIt = 1
 			}
 		}
 	}
