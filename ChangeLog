@@ -1,5 +1,6 @@
 2013-02-20  Xavier Perseguers  <xavier@causal.ch>
 
+	* [BUGFIX] Add support for absolute URIs over SSL
 	* [!!!][FEATURE] #45637: Integrate documentation into a Google Sitemap
 
 2013-02-18  Xavier Perseguers  <xavier@causal.ch>

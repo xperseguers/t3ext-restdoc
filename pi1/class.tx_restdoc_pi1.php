@@ -542,6 +542,9 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			$typolinkConfig = array(
 				'parameter' => $GLOBALS['TSFE']->id,
 				'forceAbsoluteUrl' => $absolute ? 1 : 0,
+				'forceAbsoluteUrl.' => array(
+					'scheme' => t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https' : 'http',
+				),
 				'returnLast' => 'url',
 			);
 			if ($urlParameters) {

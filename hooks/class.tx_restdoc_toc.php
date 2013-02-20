@@ -37,9 +37,9 @@
 class tx_restdoc_toc {
 
 	/**
-	 * Do not process more than 30 documents at once
+	 * Do not process more than 20 documents at once
 	 */
-	const MAX_DOCUMENTS = 30;
+	const MAX_DOCUMENTS = 20;
 
 	/**
 	 * Maximum number of timestamps to save
