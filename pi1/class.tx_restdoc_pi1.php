@@ -141,8 +141,15 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['renderHook'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['renderHook'] as $classRef) {
 				$hookObject = t3lib_div::getUserObj($classRef);
+				$params = array(
+					'mode' => $this->conf['mode'],
+					'documentRoot' => $documentRoot,
+					'document' => $document,
+					'output' => &$output,
+					'pObj' => $this,
+				);
 				if (is_callable(array($hookObject, 'postProcessOutput'))) {
-					$hookObject->postProcessOutput($this->conf['mode'], $documentRoot, $document, $output, $this);
+					$hookObject->postProcessOutput($params);
 				}
 			}
 		}
@@ -155,6 +162,15 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Returns the default file.
+	 *
+	 * @return string
+	 */
+	public function getDefaultFile() {
+		return $this->defaultFile;
 	}
 
 	/**
@@ -192,13 +208,13 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		}, $toc);
 
 		$data = array();
-		$data['menu'] = $this->getMenuData($this->xmlstr_to_array($toc));
+		$data['menu'] = tx_restdoc_utility::getMenuData(tx_restdoc_utility::xmlstr_to_array($toc));
 
 			// Mark the first entry as 'active'
 		$data['menu'][0]['ITEM_STATE'] = 'CUR';
 
 		if (isset($jsonData['prev'])) {
-			$absolute = $this->relativeToAbsolute($documentRoot . $document, '../' . $jsonData['prev']['link']);
+			$absolute = tx_restdoc_utility::relativeToAbsolute($documentRoot . $document, '../' . $jsonData['prev']['link']);
 			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 
 			$data['previous'] = array(
@@ -211,7 +227,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 
 		if (isset($jsonData['next'])) {
 			$nextDocument = $document === $this->defaultFile . '/' ? $documentRoot : $documentRoot . $document;
-			$absolute = $this->relativeToAbsolute($nextDocument, '../' . $jsonData['next']['link']);
+			$absolute = tx_restdoc_utility::relativeToAbsolute($nextDocument, '../' . $jsonData['next']['link']);
 			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 
 			$data['next'] = array(
@@ -226,8 +242,14 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['tocHook'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['tocHook'] as $classRef) {
 				$hookObject = t3lib_div::getUserObj($classRef);
+				$params = array(
+					'documentRoot' => $documentRoot,
+					'document' => $document,
+					'data' => &$data,
+					'pObj' => $this,
+				);
 				if (is_callable(array($hookObject, 'postProcessTOC'))) {
-					$hookObject->postProcessTOC($document, $data, $this);
+					$hookObject->postProcessTOC($params);
 				}
 			}
 		}
@@ -256,7 +278,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		$data['home_uri'] = $this->getLink('');
 
 		if (isset($jsonData['prev'])) {
-			$absolute = $this->relativeToAbsolute($documentRoot . $document, '../' . $jsonData['prev']['link']);
+			$absolute = tx_restdoc_utility::relativeToAbsolute($documentRoot . $document, '../' . $jsonData['prev']['link']);
 			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 
 			$data['previous_title'] = $jsonData['prev']['title'];
@@ -265,7 +287,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 
 		if (isset($jsonData['next'])) {
 			$nextDocument = $document === $this->defaultFile . '/' ? $documentRoot : $documentRoot . $document;
-			$absolute = $this->relativeToAbsolute($nextDocument, '../' . $jsonData['next']['link']);
+			$absolute = tx_restdoc_utility::relativeToAbsolute($nextDocument, '../' . $jsonData['next']['link']);
 			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 
 			$data['next_title'] = $jsonData['next']['title'];
@@ -287,8 +309,14 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['quickNavigationHook'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['quickNavigationHook'] as $classRef) {
 				$hookObject = t3lib_div::getUserObj($classRef);
+				$params = array(
+					'documentRoot' => $documentRoot,
+					'document' => $document,
+					'data' => &$data,
+					'pObj' => $this,
+				);
 				if (is_callable(array($hookObject, 'postProcessQUICK_NAVIGATION'))) {
-					$hookObject->postProcessQUICK_NAVIGATION($document, $data, $this);
+					$hookObject->postProcessQUICK_NAVIGATION($params);
 				}
 			}
 		}
@@ -316,7 +344,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			'breadcrumb' => array(),
 		);
 		foreach ($jsonData['parents'] as $parent) {
-			$absolute = $this->relativeToAbsolute($documentRoot . $document, '../' . $parent['link']);
+			$absolute = tx_restdoc_utility::relativeToAbsolute($documentRoot . $document, '../' . $parent['link']);
 			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 
 			$data['breadcrumb'][] = array(
@@ -336,8 +364,14 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['breadcrumbHook'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['breadcrumbHook'] as $classRef) {
 				$hookObject = t3lib_div::getUserObj($classRef);
+				$params = array(
+					'documentRoot' => $documentRoot,
+					'document' => $document,
+					'data' => &$data,
+					'pObj' => $this,
+				);
 				if (is_callable(array($hookObject, 'postProcessBREADCRUMB'))) {
-					$hookObject->postProcessBREADCRUMB($document, $data, $this);
+					$hookObject->postProcessBREADCRUMB($params);
 				}
 			}
 		}
@@ -460,95 +494,6 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	}
 
 	/**
-	 * Returns a TYPO3-compatible list of menu entries.
-	 *
-	 * @param array $entries
-	 * @return array
-	 */
-	protected function getMenuData(array $entries) {
-		$menu = array();
-		$entries = isset($entries['li'][0]) ? $entries['li'] : array($entries['li']);
-		foreach ($entries as $entry) {
-			$menuEntry = array(
-				'title' => $entry['a']['@content'],
-				'_OVERRIDE_HREF' => $entry['a']['@attributes']['href'],
-			);
-			if (isset($entry['ul'])) {
-				$menuEntry['_SUB_MENU'] = $this->getMenuData($entry['ul']);
-			}
-
-			$menu[] = $menuEntry;
-		}
-
-		return $menu;
-	}
-
-	/**
-	 * Converts an XML string to a PHP array - useful to get a serializable value.
-	 *
-	 * @param string $xmlstr
-	 * @return array
-	 * @link https://github.com/gaarf/XML-string-to-PHP-array/blob/master/xmlstr_to_array.php
-	 */
-	protected function xmlstr_to_array($xmlstr) {
-		$doc = new DOMDocument();
-		$doc->loadXML($xmlstr);
-		return $this->domnode_to_array($doc->documentElement);
-	}
-
-	/**
-	 * Converts a DOM node into an array.
-	 *
-	 * @param DOMNode $node
-	 * @return array
-	 */
-	protected function domnode_to_array(DOMNode $node) {
-		$output = array();
-		switch ($node->nodeType) {
-
-			case XML_CDATA_SECTION_NODE:
-			case XML_TEXT_NODE:
-				$output = trim($node->textContent);
-				break;
-
-			case XML_ELEMENT_NODE:
-				for ($i = 0, $m = $node->childNodes->length; $i < $m; $i++) {
-					$child = $node->childNodes->item($i);
-					$v = $this->domnode_to_array($child);
-					if (isset($child->tagName)) {
-						$t = $child->tagName;
-						if (!isset($output[$t])) {
-							$output[$t] = array();
-						}
-						$output[$t][] = $v;
-					}
-					elseif ($v || $v === '0') {
-						$output = (string) $v;
-					}
-				}
-				if ($node->attributes->length && !is_array($output)) { // Has attributes but isn't an array
-					$output = array('@content' => $output); // Change output into an array.
-				}
-				if (is_array($output)) {
-					if ($node->attributes->length) {
-						$a = array();
-						foreach($node->attributes as $attrName => $attrNode) {
-							$a[$attrName] = (string) $attrNode->value;
-						}
-						$output['@attributes'] = $a;
-					}
-					foreach ($output as $t => $v) {
-						if (is_array($v) && count($v)==1 && $t !== '@attributes') {
-							$output[$t] = $v[0];
-						}
-					}
-				}
-				break;
-		}
-		return $output;
-	}
-
-	/**
 	 * Generates the Body.
 	 *
 	 * @param string $documentRoot
@@ -569,51 +514,22 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	}
 
 	/**
-	 * Converts a relative path to an absolute one.
-	 *
-	 * @param string $fullPath
-	 * @param string $relative
-	 * @return string
-	 * @private This method is made public to be accessible from a lambda-function scope
-	 */
-	public function relativeToAbsolute($fullPath, $relative) {
-		$absolute = '';
-		$fullPath = rtrim($fullPath, '/');
-		$fullPathParts = explode('/', $fullPath);
-			// We need an additional directory for parent paths to work (as we trimmed document name from $fullPath
-			// in the caller method
-		$fullPathParts[] = '';
-		$relativeParts = explode('/', $relative);
-
-		for ($i = 0; $i < count($relativeParts); $i++) {
-			if ($relativeParts[$i] == '..' && count($fullPathParts) > 0) {
-				array_pop($fullPathParts);
-			} else {
-				$absolute = implode('/', $fullPathParts) . '/';
-				$absolute .= implode('/', array_slice($relativeParts, $i));
-				break;
-			}
-		}
-
-		return str_replace('//', '/', $absolute);
-	}
-
-	/**
 	 * Generates a link to navigate within a reST documentation project.
 	 *
 	 * @param string $document Target document
+	 * @param boolean $absolute Whether absolute URI should be generated
 	 * @return string
 	 * @private This method is made public to be accessible from a lambda-function scope
 	 */
-	public function getLink($document) {
-		$conf = array();
+	public function getLink($document, $absolute = FALSE) {
+		$urlParameters = array();
 		$anchor = '';
 		if ($document !== '') {
 			if (($pos = strrpos($document, '#')) !== FALSE) {
 				$anchor = substr($document, $pos + 1);
 				$document = substr($document, 0, $pos);
 			}
-			$conf = array(
+			$urlParameters = array(
 				$this->prefixId => array(
 					'doc' => str_replace('/', $this->conf['pathSeparator'], substr($document, 0, strlen($document) - 1)),
 				)
@@ -622,7 +538,16 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		if (substr($document, 0, 11) === '_downloads/') {
 			$link = $this->cObj->typoLink_URL(array('parameter' => rtrim($this->conf['path'], '/') . '/' . $document));
 		} else {
-			$link = $this->pi_getPageLink($GLOBALS['TSFE']->id, '', $conf);
+			//
+			$typolinkConfig = array(
+				'parameter' => $GLOBALS['TSFE']->id,
+				'forceAbsoluteUrl' => $absolute ? 1 : 0,
+				'returnLast' => 'url',
+			);
+			if ($urlParameters) {
+				$typolinkConfig['additionalParams'] = t3lib_div::implodeArrayForUrl('', $urlParameters);
+			}
+			$link = $this->cObj->typoLink('', $typolinkConfig);
 			if ($anchor !== '') {
 				$link .= '#' . $anchor;
 			}
@@ -655,7 +580,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			} else {
 					// $document's last part is a document, not a directory
 				$document = substr($document, 0, strrpos(rtrim($document, '/'), '/'));
-				$absolute = $plugin->relativeToAbsolute($root . $document, $matches[2]);
+				$absolute = tx_restdoc_utility::relativeToAbsolute($root . $document, $matches[2]);
 				$document = substr($absolute, strlen($root));
 			}
 			$url = $plugin->getLink($document);
@@ -714,7 +639,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 					}
 				}
 			}
-			$src = $plugin->relativeToAbsolute($root, $attributes['src']);
+			$src = tx_restdoc_utility::relativeToAbsolute($root, $attributes['src']);
 			$attributes['src'] = substr($src, strlen(PATH_site));
 
 			/** @var $contentObj tslib_cObj */
