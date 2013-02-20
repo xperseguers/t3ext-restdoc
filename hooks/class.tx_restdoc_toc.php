@@ -36,8 +36,19 @@
  */
 class tx_restdoc_toc {
 
-	const MAX_DOCUMENTS = 30;	// Do not process more than 30 documents at once
+	/**
+	 * Do not process more than 30 documents at once
+	 */
+	const MAX_DOCUMENTS = 30;
 
+	/**
+	 * Maximum number of timestamps to save
+	 */
+	const MAX_ENTRIES = 5;
+
+	/**
+	 * Max age of a cache entry without having been refreshed
+	 */
 	const CACHE_MAX_AGE = 7776000;	// 86400 * 30 * 3 = 3 months
 
 	/** @var tx_restdoc_pi1 */
@@ -101,13 +112,16 @@ class tx_restdoc_toc {
 		$add = !is_array($cachedData);
 		$refresh = (!$add && $cachedData['checksum'] !== $checksum);
 		if ($add) {
+			$modifications = array();
 			$data['tt_content'] = $this->pluginUid;
-			$data['root'] = $this->root;
-			$data['document'] = $params['document'];
-			$data['url'] = $this->pObj->getLink($params['document'], TRUE);
+			$data['root']       = $this->root;
+			$data['document']   = $params['document'];
+			$data['url']        = $this->pObj->getLink($params['document'], TRUE);
+		} else {
+			$modifications = t3lib_div::intExplode(',', $cachedData['lastmod'], TRUE);
 		}
 		if ($add || $refresh) {
-			$data['crdate'] = $lastModification;
+			$modifications[] = $lastModification;
 			$data['checksum'] = $checksum;
 
 			$links = $this->processToc($content, $params);
@@ -125,6 +139,11 @@ class tx_restdoc_toc {
 				}
 			}
 		}
+
+		if (count($modifications) > self::MAX_ENTRIES) {
+			$modifications = array_slice($modifications, -self::MAX_ENTRIES);
+		}
+		$data['lastmod'] = implode(',', $modifications);
 
 		if ($add) {
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery(

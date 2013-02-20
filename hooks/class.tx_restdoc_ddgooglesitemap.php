@@ -60,20 +60,48 @@ class tx_restdoc_ddgooglesitemap {
 	 * @return void
 	 */
 	protected function renderDocumentationSitemap(array $documentationPlugin, array $params) {
-		$chapterList = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'url',
+		$documentList = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'lastmod, url',
 			'tx_restdoc_toc',
 			'tt_content=' . intval($documentationPlugin['uid'])
 		);
 
-		while (!empty($chapterList) && $params['generatedItemCount'] - $params['offset'] <= $params['limit']) {
-			$chapterInfo = array_shift($chapterList);
+		while (!empty($documentList) && $params['generatedItemCount'] - $params['offset'] <= $params['limit']) {
+			$documentInfo = array_shift($documentList);
 			if ($params['generatedItemCount'] >= $params['offset']) {
-				echo $params['renderer']->renderEntry(str_replace('&', '&amp;', $chapterInfo['url']), '' /* title */,
-					$GLOBALS['EXEC_TIME'], 'weekly' /* frequency */, '', 5 /* priority */);
+				echo $params['renderer']->renderEntry(
+					str_replace('&', '&amp;', $documentInfo['url']),
+					'' /* title */,
+					$GLOBALS['EXEC_TIME'],
+					$this->getChangeFrequency($documentInfo),
+					'' /* keywords */,
+					5 /* priority */
+				);
 			}
 			$params['generatedItemCount']++;
 		}
+	}
+
+	/**
+	 * Returns the change frequency of a document.
+	 *
+	 * @param array $documentInfo
+	 * @return string
+	 * @see tx_ddgooglesitemap_pages::getChangeFrequency()
+	 */
+	protected function getChangeFrequency(array $documentInfo) {
+		$timeValues = t3lib_div::intExplode(',', $documentInfo['lastmod'], TRUE);
+		$timeValues[] = $GLOBALS['EXEC_TIME'];
+		sort($timeValues, SORT_NUMERIC);
+		$sum = 0;
+		for ($i = count($timeValues) - 1; $i > 0; $i--) {
+			$sum += ($timeValues[$i] - $timeValues[$i - 1]);
+		}
+		$average = ($sum/(count($timeValues) - 1));
+		return ($average >= 180*24*60*60 ? 'yearly' :
+			($average <= 24*60*60 ? 'daily' :
+				($average <= 60*60 ? 'hourly' :
+					($average <= 14*24*60*60 ? 'weekly' : 'monthly'))));
 	}
 
 	/**
