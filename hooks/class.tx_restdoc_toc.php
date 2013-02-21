@@ -194,6 +194,10 @@ class tx_restdoc_toc {
 			return ' href="' . $url . '"';
 		}, $toc);
 
+		if (!$toc) {
+			return array();
+		}
+
 		$links = $this->getLinksFromToc(tx_restdoc_utility::xmlstr_to_array($toc));
 
 		if (isset($jsonData['prev'])) {

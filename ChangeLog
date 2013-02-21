@@ -1,3 +1,7 @@
+2013-02-21  Xavier Perseguers  <xavier@causal.ch>
+
+	* [BUGFIX] Crash while loading empty TOC from genindex.fjson
+
 2013-02-20  Xavier Perseguers  <xavier@causal.ch>
 
 	* [BUGFIX] Add support for absolute URIs over SSL
