@@ -503,8 +503,11 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	 */
 	protected function generateBody($documentRoot, $document, array $jsonData) {
 		$this->renderingConfig = $this->conf['setup.']['BODY.'];
+		$body = $jsonData['body'];
+		if (!$this->conf['showPermalink']) {
 			// Remove permanent links in body
-		$body = preg_replace('#<a class="headerlink" [^>]+>[^<]+</a>#', '', $jsonData['body']);
+			$body = preg_replace('#<a class="headerlink" [^>]+>[^<]+</a>#', '', $body);
+		}
 			// Replace links in body
 		$body = $this->replaceLinks($documentRoot, $document, $body);
 			// Replace images in body
