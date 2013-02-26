@@ -37,11 +37,6 @@
 class tx_restdoc_toc {
 
 	/**
-	 * Do not process more than 20 documents at once
-	 */
-	const MAX_DOCUMENTS = 20;
-
-	/**
 	 * Maximum number of timestamps to save
 	 */
 	const MAX_ENTRIES = 5;
@@ -60,6 +55,9 @@ class tx_restdoc_toc {
 	/** @var integer */
 	protected $pageId;
 
+	/** @var integer */
+	protected $maxDocuments;
+
 	/** @var array */
 	protected $processedDocuments = array();
 
@@ -76,6 +74,7 @@ class tx_restdoc_toc {
 			return;
 		}
 
+		$this->maxDocuments = t3lib_utility_Math::forceIntegerInRange($params['config']['documentStructureMaxDocuments'], 1, 9999);
 		$this->pageId = intval($this->pObj->cObj->data['pid']);
 		$this->root = substr($params['documentRoot'], strlen(PATH_site));
 		$this->flushCache();
@@ -136,7 +135,7 @@ class tx_restdoc_toc {
 						$this->extractLinks($p2);
 					}
 				}
-				if (count($this->processedDocuments) >= self::MAX_DOCUMENTS) {
+				if (count($this->processedDocuments) >= $this->maxDocuments) {
 					break;
 				}
 			}

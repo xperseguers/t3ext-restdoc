@@ -1,5 +1,7 @@
 2013-02-26  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] Allow number of processed documents (EXT:dd_googlesitemap) to be configured
+	* [!!!][TASK] Rename TypoScript option showPermalink to showPermanentLink
 	* [TASK] Add stdWrap support for base configuration options
 	* [!!!][TASK] Add option "RECENT" to FlexForm's plugin configuration
 	* [BUGFIX] Invalid date for recently changed files

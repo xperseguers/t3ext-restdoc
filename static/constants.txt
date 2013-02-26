@@ -6,8 +6,11 @@ plugin.tx_restdoc {
 	mode =
 
 	# set it to 1 to show permanent links in sections
-	showPermalink = 0
+	showPermanentLink = 0
 
 	# separator for the documentation's directory (see http://forge.typo3.org/issues/45560)
 	pathSeparator = |
+
+	# maximal number of documents to process at once when generating the documentation's structure
+	documentStructureMaxDocuments = 50
 }

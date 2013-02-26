@@ -7,8 +7,9 @@ plugin.tx_restdoc_pi1 {
 
 	path = {$plugin.tx_restdoc.path}
 	mode = {$plugin.tx_restdoc.mode}
-	showPermalink = {$plugin.tx_restdoc.showPermalink}
+	showPermanentLink = {$plugin.tx_restdoc.showPermanentLink}
 	pathSeparator = {$plugin.tx_restdoc.pathSeparator}
+	documentStructureMaxDocuments = {$plugin.tx_restdoc.documentStructureMaxDocuments}
 
 	setup.BODY {
 		image {

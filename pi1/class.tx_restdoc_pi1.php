@@ -163,6 +163,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 					'documentRoot' => $documentRoot,
 					'document' => $document,
 					'output' => &$output,
+					'config' => $this->conf,
 					'pObj' => $this,
 				);
 				if (is_callable(array($hookObject, 'postProcessOutput'))) {
@@ -497,7 +498,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	protected function generateBody() {
 		$this->renderingConfig = $this->conf['setup.']['BODY.'];
 		$body = self::$current['jsonData']['body'];
-		if (!$this->conf['showPermalink']) {
+		if (!$this->conf['showPermanentLink']) {
 			// Remove permanent links in body
 			$body = preg_replace('#<a class="headerlink" [^>]+>[^<]+</a>#', '', $body);
 		}
@@ -682,8 +683,9 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		}
 		$this->applyStdWrap($this->conf, 'path');
 		$this->applyStdWrap($this->conf, 'mode');
-		$this->applyStdWrap($this->conf, 'showPermalink');
+		$this->applyStdWrap($this->conf, 'showPermanentLink');
 		$this->applyStdWrap($this->conf, 'pathSeparator');
+		$this->applyStdWrap($this->conf, 'documentStructureMaxDocuments');
 
 			// Load the flexform and loop on all its values to override TS setup values
 			// Some properties use a different test (more strict than not empty) and yet some others no test at all
