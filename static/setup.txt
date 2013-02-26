@@ -10,9 +10,6 @@ plugin.tx_restdoc_pi1 {
 	showPermalink = {$plugin.tx_restdoc.showPermalink}
 	pathSeparator = {$plugin.tx_restdoc.pathSeparator}
 
-	// stdWrap functions being applied to setup.defaultFile
-	setup.defaultFile = index
-
 	setup.BODY {
 		image {
 			renderObj = IMAGE

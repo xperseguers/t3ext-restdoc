@@ -1,5 +1,6 @@
 2013-02-26  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] Add stdWrap support for base configuration options
 	* [!!!][TASK] Add option "RECENT" to FlexForm's plugin configuration
 	* [BUGFIX] Invalid date for recently changed files
 	* [TASK] Hook for EXT:dd_googlesitemap should retrieve chapter title even if currently not used

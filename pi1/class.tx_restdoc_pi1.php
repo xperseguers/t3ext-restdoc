@@ -67,13 +67,6 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		$this->pi_loadLL();
 		$this->pi_USER_INT_obj = 1;    // USER_INT object
 
-		if (isset($this->conf['setup.']['defaultFile'])) {
-			self::$defaultFile = $this->conf['setup.']['defaultFile'];
-		}
-		if (isset($this->conf['setup.']['defaultFile.'])) {
-			self::$defaultFile = $this->cObj->stdWrap(self::$defaultFile, $this->conf['setup.']['defaultFile.']);
-		}
-
 		$documentRoot = PATH_site . rtrim($this->conf['path'], '/') . '/';
 		$document = self::$defaultFile . '/';
 		if (isset($this->piVars['doc']) && strpos($this->piVars['doc'], '..') === FALSE) {
@@ -661,6 +654,20 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	}
 
 	/**
+	 * Applies stdWrap to a given key in a configuration array.
+	 *
+	 * @param array &$conf
+	 * @param string $baseKey
+	 * @return void
+	 */
+	protected function applyStdWrap(array &$conf, $baseKey) {
+		if (isset($conf[$baseKey . '.'])) {
+			$conf[$baseKey] = $this->cObj->stdWrap($conf[$baseKey], $conf[$baseKey . '.']);
+			unset($conf[$baseKey . '.']);
+		}
+	}
+
+	/**
 	 * This method performs various initializations.
 	 *
 	 * @param array $conf: Plugin configuration, as received by the main() method
@@ -668,6 +675,15 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	 */
 	protected function init(array $conf) {
 		$this->conf = $conf;
+
+			// Apply stdWrap on a few TypoScript configuration options
+		if (isset($this->conf['setup.'])) {
+			$this->applyStdWrap($this->conf['setup.'], 'defaultFile');
+		}
+		$this->applyStdWrap($this->conf, 'path');
+		$this->applyStdWrap($this->conf, 'mode');
+		$this->applyStdWrap($this->conf, 'showPermalink');
+		$this->applyStdWrap($this->conf, 'pathSeparator');
 
 			// Load the flexform and loop on all its values to override TS setup values
 			// Some properties use a different test (more strict than not empty) and yet some others no test at all
@@ -705,6 +721,9 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			}
 		}
 
+		if (isset($this->conf['setup.']['defaultFile'])) {
+			self::$defaultFile = $this->conf['setup.']['defaultFile'];
+		}
 		if (empty($this->conf['pathSeparator'])) {
 			// The path separator CANNOT be empty
 			$this->conf['pathSeparator'] = '|';
