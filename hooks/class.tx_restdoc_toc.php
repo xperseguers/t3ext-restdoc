@@ -122,6 +122,8 @@ class tx_restdoc_toc {
 		}
 		if ($add || $refresh) {
 			$modifications[] = $lastModification;
+			$jsonData = json_decode($content, TRUE);
+			$data['title'] = isset($jsonData['title']) ? $jsonData['title'] : '';
 			$data['checksum'] = $checksum;
 
 			$links = $this->processToc($content, $params);

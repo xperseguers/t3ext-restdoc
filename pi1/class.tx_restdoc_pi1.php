@@ -34,16 +34,25 @@
  * @version     SVN: $Id$
  */
 class tx_restdoc_pi1 extends tslib_pibase {
+
 	public $prefixId      = 'tx_restdoc_pi1';
 	public $scriptRelPath = 'pi1/class.tx_restdoc_pi1.php';
 	public $extKey        = 'restdoc';
 	public $pi_checkCHash = TRUE;
 
 	/** @var string */
-	protected $defaultFile = 'index';
+	protected static $defaultFile = 'index';
 
 	/** @var array */
 	public $renderingConfig = array();
+
+	/**
+	 * Current chapter information as static to be accessible from
+	 * TypoScript when coming back to generate menu entries
+	 *
+	 * @var array
+	 */
+	protected static $current = array();
 
 	/**
 	 * The main method of the Plugin.
@@ -59,22 +68,22 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		$this->pi_USER_INT_obj = 1;    // USER_INT object
 
 		if (isset($this->conf['setup.']['defaultFile'])) {
-			$this->defaultFile = $this->conf['setup.']['defaultFile'];
+			self::$defaultFile = $this->conf['setup.']['defaultFile'];
 		}
 		if (isset($this->conf['setup.']['defaultFile.'])) {
-			$this->defaultFile = $this->cObj->stdWrap($this->defaultFile, $this->conf['setup.']['defaultFile.']);
+			self::$defaultFile = $this->cObj->stdWrap(self::$defaultFile, $this->conf['setup.']['defaultFile.']);
 		}
 
 		$documentRoot = PATH_site . rtrim($this->conf['path'], '/') . '/';
-		$document = $this->defaultFile . '/';
+		$document = self::$defaultFile . '/';
 		if (isset($this->piVars['doc']) && strpos($this->piVars['doc'], '..') === FALSE) {
 			$document = str_replace($this->conf['pathSeparator'], '/', $this->piVars['doc']) . '/';
 		}
 
 		$jsonFile = substr($document, 0, strlen($document) - 1) . '.fjson';
 		if (!is_file($documentRoot . $jsonFile)) {
-			$document = $this->defaultFile . '/';
-			$jsonFile = $this->defaultFile . '.fjson';
+			$document = self::$defaultFile . '/';
+			$jsonFile = self::$defaultFile . '.fjson';
 		}
 		if (!is_file($documentRoot . $jsonFile)) {
 			return 'Invalid path for the reST documentation: ' . $this->conf['path'];
@@ -82,31 +91,46 @@ class tx_restdoc_pi1 extends tslib_pibase {
 
 			// Security check
 		if (substr(realpath($documentRoot . $jsonFile), 0, strlen(realpath($documentRoot))) !== realpath($documentRoot)) {
-			$document = $this->defaultFile . '/';
-			$jsonFile = $this->defaultFile . '.fjson';
+			$document = self::$defaultFile . '/';
+			$jsonFile = self::$defaultFile . '.fjson';
 		}
 
 		$content = file_get_contents($documentRoot . $jsonFile);
 		$jsonData = json_decode($content, TRUE);
 		$skipDefaultWrap = FALSE;
 
+		self::$current = array(
+			'documentRoot'  => $documentRoot,
+			'document'      => $document,
+			'jsonData'      => $jsonData,
+			'jsonData'      => $jsonData,
+			'path'          => $this->conf['path'],
+			'pathSeparator' => $this->conf['pathSeparator'],
+		);
+
 		if (!isset($jsonData['genindexentries'])) {
 			switch ($this->conf['mode']) {
 				case 'TOC':
-					$output = $this->generateTableOfContents($documentRoot, $document, $jsonData);
+					$this->renderingConfig = $this->conf['setup.']['TOC.'];
+					$output = $this->cObj->cObjGetSingle($this->renderingConfig['renderObj'], $this->renderingConfig['renderObj.']);
+					break;
+				case 'RECENT':
+					$this->renderingConfig = $this->conf['setup.']['RECENT.'];
+					$output = $this->cObj->cObjGetSingle($this->renderingConfig['renderObj'], $this->renderingConfig['renderObj.']);
 					break;
 				case 'BODY':
-					$output = $this->generateBody($documentRoot, $document, $jsonData);
+					$output = $this->generateBody();
 					break;
 				case 'TITLE':
 					$output = isset($jsonData['title']) ? $jsonData['title'] : '';
 					$skipDefaultWrap = TRUE;
 					break;
 				case 'QUICK_NAVIGATION':
-					$output = $this->generateQuickNavigation($documentRoot, $document, $jsonData);
+					$output = $this->generateQuickNavigation();
 					break;
 				case 'BREADCRUMB':
-					$output = $this->generateBreadcrumbMenu($documentRoot, $document, $jsonData);
+					$this->renderingConfig = $this->conf['setup.']['BREADCRUMB.'];
+					$output = $this->cObj->cObjGetSingle($this->renderingConfig['renderObj'], $this->renderingConfig['renderObj.']);
 					break;
 				case 'FILENAME':
 					$output = $jsonFile;
@@ -170,7 +194,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	 * @return string
 	 */
 	public function getDefaultFile() {
-		return $this->defaultFile;
+		return self::$defaultFile;
 	}
 
 	/**
@@ -181,97 +205,132 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	 * @return array
 	 */
 	public function makeMenuArray($content, array $conf) {
-		$type = isset($conf['userFunc.']['type']) ? $conf['userFunc.']['type'] : 'menu';
-		return $this->cObj->data[$type];
-	}
-
-	/**
-	 * Generates the Table of Contents.
-	 *
-	 * @param string $documentRoot
-	 * @param string $document
-	 * @param array $jsonData
-	 * @return string
-	 */
-	protected function generateTableOfContents($documentRoot, $document, array $jsonData) {
-		$this->renderingConfig = $this->conf['setup.']['TOC.'];
-
-			// Replace links in table of contents
-		$toc = $this->replaceLinks($documentRoot, $document, $jsonData['toc']);
-			// Remove empty sublevels
-		$toc = preg_replace('#<ul>\s*</ul>#', '', $toc);
-			// Fix TOC to make it XML compliant
-		$toc = preg_replace_callback('# href="([^"]+)"#', function($matches) {
-			$url = str_replace('&amp;', '&', $matches[1]);
-			$url = str_replace('&', '&amp;', $url);
-			return ' href="' . $url . '"';
-		}, $toc);
-
 		$data = array();
-		$data['menu'] = tx_restdoc_utility::getMenuData(tx_restdoc_utility::xmlstr_to_array($toc));
+		$type = isset($conf['userFunc.']['type']) ? $conf['userFunc.']['type'] : 'menu';
 
-			// Mark the first entry as 'active'
-		$data['menu'][0]['ITEM_STATE'] = 'CUR';
+		$documentRoot = self::$current['documentRoot'];
+		$document = self::$current['document'];
+		$jsonData = self::$current['jsonData'];
 
-		if (isset($jsonData['prev'])) {
-			$absolute = tx_restdoc_utility::relativeToAbsolute($documentRoot . $document, '../' . $jsonData['prev']['link']);
-			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
+		switch ($type) {
+			case 'menu':
+				// Replace links in table of contents
+				$toc = $this->replaceLinks($documentRoot, $document, $jsonData['toc']);
+				// Remove empty sublevels
+				$toc = preg_replace('#<ul>\s*</ul>#', '', $toc);
+				// Fix TOC to make it XML compliant
+				$toc = preg_replace_callback('# href="([^"]+)"#', function($matches) {
+					$url = str_replace('&amp;', '&', $matches[1]);
+					$url = str_replace('&', '&amp;', $url);
+					return ' href="' . $url . '"';
+				}, $toc);
 
-			$data['previous'] = array(
-				array(
-					'title' => $jsonData['prev']['title'],
-					'_OVERRIDE_HREF' => $link,
-				)
-			);
+				$data = tx_restdoc_utility::getMenuData(tx_restdoc_utility::xmlstr_to_array($toc));
+
+				// Mark the first entry as 'active'
+				$data[0]['ITEM_STATE'] = 'CUR';
+				break;
+
+			case 'previous':
+				if (isset($jsonData['prev'])) {
+					$absolute = tx_restdoc_utility::relativeToAbsolute($documentRoot . $document, '../' . $jsonData['prev']['link']);
+					$link = $this->getLink(substr($absolute, strlen(self::$current['documentRoot'])));
+					$data[] = array(
+						'title' => $jsonData['prev']['title'],
+						'_OVERRIDE_HREF' => $link,
+					);
+				}
+				break;
+
+			case 'next':
+				if (isset($jsonData['next'])) {
+					$nextDocument = $document === $this->getDefaultFile() . '/' ? $documentRoot : $documentRoot . $document;
+					$absolute = tx_restdoc_utility::relativeToAbsolute($nextDocument, '../' . $jsonData['next']['link']);
+					$link = $this->getLink(substr($absolute, strlen($documentRoot)));
+					$data[] = array(
+						'title' => $jsonData['next']['title'],
+						'_OVERRIDE_HREF' => $link,
+					);
+				}
+				break;
+
+			case 'breadcrumb':
+				foreach ($jsonData['parents'] as $parent) {
+					$absolute = tx_restdoc_utility::relativeToAbsolute($documentRoot . $document, '../' . $parent['link']);
+					$link = $this->getLink(substr($absolute, strlen($documentRoot)));
+					$data[] = array(
+						'title' => $parent['title'],
+						'_OVERRIDE_HREF' => $link,
+					);
+				}
+				// Add current page to breadcrumb menu
+				$data[] = array(
+					'title' => $jsonData['title'],
+					'_OVERRIDE_HREF' => $this->getLink($document),
+					'ITEM_STATE' => 'CUR',
+				);
+				break;
+
+			case 'updated':
+				$limit = t3lib_utility_Math::forceIntegerInRange($conf['limit'], 0, 100);	// max number of items
+				$maxAge = intval(tslib_cObj::calc($conf['maxAge']));
+				$sortField = 'tstamp';
+				// We do not want the general index to be listed
+				$extraWhere = ' AND document<>\'genindex/\'';
+				if ($maxAge > 0) {
+					$extraWhere .= ' AND ' . $sortField . '>' . ($GLOBALS['SIM_ACCESS_TIME'] - $maxAge);
+				}
+				$contentUids = t3lib_div::intExplode(',', $this->cObj->data[$this->cObj->currentValKey]);
+				$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+					'*',
+					'tx_restdoc_toc',
+					'tt_content=' . intval($contentUids[$this->cObj->currentRecordNumber - 1]) .
+						' AND root=' . $GLOBALS['TYPO3_DB']->fullQuoteStr(substr($documentRoot, strlen(PATH_site)), 'tx_restdoc_toc') .
+						$extraWhere,
+					'',
+					$sortField . ' DESC',
+					$limit
+				);
+				foreach ($rows as $row) {
+					$data[] = array(
+						'title' => $row['title'] ?: '[no title]',
+						'_OVERRIDE_HREF' => $row['url'],
+						'SYS_LASTCHANGED' => $row[$sortField],
+					);
+				}
+				break;
 		}
 
-		if (isset($jsonData['next'])) {
-			$nextDocument = $document === $this->defaultFile . '/' ? $documentRoot : $documentRoot . $document;
-			$absolute = tx_restdoc_utility::relativeToAbsolute($nextDocument, '../' . $jsonData['next']['link']);
-			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
-
-			$data['next'] = array(
-				array(
-					'title' => $jsonData['next']['title'],
-					'_OVERRIDE_HREF' => $link,
-				)
-			);
-		}
-
-			// Hook for post-processing the menu entries
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['tocHook'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['tocHook'] as $classRef) {
+		// Hook for post-processing the menu entries
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['makeMenuArrayHook'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['makeMenuArrayHook'] as $classRef) {
 				$hookObject = t3lib_div::getUserObj($classRef);
 				$params = array(
-					'documentRoot' => $documentRoot,
-					'document' => $document,
+					'documentRoot' => self::$current['documentRoot'],
+					'document' => self::$current['document'],
 					'data' => &$data,
 					'pObj' => $this,
 				);
-				if (is_callable(array($hookObject, 'postProcessTOC'))) {
+				if (is_callable(array($hookObject, 'postProcessMakeMenuArray'))) {
 					$hookObject->postProcessTOC($params);
 				}
 			}
 		}
 
-		/** @var $contentObj tslib_cObj */
-		$contentObj = t3lib_div::makeInstance('tslib_cObj');
-		$contentObj->start($data);
-		$output = $contentObj->cObjGetSingle($this->renderingConfig['renderObj'], $this->renderingConfig['renderObj.']);
-
-		return $output;
+		return $data;
 	}
 
 	/**
 	 * Generates the Quick Navigation.
 	 *
-	 * @param string $documentRoot
-	 * @param string $document
-	 * @param array $jsonData
 	 * @return string
 	 */
-	protected function generateQuickNavigation($documentRoot, $document, array $jsonData) {
+	protected function generateQuickNavigation() {
 		$this->renderingConfig = $this->conf['setup.']['QUICK_NAVIGATION.'];
+
+		$documentRoot = self::$current['documentRoot'];
+		$document = self::$current['document'];
+		$jsonData = self::$current['jsonData'];
 
 		$data = array();
 		$data['home_title'] = 'home';
@@ -286,7 +345,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		}
 
 		if (isset($jsonData['next'])) {
-			$nextDocument = $document === $this->defaultFile . '/' ? $documentRoot : $documentRoot . $document;
+			$nextDocument = $document === $this->getDefaultFile() . '/' ? $documentRoot : $documentRoot . $document;
 			$absolute = tx_restdoc_utility::relativeToAbsolute($nextDocument, '../' . $jsonData['next']['link']);
 			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 
@@ -317,61 +376,6 @@ class tx_restdoc_pi1 extends tslib_pibase {
 				);
 				if (is_callable(array($hookObject, 'postProcessQUICK_NAVIGATION'))) {
 					$hookObject->postProcessQUICK_NAVIGATION($params);
-				}
-			}
-		}
-
-		/** @var $contentObj tslib_cObj */
-		$contentObj = t3lib_div::makeInstance('tslib_cObj');
-		$contentObj->start($data);
-		$output = $contentObj->cObjGetSingle($this->renderingConfig['renderObj'], $this->renderingConfig['renderObj.']);
-
-		return $output;
-	}
-
-	/**
-	 * Generates the Breadcrumb Menu.
-	 *
-	 * @param string $documentRoot
-	 * @param string $document
-	 * @param array $jsonData
-	 * @return string
-	 */
-	protected function generateBreadcrumbMenu($documentRoot, $document, array $jsonData) {
-		$this->renderingConfig = $this->conf['setup.']['BREADCRUMB.'];
-
-		$data = array(
-			'breadcrumb' => array(),
-		);
-		foreach ($jsonData['parents'] as $parent) {
-			$absolute = tx_restdoc_utility::relativeToAbsolute($documentRoot . $document, '../' . $parent['link']);
-			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
-
-			$data['breadcrumb'][] = array(
-				'title' => $parent['title'],
-				'_OVERRIDE_HREF' => $link,
-			);
-		}
-
-		// Add current page to breadcrumb menu
-		$data['breadcrumb'][] = array(
-			'title' => $jsonData['title'],
-			'_OVERRIDE_HREF' => $this->getLink($document),
-			'ITEM_STATE' => 'CUR',
-		);
-
-		// Hook for post-processing the breadcrumb menu entries
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['breadcrumbHook'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['breadcrumbHook'] as $classRef) {
-				$hookObject = t3lib_div::getUserObj($classRef);
-				$params = array(
-					'documentRoot' => $documentRoot,
-					'document' => $document,
-					'data' => &$data,
-					'pObj' => $this,
-				);
-				if (is_callable(array($hookObject, 'postProcessBREADCRUMB'))) {
-					$hookObject->postProcessBREADCRUMB($params);
 				}
 			}
 		}
@@ -496,22 +500,19 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	/**
 	 * Generates the Body.
 	 *
-	 * @param string $documentRoot
-	 * @param string $document
-	 * @param array $jsonData
 	 * @return string
 	 */
-	protected function generateBody($documentRoot, $document, array $jsonData) {
+	protected function generateBody() {
 		$this->renderingConfig = $this->conf['setup.']['BODY.'];
-		$body = $jsonData['body'];
+		$body = self::$current['jsonData']['body'];
 		if (!$this->conf['showPermalink']) {
 			// Remove permanent links in body
 			$body = preg_replace('#<a class="headerlink" [^>]+>[^<]+</a>#', '', $body);
 		}
 			// Replace links in body
-		$body = $this->replaceLinks($documentRoot, $document, $body);
+		$body = $this->replaceLinks(self::$current['documentRoot'], self::$current['document'], $body);
 			// Replace images in body
-		$body = $this->replaceImages($documentRoot . $document, $body);
+		$body = $this->replaceImages(self::$current['documentRoot'] . self::$current['document'], $body);
 
 		return $body;
 	}
@@ -532,14 +533,17 @@ class tx_restdoc_pi1 extends tslib_pibase {
 				$anchor = substr($document, $pos + 1);
 				$document = substr($document, 0, $pos);
 			}
-			$urlParameters = array(
-				$this->prefixId => array(
-					'doc' => str_replace('/', $this->conf['pathSeparator'], substr($document, 0, strlen($document) - 1)),
-				)
-			);
+			$doc = str_replace('/', self::$current['pathSeparator'], substr($document, 0, strlen($document) - 1));
+			if ($doc) {
+				$urlParameters = array(
+					$this->prefixId => array(
+						'doc' => $doc,
+					)
+				);
+			}
 		}
 		if (substr($document, 0, 11) === '_downloads/') {
-			$link = $this->cObj->typoLink_URL(array('parameter' => rtrim($this->conf['path'], '/') . '/' . $document));
+			$link = $this->cObj->typoLink_URL(array('parameter' => rtrim(self::$current['path'], '/') . '/' . $document));
 		} else {
 			//
 			$typolinkConfig = array(

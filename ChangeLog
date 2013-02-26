@@ -1,3 +1,7 @@
+2013-02-26  Xavier Perseguers  <xavier@causal.ch>
+
+	* [!!!][FEATURE] #45827: Add support for recently changed files
+
 2013-02-22  Xavier Perseguers  <xavier@causal.ch>
 
 	* [FEATURE] #45649: Allow permanent links to be kept
