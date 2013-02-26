@@ -58,7 +58,7 @@ class tx_restdoc_toc {
 	protected $root;
 
 	/** @var integer */
-	protected $pluginUid;
+	protected $pageId;
 
 	/** @var array */
 	protected $processedDocuments = array();
@@ -76,7 +76,7 @@ class tx_restdoc_toc {
 			return;
 		}
 
-		$this->pluginUid = intval($this->pObj->cObj->data['uid']);
+		$this->pageId = intval($this->pObj->cObj->data['pid']);
 		$this->root = substr($params['documentRoot'], strlen(PATH_site));
 		$this->flushCache();
 
@@ -106,17 +106,17 @@ class tx_restdoc_toc {
 		$cachedData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 			'*',
 			'tx_restdoc_toc',
-			'tt_content=' . $this->pluginUid .
+			'pid=' . $this->pageId .
 				' AND document=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($params['document'], 'tx_restdoc_toc')
 		);
 		$add = !is_array($cachedData);
 		$refresh = (!$add && $cachedData['checksum'] !== $checksum);
 		if ($add) {
 			$modifications = array();
-			$data['tt_content'] = $this->pluginUid;
-			$data['root']       = $this->root;
-			$data['document']   = $params['document'];
-			$data['url']        = $this->pObj->getLink($params['document'], TRUE);
+			$data['pid']      = $this->pageId;
+			$data['root']     = $this->root;
+			$data['document'] = $params['document'];
+			$data['url']      = $this->pObj->getLink($params['document'], TRUE);
 		} else {
 			$modifications = t3lib_div::intExplode(',', $cachedData['lastmod'], TRUE);
 		}
@@ -156,7 +156,7 @@ class tx_restdoc_toc {
 		} elseif ($refresh) {
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
 				'tx_restdoc_toc',
-				'tt_content=' . $this->pluginUid .
+				'pid=' . $this->pageId .
 					' AND document=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($params['document'], 'tx_restdoc_toc'),
 				$data
 			);
@@ -297,7 +297,7 @@ class tx_restdoc_toc {
 	protected function flushCache() {
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 			'tx_restdoc_toc',
-			'tt_content=' . $this->pluginUid .
+			'pid=' . $this->pageId .
 				' AND (root<>' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->root, 'tx_restdoc_toc') .
 				' OR tstamp<=' . ($GLOBALS['ACCESS_TIME'] - self::CACHE_MAX_AGE) . ')'
 		);

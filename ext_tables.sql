@@ -2,7 +2,7 @@
 # Table structure for table 'tx_restdoc_tocs'
 #
 CREATE TABLE tx_restdoc_toc (
-	tt_content int(11) DEFAULT '0' NOT NULL,
+	pid int(11) DEFAULT '0' NOT NULL,
 	root varchar(255) DEFAULT '' NOT NULL,
 	document varchar(255) DEFAULT '' NOT NULL,
 	title varchar(255) DEFAULT '' NOT NULL,

@@ -280,11 +280,10 @@ class tx_restdoc_pi1 extends tslib_pibase {
 				if ($maxAge > 0) {
 					$extraWhere .= ' AND ' . $sortField . '>' . ($GLOBALS['SIM_ACCESS_TIME'] - $maxAge);
 				}
-				$contentUids = t3lib_div::intExplode(',', $this->cObj->data[$this->cObj->currentValKey]);
 				$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 					'*',
 					'tx_restdoc_toc',
-					'tt_content=' . intval($contentUids[$this->cObj->currentRecordNumber - 1]) .
+					'pid=' . intval($GLOBALS['TSFE']->id) .
 						' AND root=' . $GLOBALS['TYPO3_DB']->fullQuoteStr(substr($documentRoot, strlen(PATH_site)), 'tx_restdoc_toc') .
 						$extraWhere,
 					'',

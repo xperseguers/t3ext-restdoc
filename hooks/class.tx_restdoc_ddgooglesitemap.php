@@ -63,7 +63,7 @@ class tx_restdoc_ddgooglesitemap {
 		$documentList = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'lastmod, title, url',
 			'tx_restdoc_toc',
-			'tt_content=' . intval($documentationPlugin['uid'])
+			'pid=' . intval($documentationPlugin['pid'])
 		);
 
 		while (!empty($documentList) && $params['generatedItemCount'] - $params['offset'] <= $params['limit']) {
