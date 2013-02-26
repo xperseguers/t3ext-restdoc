@@ -146,6 +146,7 @@ class tx_restdoc_toc {
 			$modifications = array_slice($modifications, -self::MAX_ENTRIES);
 		}
 		$data['lastmod'] = implode(',', $modifications);
+		$data['crdate'] = $lastModification;
 
 		if ($add) {
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery(

@@ -274,7 +274,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			case 'updated':
 				$limit = t3lib_utility_Math::forceIntegerInRange($conf['limit'], 0, 100);	// max number of items
 				$maxAge = intval(tslib_cObj::calc($conf['maxAge']));
-				$sortField = 'tstamp';
+				$sortField = 'crdate';
 				// We do not want the general index to be listed
 				$extraWhere = ' AND document<>\'genindex/\'';
 				if ($maxAge > 0) {

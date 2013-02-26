@@ -1,5 +1,6 @@
 2013-02-26  Xavier Perseguers  <xavier@causal.ch>
 
+	* [BUGFIX] Invalid date for recently changed files
 	* [TASK] Hook for EXT:dd_googlesitemap should retrieve chapter title even if currently not used
 	* [!!!][FEATURE] #45827: Add support for recently changed files
 
