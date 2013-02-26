@@ -61,7 +61,7 @@ class tx_restdoc_ddgooglesitemap {
 	 */
 	protected function renderDocumentationSitemap(array $documentationPlugin, array $params) {
 		$documentList = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'lastmod, url',
+			'lastmod, title, url',
 			'tx_restdoc_toc',
 			'tt_content=' . intval($documentationPlugin['uid'])
 		);
@@ -71,7 +71,7 @@ class tx_restdoc_ddgooglesitemap {
 			if ($params['generatedItemCount'] >= $params['offset']) {
 				echo $params['renderer']->renderEntry(
 					str_replace('&', '&amp;', $documentInfo['url']),
-					'' /* title */,
+					$documentInfo['title'],
 					$GLOBALS['EXEC_TIME'],
 					$this->getChangeFrequency($documentInfo),
 					'' /* keywords */,
