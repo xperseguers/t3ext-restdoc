@@ -1,5 +1,6 @@
 2013-02-28  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] Allow chapters to be excluded from the list of recently changed files
 	* [BUGFIX] Generation of menu for recently changed files should not filter with current page
 
 2013-02-26  Xavier Perseguers  <xavier@causal.ch>

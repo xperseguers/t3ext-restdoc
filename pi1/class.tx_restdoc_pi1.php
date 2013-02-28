@@ -269,8 +269,18 @@ class tx_restdoc_pi1 extends tslib_pibase {
 				$limit = t3lib_utility_Math::forceIntegerInRange($conf['limit'], 0, 100);	// max number of items
 				$maxAge = intval(tslib_cObj::calc($conf['maxAge']));
 				$sortField = 'crdate';
-				// We do not want the general index to be listed
-				$extraWhere = ' AND document<>\'genindex/\'';
+				$extraWhere = '';
+				if (!empty($conf['excludeChapters'])) {
+					$excludeChapters = array_map(
+						function ($chapter) {
+							return $GLOBALS['TYPO3_DB']->fullQuoteStr($chapter, 'tx_restdoc_toc');
+						},
+						t3lib_div::trimExplode(',', $conf['excludeChapters'])
+					);
+					if (count($excludeChapters) > 0) {
+						$extraWhere .= ' AND document NOT IN (' . implode(',', $excludeChapters) . ')';
+					}
+				}
 				if ($maxAge > 0) {
 					$extraWhere .= ' AND ' . $sortField . '>' . ($GLOBALS['SIM_ACCESS_TIME'] - $maxAge);
 				}
