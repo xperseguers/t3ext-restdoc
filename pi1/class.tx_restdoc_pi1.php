@@ -277,8 +277,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 				$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 					'*',
 					'tx_restdoc_toc',
-					'pid=' . intval($GLOBALS['TSFE']->id) .
-						' AND root=' . $GLOBALS['TYPO3_DB']->fullQuoteStr(substr($documentRoot, strlen(PATH_site)), 'tx_restdoc_toc') .
+					'root=' . $GLOBALS['TYPO3_DB']->fullQuoteStr(substr($documentRoot, strlen(PATH_site)), 'tx_restdoc_toc') .
 						$extraWhere,
 					'',
 					$sortField . ' DESC',

@@ -1,3 +1,7 @@
+2013-02-28  Xavier Perseguers  <xavier@causal.ch>
+
+	* [BUGFIX] Generation of menu for recently changed files should not filter with current page
+
 2013-02-26  Xavier Perseguers  <xavier@causal.ch>
 
 	* [TASK] Allow number of processed documents (EXT:dd_googlesitemap) to be configured
