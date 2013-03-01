@@ -590,8 +590,11 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			if ($anchor !== '') {
 				$document .= $anchor;
 			} else {
+				$defaultDocument = $plugin->getDefaultFile() . '/';
+				if ($document === $defaultDocument || t3lib_div::isFirstPartOfStr($matches[2], '../')) {
 					// $document's last part is a document, not a directory
-				$document = substr($document, 0, strrpos(rtrim($document, '/'), '/'));
+					$document = substr($document, 0, strrpos(rtrim($document, '/'), '/'));
+				}
 				$absolute = tx_restdoc_utility::relativeToAbsolute($root . $document, $matches[2]);
 				$document = substr($absolute, strlen($root));
 			}
