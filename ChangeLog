@@ -1,3 +1,7 @@
+2013-03-07  Xavier Perseguers  <xavier@causal.ch>
+
+	* [TASK] Raise version to 1.1.0
+
 2013-03-01  Xavier Perseguers  <xavier@causal.ch>
 
 	* [BUGFIX] #45951: Link in TOC points to root document
