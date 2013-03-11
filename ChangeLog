@@ -1,3 +1,7 @@
+2013-03-11  Xavier Perseguers  <xavier@causal.ch>
+
+	* [TASK] #46174: Fallback support of other directory separators
+
 2013-03-07  Xavier Perseguers  <xavier@causal.ch>
 
 	* [TASK] Raise version to 1.1.0

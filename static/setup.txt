@@ -9,6 +9,7 @@ plugin.tx_restdoc_pi1 {
 	mode = {$plugin.tx_restdoc.mode}
 	showPermanentLink = {$plugin.tx_restdoc.showPermanentLink}
 	pathSeparator = {$plugin.tx_restdoc.pathSeparator}
+	fallbackPathSeparators = {$plugin.tx_restdoc.fallbackPathSeparators}
 	documentStructureMaxDocuments = {$plugin.tx_restdoc.documentStructureMaxDocuments}
 
 	setup.BODY {

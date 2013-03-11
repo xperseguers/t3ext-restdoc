@@ -69,8 +69,10 @@ class tx_restdoc_pi1 extends tslib_pibase {
 
 		$documentRoot = PATH_site . rtrim($this->conf['path'], '/') . '/';
 		$document = self::$defaultFile . '/';
+		$pathSeparators = isset($this->conf['fallbackPathSeparators']) ? t3lib_div::trimExplode(',', $this->conf['fallbackPathSeparators'], TRUE) : array();
+		$pathSeparators[] = $this->conf['pathSeparator'];
 		if (isset($this->piVars['doc']) && strpos($this->piVars['doc'], '..') === FALSE) {
-			$document = str_replace($this->conf['pathSeparator'], '/', $this->piVars['doc']) . '/';
+			$document = str_replace($pathSeparators, '/', $this->piVars['doc']) . '/';
 		}
 
 		$jsonFile = substr($document, 0, strlen($document) - 1) . '.fjson';
@@ -697,6 +699,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		$this->applyStdWrap($this->conf, 'mode');
 		$this->applyStdWrap($this->conf, 'showPermanentLink');
 		$this->applyStdWrap($this->conf, 'pathSeparator');
+		$this->applyStdWrap($this->conf, 'fallbackPathSeparators');
 		$this->applyStdWrap($this->conf, 'documentStructureMaxDocuments');
 
 			// Load the flexform and loop on all its values to override TS setup values
