@@ -115,23 +115,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 					break;
 				case 'BODY':
 					if ($this->conf['advertiseSphinx']) {
-						$metadata = tx_restdoc_utility::getMetadata($this->conf['path']);
-						if (!empty($metadata['release'])) {
-							$version = $metadata['release'];
-						} elseif (!empty($metadata['version'])) {
-							$version = $metadata['version'];
-						} else {
-							$version = '1.0.0';
-						}
-						$GLOBALS['TSFE']->additionalJavaScript[$this->prefixId . '_sphinx'] = <<<JS
-	var DOCUMENTATION_OPTIONS = {
-		URL_ROOT:    '',
-		VERSION:     '$version',
-		COLLAPSE_INDEX: false,
-		FILE_SUFFIX: '.html',
-		HAS_SOURCE:  false
-	};
-JS;
+						$this->advertiseSphinx();
 					}
 					$output = $this->generateBody();
 					break;
@@ -157,6 +141,9 @@ JS;
 		} else {
 			switch ($this->conf['mode']) {
 				case 'BODY':
+					if ($this->conf['advertiseSphinx']) {
+						$this->advertiseSphinx();
+					}
 					// Generating output for the general index
 					$output = $this->generateIndex($documentRoot, $document, $jsonData);
 					break;
@@ -341,6 +328,32 @@ JS;
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Advertises Sphinx.
+	 *
+	 * @return void
+	 */
+	protected function advertiseSphinx() {
+		$metadata = tx_restdoc_utility::getMetadata($this->conf['path']);
+		if (!empty($metadata['release'])) {
+			$version = $metadata['release'];
+		} elseif (!empty($metadata['version'])) {
+			$version = $metadata['version'];
+		} else {
+			$version = '1.0.0';
+		}
+
+		$GLOBALS['TSFE']->additionalJavaScript[$this->prefixId . '_sphinx'] = <<<JS
+var DOCUMENTATION_OPTIONS = {
+	URL_ROOT:    '',
+	VERSION:     '$version',
+	COLLAPSE_INDEX: false,
+	FILE_SUFFIX: '.html',
+	HAS_SOURCE:  false
+};
+JS;
 	}
 
 	/**
