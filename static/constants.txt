@@ -19,4 +19,7 @@ plugin.tx_restdoc {
 
 	# whether Sphinx should be advertised (see http://wappalyzer.com/applications/sphinx)
 	advertiseSphinx = 1
+
+	# whether pagination should be generated with rel="next" and rel="prev"
+	addHeadPagination = 1
 }

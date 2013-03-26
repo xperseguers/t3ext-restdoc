@@ -12,6 +12,7 @@ plugin.tx_restdoc_pi1 {
 	fallbackPathSeparators = {$plugin.tx_restdoc.fallbackPathSeparators}
 	documentStructureMaxDocuments = {$plugin.tx_restdoc.documentStructureMaxDocuments}
 	advertiseSphinx = {$plugin.tx_restdoc.advertiseSphinx}
+	addHeadPagination = {$plugin.tx_restdoc.addHeadPagination}
 
 	setup.BODY {
 		image {

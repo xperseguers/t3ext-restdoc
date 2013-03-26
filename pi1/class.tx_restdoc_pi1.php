@@ -389,6 +389,15 @@ JS;
 			$data['next_uri']   = $link;
 		}
 
+		if (count($jsonData['parents']) > 0) {
+			$parent = array_pop($jsonData['parents']);
+			$absolute = tx_restdoc_utility::relativeToAbsolute($documentRoot . $document, '../' . $parent['link']);
+			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
+
+			$data['parent_title'] = $parent['title'];
+			$data['parent_uri']   = $link;
+		}
+
 		if (is_file($documentRoot . 'genindex.fjson')) {
 			$link = $this->getLink('genindex/');
 
@@ -398,6 +407,7 @@ JS;
 
 		$data['has_previous'] = !empty($data['previous_uri']) ? 1 : 0;
 		$data['has_next']     = !empty($data['next_uri'])     ? 1 : 0;
+		$data['has_parent']   = !empty($data['parent_uri'])   ? 1 : 0;
 		$data['has_index']    = !empty($data['index_uri'])    ? 1 : 0;
 
 		// Hook for post-processing the quick navigation
@@ -413,6 +423,35 @@ JS;
 				if (is_callable(array($hookObject, 'postProcessQUICK_NAVIGATION'))) {
 					$hookObject->postProcessQUICK_NAVIGATION($params);
 				}
+			}
+		}
+
+		if ($this->conf['addHeadPagination']) {
+			$paginationPattern = '<link rel="%s" title="%s" href="%s" />';
+
+			if ($data['has_parent']) {
+				$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId . '_parent'] = sprintf(
+					$paginationPattern,
+					'top',
+					htmlspecialchars($data['parent_title']),
+					str_replace('&', '&amp;', $data['parent_uri'])
+				);
+			}
+			if ($data['has_previous']) {
+				$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId . '_previous'] = sprintf(
+					$paginationPattern,
+					'prev',
+					htmlspecialchars($data['previous_title']),
+					str_replace('&', '&amp;', $data['previous_uri'])
+				);
+			}
+			if ($data['has_next']) {
+				$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId . '_next'] = sprintf(
+					$paginationPattern,
+					'next',
+					htmlspecialchars($data['next_title']),
+					str_replace('&', '&amp;', $data['next_uri'])
+				);
 			}
 		}
 
@@ -734,6 +773,7 @@ JS;
 		$this->applyStdWrap($this->conf, 'fallbackPathSeparators');
 		$this->applyStdWrap($this->conf, 'documentStructureMaxDocuments');
 		$this->applyStdWrap($this->conf, 'advertiseSphinx');
+		$this->applyStdWrap($this->conf, 'addHeadPagination');
 
 			// Load the flexform and loop on all its values to override TS setup values
 			// Some properties use a different test (more strict than not empty) and yet some others no test at all
