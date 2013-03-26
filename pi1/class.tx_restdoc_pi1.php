@@ -371,38 +371,47 @@ JS;
 		$data = array();
 		$data['home_title'] = 'home';
 		$data['home_uri'] = $this->getLink('');
+		$data['home_uri_absolute'] = $this->getLink('', TRUE);
 
 		if (isset($jsonData['prev'])) {
 			$absolute = tx_restdoc_utility::relativeToAbsolute($documentRoot . $document, '../' . $jsonData['prev']['link']);
 			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
+			$linkAbsolute = $this->getLink(substr($absolute, strlen($documentRoot)), TRUE);
 
 			$data['previous_title'] = $jsonData['prev']['title'];
-			$data['previous_uri']   = $link;
+			$data['previous_uri'] = $link;
+			$data['previous_uri_absolute'] = $linkAbsolute;
 		}
 
 		if (isset($jsonData['next'])) {
 			$nextDocument = $document === $this->getDefaultFile() . '/' ? $documentRoot : $documentRoot . $document;
 			$absolute = tx_restdoc_utility::relativeToAbsolute($nextDocument, '../' . $jsonData['next']['link']);
 			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
+			$linkAbsolute = $this->getLink(substr($absolute, strlen($documentRoot)), TRUE);
 
 			$data['next_title'] = $jsonData['next']['title'];
-			$data['next_uri']   = $link;
+			$data['next_uri'] = $link;
+			$data['next_uri_absolute'] = $linkAbsolute;
 		}
 
 		if (count($jsonData['parents']) > 0) {
 			$parent = array_pop($jsonData['parents']);
 			$absolute = tx_restdoc_utility::relativeToAbsolute($documentRoot . $document, '../' . $parent['link']);
 			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
+			$linkAbsolute = $this->getLink(substr($absolute, strlen($documentRoot)), TRUE);
 
 			$data['parent_title'] = $parent['title'];
-			$data['parent_uri']   = $link;
+			$data['parent_uri'] = $link;
+			$data['parent_uri_absolute'] = $linkAbsolute;
 		}
 
 		if (is_file($documentRoot . 'genindex.fjson')) {
 			$link = $this->getLink('genindex/');
+			$linkAbsolute = $this->getLink('genindex/', TRUE);
 
 			$data['index_title'] = 'index';
 			$data['index_uri'] = $link;
+			$data['index_uri_absolute'] = $linkAbsolute;
 		}
 
 		$data['has_previous'] = !empty($data['previous_uri']) ? 1 : 0;
@@ -434,7 +443,7 @@ JS;
 					$paginationPattern,
 					'top',
 					htmlspecialchars($data['parent_title']),
-					str_replace('&', '&amp;', $data['parent_uri'])
+					str_replace('&', '&amp;', $data['parent_uri_absolute'])
 				);
 			}
 			if ($data['has_previous']) {
@@ -442,7 +451,7 @@ JS;
 					$paginationPattern,
 					'prev',
 					htmlspecialchars($data['previous_title']),
-					str_replace('&', '&amp;', $data['previous_uri'])
+					str_replace('&', '&amp;', $data['previous_uri_absolute'])
 				);
 			}
 			if ($data['has_next']) {
@@ -450,7 +459,7 @@ JS;
 					$paginationPattern,
 					'next',
 					htmlspecialchars($data['next_title']),
-					str_replace('&', '&amp;', $data['next_uri'])
+					str_replace('&', '&amp;', $data['next_uri_absolute'])
 				);
 			}
 		}

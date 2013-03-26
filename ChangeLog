@@ -1,5 +1,6 @@
 2013-03-26  Xavier Perseguers  <xavier@causal.ch>
 
+	* [BUGFIX] prev/next/top header links should be absolute when using base href
 	* [FEATURE][SEO] #46660: Add prev/next/top header links
 	* [TASK] Add sample TypoScript to generate the standard Sphinx footer (relates #46677)
 	* [FEATURE] #46677: Allow extraction of metadata
