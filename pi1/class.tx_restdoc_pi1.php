@@ -114,6 +114,17 @@ class tx_restdoc_pi1 extends tslib_pibase {
 					$output = $this->cObj->cObjGetSingle($this->renderingConfig['renderObj'], $this->renderingConfig['renderObj.']);
 					break;
 				case 'BODY':
+					if ($this->conf['advertiseSphinx']) {
+						$GLOBALS['TSFE']->additionalJavaScript[$this->prefixId . '_sphinx'] = <<<JS
+	var DOCUMENTATION_OPTIONS = {
+		URL_ROOT:    '',
+		VERSION:     '1.0.0',
+		COLLAPSE_INDEX: false,
+		FILE_SUFFIX: '.html',
+		HAS_SOURCE:  false
+	};
+JS;
+					}
 					$output = $this->generateBody();
 					break;
 				case 'TITLE':
@@ -701,6 +712,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		$this->applyStdWrap($this->conf, 'pathSeparator');
 		$this->applyStdWrap($this->conf, 'fallbackPathSeparators');
 		$this->applyStdWrap($this->conf, 'documentStructureMaxDocuments');
+		$this->applyStdWrap($this->conf, 'advertiseSphinx');
 
 			// Load the flexform and loop on all its values to override TS setup values
 			// Some properties use a different test (more strict than not empty) and yet some others no test at all

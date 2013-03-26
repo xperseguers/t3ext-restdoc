@@ -1,3 +1,7 @@
+2013-03-26  Xavier Perseguers  <xavier@causal.ch>
+
+	* [TASK] #46661: Let Wappalizer detect Sphinx documentation
+
 2013-03-11  Xavier Perseguers  <xavier@causal.ch>
 
 	* [TASK] #46174: Fallback support of other directory separators

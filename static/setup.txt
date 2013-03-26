@@ -11,6 +11,7 @@ plugin.tx_restdoc_pi1 {
 	pathSeparator = {$plugin.tx_restdoc.pathSeparator}
 	fallbackPathSeparators = {$plugin.tx_restdoc.fallbackPathSeparators}
 	documentStructureMaxDocuments = {$plugin.tx_restdoc.documentStructureMaxDocuments}
+	advertiseSphinx = {$plugin.tx_restdoc.advertiseSphinx}
 
 	setup.BODY {
 		image {
