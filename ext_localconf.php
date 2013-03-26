@@ -13,6 +13,12 @@ if (t3lib_extMgm::isLoaded('dd_googlesitemap')) {
 	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['renderHook'][] = 'EXT:' . $_EXTKEY . '/hooks/class.tx_restdoc_toc.php:tx_restdoc_toc';
 }
 
+// Register new TypoScript content object
+$TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'][] = array(
+	0 => 'REST_METADATA',
+	1 => 'EXT:restdoc/lib/class.tx_restdoc_metadata_cobj.php:tx_restdoc_metadata_cobj',
+);
+
 // RealURL auto-configuration
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/realurl/class.tx_realurl_autoconfgen.php']['extensionConfiguration'][$_EXTKEY] = 'EXT:' . $_EXTKEY . '/hooks/class.tx_restdoc_realurl.php:tx_restdoc_realurl->addRestdocConfig';
 ?>

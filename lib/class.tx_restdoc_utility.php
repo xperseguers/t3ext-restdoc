@@ -36,6 +36,24 @@
 final class tx_restdoc_utility {
 
 	/**
+	 * Returns Sphinx-related metadata.
+	 *
+	 * @param string $path
+	 * @return array
+	 */
+	public static function getMetadata($path) {
+		$documentRoot = PATH_site . rtrim($path, '/') . '/';
+		$jsonFile = 'globalcontext.json';
+
+		$data = array();
+		if (is_file($documentRoot . $jsonFile)) {
+			$content = file_get_contents($documentRoot . $jsonFile);
+			$data = json_decode($content, TRUE);
+		}
+		return $data;
+	}
+
+	/**
 	 * Returns a TYPO3-compatible list of menu entries.
 	 *
 	 * @param array $entries

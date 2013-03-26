@@ -115,10 +115,18 @@ class tx_restdoc_pi1 extends tslib_pibase {
 					break;
 				case 'BODY':
 					if ($this->conf['advertiseSphinx']) {
+						$metadata = tx_restdoc_utility::getMetadata($this->conf['path']);
+						if (!empty($metadata['release'])) {
+							$version = $metadata['release'];
+						} elseif (!empty($metadata['version'])) {
+							$version = $metadata['version'];
+						} else {
+							$version = '1.0.0';
+						}
 						$GLOBALS['TSFE']->additionalJavaScript[$this->prefixId . '_sphinx'] = <<<JS
 	var DOCUMENTATION_OPTIONS = {
 		URL_ROOT:    '',
-		VERSION:     '1.0.0',
+		VERSION:     '$version',
 		COLLAPSE_INDEX: false,
 		FILE_SUFFIX: '.html',
 		HAS_SOURCE:  false
