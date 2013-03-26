@@ -1,5 +1,6 @@
 2013-03-26  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] Add sample TypoScript to generate the standard Sphinx footer (relates #46677)
 	* [FEATURE] #46677: Allow extraction of metadata
 	* [TASK] #46661: Let Wappalizer detect Sphinx documentation
 
