@@ -348,6 +348,10 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		}
 
 		$urlRoot = str_replace('___PLACEHOLDER___', '', $this->getLink('___PLACEHOLDER___/', TRUE, $this->conf['rootPage']));
+		// Support for RealURL
+		if (substr($urlRoot, -6) === '/.html') {
+			$urlRoot = substr($urlRoot, 0, strlen($urlRoot) - 6) . '.html';
+		}
 		$separator = urlencode(self::$current['pathSeparator']);
 
 		$GLOBALS['TSFE']->additionalJavaScript[$this->prefixId . '_sphinx'] = <<<JS
