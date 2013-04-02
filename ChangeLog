@@ -1,5 +1,6 @@
 2013-04-02  Xavier Perseguers  <xavier@causal.ch>
 
+	* [BUGFIX] Action URI is not computed properly when using EXT:realurl
 	* [FEATURE] #45556: Add support for search
 
 2013-03-26  Xavier Perseguers  <xavier@causal.ch>

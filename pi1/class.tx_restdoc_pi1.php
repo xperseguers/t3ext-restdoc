@@ -632,8 +632,12 @@ JS;
 jQuery(function() { Search.setIndex($searchIndexContent); });
 JS;
 
-		$action = t3lib_div::getIndpEnv('SCRIPT_NAME');
-		$parameters = t3lib_div::trimExplode('&', t3lib_div::getIndpEnv('QUERY_STRING'));
+		$action = t3lib_div::getIndpEnv('REQUEST_URI');
+		$parameters = array();
+		if (($pos = strpos($action, '?')) !== FALSE) {
+			$parameters = t3lib_div::trimExplode('&', substr($action, $pos + 1));
+			$action = substr($action, 0, $pos);
+		}
 		$hiddenFields = '';
 		foreach ($parameters as $parameter) {
 			list($key, $value) = explode('=', $parameter);
