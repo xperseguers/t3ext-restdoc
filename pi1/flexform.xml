@@ -13,7 +13,7 @@
 				<el>
 					<path>
 						<TCEforms>
-							<exclude>1</exclude>
+							<exclude>0</exclude>
 							<label>LLL:EXT:restdoc/locallang_db.xml:pi_flexform.path</label>
 							<config>
 								<type>input</type>
@@ -37,7 +37,7 @@
 					</path>
 					<mode>
 						<TCEforms>
-							<exclude>1</exclude>
+							<exclude>0</exclude>
 							<label>LLL:EXT:restdoc/locallang_db.xml:pi_flexform.mode</label>
 							<config>
 								<type>select</type>
@@ -58,12 +58,38 @@
 										<numIndex index="0">LLL:EXT:restdoc/locallang_db.xml:pi_flexform.mode.QUICK_NAVIGATION</numIndex>
 										<numIndex index="1">QUICK_NAVIGATION</numIndex>
 									</numIndex>
+									<numIndex index="5" type="array">
+										<numIndex index="0">LLL:EXT:restdoc/locallang_db.xml:pi_flexform.mode.SEARCH</numIndex>
+										<numIndex index="1">SEARCH</numIndex>
+									</numIndex>
 								</items>
 								<size>1</size>
 								<maxitems>1</maxitems>
 							</config>
+							<onChange>reload</onChange>
 						</TCEforms>
 					</mode>
+					<rootPage>
+						<TCEforms>
+							<exclude>0</exclude>
+							<label>LLL:EXT:restdoc/locallang_db.xml:pi_flexform.rootPage</label>
+							<displayCond><![CDATA[FIELD:mode:=:SEARCH]]></displayCond>
+							<config>
+								<type>group</type>
+								<internal_type>db</internal_type>
+								<allowed>pages</allowed>
+								<minitems>1</minitems>
+								<maxitems>1</maxitems>
+								<size>1</size>
+								<show_thumbs>1</show_thumbs>
+								<wizards>
+									<suggest>
+										<type>suggest</type>
+									</suggest>
+								</wizards>
+							</config>
+						</TCEforms>
+					</rootPage>
 				</el>
 			</ROOT>
 		</sDEF>

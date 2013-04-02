@@ -2,8 +2,11 @@ plugin.tx_restdoc {
 	# Path to the reST documentation
 	path =
 
-	# mode of the plugin (BODY | TOC | RECENT | TITLE | QUICK_NAVIGATION | BREADCRUMB | FILENAME)
+	# mode of the plugin (BODY | TOC | RECENT | TITLE | QUICK_NAVIGATION | BREADCRUMB | FILENAME | SEARCH)
 	mode =
+
+	# UID of page showing the documentation (used when mode = SEARCH to link back to the documentation from search results)
+	rootPage =
 
 	# set it to 1 to show permanent links in sections
 	showPermanentLink = 0

@@ -1,3 +1,7 @@
+2013-04-02  Xavier Perseguers  <xavier@causal.ch>
+
+	* [FEATURE] #45556: Add support for search
+
 2013-03-26  Xavier Perseguers  <xavier@causal.ch>
 
 	* [BUGFIX] prev/next/top header links should be absolute when using base href

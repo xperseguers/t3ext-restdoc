@@ -98,7 +98,6 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			'documentRoot'  => $documentRoot,
 			'document'      => $document,
 			'jsonData'      => $jsonData,
-			'jsonData'      => $jsonData,
 			'path'          => $this->conf['path'],
 			'pathSeparator' => $this->conf['pathSeparator'],
 		);
@@ -133,6 +132,9 @@ class tx_restdoc_pi1 extends tslib_pibase {
 				case 'FILENAME':
 					$output = $jsonFile;
 					$skipDefaultWrap = TRUE;
+					break;
+				case 'SEARCH':
+					$output = $this->generateSearchForm();
 					break;
 				default:
 					$output = '';
@@ -345,13 +347,17 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			$version = '1.0.0';
 		}
 
+		$urlRoot = str_replace('___PLACEHOLDER___', '', $this->getLink('___PLACEHOLDER___/', TRUE, $this->conf['rootPage']));
+		$separator = urlencode(self::$current['pathSeparator']);
+
 		$GLOBALS['TSFE']->additionalJavaScript[$this->prefixId . '_sphinx'] = <<<JS
 var DOCUMENTATION_OPTIONS = {
-	URL_ROOT:    '',
+	URL_ROOT:    '$urlRoot',
 	VERSION:     '$version',
 	COLLAPSE_INDEX: false,
-	FILE_SUFFIX: '.html',
-	HAS_SOURCE:  false
+	FILE_SUFFIX: '',
+	HAS_SOURCE:  false,
+	SEPARATOR: '$separator'
 };
 JS;
 	}
@@ -602,14 +608,72 @@ JS;
 	}
 
 	/**
+	 * Generates the search form.
+	 *
+	 * @return string
+	 */
+	protected function generateSearchForm() {
+		$searchIndexFile = self::$current['documentRoot'] . 'searchindex.json';
+		if (!is_file($searchIndexFile)) {
+			return 'File ' . $this->conf['path'] . 'searchindex.js was not found.';
+		}
+
+		$this->includeJsFile('res/underscore.js');
+		$this->includeJsFile('res/doctools.js');
+		$this->includeJsFile('res/searchtools.js');
+		$this->advertiseSphinx();
+
+		$searchIndexContent = file_get_contents($searchIndexFile);
+		$GLOBALS['TSFE']->additionalJavaScript[$this->extKey . '_search'] = <<<JS
+jQuery(function() { Search.setIndex($searchIndexContent); });
+JS;
+
+		$action = t3lib_div::getIndpEnv('SCRIPT_NAME');
+		$parameters = t3lib_div::trimExplode('&', t3lib_div::getIndpEnv('QUERY_STRING'));
+		$hiddenFields = '';
+		foreach ($parameters as $parameter) {
+			list($key, $value) = explode('=', $parameter);
+			if ($key === 'q') continue;
+			$hiddenFields .= sprintf('<input type="hidden" name="%s" value="%s" />', $key, $value) . LF;
+		}
+
+		return <<<HTML
+<form action="$action" method="get">
+$hiddenFields
+<input type="text" name="q" value="" />
+<input type="submit" value="search" />
+<span id="search-progress" style="padding-left: 10px"></span>
+</form>
+
+<div id="search-results">
+
+</div>
+HTML;
+
+	}
+
+	/**
+	 * Includes a JavaScript library in header.
+	 *
+	 * @param string $file
+	 * @return void
+	 */
+	protected function includeJsFile($file) {
+		$relativeFile = substr(t3lib_extMgm::extPath($this->extKey), strlen(PATH_site)) . $file;
+		$relativeFile = $this->cObj->typoLink_URL(array('parameter' => $relativeFile));
+		$GLOBALS['TSFE']->additionalHeaderData[$relativeFile] = '<script type="text/javascript" src="' . $relativeFile . '"></script>';
+	}
+
+	/**
 	 * Generates a link to navigate within a reST documentation project.
 	 *
 	 * @param string $document Target document
 	 * @param boolean $absolute Whether absolute URI should be generated
+	 * @param integer $rootPage UID of the page showing the documentation
 	 * @return string
 	 * @private This method is made public to be accessible from a lambda-function scope
 	 */
-	public function getLink($document, $absolute = FALSE) {
+	public function getLink($document, $absolute = FALSE, $rootPage = 0) {
 		$urlParameters = array();
 		$anchor = '';
 		if ($document !== '') {
@@ -631,7 +695,7 @@ JS;
 		} else {
 			//
 			$typolinkConfig = array(
-				'parameter' => $GLOBALS['TSFE']->id,
+				'parameter' => $rootPage ?: $GLOBALS['TSFE']->id,
 				'forceAbsoluteUrl' => $absolute ? 1 : 0,
 				'forceAbsoluteUrl.' => array(
 					'scheme' => t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https' : 'http',
@@ -777,6 +841,7 @@ JS;
 		}
 		$this->applyStdWrap($this->conf, 'path');
 		$this->applyStdWrap($this->conf, 'mode');
+		$this->applyStdWrap($this->conf, 'rootPage');
 		$this->applyStdWrap($this->conf, 'showPermanentLink');
 		$this->applyStdWrap($this->conf, 'pathSeparator');
 		$this->applyStdWrap($this->conf, 'fallbackPathSeparators');
@@ -827,6 +892,7 @@ JS;
 			// The path separator CANNOT be empty
 			$this->conf['pathSeparator'] = '|';
 		}
+		$this->conf['rootPage'] = intval($this->conf['rootPage']);
 	}
 
 }

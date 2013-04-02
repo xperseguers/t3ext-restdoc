@@ -7,6 +7,7 @@ plugin.tx_restdoc_pi1 {
 
 	path = {$plugin.tx_restdoc.path}
 	mode = {$plugin.tx_restdoc.mode}
+	rootPage = {$plugin.tx_restdoc.rootPage}
 	showPermanentLink = {$plugin.tx_restdoc.showPermanentLink}
 	pathSeparator = {$plugin.tx_restdoc.pathSeparator}
 	fallbackPathSeparators = {$plugin.tx_restdoc.fallbackPathSeparators}
