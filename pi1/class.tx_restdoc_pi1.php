@@ -91,7 +91,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			$jsonFile = self::$defaultFile . '.fjson';
 		}
 		if (!is_file($documentRoot . $jsonFile)) {
-			return 'Invalid path for the reST documentation: ' . $this->conf['path'];
+			return sprintf('Invalid path for the reST documentation. File %s%s not found.', $this->conf['path'], $jsonFile);
 		}
 
 		// Security check
