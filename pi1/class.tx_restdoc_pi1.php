@@ -79,7 +79,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		if ($this->conf['publishSources'] && t3lib_div::isFirstPartOfStr($document, '_sources/')) {
 			$sourceFile = rtrim($document, '/');
 			// Security check
-			if (substr($sourceFile, -4) === '.txt' && substr(realpath($documentRoot . $sourceFile), 0, strlen(realpath($documentRoot))) !== realpath($documentRoot)) {
+			if (substr($sourceFile, -4) === '.txt' && substr(realpath($documentRoot . $sourceFile), 0, strlen(realpath($documentRoot))) === realpath($documentRoot)) {
 				// Will exit program normally
 				tx_restdoc_utility::showSources($documentRoot . $sourceFile);
 			}

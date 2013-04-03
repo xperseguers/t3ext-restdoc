@@ -1,5 +1,6 @@
 2013-04-03  Xavier Perseguers  <xavier@causal.ch>
 
+	* [BUGFIX] Invalid path separator used when retrieving source files
 	* [TASK] #45556: Slightly localize search form and add hook to pre-process JS code/libs
 	* [TASK] #45556: Show context in search results
 
