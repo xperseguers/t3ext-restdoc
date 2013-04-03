@@ -631,18 +631,46 @@ JS;
 	protected function generateSearchForm() {
 		$searchIndexFile = self::$current['documentRoot'] . 'searchindex.json';
 		if (!is_file($searchIndexFile)) {
-			return 'File ' . $this->conf['path'] . 'searchindex.js was not found.';
+			return 'ERROR: File ' . $this->conf['path'] . 'searchindex.js was not found.';
 		}
 
-		$this->includeJsFile('res/underscore.js');
-		$this->includeJsFile('res/doctools.js');
-		$this->includeJsFile('res/searchtools.js');
-		$this->advertiseSphinx();
-
+		$config = array(
+			'jsLibs' => array(
+				'res/underscore.js',
+				'res/doctools.js',
+				'res/searchtools.js'
+			),
+			'jsInline' => '',
+			'advertiseSphinx' => TRUE,
+		);
 		$searchIndexContent = file_get_contents($searchIndexFile);
-		$GLOBALS['TSFE']->additionalJavaScript[$this->extKey . '_search'] = <<<JS
+		$config['jsInline'] = <<<JS
 jQuery(function() { Search.setIndex($searchIndexContent); });
 JS;
+
+		// Hook for pre-processing the search form
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['searchFormHook'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['searchFormHook'] as $classRef) {
+				$hookObject = t3lib_div::getUserObj($classRef);
+				$params = array(
+					'config' => &$config,
+					'pObj' => $this,
+				);
+				if (is_callable(array($hookObject, 'preProcessSEARCH'))) {
+					$hookObject->preProcessSEARCH($params);
+				}
+			}
+		}
+
+		foreach ($config['jsLibs'] as $jsLib) {
+			$this->includeJsFile($jsLib);
+		}
+		if ($config['advertiseSphinx']) {
+			$this->advertiseSphinx();
+		}
+		if ($config['jsInline']) {
+			$GLOBALS['TSFE']->additionalJavaScript[$this->extKey . '_search'] = $config['jsInline'];
+		}
 
 		$action = t3lib_div::getIndpEnv('REQUEST_URI');
 		$parameters = array();
@@ -656,12 +684,14 @@ JS;
 			if ($key === 'q') continue;
 			$hiddenFields .= sprintf('<input type="hidden" name="%s" value="%s" />', $key, $value) . LF;
 		}
+		$searchPlaceholder = $this->pi_getLL('search_placeholder', 'search', TRUE);
+		$searchAction = $this->pi_getLL('search_action', 'search', TRUE);
 
 		return <<<HTML
 <form action="$action" method="get">
 $hiddenFields
-<input type="text" name="q" value="" />
-<input type="submit" value="search" />
+<input type="search" name="q" value="" placeholder="$searchPlaceholder" />
+<input type="submit" value="$searchAction" />
 <span id="search-progress" style="padding-left: 10px"></span>
 </form>
 

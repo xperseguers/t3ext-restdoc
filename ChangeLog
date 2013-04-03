@@ -1,5 +1,6 @@
 2013-04-03  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] #45556: Slightly localize search form and add hook to pre-process JS code/libs
 	* [TASK] #45556: Show context in search results
 
 2013-04-02  Xavier Perseguers  <xavier@causal.ch>
