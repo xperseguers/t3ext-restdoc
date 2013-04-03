@@ -885,10 +885,8 @@ HTML;
 		$this->conf = $conf;
 
 		// Apply stdWrap on a few TypoScript configuration options
-		if (isset($this->conf['setup.'])) {
-			$this->applyStdWrap($this->conf['setup.'], 'defaultFile');
-		}
 		$this->applyStdWrap($this->conf, 'path');
+		$this->applyStdWrap($this->conf, 'defaultFile');
 		$this->applyStdWrap($this->conf, 'mode');
 		$this->applyStdWrap($this->conf, 'rootPage');
 		$this->applyStdWrap($this->conf, 'showPermanentLink');
@@ -898,6 +896,15 @@ HTML;
 		$this->applyStdWrap($this->conf, 'advertiseSphinx');
 		$this->applyStdWrap($this->conf, 'addHeadPagination');
 		$this->applyStdWrap($this->conf, 'publishSources');
+
+		if (isset($this->conf['setup.'])) {
+			// @deprecated since 1.2.0, will be removed in 1.4.0
+			$this->applyStdWrap($this->conf['setup.'], 'defaultFile');
+			if (isset($this->conf['setup.']['defaultFile'])) {
+				t3lib_div::deprecationLog('EXT:' . $this->extKey . ' - TypoScript plugin.' . $this->prefixId . '.setup.defaultFile is deprecated since 1.2.0 and will be removed in 1.4.0. Please use plugin.' . $this->prefixId . '.defaultFile instead.');
+				$this->conf['defaultFile'] = $this->conf['setup.']['defaultFile'];
+			}
+		}
 
 		// Load the flexform and loop on all its values to override TS setup values
 		// Some properties use a different test (more strict than not empty) and yet some others no test at all
@@ -935,8 +942,8 @@ HTML;
 			}
 		}
 
-		if (isset($this->conf['setup.']['defaultFile'])) {
-			self::$defaultFile = $this->conf['setup.']['defaultFile'];
+		if (isset($this->conf['defaultFile'])) {
+			self::$defaultFile = $this->conf['defaultFile'];
 		}
 		if (empty($this->conf['pathSeparator'])) {
 			// The path separator CANNOT be empty

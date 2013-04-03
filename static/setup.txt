@@ -6,6 +6,7 @@ plugin.tx_restdoc_pi1 {
 	#}
 
 	path = {$plugin.tx_restdoc.path}
+	defaultFile = {$plugin.tx_restdoc.defaultFile}
 	mode = {$plugin.tx_restdoc.mode}
 	rootPage = {$plugin.tx_restdoc.rootPage}
 	showPermanentLink = {$plugin.tx_restdoc.showPermanentLink}

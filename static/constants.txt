@@ -2,6 +2,9 @@ plugin.tx_restdoc {
 	# Path to the reST documentation
 	path =
 
+	# Name of the default file (without .fjson extension)
+	defaultFile = index
+
 	# mode of the plugin (BODY | TOC | RECENT | TITLE | QUICK_NAVIGATION | BREADCRUMB | FILENAME | SEARCH)
 	mode =
 
