@@ -942,6 +942,20 @@ HTML;
 			}
 		}
 
+		if (version_compare(TYPO3_version, '6.0.0', '>=')) {
+			if (preg_match('/^file:(\d+):(.*)$/', $this->conf['path'], $matches)) {
+				/** @var $storageRepository \TYPO3\CMS\Core\Resource\StorageRepository */
+				$storageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
+				/** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
+				$storage = $storageRepository->findByUid(intval($matches[1]));
+				$storageConfiguration = $storage->getConfiguration();
+				$storageRecord = $storage->getStorageRecord();
+				if ($storageRecord['driver'] === 'Local' && $storageConfiguration['pathType'] === 'relative') {
+					$this->conf['path'] = rtrim($storageConfiguration['basePath'], '/') . $matches[2];
+				}
+			}
+		}
+
 		if (isset($this->conf['defaultFile'])) {
 			self::$defaultFile = $this->conf['defaultFile'];
 		}
