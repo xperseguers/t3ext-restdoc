@@ -25,4 +25,7 @@ plugin.tx_restdoc {
 
 	# whether pagination should be generated with rel="next" and rel="prev"
 	addHeadPagination = 1
+
+	# whether sources should be accessible
+	publishSources = 1
 }

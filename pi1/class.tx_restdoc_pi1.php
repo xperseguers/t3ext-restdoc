@@ -75,6 +75,16 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			$document = str_replace($pathSeparators, '/', $this->piVars['doc']) . '/';
 		}
 
+		// Sources are requested, if allowed and available, return them
+		if ($this->conf['publishSources'] && t3lib_div::isFirstPartOfStr($document, '_sources/')) {
+			$sourceFile = rtrim($document, '/');
+			// Security check
+			if (substr($sourceFile, -4) === '.txt' && substr(realpath($documentRoot . $sourceFile), 0, strlen(realpath($documentRoot))) !== realpath($documentRoot)) {
+				// Will exit program normally
+				tx_restdoc_utility::showSources($documentRoot . $sourceFile);
+			}
+		}
+
 		$jsonFile = substr($document, 0, strlen($document) - 1) . '.fjson';
 		if (!is_file($documentRoot . $jsonFile)) {
 			$document = self::$defaultFile . '/';
@@ -84,7 +94,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			return 'Invalid path for the reST documentation: ' . $this->conf['path'];
 		}
 
-			// Security check
+		// Security check
 		if (substr(realpath($documentRoot . $jsonFile), 0, strlen(realpath($documentRoot))) !== realpath($documentRoot)) {
 			$document = self::$defaultFile . '/';
 			$jsonFile = self::$defaultFile . '.fjson';
@@ -164,7 +174,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			}
 		}
 
-			// Hook for post-processing the output
+		// Hook for post-processing the output
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['renderHook'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['renderHook'] as $classRef) {
 				$hookObject = t3lib_div::getUserObj($classRef);
@@ -352,6 +362,8 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		if (substr($urlRoot, -6) === '/.html') {
 			$urlRoot = substr($urlRoot, 0, strlen($urlRoot) - 5);	// .html suffix is not a must have
 		}
+		$hasSource = isset($metadata['has_source']) && $metadata['has_source'] && $this->conf['publishSources'];
+		$hasSource = $hasSource ? 'true' : 'false';
 		$separator = urlencode(self::$current['pathSeparator']);
 
 		$GLOBALS['TSFE']->additionalJavaScript[$this->prefixId . '_sphinx'] = <<<JS
@@ -360,7 +372,7 @@ var DOCUMENTATION_OPTIONS = {
 	VERSION:     '$version',
 	COLLAPSE_INDEX: false,
 	FILE_SUFFIX: '',
-	HAS_SOURCE:  false,
+	HAS_SOURCE:  $hasSource,
 	SEPARATOR: '$separator'
 };
 JS;
@@ -603,9 +615,9 @@ JS;
 			// Remove permanent links in body
 			$body = preg_replace('#<a class="headerlink" [^>]+>[^<]+</a>#', '', $body);
 		}
-			// Replace links in body
+		// Replace links in body
 		$body = $this->replaceLinks(self::$current['documentRoot'], self::$current['document'], $body);
-			// Replace images in body
+		// Replace images in body
 		$body = $this->replaceImages(self::$current['documentRoot'] . self::$current['document'], $body);
 
 		return $body;
@@ -701,7 +713,6 @@ HTML;
 		if (substr($document, 0, 11) === '_downloads/') {
 			$link = $this->cObj->typoLink_URL(array('parameter' => rtrim(self::$current['path'], '/') . '/' . $document));
 		} else {
-			//
 			$typolinkConfig = array(
 				'parameter' => $rootPage ?: $GLOBALS['TSFE']->id,
 				'forceAbsoluteUrl' => $absolute ? 1 : 0,
@@ -735,7 +746,7 @@ HTML;
 			/** @var $plugin tx_restdoc_pi1 */
 			$anchor = '';
 			if (preg_match('#^[a-zA-Z]+://#', $matches[2])) {
-					// External URL
+				// External URL
 				return $matches[0];
 			} elseif ($matches[2]{0} === '#') {
 				$anchor = $matches[2];
@@ -769,7 +780,7 @@ HTML;
 	 * @link http://w-shadow.com/blog/2009/10/20/how-to-extract-html-tags-and-their-attributes-with-php/
 	 */
 	protected function replaceImages($root, $content) {
-			// $root's last part is a document, not a directory
+		// $root's last part is a document, not a directory
 		$root = substr($root, 0, strrpos(rtrim($root, '/'), '/'));
 		$plugin = $this;
 		$tagPattern =
@@ -789,11 +800,11 @@ HTML;
 			@xsi';
 
 		$ret = preg_replace_callback($tagPattern, function($matches) use ($plugin, $root, $attributePattern) {
-				// Parse tag attributes, if any
+			// Parse tag attributes, if any
 			$attributes = array();
 			if (!empty($matches['attributes'][0])) {
 				if (preg_match_all($attributePattern, $matches['attributes'], $attributeData, PREG_SET_ORDER)) {
-						// Turn the attribute data into a name->value array
+					// Turn the attribute data into a name->value array
 					foreach ($attributeData as $attr) {
 						if (!empty($attr['value_quoted'])) {
 							$value = $attr['value_quoted'];
@@ -843,7 +854,7 @@ HTML;
 	protected function init(array $conf) {
 		$this->conf = $conf;
 
-			// Apply stdWrap on a few TypoScript configuration options
+		// Apply stdWrap on a few TypoScript configuration options
 		if (isset($this->conf['setup.'])) {
 			$this->applyStdWrap($this->conf['setup.'], 'defaultFile');
 		}
@@ -856,19 +867,20 @@ HTML;
 		$this->applyStdWrap($this->conf, 'documentStructureMaxDocuments');
 		$this->applyStdWrap($this->conf, 'advertiseSphinx');
 		$this->applyStdWrap($this->conf, 'addHeadPagination');
+		$this->applyStdWrap($this->conf, 'publishSources');
 
-			// Load the flexform and loop on all its values to override TS setup values
-			// Some properties use a different test (more strict than not empty) and yet some others no test at all
-			// see http://wiki.typo3.org/index.php/Extension_Development,_using_Flexforms
+		// Load the flexform and loop on all its values to override TS setup values
+		// Some properties use a different test (more strict than not empty) and yet some others no test at all
+		// see http://wiki.typo3.org/index.php/Extension_Development,_using_Flexforms
 		$this->pi_initPIflexForm(); // Init and get the flexform data of the plugin
 
-			// Assign the flexform data to a local variable for easier access
+		// Assign the flexform data to a local variable for easier access
 		$piFlexForm = $this->cObj->data['pi_flexform'];
 
 		if (is_array($piFlexForm['data'])) {
 			$multiValueKeys = array();
-				// Traverse the entire array based on the language
-				// and assign each configuration option to $this->settings array...
+			// Traverse the entire array based on the language
+			// and assign each configuration option to $this->settings array...
 			foreach ($piFlexForm['data'] as $sheet => $data) {
 				foreach ($data as $lang => $value) {
 					/** @var $value array */

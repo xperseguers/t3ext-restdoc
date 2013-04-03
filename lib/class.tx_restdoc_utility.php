@@ -91,6 +91,35 @@ final class tx_restdoc_utility {
 	}
 
 	/**
+	 * Sends a given ReStructuredText document to the browser.
+	 * One-way method: will exit program normally at the end.
+	 *
+	 * @param string $filename
+	 * @return void Program will stop after calling this method
+	 */
+	public static function showSources($filename) {
+		if (!is_file($filename)) {
+			t3lib_utility_Http::setResponseCodeAndExit(t3lib_utility_Http::HTTP_STATUS_404);
+		}
+
+		// Getting headers sent by the client.
+		$headers = apache_request_headers();
+
+		// Checking if the client is validating his cache and if it is current
+		if (isset($headers['If-Modified-Since']) && (strtotime($headers['If-Modified-Since']) == filemtime($filename))) {
+			// Client's cache is current, so we just respond '304 Not Modified'
+			t3lib_utility_Http::setResponseCodeAndExit(t3lib_utility_Http::HTTP_STATUS_304);
+		} else {
+			// Source is not cached or cache is outdated
+			header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filename)) . ' GMT', TRUE, 200);
+			header('Content-Length: ' . filesize($filename));
+			header('Content-Type: text/plain; charset=utf-8');
+			echo file_get_contents($filename);
+			exit;
+		}
+	}
+
+	/**
 	 * Converts a DOM node into an array.
 	 *
 	 * @param DOMNode $node

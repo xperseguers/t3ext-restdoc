@@ -14,6 +14,7 @@ plugin.tx_restdoc_pi1 {
 	documentStructureMaxDocuments = {$plugin.tx_restdoc.documentStructureMaxDocuments}
 	advertiseSphinx = {$plugin.tx_restdoc.advertiseSphinx}
 	addHeadPagination = {$plugin.tx_restdoc.addHeadPagination}
+	publishSources = {$plugin.tx_restdoc.publishSources}
 
 	setup.BODY {
 		image {
