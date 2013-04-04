@@ -1,5 +1,6 @@
 2013-04-04  Xavier Perseguers  <xavier@causal.ch>
 
+	* [!!!][TASK] Refactor extension's directory structure: Hooks
 	* [!!!][TASK] Refactor extension's directory structure: Examples
 	* [!!!][TASK] Refactor extension's directory structure: TypoScript
 	* [!!!][TASK] Refactor extension's directory structure: Resources
