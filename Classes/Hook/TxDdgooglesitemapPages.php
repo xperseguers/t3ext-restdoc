@@ -33,7 +33,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html
  * @version     SVN: $Id$
  */
-class tx_restdoc_ddgooglesitemap {
+class Tx_Restdoc_Hook_TxDdgooglesitemapPages {
 
 	/** @var array */
 	protected $documentationPlugins;

@@ -34,7 +34,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html
  * @version     SVN: $Id$
  */
-class tx_restdoc_toc {
+class Tx_Restdoc_Hook_TableOfContents {
 
 	/**
 	 * Maximum number of timestamps to save

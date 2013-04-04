@@ -33,7 +33,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html
  * @version     SVN: $Id$
  */
-class tx_restdoc_realurl {
+class Tx_Restdoc_Hook_RealurlAutoconf {
 
 	/**
 	 * Generates additional RealURL configuration and merges it with provided configuration.
@@ -42,7 +42,7 @@ class tx_restdoc_realurl {
 	 * @param tx_realurl_autoconfgen $pObj
 	 * @return array
 	 */
-	public function addRestdocConfig(array $params, tx_realurl_autoconfgen $pObj) {
+	public function registerDefaultConfiguration(array $params, tx_realurl_autoconfgen $pObj) {
 		return array_merge_recursive($params['config'], array(
 			'postVarSets' => array(
 				'_DEFAULT' => array(
