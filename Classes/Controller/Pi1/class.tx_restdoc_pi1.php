@@ -36,7 +36,7 @@
 class tx_restdoc_pi1 extends tslib_pibase {
 
 	public $prefixId      = 'tx_restdoc_pi1';
-	public $scriptRelPath = 'pi1/class.tx_restdoc_pi1.php';
+	public $scriptRelPath = 'Classes/Controller/Pi1/class.tx_restdoc_pi1.php';
 	public $extKey        = 'restdoc';
 	public $pi_checkCHash = TRUE;
 
@@ -970,11 +970,6 @@ HTML;
 		$this->conf['rootPage'] = intval($this->conf['rootPage']);
 	}
 
-}
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/restdoc/pi1/class.tx_restdoc_pi1.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/restdoc/pi1/class.tx_restdoc_pi1.php']);
 }
 
 ?>

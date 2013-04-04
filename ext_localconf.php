@@ -3,7 +3,7 @@ if (!defined('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
-t3lib_extMgm::addPItoST43($_EXTKEY, 'pi1/class.tx_restdoc_pi1.php', '_pi1', 'list_type', FALSE);
+t3lib_extMgm::addPItoST43($_EXTKEY, 'Classes/Controller/Pi1/class.tx_restdoc_pi1.php', '_pi1', 'list_type', FALSE);
 
 if (t3lib_extMgm::isLoaded('dd_googlesitemap')) {
 	// Hook for integrating ReStructured documentation into the Google Sitemap (requires EXT:dd_googlesitemap)
