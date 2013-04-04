@@ -160,7 +160,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 					$output = $this->generateIndex($documentRoot, $document, $jsonData);
 					break;
 				case 'TITLE':
-					$output = 'Index';
+					$output = $this->pi_getLL('index_title', 'Index');
 					$skipDefaultWrap = TRUE;
 					break;
 				case 'FILENAME':
@@ -431,7 +431,7 @@ JS;
 			$link = $this->getLink('genindex/');
 			$linkAbsolute = $this->getLink('genindex/', TRUE);
 
-			$data['index_title'] = 'index';
+			$data['index_title'] = $this->pi_getLL('quicknavigation_index', 'index');
 			$data['index_uri'] = $link;
 			$data['index_uri_absolute'] = $linkAbsolute;
 		}
@@ -528,7 +528,7 @@ JS;
 			$contentCategories[] = $contentCategory;
 		}
 
-		$output = '<h1>Index</h1>' . LF;
+		$output = '<h1>' . $this->pi_getLL('index_title', 'Index', TRUE) . '</h1>' . LF;
 		$output .= '<div class="tx-restdoc-genindex-jumpbox">' . implode(' | ', $linksCategories) . '</div>' . LF;
 		$output .= implode(LF, $contentCategories);
 
@@ -968,6 +968,50 @@ HTML;
 			$this->conf['pathSeparator'] = '|';
 		}
 		$this->conf['rootPage'] = intval($this->conf['rootPage']);
+	}
+
+	/**
+	 * Loads the locallang file.
+	 *
+	 * @return void
+	 */
+	public function pi_loadLL() {
+		if (!$this->LOCAL_LANG_loaded && $this->scriptRelPath) {
+			$basePath = 'EXT:' . $this->extKey . '/Resources/Private/Language/locallang.xml';
+
+			// Read the strings in the required charset (since TYPO3 4.2)
+			$this->LOCAL_LANG = t3lib_div::readLLfile($basePath, $this->LLkey, $GLOBALS['TSFE']->renderCharset);
+			if ($this->altLLkey) {
+				$tempLOCAL_LANG = t3lib_div::readLLfile($basePath, $this->altLLkey);
+				$this->LOCAL_LANG = array_merge(is_array($this->LOCAL_LANG) ? $this->LOCAL_LANG : array(), $tempLOCAL_LANG);
+				unset($tempLOCAL_LANG);
+			}
+
+			// Overlaying labels from TypoScript (including fictitious language keys for non-system languages!):
+			$confLL = $this->conf['_LOCAL_LANG.'];
+			if (is_array($confLL)) {
+				foreach ($confLL as $k => $lA) {
+					if (is_array($lA)) {
+						$k = substr($k, 0, -1);
+						foreach ($lA as $llK => $llV) {
+							if (!is_array($llV)) {
+								if (version_compare(TYPO3_version, '4.6.0', '>=')) {
+									// Internal structure is from XLIFF
+									$this->LOCAL_LANG[$k][$llK][0]['target'] = $llV;
+								} else {
+									// Internal structure is from ll-XML
+									$this->LOCAL_LANG[$k][$llK] = $llV;
+								}
+
+								// For labels coming from the TypoScript (database) the charset is assumed to be "forceCharset" and if that is not set, assumed to be that of the individual system languages
+								$this->LOCAL_LANG_charset[$k][$llK] = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : $GLOBALS['TSFE']->csConvObj->charSetArray[$k];
+							}
+						}
+					}
+				}
+			}
+		}
+		$this->LOCAL_LANG_loaded = 1;
 	}
 
 }
