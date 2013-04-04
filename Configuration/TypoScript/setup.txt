@@ -101,7 +101,7 @@ plugin.tx_restdoc_pi1 {
 			10 = TEXT
 			10 {
 				data = LLL:EXT:restdoc/Resources/Private/Language/locallang.xml:quicknavigation_home
-				typolink.parameter.field = home_uri
+				typolink.parameter.field = home_uri_absolute
 			}
 			11 = TEXT
 			11.value = |
@@ -110,7 +110,7 @@ plugin.tx_restdoc_pi1 {
 			20 = TEXT
 			20 {
 				data = LLL:EXT:restdoc/Resources/Private/Language/locallang.xml:quicknavigation_previous_topic
-				typolink.parameter.field = previous_uri
+				typolink.parameter.field = previous_uri_absolute
 				typolink.title.field = previous_title
 				if.isTrue.field = has_previous
 			}
@@ -124,7 +124,7 @@ plugin.tx_restdoc_pi1 {
 			30 = TEXT
 			30 {
 				data = LLL:EXT:restdoc/Resources/Private/Language/locallang.xml:quicknavigation_next_topic
-				typolink.parameter.field = next_uri
+				typolink.parameter.field = next_uri_absolute
 				typolink.title.field = next_title
 				if.isTrue.field = has_next
 			}
@@ -134,7 +134,7 @@ plugin.tx_restdoc_pi1 {
 			40 = TEXT
 			40 {
 				data = LLL:EXT:restdoc/Resources/Private/Language/locallang.xml:quicknavigation_index
-				typolink.parameter.field = index_uri
+				typolink.parameter.field = index_uri_absolute
 				typolink.title.data < .data
 				if.isTrue.field = has_index
 			}
