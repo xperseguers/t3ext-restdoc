@@ -25,7 +25,7 @@
 /**
  * Utility class.
  *
- * @category    Helpers
+ * @category    Utility
  * @package     TYPO3
  * @subpackage  tx_restdoc
  * @author      Xavier Perseguers <xavier@causal.ch>
@@ -33,7 +33,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html
  * @version     SVN: $Id$
  */
-final class tx_restdoc_utility {
+final class Tx_Restdoc_Utility_Helper {
 
 	/**
 	 * Returns Sphinx-related metadata.
@@ -120,6 +120,35 @@ final class tx_restdoc_utility {
 	}
 
 	/**
+	 * Converts a relative path to an absolute one.
+	 *
+	 * @param string $fullPath
+	 * @param string $relative
+	 * @return string
+	 */
+	public static function relativeToAbsolute($fullPath, $relative) {
+		$absolute = '';
+		$fullPath = rtrim($fullPath, '/');
+		$fullPathParts = explode('/', $fullPath);
+		// We need an additional directory for parent paths to work (as we trimmed document name from $fullPath
+		// in the caller method
+		$fullPathParts[] = '';
+		$relativeParts = explode('/', $relative);
+
+		for ($i = 0; $i < count($relativeParts); $i++) {
+			if ($relativeParts[$i] == '..' && count($fullPathParts) > 0) {
+				array_pop($fullPathParts);
+			} else {
+				$absolute = implode('/', $fullPathParts) . '/';
+				$absolute .= implode('/', array_slice($relativeParts, $i));
+				break;
+			}
+		}
+
+		return str_replace('//', '/', $absolute);
+	}
+
+	/**
 	 * Converts a DOM node into an array.
 	 *
 	 * @param DOMNode $node
@@ -169,35 +198,6 @@ final class tx_restdoc_utility {
 				break;
 		}
 		return $output;
-	}
-
-	/**
-	 * Converts a relative path to an absolute one.
-	 *
-	 * @param string $fullPath
-	 * @param string $relative
-	 * @return string
-	 */
-	public static function relativeToAbsolute($fullPath, $relative) {
-		$absolute = '';
-		$fullPath = rtrim($fullPath, '/');
-		$fullPathParts = explode('/', $fullPath);
-		// We need an additional directory for parent paths to work (as we trimmed document name from $fullPath
-		// in the caller method
-		$fullPathParts[] = '';
-		$relativeParts = explode('/', $relative);
-
-		for ($i = 0; $i < count($relativeParts); $i++) {
-			if ($relativeParts[$i] == '..' && count($fullPathParts) > 0) {
-				array_pop($fullPathParts);
-			} else {
-				$absolute = implode('/', $fullPathParts) . '/';
-				$absolute .= implode('/', array_slice($relativeParts, $i));
-				break;
-			}
-		}
-
-		return str_replace('//', '/', $absolute);
 	}
 
 }

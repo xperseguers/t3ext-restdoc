@@ -200,10 +200,10 @@ class tx_restdoc_toc {
 			return array();
 		}
 
-		$links = $this->getLinksFromToc(tx_restdoc_utility::xmlstr_to_array($toc));
+		$links = $this->getLinksFromToc(Tx_Restdoc_Utility_Helper::xmlstr_to_array($toc));
 
 		if (isset($jsonData['prev'])) {
-			$absolute = tx_restdoc_utility::relativeToAbsolute($params['documentRoot'] . $params['document'], '../' . $jsonData['prev']['link']);
+			$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($params['documentRoot'] . $params['document'], '../' . $jsonData['prev']['link']);
 			$document = substr($absolute, strlen($params['documentRoot']));
 			if (!isset($links[$document])) {
 				$links[$document] = $this->pObj->getLink($document, TRUE);
@@ -212,7 +212,7 @@ class tx_restdoc_toc {
 
 		if (isset($jsonData['next'])) {
 			$document = $params['document'] === $this->pObj->getDefaultFile() . '/' ? $params['documentRoot'] : $params['documentRoot'] . $params['document'];
-			$absolute = tx_restdoc_utility::relativeToAbsolute($document, '../' . $jsonData['next']['link']);
+			$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($document, '../' . $jsonData['next']['link']);
 			$document = substr($absolute, strlen($params['documentRoot']));
 			if (!isset($links[$document])) {
 				$links[$document] = $this->pObj->getLink($document, TRUE);
@@ -277,7 +277,7 @@ class tx_restdoc_toc {
 			} else {
 				// $document's last part is a document, not a directory
 				$document = substr($document, 0, strrpos(rtrim($document, '/'), '/'));
-				$absolute = tx_restdoc_utility::relativeToAbsolute($root . $document, $matches[2]);
+				$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($root . $document, $matches[2]);
 				$document = substr($absolute, strlen($root));
 			}
 			$url = $plugin->getLink($document, TRUE);

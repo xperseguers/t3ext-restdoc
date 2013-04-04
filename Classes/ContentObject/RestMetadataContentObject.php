@@ -33,7 +33,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html
  * @version     SVN: $Id$
  */
-class tx_restdoc_metadata_cobj {
+class Tx_Restdoc_ContentObject_RestMetadataContentObject {
 
 	/** @var tslib_cObj */
 	protected $cObj;
@@ -52,7 +52,7 @@ class tx_restdoc_metadata_cobj {
 		$this->applyStdWrap($conf, 'path');
 
 		$output = '';
-		$data = tx_restdoc_utility::getMetadata($conf['path']);
+		$data = Tx_Restdoc_Utility_Helper::getMetadata($conf['path']);
 		if ($data) {
 			/** @var $contentObj tslib_cObj */
 			$contentObj = t3lib_div::makeInstance('tslib_cObj');

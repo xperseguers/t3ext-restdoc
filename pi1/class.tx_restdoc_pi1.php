@@ -81,7 +81,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			// Security check
 			if (substr($sourceFile, -4) === '.txt' && substr(realpath($documentRoot . $sourceFile), 0, strlen(realpath($documentRoot))) === realpath($documentRoot)) {
 				// Will exit program normally
-				tx_restdoc_utility::showSources($documentRoot . $sourceFile);
+				Tx_Restdoc_Utility_Helper::showSources($documentRoot . $sourceFile);
 			}
 		}
 
@@ -239,7 +239,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 					return ' href="' . $url . '"';
 				}, $toc);
 
-				$data = tx_restdoc_utility::getMenuData(tx_restdoc_utility::xmlstr_to_array($toc));
+				$data = Tx_Restdoc_Utility_Helper::getMenuData(Tx_Restdoc_Utility_Helper::xmlstr_to_array($toc));
 
 				// Mark the first entry as 'active'
 				$data[0]['ITEM_STATE'] = 'CUR';
@@ -247,7 +247,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 
 			case 'previous':
 				if (isset($jsonData['prev'])) {
-					$absolute = tx_restdoc_utility::relativeToAbsolute($documentRoot . $document, '../' . $jsonData['prev']['link']);
+					$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($documentRoot . $document, '../' . $jsonData['prev']['link']);
 					$link = $this->getLink(substr($absolute, strlen(self::$current['documentRoot'])));
 					$data[] = array(
 						'title' => $jsonData['prev']['title'],
@@ -259,7 +259,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			case 'next':
 				if (isset($jsonData['next'])) {
 					$nextDocument = $document === $this->getDefaultFile() . '/' ? $documentRoot : $documentRoot . $document;
-					$absolute = tx_restdoc_utility::relativeToAbsolute($nextDocument, '../' . $jsonData['next']['link']);
+					$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($nextDocument, '../' . $jsonData['next']['link']);
 					$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 					$data[] = array(
 						'title' => $jsonData['next']['title'],
@@ -270,7 +270,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 
 			case 'breadcrumb':
 				foreach ($jsonData['parents'] as $parent) {
-					$absolute = tx_restdoc_utility::relativeToAbsolute($documentRoot . $document, '../' . $parent['link']);
+					$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($documentRoot . $document, '../' . $parent['link']);
 					$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 					$data[] = array(
 						'title' => $parent['title'],
@@ -348,7 +348,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	 * @return void
 	 */
 	protected function advertiseSphinx() {
-		$metadata = tx_restdoc_utility::getMetadata($this->conf['path']);
+		$metadata = Tx_Restdoc_Utility_Helper::getMetadata($this->conf['path']);
 		if (!empty($metadata['release'])) {
 			$version = $metadata['release'];
 		} elseif (!empty($metadata['version'])) {
@@ -396,7 +396,7 @@ JS;
 		$data['home_uri_absolute'] = $this->getLink('', TRUE);
 
 		if (isset($jsonData['prev'])) {
-			$absolute = tx_restdoc_utility::relativeToAbsolute($documentRoot . $document, '../' . $jsonData['prev']['link']);
+			$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($documentRoot . $document, '../' . $jsonData['prev']['link']);
 			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 			$linkAbsolute = $this->getLink(substr($absolute, strlen($documentRoot)), TRUE);
 
@@ -407,7 +407,7 @@ JS;
 
 		if (isset($jsonData['next'])) {
 			$nextDocument = $document === $this->getDefaultFile() . '/' ? $documentRoot : $documentRoot . $document;
-			$absolute = tx_restdoc_utility::relativeToAbsolute($nextDocument, '../' . $jsonData['next']['link']);
+			$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($nextDocument, '../' . $jsonData['next']['link']);
 			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 			$linkAbsolute = $this->getLink(substr($absolute, strlen($documentRoot)), TRUE);
 
@@ -418,7 +418,7 @@ JS;
 
 		if (count($jsonData['parents']) > 0) {
 			$parent = array_pop($jsonData['parents']);
-			$absolute = tx_restdoc_utility::relativeToAbsolute($documentRoot . $document, '../' . $parent['link']);
+			$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($documentRoot . $document, '../' . $parent['link']);
 			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 			$linkAbsolute = $this->getLink(substr($absolute, strlen($documentRoot)), TRUE);
 
@@ -790,7 +790,7 @@ HTML;
 					// $document's last part is a document, not a directory
 					$document = substr($document, 0, strrpos(rtrim($document, '/'), '/'));
 				}
-				$absolute = tx_restdoc_utility::relativeToAbsolute($root . $document, $matches[2]);
+				$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($root . $document, $matches[2]);
 				$document = substr($absolute, strlen($root));
 			}
 			$url = $plugin->getLink($document);
@@ -849,7 +849,7 @@ HTML;
 					}
 				}
 			}
-			$src = tx_restdoc_utility::relativeToAbsolute($root, $attributes['src']);
+			$src = Tx_Restdoc_Utility_Helper::relativeToAbsolute($root, $attributes['src']);
 			$attributes['src'] = substr($src, strlen(PATH_site));
 
 			/** @var $contentObj tslib_cObj */
