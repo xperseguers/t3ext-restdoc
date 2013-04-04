@@ -431,7 +431,7 @@ JS;
 			$link = $this->getLink('genindex/');
 			$linkAbsolute = $this->getLink('genindex/', TRUE);
 
-			$data['index_title'] = $this->pi_getLL('quicknavigation_index', 'index');
+			$data['index_title'] = $this->pi_getLL('index_title', 'Index');
 			$data['index_uri'] = $link;
 			$data['index_uri_absolute'] = $linkAbsolute;
 		}

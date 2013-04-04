@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-04-04T12:23:56Z" product-name="restdoc">
+		<header/>
+		<body>
+			<trans-unit id="pi1_title">
+				<source>reST Documentation Viewer</source>
+			</trans-unit>
+			<trans-unit id="pi1_plus_wiz_description">
+				<source>Adds a viewer for a ReStructuredText documentation.</source>
+			</trans-unit>
+			<trans-unit id="header_toc">
+				<source>Table of Contents</source>
+			</trans-unit>
+			<trans-unit id="header_previous_topic">
+				<source>Previous Topic</source>
+			</trans-unit>
+			<trans-unit id="header_next_topic">
+				<source>Next Topic</source>
+			</trans-unit>
+			<trans-unit id="quicknavigation_home">
+				<source>home</source>
+			</trans-unit>
+			<trans-unit id="quicknavigation_previous_topic">
+				<source>previous</source>
+			</trans-unit>
+			<trans-unit id="quicknavigation_next_topic">
+				<source>next</source>
+			</trans-unit>
+			<trans-unit id="quicknavigation_index">
+				<source>index</source>
+			</trans-unit>
+			<trans-unit id="search_placeholder">
+				<source>search</source>
+			</trans-unit>
+			<trans-unit id="search_action">
+				<source>search</source>
+			</trans-unit>
+			<trans-unit id="index_title">
+				<source>Index</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

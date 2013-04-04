@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-04-04T12:23:51Z" product-name="restdoc">
+		<header/>
+		<body>
+			<trans-unit id="tt_content.list_type_pi1">
+				<source>reST Documentation Viewer</source>
+			</trans-unit>
+			<trans-unit id="pi_flexform.sheet_general">
+				<source>General</source>
+			</trans-unit>
+			<trans-unit id="pi_flexform.path">
+				<source>Documentation Root:</source>
+			</trans-unit>
+			<trans-unit id="pi_flexform.path.wizard">
+				<source>Select the path to the documentation</source>
+			</trans-unit>
+			<trans-unit id="pi_flexform.rootPage">
+				<source>Page showing the documentation:</source>
+			</trans-unit>
+			<trans-unit id="pi_flexform.mode">
+				<source>Show:</source>
+			</trans-unit>
+			<trans-unit id="pi_flexform.mode.BODY">
+				<source>Documentation</source>
+			</trans-unit>
+			<trans-unit id="pi_flexform.mode.TOC">
+				<source>Table of contents</source>
+			</trans-unit>
+			<trans-unit id="pi_flexform.mode.RECENT">
+				<source>Recently updated chapters</source>
+			</trans-unit>
+			<trans-unit id="pi_flexform.mode.QUICK_NAVIGATION">
+				<source>Quick navigation</source>
+			</trans-unit>
+			<trans-unit id="pi_flexform.mode.SEARCH">
+				<source>Search form</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
