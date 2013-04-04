@@ -239,7 +239,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 					return ' href="' . $url . '"';
 				}, $toc);
 
-				$data = Tx_Restdoc_Utility_Helper::getMenuData(Tx_Restdoc_Utility_Helper::xmlstr_to_array($toc));
+				$data = $toc ? Tx_Restdoc_Utility_Helper::getMenuData(Tx_Restdoc_Utility_Helper::xmlstr_to_array($toc)) : array();
 
 				// Mark the first entry as 'active'
 				$data[0]['ITEM_STATE'] = 'CUR';
