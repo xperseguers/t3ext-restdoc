@@ -1,5 +1,6 @@
 2013-04-04  Xavier Perseguers  <xavier@causal.ch>
 
+	* [!!!][TASK] Refactor extension's directory structure: Resources
 	* [TASK][DOC] Rework introduction to better explain what this extension does
 	* [TASK] Replace extension's icon with small eye from Sphinx
 	* [TASK] Add an icon to the new content element wizard

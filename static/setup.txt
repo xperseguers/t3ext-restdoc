@@ -49,18 +49,18 @@ plugin.tx_restdoc_pi1 {
 				2 < .1
 
 				stdWrap.preCObject = TEXT
-				stdWrap.preCObject.data = LLL:EXT:restdoc/pi1/locallang.xml:header_toc
+				stdWrap.preCObject.data = LLL:EXT:restdoc/Resources/Private/Language/locallang.xml:header_toc
 				stdWrap.preCObject.wrap = <h2> | </h2>
 			}
 
 			20 < .10
-			20.stdWrap.preCObject.data = LLL:EXT:restdoc/pi1/locallang.xml:header_previous_topic
+			20.stdWrap.preCObject.data = LLL:EXT:restdoc/Resources/Private/Language/locallang.xml:header_previous_topic
 			20.stdWrap.preCObject.wrap = <h3> | </h3>
 			20.stdWrap.required = 1
 			20.special.userFunc.type = previous
 
 			30 < .20
-			30.stdWrap.preCObject.data = LLL:EXT:restdoc/pi1/locallang.xml:header_next_topic
+			30.stdWrap.preCObject.data = LLL:EXT:restdoc/Resources/Private/Language/locallang.xml:header_next_topic
 			30.special.userFunc.type = next
 		}
 	}
@@ -100,7 +100,7 @@ plugin.tx_restdoc_pi1 {
 		renderObj {
 			10 = TEXT
 			10 {
-				data = LLL:EXT:restdoc/pi1/locallang.xml:quicknavigation_home
+				data = LLL:EXT:restdoc/Resources/Private/Language/locallang.xml:quicknavigation_home
 				typolink.parameter.field = home_uri
 			}
 			11 = TEXT
@@ -109,7 +109,7 @@ plugin.tx_restdoc_pi1 {
 
 			20 = TEXT
 			20 {
-				data = LLL:EXT:restdoc/pi1/locallang.xml:quicknavigation_previous_topic
+				data = LLL:EXT:restdoc/Resources/Private/Language/locallang.xml:quicknavigation_previous_topic
 				typolink.parameter.field = previous_uri
 				typolink.title.field = previous_title
 				if.isTrue.field = has_previous
@@ -123,7 +123,7 @@ plugin.tx_restdoc_pi1 {
 
 			30 = TEXT
 			30 {
-				data = LLL:EXT:restdoc/pi1/locallang.xml:quicknavigation_next_topic
+				data = LLL:EXT:restdoc/Resources/Private/Language/locallang.xml:quicknavigation_next_topic
 				typolink.parameter.field = next_uri
 				typolink.title.field = next_title
 				if.isTrue.field = has_next
@@ -133,7 +133,7 @@ plugin.tx_restdoc_pi1 {
 
 			40 = TEXT
 			40 {
-				data = LLL:EXT:restdoc/pi1/locallang.xml:quicknavigation_index
+				data = LLL:EXT:restdoc/Resources/Private/Language/locallang.xml:quicknavigation_index
 				typolink.parameter.field = index_uri
 				typolink.title.data < .data
 				if.isTrue.field = has_index

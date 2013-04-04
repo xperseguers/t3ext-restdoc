@@ -636,9 +636,9 @@ JS;
 
 		$config = array(
 			'jsLibs' => array(
-				'res/underscore.js',
-				'res/doctools.js',
-				'res/searchtools.js'
+				'Resources/Public/JavaScript/underscore.js',
+				'Resources/Public/JavaScript/doctools.js',
+				'Resources/Public/JavaScript/searchtools.js'
 			),
 			'jsInline' => '',
 			'advertiseSphinx' => TRUE,

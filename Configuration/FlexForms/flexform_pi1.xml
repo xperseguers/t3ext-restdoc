@@ -7,14 +7,14 @@
 		<sDEF>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>LLL:EXT:restdoc/locallang_db.xml:pi_flexform.sheet_general</sheetTitle>
+					<sheetTitle>LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.sheet_general</sheetTitle>
 				</TCEforms>
 				<type>array</type>
 				<el>
 					<path>
 						<TCEforms>
 							<exclude>0</exclude>
-							<label>LLL:EXT:restdoc/locallang_db.xml:pi_flexform.path</label>
+							<label>LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.path</label>
 							<config>
 								<type>input</type>
 								<size>48</size>
@@ -23,7 +23,7 @@
 									<_PADDING>2</_PADDING>
 									<link type="array">
 										<type>popup</type>
-										<title>LLL:EXT:restdoc/locallang_db.xml:pi_flexform.path.wizard</title>
+										<title>LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.path.wizard</title>
 										<icon>link_popup.gif</icon>
 										<script>browse_links.php?mode=wizard&amp;act=folder</script>
 										<params type="array">
@@ -38,28 +38,28 @@
 					<mode>
 						<TCEforms>
 							<exclude>0</exclude>
-							<label>LLL:EXT:restdoc/locallang_db.xml:pi_flexform.mode</label>
+							<label>LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.mode</label>
 							<config>
 								<type>select</type>
 								<items>
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:restdoc/locallang_db.xml:pi_flexform.mode.BODY</numIndex>
+										<numIndex index="0">LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.mode.BODY</numIndex>
 										<numIndex index="1">BODY</numIndex>
 									</numIndex>
 									<numIndex index="2" type="array">
-										<numIndex index="0">LLL:EXT:restdoc/locallang_db.xml:pi_flexform.mode.TOC</numIndex>
+										<numIndex index="0">LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.mode.TOC</numIndex>
 										<numIndex index="1">TOC</numIndex>
 									</numIndex>
 									<numIndex index="3" type="array">
-										<numIndex index="0">LLL:EXT:restdoc/locallang_db.xml:pi_flexform.mode.RECENT</numIndex>
+										<numIndex index="0">LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.mode.RECENT</numIndex>
 										<numIndex index="1">RECENT</numIndex>
 									</numIndex>
 									<numIndex index="4" type="array">
-										<numIndex index="0">LLL:EXT:restdoc/locallang_db.xml:pi_flexform.mode.QUICK_NAVIGATION</numIndex>
+										<numIndex index="0">LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.mode.QUICK_NAVIGATION</numIndex>
 										<numIndex index="1">QUICK_NAVIGATION</numIndex>
 									</numIndex>
 									<numIndex index="5" type="array">
-										<numIndex index="0">LLL:EXT:restdoc/locallang_db.xml:pi_flexform.mode.SEARCH</numIndex>
+										<numIndex index="0">LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.mode.SEARCH</numIndex>
 										<numIndex index="1">SEARCH</numIndex>
 									</numIndex>
 								</items>
@@ -72,7 +72,7 @@
 					<rootPage>
 						<TCEforms>
 							<exclude>0</exclude>
-							<label>LLL:EXT:restdoc/locallang_db.xml:pi_flexform.rootPage</label>
+							<label>LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.rootPage</label>
 							<displayCond><![CDATA[FIELD:mode:=:SEARCH]]></displayCond>
 							<config>
 								<type>group</type>

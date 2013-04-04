@@ -45,7 +45,7 @@ class tx_restdoc_pi1_wizicon {
 		$LL = $this->includeLocalLang();
 
 		$wizardItems['plugins_tx_restdoc_pi1'] = array(
-			'icon'        => t3lib_extMgm::extRelPath('restdoc') . 'res/pi1_ce_wizard.png',
+			'icon'        => t3lib_extMgm::extRelPath('restdoc') . 'Resources/Public/Icons/pi1_ce_wizard.png',
 			'title'       => $GLOBALS['LANG']->getLLL('pi1_title', $LL),
 			'description' => $GLOBALS['LANG']->getLLL('pi1_plus_wiz_description', $LL),
 			'params'      => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=restdoc_pi1'
@@ -60,7 +60,7 @@ class tx_restdoc_pi1_wizicon {
 	 * @return array The array with language labels
 	 */
 	protected function includeLocalLang() {
-		$llFile = t3lib_extMgm::extPath('restdoc') . 'pi1/locallang.xml';
+		$llFile = t3lib_extMgm::extPath('restdoc') . 'Resources/Private/Language/locallang.xml';
 		return $GLOBALS['LANG']->includeLLFile($llFile, FALSE);
 	}
 }
