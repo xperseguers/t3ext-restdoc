@@ -884,6 +884,10 @@ HTML;
 	protected function init(array $conf) {
 		$this->conf = $conf;
 
+		if (isset($this->conf['oldStaticInclude']) && $this->conf['oldStaticInclude']) {
+			t3lib_div::deprecationLog('EXT:' . $this->extKey . ' - Inclusion of old static TS. This is deprecated since 1.2.0 and will be removed in 1.4.0.');
+		}
+
 		// Apply stdWrap on a few TypoScript configuration options
 		$this->applyStdWrap($this->conf, 'path');
 		$this->applyStdWrap($this->conf, 'defaultFile');

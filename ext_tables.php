@@ -18,7 +18,8 @@ $TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY . '_pi1'] = 'pi
 t3lib_extMgm::addPiFlexFormValue($_EXTKEY . '_pi1', 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/flexform_pi1.xml');
 
 // Initialize static extension templates
-t3lib_extMgm::addStaticFile($GLOBALS['_EXTKEY'], 'static/', 'reST Documentation Viewer');
+t3lib_extMgm::addStaticFile($GLOBALS['_EXTKEY'], 'static/', 'reST Documentation Viewer [DEPRECATED]');
+t3lib_extMgm::addStaticFile($GLOBALS['_EXTKEY'], 'Configuration/TypoScript/', 'reST Documentation Viewer');
 
 if (TYPO3_MODE === 'BE') {
 	$TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['tx_' . $_EXTKEY . '_pi1_wizicon'] = t3lib_extMgm::extPath($_EXTKEY) . 'pi1/class.tx_restdoc_pi1_wizicon.php';
