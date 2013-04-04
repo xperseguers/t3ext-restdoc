@@ -1,0 +1,6 @@
+# BEWARE: This file is deprecated since 1.2.0 and will be removed in 1.4.0
+
+<INCLUDE_TYPOSCRIPT: source="FILE: EXT:restdoc/Configuration/TypoScript/setup.txt">
+
+# internal undocumented parameter to detect the old inclusion
+plugin.tx_restdoc_pi1.oldStaticInclude = 1
