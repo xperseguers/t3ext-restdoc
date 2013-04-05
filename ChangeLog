@@ -1,5 +1,9 @@
 2013-04-04  Xavier Perseguers  <xavier@causal.ch>
 
+	* [BUGFIX] Possible NULL pointer exception if invalid TOC is retrieved
+
+2013-04-04  Xavier Perseguers  <xavier@causal.ch>
+
 	* [TASK] Raise version to 1.2.0
 	* [TASK] Add XLIFF variant of the localization files
 	* [TASK] Some labels are hardcoded
