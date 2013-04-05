@@ -47,6 +47,9 @@ class Tx_Restdoc_Reader_SphinxJson {
 	/** @var boolean */
 	protected $keepPermanentLinks = FALSE;
 
+	/** @var boolean */
+	protected $fallbackToDefaultFile = FALSE;
+
 	/** @var string */
 	protected $defaultFile = 'index';
 
@@ -124,6 +127,17 @@ class Tx_Restdoc_Reader_SphinxJson {
 	}
 
 	/**
+	 * Silently falls back to default document instead of throwing an
+	 * error if an invalid document is specified.
+	 *
+	 * @return $this
+	 */
+	public function enableDefaultDocumentFallback() {
+		$this->fallbackToDefaultFile = TRUE;
+		return $this;
+	}
+
+	/**
 	 * Sets the default file (e.g., 'index').
 	 *
 	 * @param string $defaultFile
@@ -172,6 +186,17 @@ class Tx_Restdoc_Reader_SphinxJson {
 		$fileExists = is_file($filename);
 		if ($fileExists && substr(realpath($filename), 0, strlen(realpath($this->path))) !== realpath($this->path)) {
 			$fileExists = FALSE;
+		}
+		if (!$fileExists && $this->fallbackToDefaultFile) {
+			$defaultDocument = $this->getDefaultFile() . '/';
+			$defaultJsonFilename = substr($defaultDocument, 0, strlen($defaultDocument) - 1) . '.fjson';
+			$defaultFilename = $this->path . $defaultJsonFilename;
+			if (is_file($defaultFilename)) {
+				$this->document = $defaultDocument;
+				$this->jsonFilename = $defaultJsonFilename;
+				$filename = $defaultFilename;
+				$fileExists = TRUE;
+			}
 		}
 		if (!$fileExists) {
 			throw new RuntimeException('File not found: ' . $this->jsonFilename, 1365165515);
