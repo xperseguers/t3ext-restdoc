@@ -54,12 +54,16 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	 */
 	protected static $current = array();
 
+	/** @var Tx_Restdoc_Reader_SphinxJson */
+	protected static $sphinxReader;
+
 	/**
 	 * The main method of the Plugin.
 	 *
 	 * @param string $content The plugin content
 	 * @param array $conf The plugin configuration
 	 * @return string The content that is displayed on the website
+	 * @throws RuntimeException
 	 */
 	public function main($content, array $conf) {
 		$this->init($conf);
@@ -85,29 +89,25 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			}
 		}
 
-		$jsonFile = substr($document, 0, strlen($document) - 1) . '.fjson';
-		if (!is_file($documentRoot . $jsonFile)) {
-			$document = self::$defaultFile . '/';
-			$jsonFile = self::$defaultFile . '.fjson';
-		}
-		if (!is_file($documentRoot . $jsonFile)) {
-			return sprintf('Invalid path for the reST documentation. File %s%s not found.', $this->conf['path'], $jsonFile);
+		self::$sphinxReader = t3lib_div::makeInstance('Tx_Restdoc_Reader_SphinxJson');
+		self::$sphinxReader
+			->setPath($documentRoot)
+			->setDocument($document)
+			->setKeepPermanentLinks(!$this->conf['showPermanentLink'])
+			->setDefaultFile($this->conf['defaultFile']);
+
+		try {
+			if (!self::$sphinxReader->load()) {
+				throw new RuntimeException('Document failed to load', 1365166377);
+			};
+		} catch (RuntimeException $e) {
+			return $e->getMessage();
 		}
 
-		// Security check
-		if (substr(realpath($documentRoot . $jsonFile), 0, strlen(realpath($documentRoot))) !== realpath($documentRoot)) {
-			$document = self::$defaultFile . '/';
-			$jsonFile = self::$defaultFile . '.fjson';
-		}
-
-		$content = file_get_contents($documentRoot . $jsonFile);
-		$jsonData = json_decode($content, TRUE);
+		$jsonData = self::$sphinxReader->getData();
 		$skipDefaultWrap = FALSE;
 
 		self::$current = array(
-			'documentRoot'  => $documentRoot,
-			'document'      => $document,
-			'jsonData'      => $jsonData,
 			'path'          => $this->conf['path'],
 			'pathSeparator' => $this->conf['pathSeparator'],
 		);
@@ -140,7 +140,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 					$output = $this->cObj->cObjGetSingle($this->renderingConfig['renderObj'], $this->renderingConfig['renderObj.']);
 					break;
 				case 'FILENAME':
-					$output = $jsonFile;
+					$output = self::$sphinxReader->getJsonFilename();
 					$skipDefaultWrap = TRUE;
 					break;
 				case 'SEARCH':
@@ -164,7 +164,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 					$skipDefaultWrap = TRUE;
 					break;
 				case 'FILENAME':
-					$output = $jsonFile;
+					$output = self::$sphinxReader->getJsonFilename();
 					$skipDefaultWrap = TRUE;
 					break;
 				default:
@@ -222,22 +222,13 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		$data = array();
 		$type = isset($conf['userFunc.']['type']) ? $conf['userFunc.']['type'] : 'menu';
 
-		$documentRoot = self::$current['documentRoot'];
-		$document = self::$current['document'];
-		$jsonData = self::$current['jsonData'];
+		$documentRoot = self::$sphinxReader->getPath();
+		$document = self::$sphinxReader->getDocument();
+		$jsonData = self::$sphinxReader->getData();
 
 		switch ($type) {
 			case 'menu':
-				// Replace links in table of contents
-				$toc = $this->replaceLinks($documentRoot, $document, $jsonData['toc']);
-				// Remove empty sublevels
-				$toc = preg_replace('#<ul>\s*</ul>#', '', $toc);
-				// Fix TOC to make it XML compliant
-				$toc = preg_replace_callback('# href="([^"]+)"#', function($matches) {
-					$url = str_replace('&amp;', '&', $matches[1]);
-					$url = str_replace('&', '&amp;', $url);
-					return ' href="' . $url . '"';
-				}, $toc);
+				$toc = self::$sphinxReader->getTableOfContents(array($this, 'getLink'));
 
 				$data = $toc ? Tx_Restdoc_Utility_Helper::getMenuData(Tx_Restdoc_Utility_Helper::xmlstr_to_array($toc)) : array();
 
@@ -248,7 +239,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			case 'previous':
 				if (isset($jsonData['prev'])) {
 					$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($documentRoot . $document, '../' . $jsonData['prev']['link']);
-					$link = $this->getLink(substr($absolute, strlen(self::$current['documentRoot'])));
+					$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 					$data[] = array(
 						'title' => $jsonData['prev']['title'],
 						'_OVERRIDE_HREF' => $link,
@@ -328,8 +319,8 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['makeMenuArrayHook'] as $classRef) {
 				$hookObject = t3lib_div::getUserObj($classRef);
 				$params = array(
-					'documentRoot' => self::$current['documentRoot'],
-					'document' => self::$current['document'],
+					'documentRoot' => $documentRoot,
+					'document' => $document,
 					'data' => &$data,
 					'pObj' => $this,
 				);
@@ -386,9 +377,9 @@ JS;
 	protected function generateQuickNavigation() {
 		$this->renderingConfig = $this->conf['setup.']['QUICK_NAVIGATION.'];
 
-		$documentRoot = self::$current['documentRoot'];
-		$document = self::$current['document'];
-		$jsonData = self::$current['jsonData'];
+		$documentRoot = self::$sphinxReader->getPath();
+		$document = self::$sphinxReader->getDocument();
+		$jsonData = self::$sphinxReader->getData();
 
 		$data = array();
 		$data['home_title'] = 'home';
@@ -610,15 +601,10 @@ JS;
 	 */
 	protected function generateBody() {
 		$this->renderingConfig = $this->conf['setup.']['BODY.'];
-		$body = self::$current['jsonData']['body'];
-		if (!$this->conf['showPermanentLink']) {
-			// Remove permanent links in body
-			$body = preg_replace('#<a class="headerlink" [^>]+>[^<]+</a>#', '', $body);
-		}
-		// Replace links in body
-		$body = $this->replaceLinks(self::$current['documentRoot'], self::$current['document'], $body);
+		$body = self::$sphinxReader->getBody(array($this, 'getLink'));
+
 		// Replace images in body
-		$body = $this->replaceImages(self::$current['documentRoot'] . self::$current['document'], $body);
+		$body = $this->replaceImages(self::$sphinxReader->getPath() . self::$sphinxReader->getDocument(), $body);
 
 		return $body;
 	}
@@ -629,7 +615,7 @@ JS;
 	 * @return string
 	 */
 	protected function generateSearchForm() {
-		$searchIndexFile = self::$current['documentRoot'] . 'searchindex.json';
+		$searchIndexFile = self::$sphinxReader->getPath() . 'searchindex.json';
 		if (!is_file($searchIndexFile)) {
 			return 'ERROR: File ' . $this->conf['path'] . 'searchindex.js was not found.';
 		}
@@ -760,45 +746,6 @@ HTML;
 			}
 		}
 		return $link;
-	}
-
-	/**
-	 * Replaces links in a reST document.
-	 *
-	 * @param string $root
-	 * @param string $document
-	 * @param string $content
-	 * @return string
-	 */
-	protected function replaceLinks($root, $document, $content) {
-		$plugin = $this;
-		$ret = preg_replace_callback('#(<a .*? href=")([^"]+)#', function($matches) use ($plugin, $root, $document) {
-			/** @var $plugin tx_restdoc_pi1 */
-			$anchor = '';
-			if (preg_match('#^[a-zA-Z]+://#', $matches[2])) {
-				// External URL
-				return $matches[0];
-			} elseif ($matches[2]{0} === '#') {
-				$anchor = $matches[2];
-			}
-
-			if ($anchor !== '') {
-				$document .= $anchor;
-			} else {
-				$defaultDocument = $plugin->getDefaultFile() . '/';
-				if ($document === $defaultDocument || t3lib_div::isFirstPartOfStr($matches[2], '../')) {
-					// $document's last part is a document, not a directory
-					$document = substr($document, 0, strrpos(rtrim($document, '/'), '/'));
-				}
-				$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($root . $document, $matches[2]);
-				$document = substr($absolute, strlen($root));
-			}
-			$url = $plugin->getLink($document);
-			$url = str_replace('&amp;', '&', $url);
-			$url = str_replace('&', '&amp;', $url);
-			return $matches[1] . $url;
-		}, $content);
-		return $ret;
 	}
 
 	/**
