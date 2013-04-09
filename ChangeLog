@@ -1,3 +1,7 @@
+2013-04-09  Xavier Perseguers  <xavier@causal.ch>
+
+	* [BUGFIX] #47077: Invalid index definition for tx_restdoc_toc
+
 2013-04-04  Xavier Perseguers  <xavier@causal.ch>
 
 	* [BUGFIX] Possible NULL pointer exception if invalid TOC is retrieved
