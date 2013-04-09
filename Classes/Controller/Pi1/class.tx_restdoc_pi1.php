@@ -631,18 +631,25 @@ JS;
 	protected function generateSearchForm() {
 		$searchIndexFile = self::$current['documentRoot'] . 'searchindex.json';
 		if (!is_file($searchIndexFile)) {
-			return 'ERROR: File ' . $this->conf['path'] . 'searchindex.js was not found.';
+			return 'ERROR: File ' . $this->conf['path'] . 'searchindex.json was not found.';
 		}
+
+		$metadata = Tx_Restdoc_Utility_Helper::getMetadata($this->conf['path']);
+		$sphinxVersion = isset($metadata['sphinx_version']) ? $metadata['sphinx_version'] : '1.1.3';
 
 		$config = array(
 			'jsLibs' => array(
 				'Resources/Public/JavaScript/underscore.js',
 				'Resources/Public/JavaScript/doctools.js',
-				'Resources/Public/JavaScript/searchtools.js'
+				// Sphinx search library differs in branch v1.2
+				t3lib_div::isFirstPartOfStr($sphinxVersion, '1.2')
+					? 'Resources/Public/JavaScript/searchtools.12.js'
+					: 'Resources/Public/JavaScript/searchtools.js'
 			),
 			'jsInline' => '',
 			'advertiseSphinx' => TRUE,
 		);
+
 		$searchIndexContent = file_get_contents($searchIndexFile);
 		$config['jsInline'] = <<<JS
 jQuery(function() { Search.setIndex($searchIndexContent); });
