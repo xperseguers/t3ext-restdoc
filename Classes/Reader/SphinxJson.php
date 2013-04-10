@@ -223,14 +223,18 @@ class Tx_Restdoc_Reader_SphinxJson {
 	 * Returns the BODY of the documentation.
 	 *
 	 * @param callback $callbackLinks Callback to generate Links in current context
+	 * @param callback $callbackImages function to process images in current context
 	 * @return string
 	 * @throws RuntimeException
 	 */
-	public function getBody($callbackLinks) {
+	public function getBody($callbackLinks, $callbackImages) {
 		$this->enforceIsLoaded();
 		$callableName = '';
 		if (!is_callable($callbackLinks, FALSE, $callableName)) {
 			throw new RuntimeException('Invalid callback for links: ' . $callableName, 1365172111);
+		}
+		if (!is_callable($callbackImages, FALSE, $callableName)) {
+			throw new RuntimeException('Invalid callback for images: ' . $callableName, 1365630854);
 		}
 
 		$body = $this->data['body'];
@@ -241,6 +245,9 @@ class Tx_Restdoc_Reader_SphinxJson {
 
 		// Replace links in body
 		$body = $this->replaceLinks($body, $callbackLinks);
+
+		// Replace images in body
+		$body = $this->replaceImages($body, $callbackImages);
 
 		return $body;
 	}
@@ -308,6 +315,62 @@ class Tx_Restdoc_Reader_SphinxJson {
 			$url = str_replace('&', '&amp;', $url);
 			return $matches[1] . $url;
 		}, $content);
+		return $ret;
+	}
+
+	/**
+	 * Replaces images in a reST document.
+	 *
+	 * @param string $content
+	 * @param callback $callbackImages function to process images in current context
+	 * @return string
+	 * @link http://w-shadow.com/blog/2009/10/20/how-to-extract-html-tags-and-their-attributes-with-php/
+	 */
+	protected function replaceImages($content, $callbackImages) {
+		$root = $this->path . $this->document;
+		// $root's last part is a document, not a directory
+		$root = substr($root, 0, strrpos(rtrim($root, '/'), '/'));
+		$tagPattern =
+			'@<img                      # <img
+			(?P<attributes>\s[^>]+)?    # attributes, if any
+			\s*/>                       # />
+			@xsi';
+		$attributePattern =
+			'@
+				(?P<name>\w+)                                           # attribute name
+				\s*=\s*
+				(
+					(?P<quote>[\"\'])(?P<value_quoted>.*?)(?P=quote)    # a quoted value
+					|                                                   # or
+					(?P<value_unquoted>[^\s"\']+?)(?:\s+|$)             # an unquoted value (terminated by whitespace or EOF)
+				)
+			@xsi';
+
+		$ret = preg_replace_callback($tagPattern, function($matches) use ($root, $attributePattern, $callbackImages) {
+			// Parse tag attributes, if any
+			$attributes = array();
+			if (!empty($matches['attributes'][0])) {
+				if (preg_match_all($attributePattern, $matches['attributes'], $attributeData, PREG_SET_ORDER)) {
+					// Turn the attribute data into a name->value array
+					foreach ($attributeData as $attr) {
+						if (!empty($attr['value_quoted'])) {
+							$value = $attr['value_quoted'];
+						} elseif (!empty($attr['value_unquoted'])) {
+							$value = $attr['value_unquoted'];
+						} else {
+							$value = '';
+						}
+
+						$value = html_entity_decode($value, ENT_QUOTES, 'utf-8');
+						$attributes[$attr['name']] = $value;
+					}
+				}
+			}
+			$src = Tx_Restdoc_Utility_Helper::relativeToAbsolute($root, $attributes['src']);
+			$attributes['src'] = substr($src, strlen(PATH_site));
+			return call_user_func($callbackImages, $attributes);
+		}, $content);
+
 		return $ret;
 	}
 
