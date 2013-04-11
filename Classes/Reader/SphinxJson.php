@@ -35,6 +35,9 @@
  */
 class Tx_Restdoc_Reader_SphinxJson {
 
+	/** @var \TYPO3\CMS\Core\Resource\ResourceStorage */
+	protected $storage = NULL;
+
 	/** @var string */
 	protected $path = NULL;
 
@@ -55,6 +58,26 @@ class Tx_Restdoc_Reader_SphinxJson {
 
 	/** @var array */
 	protected $data = array();
+
+	/**
+	 * Sets the storage.
+	 *
+	 * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storage
+	 * @return $this
+	 */
+	public function setStorage(/* \TYPO3\CMS\Core\Resource\ResourceStorage */ $storage) {
+		$this->storage = $storage;
+		return $this;
+	}
+
+	/**
+	 * Returns the storage.
+	 *
+	 * @return \TYPO3\CMS\Core\Resource\ResourceStorage
+	 */
+	public function getStorage() {
+		return $this->storage;
+	}
 
 	/**
 	 * Sets the root path to the documentation.
@@ -327,6 +350,7 @@ class Tx_Restdoc_Reader_SphinxJson {
 	 * @link http://w-shadow.com/blog/2009/10/20/how-to-extract-html-tags-and-their-attributes-with-php/
 	 */
 	protected function replaceImages($content, $callbackImages) {
+		$self = $this;
 		$root = $this->path . $this->document;
 		// $root's last part is a document, not a directory
 		$root = substr($root, 0, strrpos(rtrim($root, '/'), '/'));
@@ -346,7 +370,7 @@ class Tx_Restdoc_Reader_SphinxJson {
 				)
 			@xsi';
 
-		$ret = preg_replace_callback($tagPattern, function($matches) use ($root, $attributePattern, $callbackImages) {
+		$ret = preg_replace_callback($tagPattern, function($matches) use ($self, $root, $attributePattern, $callbackImages) {
 			// Parse tag attributes, if any
 			$attributes = array();
 			if (!empty($matches['attributes'][0])) {
@@ -367,7 +391,14 @@ class Tx_Restdoc_Reader_SphinxJson {
 				}
 			}
 			$src = Tx_Restdoc_Utility_Helper::relativeToAbsolute($root, $attributes['src']);
-			$attributes['src'] = substr($src, strlen(PATH_site));
+			if (version_compare(TYPO3_version, '6.0.0', '>=')) {
+				$storageConfiguration = $self->getStorage()->getConfiguration();
+				$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
+				$fileIdentifier = substr($src, strlen($basePath) - 1);
+				$attributes['src'] = $self->getStorage()->getUid() . ':' . $fileIdentifier;
+			} else {
+				$attributes['src'] = substr($src, strlen(PATH_site));
+			}
 			return call_user_func($callbackImages, $attributes);
 		}, $content);
 

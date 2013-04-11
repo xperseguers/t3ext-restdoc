@@ -71,7 +71,14 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		$this->pi_loadLL();
 		$this->pi_USER_INT_obj = 1;    // USER_INT object
 
-		$documentRoot = PATH_site . rtrim($this->conf['path'], '/') . '/';
+		if (version_compare(TYPO3_version, '6.0.0', '>=')) {
+			$storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
+			$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
+		} else {
+			$basePath = PATH_site;
+		}
+
+		$documentRoot = $basePath . rtrim($this->conf['path'], '/') . '/';
 		$document = self::$defaultFile . '/';
 		$pathSeparators = isset($this->conf['fallbackPathSeparators']) ? t3lib_div::trimExplode(',', $this->conf['fallbackPathSeparators'], TRUE) : array();
 		$pathSeparators[] = $this->conf['pathSeparator'];
@@ -89,7 +96,6 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			}
 		}
 
-		self::$sphinxReader = t3lib_div::makeInstance('Tx_Restdoc_Reader_SphinxJson');
 		self::$sphinxReader
 			->setPath($documentRoot)
 			->setDocument($document)
@@ -214,6 +220,15 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	}
 
 	/**
+	 * Returns the Sphinx Reader.
+	 *
+	 * @return Tx_Restdoc_Reader_SphinxJson
+	 */
+	public function getSphinxReader() {
+		return self::$sphinxReader;
+	}
+
+	/**
 	 * Generates the array for rendering the reST menu in TypoScript.
 	 *
 	 * @param string $content
@@ -223,6 +238,13 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	public function makeMenuArray($content, array $conf) {
 		$data = array();
 		$type = isset($conf['userFunc.']['type']) ? $conf['userFunc.']['type'] : 'menu';
+
+		if (version_compare(TYPO3_version, '6.0.0', '>=')) {
+			$storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
+			$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
+		} else {
+			$basePath = PATH_site;
+		}
 
 		$documentRoot = self::$sphinxReader->getPath();
 		$document = self::$sphinxReader->getDocument();
@@ -297,10 +319,12 @@ class tx_restdoc_pi1 extends tslib_pibase {
 				if ($maxAge > 0) {
 					$extraWhere .= ' AND ' . $sortField . '>' . ($GLOBALS['SIM_ACCESS_TIME'] - $maxAge);
 				}
+				// TODO: prefix root entries with the storage UID when using FAL, to prevent clashes with multiple
+				//       directories with similar names
 				$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 					'*',
 					'tx_restdoc_toc',
-					'root=' . $GLOBALS['TYPO3_DB']->fullQuoteStr(substr($documentRoot, strlen(PATH_site)), 'tx_restdoc_toc') .
+					'root=' . $GLOBALS['TYPO3_DB']->fullQuoteStr(substr($documentRoot, strlen($basePath)), 'tx_restdoc_toc') .
 						$extraWhere,
 					'',
 					$sortField . ' DESC',
@@ -341,7 +365,13 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	 * @return void
 	 */
 	protected function advertiseSphinx() {
-		$metadata = Tx_Restdoc_Utility_Helper::getMetadata($this->conf['path']);
+		if (version_compare(TYPO3_version, '6.0.0', '>=')) {
+			$storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
+			$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
+		} else {
+			$basePath = PATH_site;
+		}
+		$metadata = Tx_Restdoc_Utility_Helper::getMetadata($basePath . $this->conf['path']);
 		if (!empty($metadata['release'])) {
 			$version = $metadata['release'];
 		} elseif (!empty($metadata['version'])) {
@@ -621,7 +651,14 @@ JS;
 			return 'ERROR: File ' . $this->conf['path'] . 'searchindex.json was not found.';
 		}
 
-		$metadata = Tx_Restdoc_Utility_Helper::getMetadata($this->conf['path']);
+		if (version_compare(TYPO3_version, '6.0.0', '>=')) {
+			$storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
+			$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
+		} else {
+			$basePath = PATH_site;
+		}
+
+		$metadata = Tx_Restdoc_Utility_Helper::getMetadata($basePath . $this->conf['path']);
 		$sphinxVersion = isset($metadata['sphinx_version']) ? $metadata['sphinx_version'] : '1.1.3';
 
 		$config = array(
@@ -763,7 +800,7 @@ HTML;
 	 * @return string
 	 * @private This method is made public to be accessible from a lambda-function scope
 	 */
-	public  function processImage(array $data) {
+	public function processImage(array $data) {
 		/** @var $contentObj tslib_cObj */
 		$contentObj = t3lib_div::makeInstance('tslib_cObj');
 		$contentObj->start($data);
@@ -859,16 +896,20 @@ HTML;
 			}
 		}
 
+		self::$sphinxReader = t3lib_div::makeInstance('Tx_Restdoc_Reader_SphinxJson');
+
 		if (version_compare(TYPO3_version, '6.0.0', '>=')) {
 			if (preg_match('/^file:(\d+):(.*)$/', $this->conf['path'], $matches)) {
 				/** @var $storageRepository \TYPO3\CMS\Core\Resource\StorageRepository */
 				$storageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
 				/** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
 				$storage = $storageRepository->findByUid(intval($matches[1]));
-				$storageConfiguration = $storage->getConfiguration();
 				$storageRecord = $storage->getStorageRecord();
-				if ($storageRecord['driver'] === 'Local' && $storageConfiguration['pathType'] === 'relative') {
-					$this->conf['path'] = rtrim($storageConfiguration['basePath'], '/') . $matches[2];
+				if ($storageRecord['driver'] === 'Local') {
+					$this->conf['path'] = substr($matches[2], 1);
+					self::$sphinxReader->setStorage($storage);
+				} else {
+					throw new RuntimeException('Access to the documentation requires an unsupported driver: ' . $storageRecord['driver'], 1365688549);
 				}
 			}
 		}
