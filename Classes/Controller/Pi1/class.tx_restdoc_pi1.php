@@ -384,7 +384,7 @@ JS;
 		$jsonData = self::$sphinxReader->getData();
 
 		$data = array();
-		$data['home_title'] = 'home';
+		$data['home_title'] = $this->pi_getLL('home_title', 'Home');
 		$data['home_uri'] = $this->getLink('');
 		$data['home_uri_absolute'] = $this->getLink('', TRUE);
 
