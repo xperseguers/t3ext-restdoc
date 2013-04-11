@@ -1,3 +1,7 @@
+2013-04-11  Xavier Perseguers  <xavier@causal.ch>
+
+	* [TASK][DOC] Add link to the release notes
+
 2013-04-09  Xavier Perseguers  <xavier@causal.ch>
 
 	* [BUGFIX] #47074: Search does not work with Sphinx 1.2b1
