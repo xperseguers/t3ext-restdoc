@@ -16,6 +16,7 @@
 			<label index="pi_flexform.mode.TOC">Table of contents</label>
 			<label index="pi_flexform.mode.RECENT">Recently updated chapters</label>
 			<label index="pi_flexform.mode.QUICK_NAVIGATION">Quick navigation</label>
+			<label index="pi_flexform.mode.REFERENCES">References</label>
 			<label index="pi_flexform.mode.SEARCH">Search form</label>
 		</languageKey>
 	</data>

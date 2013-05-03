@@ -304,6 +304,56 @@ class Tx_Restdoc_Reader_SphinxJson {
 	}
 
 	/**
+	 * Returns references from the documentation.
+	 *
+	 * @return string
+	 * @throws RuntimeException
+	 */
+	public function getReferences() {
+		if (!function_exists('zlib_decode')) {
+			throw new RuntimeException('zlib library was not found', 1367564511);
+		}
+		if (empty($this->path) || !is_dir($this->path)) {
+			throw new RuntimeException('Invalid path: ' . $this->path, 1365165151);
+		}
+		$filename = $this->path . 'objects.inv';
+		if (!is_file($filename)) {
+			throw new \RuntimeException('File not found: ' . $filename, 1367562970);
+		}
+
+		$content = file_get_contents($filename);
+		// Remove ASCII comments at the beginning of the file
+		while ($content{0} === '#') {
+			$content = substr($content, strpos($content, LF) + 1);
+		}
+		// Uncompress the references
+		$content = zlib_decode($content);
+		$lines = explode(LF, $content);
+
+		$references = array();
+		foreach ($lines as $line) {
+			$data = explode(' ', $line, 5);
+			if (!count($data) === 5) {
+				// Should not happen but something went wrong!
+				continue;
+			}
+
+			$references[$data[0]] = array(
+				'name'  => $data[0],
+				'type'  => $data[1],
+				'index' => $data[2],
+				'link'  => $data[3],
+				'title' => $data[4],
+			);
+		}
+
+		// Sort references by name
+		ksort($references);
+
+		return $references;
+	}
+
+	/**
 	 * Replaces links in a ReStructuredText document.
 	 *
 	 * @param string $content

@@ -59,6 +59,10 @@
 										<numIndex index="1">QUICK_NAVIGATION</numIndex>
 									</numIndex>
 									<numIndex index="5" type="array">
+										<numIndex index="0">LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.mode.REFERENCES</numIndex>
+										<numIndex index="1">REFERENCES</numIndex>
+									</numIndex>
+									<numIndex index="6" type="array">
 										<numIndex index="0">LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.mode.SEARCH</numIndex>
 										<numIndex index="1">SEARCH</numIndex>
 									</numIndex>
@@ -73,7 +77,7 @@
 						<TCEforms>
 							<exclude>0</exclude>
 							<label>LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.rootPage</label>
-							<displayCond><![CDATA[FIELD:mode:=:SEARCH]]></displayCond>
+							<displayCond><![CDATA[FIELD:mode:IN:REFERENCES,SEARCH]]></displayCond>
 							<config>
 								<type>group</type>
 								<internal_type>db</internal_type>

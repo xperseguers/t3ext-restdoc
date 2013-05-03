@@ -147,6 +147,9 @@ class tx_restdoc_pi1 extends tslib_pibase {
 					$this->renderingConfig = $this->conf['setup.']['BREADCRUMB.'];
 					$output = $this->cObj->cObjGetSingle($this->renderingConfig['renderObj'], $this->renderingConfig['renderObj.']);
 					break;
+				case 'REFERENCES':
+					$output = $this->generateReferences();
+					break;
 				case 'FILENAME':
 					$output = self::$sphinxReader->getJsonFilename();
 					$skipDefaultWrap = TRUE;
@@ -515,6 +518,43 @@ JS;
 		$output = $contentObj->cObjGetSingle($this->renderingConfig['renderObj'], $this->renderingConfig['renderObj.']);
 
 		return $output;
+	}
+
+	/**
+	 * Generates the table of references.
+	 *
+	 * @return string
+	 */
+	protected function generateReferences() {
+		$output = array();
+		$output[] = '<table class="tx-restdoc-references">';
+		$output[] = '<thead>';
+		$output[] = '<tr>';
+		$output[] = '<th>' . $this->pi_getLL('reference_name') . '</th>';
+		$output[] = '<th>' . $this->pi_getLL('reference_title') . '</th>';
+		$output[] = '</tr>';
+		$output[] = '</thead>';
+		$output[] = '<tbody>';
+
+		$references = self::$sphinxReader->getReferences();
+		foreach ($references as $reference) {
+			if (!$reference['name']) {
+				continue;
+			}
+			$link = $this->getLink($reference['link'], FALSE, $this->conf['rootPage']);
+			$link = str_replace('&amp;', '&', $link);
+			$link = str_replace('&', '&amp;', $link);
+
+			$output[] = '<tr>';
+			$output[] = '<td><a href="' . $link . '">' . htmlspecialchars($reference['name']) . '</a></td>';
+			$output[] = '<td>' . htmlspecialchars($reference['title']) . '</td>';
+			$output[] = '</tr>';
+		}
+
+		$output[] = '</tbody>';
+		$output[] = '</table>';
+
+		return implode(LF, $output);
 	}
 
 	/**
@@ -921,7 +961,11 @@ HTML;
 			// The path separator CANNOT be empty
 			$this->conf['pathSeparator'] = '|';
 		}
-		$this->conf['rootPage'] = intval($this->conf['rootPage']);
+		if (t3lib_div::inList('REFERENCES,SEARCH', $this->conf['mode'])) {
+			$this->conf['rootPage'] = intval($this->conf['rootPage']);
+		} else {
+			$this->conf['rootPage'] = 0;
+		}
 	}
 
 	/**

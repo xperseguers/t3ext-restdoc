@@ -30,6 +30,12 @@
 			<trans-unit id="quicknavigation_index">
 				<source>index</source>
 			</trans-unit>
+			<trans-unit id="reference_name">
+				<source>Reference</source>
+			</trans-unit>
+			<trans-unit id="reference_title">
+				<source>Title</source>
+			</trans-unit>
 			<trans-unit id="search_placeholder">
 				<source>search</source>
 			</trans-unit>

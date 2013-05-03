@@ -15,6 +15,8 @@
 			<label index="quicknavigation_previous_topic">previous</label>
 			<label index="quicknavigation_next_topic">next</label>
 			<label index="quicknavigation_index">index</label>
+			<label index="reference_name">Reference</label>
+			<label index="reference_title">Title</label>
 			<label index="search_placeholder">search</label>
 			<label index="search_action">search</label>
 			<label index="home_title">Home</label>

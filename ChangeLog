@@ -1,3 +1,7 @@
+2013-05-03  Xavier Perseguers  <xavier@causal.ch>
+
+	* [FEATURE] Allow extract/display of document references
+
 2013-04-21  Xavier Perseguers  <xavier@causal.ch>
 
 	* [TASK][DOC] Add quick note reference to EXT:sphinx
