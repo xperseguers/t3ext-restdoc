@@ -1,3 +1,7 @@
+2013-05-04  Xavier Perseguers  <xavier@causal.ch>
+
+	* [BUGFIX] #47909: Request parameters could not be validated (&cHash empty)
+
 2013-05-03  Xavier Perseguers  <xavier@causal.ch>
 
 	* [FEATURE] Allow extract/display of document references

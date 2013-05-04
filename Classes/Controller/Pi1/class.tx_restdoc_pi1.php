@@ -38,7 +38,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	public $prefixId      = 'tx_restdoc_pi1';
 	public $scriptRelPath = 'Classes/Controller/Pi1/class.tx_restdoc_pi1.php';
 	public $extKey        = 'restdoc';
-	public $pi_checkCHash = TRUE;
+	public $pi_checkCHash = FALSE;
 
 	/** @var string */
 	protected static $defaultFile = 'index';
