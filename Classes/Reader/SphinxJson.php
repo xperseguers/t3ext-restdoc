@@ -383,9 +383,12 @@ class Tx_Restdoc_Reader_SphinxJson {
 			} elseif (t3lib_div::isFirstPartOfStr($matches[2], '_sources/')) {
 				$document = $matches[2];
 			} else {
-				$defaultDocument = $self->getDefaultFile() . '/';
-				if ($document === $defaultDocument || t3lib_div::isFirstPartOfStr($matches[2], '../')) {
+				$segments = explode('/', substr($document, 0, -1));
+				if (count($segments) == 1) {
 					// $document's last part is a document, not a directory
+					$matches[2] = '../' . $matches[2];
+				}
+				if (t3lib_div::isFirstPartOfStr($matches[2], '../')) {
 					$document = substr($document, 0, strrpos(rtrim($document, '/'), '/'));
 				}
 				$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($self->getPath() . $document, $matches[2]);

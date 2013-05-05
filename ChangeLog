@@ -1,5 +1,6 @@
 2013-05-05  Xavier Perseguers  <xavier@causal.ch>
 
+	* [BUGFIX] Invalid links generated for chapters on same level as main document
 	* [BUGFIX] #47932: Broken links to show source with TSref
 	* [BUGFIX] #47921: Fatal error: Cannot use string offset as an array
 
