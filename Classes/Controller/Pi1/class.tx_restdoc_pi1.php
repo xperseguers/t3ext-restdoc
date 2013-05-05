@@ -276,7 +276,11 @@ class tx_restdoc_pi1 extends tslib_pibase {
 
 			case 'next':
 				if (isset($jsonData['next'])) {
-					$nextDocument = $document === $this->getDefaultFile() . '/' ? $documentRoot : $documentRoot . $document;
+					if ($document === $this->getDefaultFile() . '/' && substr($jsonData['next']['link'], 0, 3) !== '../') {
+						$nextDocument = $documentRoot;
+					} else {
+						$nextDocument = $documentRoot . $document;
+					}
 					$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($nextDocument, '../' . $jsonData['next']['link']);
 					$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 					$data[] = array(
@@ -432,7 +436,11 @@ JS;
 		}
 
 		if (isset($jsonData['next'])) {
-			$nextDocument = $document === $this->getDefaultFile() . '/' ? $documentRoot : $documentRoot . $document;
+			if ($document === $this->getDefaultFile() . '/' && substr($jsonData['next']['link'], 0, 3) !== '../') {
+				$nextDocument = $documentRoot;
+			} else {
+				$nextDocument = $documentRoot . $document;
+			}
 			$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($nextDocument, '../' . $jsonData['next']['link']);
 			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 			$linkAbsolute = $this->getLink(substr($absolute, strlen($documentRoot)), TRUE);
@@ -807,6 +815,9 @@ HTML;
 				$additionalParameters = urldecode(substr($document, $pos + 1));
 				$additionalParameters = '&' . str_replace('&amp;', '&', $additionalParameters);
 				$document = substr($document, 0, $pos) . '/';
+			}
+			if (substr($document, -5) === '.html') {
+				$document = substr($document, 0, -5) . '/';
 			}
 			$doc = str_replace('/', self::$current['pathSeparator'], substr($document, 0, strlen($document) - 1));
 			if ($doc) {

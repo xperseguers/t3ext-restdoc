@@ -384,7 +384,7 @@ class Tx_Restdoc_Reader_SphinxJson {
 				$document = $matches[2];
 			} else {
 				$segments = explode('/', substr($document, 0, -1));
-				if (count($segments) == 1) {
+				if (count($segments) == 1 && !t3lib_div::isFirstPartOfStr($matches[2], '../')) {
 					// $document's last part is a document, not a directory
 					$matches[2] = '../' . $matches[2];
 				}
