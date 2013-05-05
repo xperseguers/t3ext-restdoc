@@ -803,6 +803,15 @@ HTML;
 	 * @private This method is made public to be accessible from a lambda-function scope
 	 */
 	public function getLink($document, $absolute = FALSE, $rootPage = 0) {
+		if (t3lib_div::isFirstPartOfStr($document, 'mailto:')) {
+			// This is an email address, not a document!
+			$link = $this->cObj->typoLink('', array(
+				'parameter' => $document,
+				'returnLast' => 'url',
+			));
+			return $link;
+		}
+
 		$urlParameters = array();
 		$anchor = '';
 		$additionalParameters = '';

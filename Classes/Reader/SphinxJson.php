@@ -374,6 +374,13 @@ class Tx_Restdoc_Reader_SphinxJson {
 			if (preg_match('#^[a-zA-Z]+://#', $matches[2])) {
 				// External URL
 				return $matches[0];
+			} elseif (t3lib_div::isFirstPartOfStr($matches[2], 'mailto:')) {
+				// Email address
+				$email = preg_replace_callback('/(&#(\d{2});)/', function ($m) {
+					return chr($m[2]);
+				}, $matches[2]);
+				$link = call_user_func($callbackLinks, urldecode($email));
+				return $matches[1] . $link;
 			} elseif ($matches[2]{0} === '#') {
 				$anchor = $matches[2];
 			}
