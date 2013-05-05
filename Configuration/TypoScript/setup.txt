@@ -163,3 +163,21 @@ plugin.tx_restdoc_pi1 {
 	}
 
 }
+
+plugin.tx_restdoc_pi1._CSS_DEFAULT_STYLE (
+	ul.tx-restdoc-references {
+		list-style       : none;
+		margin           : 0;
+		font-weight      : bold;
+	}
+
+	ul.tx-restdoc-references dl {
+		font-weight      : normal;
+		margin-left      : 2em;
+	}
+
+	ul.tx-restdoc-references dl dt {
+		float            : left;
+		width            : 20em;
+	}
+)

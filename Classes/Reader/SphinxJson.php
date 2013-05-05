@@ -340,7 +340,8 @@ class Tx_Restdoc_Reader_SphinxJson {
 				continue;
 			}
 
-			$references[$data[0]] = array(
+			$chapter = substr($data[3], 0, strpos($data[3], '#') - 1);
+			$references[$chapter][$data[0]] = array(
 				'name'  => $data[0],
 				'type'  => $data[1],
 				'index' => $data[2],
@@ -349,8 +350,11 @@ class Tx_Restdoc_Reader_SphinxJson {
 			);
 		}
 
-		// Sort references by name
+		// Sort references by chapter, then by name
 		ksort($references);
+		foreach ($references as $chapter => $_) {
+			ksort($references[$chapter]);
+		}
 
 		return $references;
 	}

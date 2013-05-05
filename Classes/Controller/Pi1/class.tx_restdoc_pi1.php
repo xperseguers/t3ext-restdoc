@@ -527,28 +527,28 @@ JS;
 	 */
 	protected function generateReferences() {
 		$output = array();
-		$output[] = '<table class="tx-restdoc-references">';
-		$output[] = '<thead>';
-		$output[] = '<tr>';
-		$output[] = '<th>' . $this->pi_getLL('reference_name') . '</th>';
-		$output[] = '<th>' . $this->pi_getLL('reference_title') . '</th>';
-		$output[] = '</tr>';
-		$output[] = '</thead>';
-		$output[] = '<tbody>';
+		$output[] = '<ul class="tx-restdoc-references">';
 
 		$references = self::$sphinxReader->getReferences();
-		foreach ($references as $reference) {
-			if (!$reference['name']) {
-				continue;
-			}
-			$link = $this->getLink($reference['link'], FALSE, $this->conf['rootPage']);
-			$link = str_replace('&amp;', '&', $link);
-			$link = str_replace('&', '&amp;', $link);
+		foreach ($references as $chapter => $refs) {
+			$referencesOutput = array();
+			foreach ($refs as $reference) {
+				if (!$reference['name']) {
+					continue;
+				}
+				$link = $this->getLink($reference['link'], FALSE, $this->conf['rootPage']);
+				$link = str_replace('&amp;', '&', $link);
+				$link = str_replace('&', '&amp;', $link);
 
-			$output[] = '<tr>';
-			$output[] = '<td><a href="' . $link . '">:ref:`' . htmlspecialchars($reference['name']) . '`</a></td>';
-			$output[] = '<td>' . htmlspecialchars($reference['title']) . '</td>';
-			$output[] = '</tr>';
+				$referencesOutput[] = '<dt><a href="' . $link . '">:ref:`' . htmlspecialchars($reference['name']) . '`</a></dt>';
+				$referencesOutput[] = '<dd>' . htmlspecialchars($reference['title']) . '</dd>';
+			}
+
+			if ($referencesOutput) {
+				$output[] = '<li>' . htmlspecialchars($chapter) . ' <dl>';
+				$output = array_merge($output, $referencesOutput);
+				$output[] = '</dl></li>';
+			}
 		}
 
 		$output[] = '</tbody>';
