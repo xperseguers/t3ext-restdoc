@@ -546,7 +546,7 @@ JS;
 			$link = str_replace('&', '&amp;', $link);
 
 			$output[] = '<tr>';
-			$output[] = '<td><a href="' . $link . '">' . htmlspecialchars($reference['name']) . '</a></td>';
+			$output[] = '<td><a href="' . $link . '">:ref:`' . htmlspecialchars($reference['name']) . '`</a></td>';
 			$output[] = '<td>' . htmlspecialchars($reference['title']) . '</td>';
 			$output[] = '</tr>';
 		}
