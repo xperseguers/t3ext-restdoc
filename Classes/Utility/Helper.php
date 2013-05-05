@@ -173,6 +173,9 @@ final class Tx_Restdoc_Utility_Helper {
 					$child = $node->childNodes->item($i);
 					$v = self::domnode_to_array($child);
 					if (isset($child->tagName)) {
+						if (!is_array($output)) {
+							$output = array($output);
+						}
 						$t = $child->tagName;
 						if (!isset($output[$t])) {
 							$output[$t] = array();
@@ -180,7 +183,20 @@ final class Tx_Restdoc_Utility_Helper {
 						$output[$t][] = $v;
 					}
 					elseif ($v || $v === '0') {
-						$output = (string) $v;
+						if (is_array($output)) {	// e.g., <em> in the middle of a string
+							$struct = $output;
+							$output = '';
+							foreach ($struct as $tag => $content) {
+								if (is_numeric($tag)) {
+									$output .= $content;
+								} else {
+									$output .= sprintf('<%s>%s</%s>', $tag, $content[0], $tag);
+								}
+							}
+							$output .= (string) $v;
+						} else {
+							$output = (string) $v;
+						}
 					}
 				}
 				if ($node->attributes->length && !is_array($output)) { // Has attributes but isn't an array
