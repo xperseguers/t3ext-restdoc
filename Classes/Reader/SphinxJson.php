@@ -380,6 +380,8 @@ class Tx_Restdoc_Reader_SphinxJson {
 
 			if ($anchor !== '') {
 				$document .= $anchor;
+			} elseif (t3lib_div::isFirstPartOfStr($matches[2], '_sources/')) {
+				$document = $matches[2];
 			} else {
 				$defaultDocument = $self->getDefaultFile() . '/';
 				if ($document === $defaultDocument || t3lib_div::isFirstPartOfStr($matches[2], '../')) {

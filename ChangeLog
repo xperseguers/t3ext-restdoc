@@ -1,5 +1,6 @@
 2013-05-05  Xavier Perseguers  <xavier@causal.ch>
 
+	* [BUGFIX] #47932: Broken links to show source with TSref
 	* [BUGFIX] #47921: Fatal error: Cannot use string offset as an array
 
 2013-05-04  Xavier Perseguers  <xavier@causal.ch>

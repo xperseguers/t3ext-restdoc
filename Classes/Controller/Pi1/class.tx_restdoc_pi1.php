@@ -797,10 +797,16 @@ HTML;
 	public function getLink($document, $absolute = FALSE, $rootPage = 0) {
 		$urlParameters = array();
 		$anchor = '';
+		$additionalParameters = '';
 		if ($document !== '') {
 			if (($pos = strrpos($document, '#')) !== FALSE) {
 				$anchor = substr($document, $pos + 1);
 				$document = substr($document, 0, $pos);
+			}
+			if (($pos = strrpos($document, '?')) !== FALSE) {
+				$additionalParameters = urldecode(substr($document, $pos + 1));
+				$additionalParameters = '&' . str_replace('&amp;', '&', $additionalParameters);
+				$document = substr($document, 0, $pos) . '/';
 			}
 			$doc = str_replace('/', self::$current['pathSeparator'], substr($document, 0, strlen($document) - 1));
 			if ($doc) {
@@ -816,6 +822,7 @@ HTML;
 		} else {
 			$typolinkConfig = array(
 				'parameter' => $rootPage ?: $GLOBALS['TSFE']->id,
+				'additionalParams' => '',
 				'forceAbsoluteUrl' => $absolute ? 1 : 0,
 				'forceAbsoluteUrl.' => array(
 					'scheme' => t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https' : 'http',
@@ -825,6 +832,8 @@ HTML;
 			if ($urlParameters) {
 				$typolinkConfig['additionalParams'] = t3lib_div::implodeArrayForUrl('', $urlParameters);
 			}
+			// Prettier to have those additional parameters after the document itself
+			$typolinkConfig['additionalParams'] .= $additionalParameters;
 			$link = $this->cObj->typoLink('', $typolinkConfig);
 			if ($anchor !== '') {
 				$link .= '#' . $anchor;
