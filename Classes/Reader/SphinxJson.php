@@ -310,9 +310,6 @@ class Tx_Restdoc_Reader_SphinxJson {
 	 * @throws RuntimeException
 	 */
 	public function getReferences() {
-		if (!function_exists('zlib_decode')) {
-			throw new RuntimeException('zlib library was not found', 1367564511);
-		}
 		if (empty($this->path) || !is_dir($this->path)) {
 			throw new RuntimeException('Invalid path: ' . $this->path, 1365165151);
 		}
@@ -327,7 +324,12 @@ class Tx_Restdoc_Reader_SphinxJson {
 			$content = substr($content, strpos($content, LF) + 1);
 		}
 		// Uncompress the references
-		$content = zlib_decode($content);
+		if (function_exists('zlib_decode')) {
+			$content = zlib_decode($content);
+		} else {
+			$content = gzuncompress($content);
+		}
+
 		$lines = explode(LF, $content);
 
 		$references = array();
