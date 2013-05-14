@@ -1,5 +1,6 @@
 2013-05-14  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] Add some unit tests
 	* [BUGFIX] #48194: Permanent links are hidden
 
 2013-05-05  Xavier Perseguers  <xavier@causal.ch>

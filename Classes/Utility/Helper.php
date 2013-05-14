@@ -183,17 +183,18 @@ final class Tx_Restdoc_Utility_Helper {
 						$output[$t][] = $v;
 					}
 					elseif ($v || $v === '0') {
-						if (is_array($output)) {	// e.g., <em> in the middle of a string
+						if (is_array($output) && count($output) > 0) {	// e.g., <em> in the middle of a string
 							$struct = $output;
 							$output = '';
 							foreach ($struct as $tag => $content) {
 								if (is_numeric($tag)) {
-									$output .= $content;
+									$output .= $content . ' ';
 								} else {
-									$output .= sprintf('<%s>%s</%s>', $tag, $content[0], $tag);
+									$output .= sprintf('<%s>%s</%s> ', $tag, $content[0], $tag);
 								}
 							}
 							$output .= (string) $v;
+							$output = trim($output);
 						} else {
 							$output = (string) $v;
 						}
@@ -218,6 +219,7 @@ final class Tx_Restdoc_Utility_Helper {
 				}
 				break;
 		}
+
 		return $output;
 	}
 
