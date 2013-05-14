@@ -99,7 +99,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		self::$sphinxReader
 			->setPath($documentRoot)
 			->setDocument($document)
-			->setKeepPermanentLinks(!$this->conf['showPermanentLink'])
+			->setKeepPermanentLinks($this->conf['showPermanentLink'] != 0)
 			->setDefaultFile($this->conf['defaultFile'])
 			// TODO: only for TOC, BREADCRUMB, ... ? (question's context is when generating the general index)
 			->enableDefaultDocumentFallback();
