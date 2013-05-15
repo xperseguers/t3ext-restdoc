@@ -24,6 +24,29 @@ plugin.tx_restdoc_pi1 {
 				file.import.field = src
 				file.maxW < tt_content.image.20.maxW
 				altText.field = alt
+				titleText.field = alt
+
+				imageLinkWrap = 1
+				imageLinkWrap {
+					enable.cObject = TEXT
+					enable.cObject {
+						value = 0
+						override = 1
+						override.if {
+							value < tt_content.image.20.maxW
+							equals.data = TSFE:lastImageInfo|0
+						}
+					}
+					bodyTag = <body bgColor="#ffffff" style="margin:0;">
+					wrap = <a href="javascript:close();"> | </a>
+					width = 800m
+					height = 600
+					JSwindow = 1
+					JSwindow {
+						newWindow = 1
+						expand = 0,0
+					}
+				}
 			}
 		}
 	}
