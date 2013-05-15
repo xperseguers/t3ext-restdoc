@@ -35,6 +35,9 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/** @var \Tx_Restdoc_Reader_SphinxJson */
 	protected $sphinxReader;
 
+	/** @var mixed */
+	protected $buffer;
+
 	public function setUp() {
 		$this->fixturePath = substr(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('restdoc') . 'Tests/Functional/Fixtures/_build/json/', strlen(PATH_site));
 		$this->sphinxReader = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Restdoc_Reader_SphinxJson');
@@ -43,6 +46,7 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function tearDown() {
 		unset($this->fixturePath);
 		unset($this->sphinxReader);
+		unset($this->buffer);
 	}
 
 	/**
@@ -80,6 +84,52 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals('Welcome to Test Project\'s documentation!', $references['#']['start']['title']);
 		$this->assertEquals('Introduction', $references['intro']['introduction']['title']);
 		$this->assertEquals('Some Other Chapter', $references['subdirectory']['some_other_chapter']['title']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function canExtractTableOfContentsForIndex() {
+		$this->initializeReader('index/');
+		$this->buffer = array();
+
+		$toc = $this->sphinxReader->getTableOfContents(array($this, 'getLink'));
+		$this->assertTrue($toc !== '');
+
+		$expectedLinks = array(
+			'index/#',
+			'index/#indices-and-tables',
+		);
+		$this->assertEquals($expectedLinks, $this->buffer);
+	}
+
+	/**
+	 * @test
+	 */
+	public function canExtractTableOfContentsForChapterIntroduction() {
+		$this->initializeReader('intro/');
+		$this->buffer = array();
+
+		$toc = $this->sphinxReader->getTableOfContents(array($this, 'getLink'));
+		$this->assertTrue($toc !== '');
+
+		$expectedLinks = array(
+			'intro/#',
+		);
+		$this->assertEquals($expectedLinks, $this->buffer);
+	}
+
+	/**
+	 * Generates a link to navigate within a reST documentation project.
+	 *
+	 * @param string $document Target document
+	 * @param boolean $absolute Whether absolute URI should be generated
+	 * @param integer $rootPage UID of the page showing the documentation
+	 * @return string
+	 */
+	public function getLink($document, $absolute = FALSE, $rootPage = 0) {
+		$this->buffer[] = $document;
+		return $document;
 	}
 
 	/**
