@@ -31,10 +31,9 @@
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
- * @version     SVN: $Id$
  * @deprecated since 1.2.0, will be removed in 1.4.0. Please use Tx_Restdoc_Utility_Helper instead.
  */
-final class tx_restdoc_utility {
+class tx_restdoc_utility {
 
 	/**
 	 * Returns Sphinx-related metadata.
