@@ -1,3 +1,7 @@
+2013-05-15  Xavier Perseguers  <xavier@causal.ch>
+
+	* [BUGFIX] Class Tx_Restdoc_Reader_SphinxJson is not found with TYPO3 4.5 LTS
+
 2013-05-14  Xavier Perseguers  <xavier@causal.ch>
 
 	* [TASK] Add some unit tests
