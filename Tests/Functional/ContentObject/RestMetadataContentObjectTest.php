@@ -1,5 +1,5 @@
 <?php
-namespace Causal\Restdoc\Tests\Unit\ContentObject;
+namespace Causal\Restdoc\Tests\Functional\ContentObject;
 
 /***************************************************************
  *  Copyright notice
