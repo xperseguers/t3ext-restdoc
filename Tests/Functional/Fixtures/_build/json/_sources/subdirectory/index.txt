@@ -1,4 +1,6 @@
-Some other chapter
+.. _some_other_chapter:
+
+Some Other Chapter
 ==================
 
 .. index::
