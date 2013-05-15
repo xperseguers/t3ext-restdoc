@@ -30,10 +30,7 @@ namespace Causal\Restdoc\Tests\Functional\ContentObject;
 class RestMetadataContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/** @var string */
-	protected $temporaryFilename;
-
-	/** @var array */
-	protected $data;
+	protected $fixturePath;
 
 	/** @var array */
 	protected $backupCObjTypeAndClass;
@@ -42,12 +39,7 @@ class RestMetadataContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $contentObject;
 
 	public function setUp() {
-		$this->temporaryFilename = PATH_site . 'typo3temp/globalcontext.json';
-		$this->data = array(
-			'project' => 'Unit Test Project for EXT:restdoc',
-			'copyright' => '2013, Xavier Perseguers',
-		);
-		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($this->temporaryFilename, json_encode($this->data));
+		$this->fixturePath = substr(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('restdoc') . 'Tests/Functional/Fixtures/_build/json/', strlen(PATH_site));
 
 		$this->backupCObjTypeAndClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'];
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'][] = array(
@@ -64,9 +56,7 @@ class RestMetadataContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function tearDown() {
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'] = $this->backupCObjTypeAndClass;
-
-		unlink($this->temporaryFilename);
-		unset($this->data);
+		unset($this->fixturePath);
 		unset($this->backupCObjTypeAndClass);
 		unset($this->contentObject);
 	}
@@ -76,14 +66,14 @@ class RestMetadataContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function canExtractProject() {
 		$config = array(
-			'path' => 'typo3temp/',
+			'path' => $this->fixturePath,
 			'cObject' => 'TEXT',
 			'cObject.' => array(
 				'field' => 'project',
 			),
 		);
 		$value = $this->contentObject->cObjGetSingle('REST_METADATA', $config);
-		$expected = $this->data['project'];
+		$expected = 'Test Project';
 
 		$this->assertEquals($expected, $value);
 	}
@@ -92,10 +82,11 @@ class RestMetadataContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function canProcessCopyrightWithDynamicPath() {
+		$pathParts = explode('/', $this->fixturePath, 2);
 		$config = array(
-			'path' => 'typo3',
+			'path' => $pathParts[0],
 			'path.' => array(
-				'wrap' => '|temp/',
+				'wrap' => '|/' . $pathParts[1],
 			),
 			'cObject' => 'TEXT',
 			'cObject.' => array(
@@ -104,7 +95,7 @@ class RestMetadataContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			),
 		);
 		$value = $this->contentObject->cObjGetSingle('REST_METADATA', $config);
-		$expected = '© ' . $this->data['copyright'];
+		$expected = '© 2013, Xavier Perseguers';
 
 		$this->assertEquals($expected, $value);
 	}
