@@ -91,9 +91,12 @@ class RestMetadataContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function canProcessCopyright() {
+	public function canProcessCopyrightWithDynamicPath() {
 		$config = array(
-			'path' => 'typo3temp/',
+			'path' => 'typo3',
+			'path.' => array(
+				'wrap' => '|temp/',
+			),
 			'cObject' => 'TEXT',
 			'cObject.' => array(
 				'field' => 'copyright',
