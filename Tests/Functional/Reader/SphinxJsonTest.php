@@ -77,6 +77,36 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function canExtractTitle() {
+		$this->initializeReader('intro/');
+		$value = $this->sphinxReader->getTitle();
+		$expected = 'Introduction';
+		$this->assertEquals($expected, $value);
+	}
+
+	/**
+	 * @test
+	 */
+	public function canExtractSourceName() {
+		$this->initializeReader('intro/');
+		$value = $this->sphinxReader->getSourceName();
+		$expected = 'intro.txt';
+		$this->assertEquals($expected, $value);
+	}
+
+	/**
+	 * @test
+	 */
+	public function canExtractCurrentPageName() {
+		$this->initializeReader('intro/');
+		$value = $this->sphinxReader->getCurrentPageName();
+		$expected = 'intro';
+		$this->assertEquals($expected, $value);
+	}
+
+	/**
+	 * @test
+	 */
 	public function canRetrieveListOfLabels() {
 		$this->initializeReader('index/');
 		$references = $this->sphinxReader->getReferences();
@@ -117,6 +147,68 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'intro/#',
 		);
 		$this->assertEquals($expectedLinks, $this->buffer);
+	}
+
+	/**
+	 * @test
+	 */
+	public function canExtractPreviousDocumentInSameDirectory() {
+		$this->initializeReader('intro/');
+		$value = $this->sphinxReader->getPreviousDocument();
+		$expected = array(
+			'link' => '../',
+			'title' => 'Welcome to Test Project&#8217;s documentation!',
+		);
+		$this->assertEquals($expected, $value);
+	}
+
+	/**
+	 * @test
+	 */
+	public function canExtractPreviousDocumentInOtherDirectory() {
+		$this->initializeReader('subdirectory/index/');
+		$value = $this->sphinxReader->getPreviousDocument();
+		$expected = array(
+			'link' => '../intro/',
+			'title' => 'Introduction',
+		);
+		$this->assertEquals($expected, $value);
+	}
+
+	/**
+	 * @test
+	 */
+	public function canExtractNextDocumentInSameDirectory() {
+		$this->initializeReader('index/');
+		$value = $this->sphinxReader->getNextDocument();
+		$expected = array(
+			'link' => 'intro/',
+			'title' => 'Introduction',
+		);
+		$this->assertEquals($expected, $value);
+	}
+
+	/**
+	 * @test
+	 */
+	public function canExtractNextDocumentInOtherDirectory() {
+		$this->initializeReader('intro/');
+		$value = $this->sphinxReader->getNextDocument();
+		$expected = array(
+			'link' => '../subdirectory/',
+			'title' => 'Some other chapter',
+		);
+		$this->assertEquals($expected, $value);
+	}
+
+	/**
+	 * @test
+	 */
+	public function canExtractIndexEntries() {
+		$this->initializeReader('genindex/');
+		$value = $this->sphinxReader->getIndexEntries();
+		$this->assertTRUE(is_array($value), 'NULL instead of array');
+		$this->assertTRUE(count($value) > 0, 'Expected at least 1 index entry');
 	}
 
 	/**

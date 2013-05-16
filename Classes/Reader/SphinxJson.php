@@ -180,14 +180,6 @@ class Tx_Restdoc_Reader_SphinxJson {
 	}
 
 	/**
-	 * @return array
-	 * @deprecated Data should not be needed from outside
-	 */
-	public function getData() {
-		return $this->data;
-	}
-
-	/**
 	 * Loads the current document.
 	 *
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
@@ -272,6 +264,86 @@ class Tx_Restdoc_Reader_SphinxJson {
 		$body = $this->replaceImages($body, $callbackImages);
 
 		return $body;
+	}
+
+	/**
+	 * Returns the title of the current document.
+	 *
+	 * @return string
+	 */
+	public function getTitle() {
+		$this->enforceIsLoaded();
+		return $this->data['title'];
+	}
+
+	/**
+	 * Returns the source name of the current document.
+	 *
+	 * @return string
+	 */
+	public function getSourceName() {
+		$this->enforceIsLoaded();
+		return $this->data['sourcename'];
+	}
+
+	/**
+	 * Returns the current page name.
+	 *
+	 * @return string
+	 */
+	public function getCurrentPageName() {
+		$this->enforceIsLoaded();
+		return $this->data['current_page_name'];
+	}
+
+	/**
+	 * Returns previous document's information.
+	 *
+	 * @return array|NULL
+	 */
+	public function getPreviousDocument() {
+		$this->enforceIsLoaded();
+		return isset($this->data['prev']) ? $this->data['prev'] : NULL;
+	}
+
+	/**
+	 * Returns next document's information.
+	 *
+	 * @return array|NULL
+	 */
+	public function getNextDocument() {
+		$this->enforceIsLoaded();
+		return isset($this->data['next']) ? $this->data['next'] : NULL;
+	}
+
+	/**
+	 * Returns parents of current document.
+	 *
+	 * @return array
+	 */
+	public function getParentDocuments() {
+		$this->enforceIsLoaded();
+		return $this->data['parents'];
+	}
+
+	/**
+	 * Returns relative links of current document.
+	 *
+	 * @return array
+	 */
+	public function getRelativeLinks() {
+		$this->enforceIsLoaded();
+		return $this->data['rellinks'];
+	}
+
+	/**
+	 * Returns the index entries.
+	 *
+	 * @return array|NULL
+	 */
+	public function getIndexEntries() {
+		$this->enforceIsLoaded();
+		return isset($this->data['genindexentries']) ? $this->data['genindexentries'] : NULL;
 	}
 
 	/**

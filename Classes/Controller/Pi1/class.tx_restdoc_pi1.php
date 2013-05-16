@@ -111,7 +111,6 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			return $e->getMessage();
 		}
 
-		$jsonData = self::$sphinxReader->getData();
 		$skipDefaultWrap = FALSE;
 
 		self::$current = array(
@@ -119,7 +118,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			'pathSeparator' => $this->conf['pathSeparator'],
 		);
 
-		if (!isset($jsonData['genindexentries'])) {
+		if (self::$sphinxReader->getIndexEntries() === NULL) {
 			switch ($this->conf['mode']) {
 				case 'TOC':
 					$this->renderingConfig = $this->conf['setup.']['TOC.'];
@@ -136,7 +135,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 					$output = $this->generateBody();
 					break;
 				case 'TITLE':
-					$output = isset($jsonData['title']) ? $jsonData['title'] : '';
+					$output = self::$sphinxReader->getTitle();
 					$skipDefaultWrap = TRUE;
 					break;
 				case 'QUICK_NAVIGATION':
@@ -167,7 +166,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 						$this->advertiseSphinx();
 					}
 					// Generating output for the general index
-					$output = $this->generateIndex($documentRoot, $document, $jsonData);
+					$output = $this->generateIndex($documentRoot, $document);
 					break;
 				case 'TITLE':
 					$output = $this->pi_getLL('index_title', 'Index');
@@ -250,7 +249,6 @@ class tx_restdoc_pi1 extends tslib_pibase {
 
 		$documentRoot = self::$sphinxReader->getPath();
 		$document = self::$sphinxReader->getDocument();
-		$jsonData = self::$sphinxReader->getData();
 
 		switch ($type) {
 			case 'menu':
@@ -263,34 +261,37 @@ class tx_restdoc_pi1 extends tslib_pibase {
 				break;
 
 			case 'previous':
-				if (isset($jsonData['prev'])) {
-					$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($documentRoot . $document, '../' . $jsonData['prev']['link']);
+				$previousDocument = self::$sphinxReader->getPreviousDocument();
+				if ($previousDocument !== NULL) {
+					$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($documentRoot . $document, '../' . $previousDocument['link']);
 					$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 					$data[] = array(
-						'title' => $jsonData['prev']['title'],
+						'title' => $previousDocument['title'],
 						'_OVERRIDE_HREF' => $link,
 					);
 				}
 				break;
 
 			case 'next':
-				if (isset($jsonData['next'])) {
-					if ($document === $this->getDefaultFile() . '/' && substr($jsonData['next']['link'], 0, 3) !== '../') {
-						$nextDocument = $documentRoot;
+				$nextDocument = self::$sphinxReader->getNextDocument();
+				if ($nextDocument !== NULL) {
+					if ($document === $this->getDefaultFile() . '/' && substr($nextDocument['link'], 0, 3) !== '../') {
+						$nextDocumentPath = $documentRoot;
 					} else {
-						$nextDocument = $documentRoot . $document;
+						$nextDocumentPath = $documentRoot . $document;
 					}
-					$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($nextDocument, '../' . $jsonData['next']['link']);
+					$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($nextDocumentPath, '../' . $nextDocument['link']);
 					$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 					$data[] = array(
-						'title' => $jsonData['next']['title'],
+						'title' => $nextDocument['title'],
 						'_OVERRIDE_HREF' => $link,
 					);
 				}
 				break;
 
 			case 'breadcrumb':
-				foreach ($jsonData['parents'] as $parent) {
+				$parentDocuments = self::$sphinxReader->getParentDocuments();
+				foreach ($parentDocuments as $parent) {
 					$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($documentRoot . $document, '../' . $parent['link']);
 					$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 					$data[] = array(
@@ -300,7 +301,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 				}
 				// Add current page to breadcrumb menu
 				$data[] = array(
-					'title' => $jsonData['title'],
+					'title' => self::$sphinxReader->getTitle(),
 					'_OVERRIDE_HREF' => $this->getLink($document),
 					'ITEM_STATE' => 'CUR',
 				);
@@ -417,40 +418,42 @@ JS;
 
 		$documentRoot = self::$sphinxReader->getPath();
 		$document = self::$sphinxReader->getDocument();
-		$jsonData = self::$sphinxReader->getData();
+		$previousDocument = self::$sphinxReader->getPreviousDocument();
+		$nextDocument = self::$sphinxReader->getNextDocument();
+		$parentDocuments = self::$sphinxReader->getParentDocuments();
 
 		$data = array();
 		$data['home_title'] = $this->pi_getLL('home_title', 'Home');
 		$data['home_uri'] = $this->getLink('');
 		$data['home_uri_absolute'] = $this->getLink('', TRUE);
 
-		if (isset($jsonData['prev'])) {
-			$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($documentRoot . $document, '../' . $jsonData['prev']['link']);
+		if ($previousDocument !== NULL) {
+			$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($documentRoot . $document, '../' . $previousDocument['link']);
 			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 			$linkAbsolute = $this->getLink(substr($absolute, strlen($documentRoot)), TRUE);
 
-			$data['previous_title'] = $jsonData['prev']['title'];
+			$data['previous_title'] = $previousDocument['title'];
 			$data['previous_uri'] = $link;
 			$data['previous_uri_absolute'] = $linkAbsolute;
 		}
 
-		if (isset($jsonData['next'])) {
-			if ($document === $this->getDefaultFile() . '/' && substr($jsonData['next']['link'], 0, 3) !== '../') {
-				$nextDocument = $documentRoot;
+		if ($nextDocument !== NULL) {
+			if ($document === $this->getDefaultFile() . '/' && substr($nextDocument['link'], 0, 3) !== '../') {
+				$nextDocumentPath = $documentRoot;
 			} else {
-				$nextDocument = $documentRoot . $document;
+				$nextDocumentPath = $documentRoot . $document;
 			}
-			$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($nextDocument, '../' . $jsonData['next']['link']);
+			$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($nextDocumentPath, '../' . $nextDocument['link']);
 			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 			$linkAbsolute = $this->getLink(substr($absolute, strlen($documentRoot)), TRUE);
 
-			$data['next_title'] = $jsonData['next']['title'];
+			$data['next_title'] = $nextDocument['title'];
 			$data['next_uri'] = $link;
 			$data['next_uri_absolute'] = $linkAbsolute;
 		}
 
-		if (count($jsonData['parents']) > 0) {
-			$parent = array_pop($jsonData['parents']);
+		if (count($parentDocuments) > 0) {
+			$parent = array_pop($parentDocuments);
 			$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($documentRoot . $document, '../' . $parent['link']);
 			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 			$linkAbsolute = $this->getLink(substr($absolute, strlen($documentRoot)), TRUE);
@@ -569,14 +572,14 @@ JS;
 	 *
 	 * @param string $documentRoot
 	 * @param string $document
-	 * @param array $jsonData
 	 * @return string
 	 */
-	protected function generateIndex($documentRoot, $document, array $jsonData) {
+	protected function generateIndex($documentRoot, $document) {
 		$linksCategories = array();
 		$contentCategories = array();
+		$indexEntries = self::$sphinxReader->getIndexEntries();
 
-		foreach ($jsonData['genindexentries'] as $indexGroup) {
+		foreach ($indexEntries as $indexGroup) {
 			$category = $indexGroup[0];
 			$anchor = 'tx-restdoc-index-' . htmlspecialchars($category);
 
