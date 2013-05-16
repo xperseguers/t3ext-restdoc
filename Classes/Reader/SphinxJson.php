@@ -377,7 +377,7 @@ class Tx_Restdoc_Reader_SphinxJson {
 	/**
 	 * Returns references from the documentation.
 	 *
-	 * @return string
+	 * @return array
 	 * @throws RuntimeException
 	 */
 	public function getReferences() {
