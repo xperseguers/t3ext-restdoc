@@ -531,10 +531,16 @@ class Tx_Restdoc_Reader_SphinxJson {
 			}
 			$src = Tx_Restdoc_Utility_Helper::relativeToAbsolute($root, $attributes['src']);
 			if (version_compare(TYPO3_version, '6.0.0', '>=')) {
-				$storageConfiguration = $self->getStorage()->getConfiguration();
-				$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
-				$fileIdentifier = substr($src, strlen($basePath) - 1);
-				$attributes['src'] = $self->getStorage()->getUid() . ':' . $fileIdentifier;
+				$storage = $self->getStorage();
+				if ($storage !== NULL) {
+					$storageConfiguration = $storage->getConfiguration();
+					$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
+					$fileIdentifier = substr($src, strlen($basePath) - 1);
+					$attributes['src'] = $storage->getUid() . ':' . $fileIdentifier;
+				} else {
+					// FAL is not used
+					$attributes['src'] = substr($src, strlen(PATH_site));
+				}
 			} else {
 				$attributes['src'] = substr($src, strlen(PATH_site));
 			}
