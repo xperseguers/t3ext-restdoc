@@ -196,7 +196,7 @@ class Tx_Restdoc_Hook_TableOfContents {
 		// Remove empty sublevels
 		$toc = preg_replace('#<ul>\s*</ul>#', '', $toc);
 		// Fix TOC to make it XML compliant
-		$toc = preg_replace_callback('# href="([^"]+)"#', function($matches) {
+		$toc = preg_replace_callback('# href="([^"]+)"#', function ($matches) {
 			$url = str_replace('&amp;', '&', $matches[1]);
 			$url = str_replace('&', '&amp;', $url);
 			return ' href="' . $url . '"';
@@ -268,7 +268,7 @@ class Tx_Restdoc_Hook_TableOfContents {
 	 */
 	protected function replaceLinks($root, $document, $content) {
 		$plugin = $this->pObj;
-		$ret = preg_replace_callback('#(<a .*? href=")([^"]+)#', function($matches) use ($plugin, $root, $document) {
+		$ret = preg_replace_callback('#(<a .*? href=")([^"]+)#', function ($matches) use ($plugin, $root, $document) {
 			/** @var $plugin tx_restdoc_pi1 */
 			$anchor = '';
 			if (preg_match('#^[a-zA-Z]+://#', $matches[2])) {

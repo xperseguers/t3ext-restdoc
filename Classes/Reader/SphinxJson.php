@@ -347,7 +347,54 @@ class Tx_Restdoc_Reader_SphinxJson {
 	}
 
 	/**
-	 * Returns the Table Of Contents (TOC) of the documentation.
+	 * Returns the master Table of Contents (TOC) of the documentation. That is,
+	 * the general overview of chapters as found on the master document, relative
+	 * to the current document.
+	 *
+	 * @param callback $callbackLinks Callback to generate Links in current context
+	 * @return string
+	 * @throws RuntimeException
+	 */
+	public function getMasterTableOfContents($callbackLinks) {
+		$callableName = '';
+		if (!is_callable($callbackLinks, FALSE, $callableName)) {
+			throw new RuntimeException('Invalid callback for links: ' . $callableName, 1369907419);
+		}
+
+		if ($this->document === $this->defaultFile . '/' && !empty($this->data)) {
+			$data = $this->data;
+		} else {
+			// Temporarily load the master document
+			if (empty($this->path) || !is_dir($this->path)) {
+				throw new RuntimeException('Invalid path: ' . $this->path, 1369907635);
+			}
+			$filename = $this->path . $this->defaultFile . '.fjson';
+			$content = file_get_contents($filename);
+			$data = json_decode($content, TRUE);
+		}
+
+		if (preg_match('#<div class="toctree-wrapper compound">(.*?)</div>#s', $data['body'], $matches)) {
+			// Replace links in table of contents
+			$toc = $this->replaceLinks($matches[1], $callbackLinks, TRUE);
+		} else {
+			$toc = '';
+		}
+
+		// Remove empty sublevels
+		$toc = preg_replace('#<ul>\s*</ul>#', '', $toc);
+		// Fix TOC to make it XML compliant
+		$toc = preg_replace_callback('# href="([^"]+)"#', function ($matches) {
+			$url = str_replace('&amp;', '&', $matches[1]);
+			$url = str_replace('&', '&amp;', $url);
+			return ' href="' . $url . '"';
+		}, $toc);
+
+		return $toc;
+	}
+
+	/**
+	 * Returns the Table Of Contents (TOC) of the documentation
+	 * for the current document.
 	 *
 	 * @param callback $callbackLinks Callback to generate Links in current context
 	 * @return string
@@ -365,7 +412,7 @@ class Tx_Restdoc_Reader_SphinxJson {
 		// Remove empty sublevels
 		$toc = preg_replace('#<ul>\s*</ul>#', '', $toc);
 		// Fix TOC to make it XML compliant
-		$toc = preg_replace_callback('# href="([^"]+)"#', function($matches) {
+		$toc = preg_replace_callback('# href="([^"]+)"#', function ($matches) {
 			$url = str_replace('&amp;', '&', $matches[1]);
 			$url = str_replace('&', '&amp;', $url);
 			return ' href="' . $url . '"';
@@ -435,11 +482,12 @@ class Tx_Restdoc_Reader_SphinxJson {
 	 *
 	 * @param string $content
 	 * @param callback $callbackLinks function to generate Links in current context
+	 * @param boolean $relativeToDefaultDocument
 	 * @return string
 	 */
-	protected function replaceLinks($content, $callbackLinks) {
+	protected function replaceLinks($content, $callbackLinks, $relativeToDefaultDocument = FALSE) {
 		$self = $this;
-		$ret = preg_replace_callback('#(<a .*? href=")([^"]+)#', function($matches) use ($self, $callbackLinks) {
+		$ret = preg_replace_callback('#(<a .*? href=")([^"]+)#', function ($matches) use ($self, $callbackLinks, $relativeToDefaultDocument) {
 			$document = $self->getDocument();
 			$anchor = '';
 			if (preg_match('#^[a-zA-Z]+://#', $matches[2])) {
@@ -461,6 +509,11 @@ class Tx_Restdoc_Reader_SphinxJson {
 			} elseif (t3lib_div::isFirstPartOfStr($matches[2], '_sources/')) {
 				$document = $matches[2];
 			} else {
+				if ($relativeToDefaultDocument) {
+					$currentDocumentDepth = count(explode('/', $document)) - 2;
+					// Pretend the link was generated relative to current document
+					$matches[2] = str_repeat('../', $currentDocumentDepth) . $matches[2];
+				}
 				$segments = explode('/', substr($document, 0, -1));
 				if (count($segments) == 1 && !t3lib_div::isFirstPartOfStr($matches[2], '../')) {
 					// $document's last part is a document, not a directory
@@ -509,7 +562,7 @@ class Tx_Restdoc_Reader_SphinxJson {
 				)
 			@xsi';
 
-		$ret = preg_replace_callback($tagPattern, function($matches) use ($self, $root, $attributePattern, $callbackImages) {
+		$ret = preg_replace_callback($tagPattern, function ($matches) use ($self, $root, $attributePattern, $callbackImages) {
 			// Parse tag attributes, if any
 			$attributes = array();
 			if (!empty($matches['attributes'][0])) {
