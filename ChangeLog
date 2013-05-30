@@ -1,6 +1,7 @@
 2013-05-30  Xavier Perseguers  <xavier@causal.ch>
 
-	* [FEATURE] #48668: Extract main table of contents
+	* [BUGFIX] Links in master TOC may be wrong
+	* [FEATURE] #48668: Extract master table of contents
 	* [BUGFIX] FAL is not always used (e.g., with EXT:sphinx) when running TYPO3 6.x
 
 2013-05-16  Xavier Perseguers  <xavier@causal.ch>

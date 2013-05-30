@@ -510,7 +510,10 @@ class Tx_Restdoc_Reader_SphinxJson {
 				$document = $matches[2];
 			} else {
 				if ($relativeToDefaultDocument) {
-					$currentDocumentDepth = count(explode('/', $document)) - 2;
+					$currentDocumentDepth = count(explode('/', $document)) - 1;
+					if (t3lib_div::isFirstPartOfStr($matches[2], '../')) {
+						$currentDocumentDepth--;
+					}
 					// Pretend the link was generated relative to current document
 					$matches[2] = str_repeat('../', $currentDocumentDepth) . $matches[2];
 				}
