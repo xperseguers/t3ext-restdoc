@@ -374,14 +374,20 @@ class Tx_Restdoc_Reader_SphinxJson {
 		}
 
 		if (preg_match('#<div class="toctree-wrapper compound">(.*?)</div>#s', $data['body'], $matches)) {
+			// Put the master document as first level
+			$toc = '<ul>' . LF;
+			$toc .= '<li class="toctree-l0"><a class="reference internal" href="../' . $this->getDefaultFile() . '/">' . htmlspecialchars($data['title']) . '</a>' . trim($matches[1]) . LF;
+			$toc .= '</li>' . LF;
+			$toc .= '</ul>';
+
 			// Replace links in table of contents
-			$toc = $this->replaceLinks($matches[1], $callbackLinks, TRUE);
+			$toc = $this->replaceLinks($toc, $callbackLinks, TRUE);
 		} else {
 			$toc = '';
 		}
 
 		// Remove empty sublevels
-		$toc = preg_replace('#<ul>\s*</ul>#', '', $toc);
+		$toc = preg_replace('#<ul(\s+[^>]+)>\s*</ul>#s', '', $toc);
 		// Fix TOC to make it XML compliant
 		$toc = preg_replace_callback('# href="([^"]+)"#', function ($matches) {
 			$url = str_replace('&amp;', '&', $matches[1]);

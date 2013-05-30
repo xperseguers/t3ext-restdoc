@@ -1,5 +1,6 @@
 2013-05-30  Xavier Perseguers  <xavier@causal.ch>
 
+	* [!!!][TASK] Include main document in master TOC
 	* [BUGFIX] Links in master TOC may be wrong
 	* [FEATURE] #48668: Extract master table of contents
 	* [BUGFIX] FAL is not always used (e.g., with EXT:sphinx) when running TYPO3 6.x
