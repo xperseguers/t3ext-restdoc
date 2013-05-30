@@ -82,6 +82,38 @@ final class Tx_Restdoc_Utility_Helper {
 	}
 
 	/**
+	 * Marks menu entries as ACTIVE or CURRENT.
+	 *
+	 * @param array &$data
+	 * @param string $currentDocument
+	 * @param string $pathSeparator
+	 * @return boolean
+	 */
+	public static function markActiveAndCurrentEntries(array &$data, $currentDocument, $pathSeparator = '/') {
+		$hasCurrent = FALSE;
+
+		foreach ($data as &$menuEntry) {
+			$link = urldecode($menuEntry['_OVERRIDE_HREF']);
+			// TODO: this does not work when using RealURL
+			if (preg_match('/[?&]tx_restdoc_pi1\[doc\]=([^&#]+)/', $link, $matches)) {
+				$link = rtrim(str_replace($pathSeparator, '/', $matches[1]), '/') . '/';
+				if ($link === $currentDocument) {
+					$hasCurrent = TRUE;
+					$menuEntry['ITEM_STATE'] = 'CUR';
+				}
+			}
+			if (isset($menuEntry['_SUB_MENU'])) {
+				$hasChildCurrent = self::markActiveAndCurrentEntries($menuEntry['_SUB_MENU'], $currentDocument, $pathSeparator);
+				if ($hasChildCurrent) {
+					$menuEntry['ITEM_STATE'] = 'ACT';
+				}
+			}
+		}
+
+		return $hasCurrent;
+	}
+
+	/**
 	 * Converts an XML string to a PHP array - useful to get a serializable value.
 	 *
 	 * @param string $xmlstr

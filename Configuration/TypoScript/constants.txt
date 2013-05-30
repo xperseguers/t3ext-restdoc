@@ -5,7 +5,7 @@ plugin.tx_restdoc {
 	# Name of the default file (without .fjson extension)
 	defaultFile = index
 
-	# mode of the plugin (BODY | TOC | RECENT | TITLE | QUICK_NAVIGATION | BREADCRUMB | REFERENCES | FILENAME | SEARCH)
+	# mode of the plugin (BODY | TOC | MASTER_TOC | RECENT | TITLE | QUICK_NAVIGATION | BREADCRUMB | REFERENCES | FILENAME | SEARCH)
 	mode =
 
 	# UID of page showing the documentation (used when mode = SEARCH to link back to the documentation from search results)

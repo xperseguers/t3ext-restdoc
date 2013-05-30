@@ -124,6 +124,10 @@ class tx_restdoc_pi1 extends tslib_pibase {
 					$this->renderingConfig = $this->conf['setup.']['TOC.'];
 					$output = $this->cObj->cObjGetSingle($this->renderingConfig['renderObj'], $this->renderingConfig['renderObj.']);
 					break;
+				case 'MASTER_TOC':
+					$this->renderingConfig = $this->conf['setup.']['MASTER_TOC.'];
+					$output = $this->cObj->cObjGetSingle($this->renderingConfig['renderObj'], $this->renderingConfig['renderObj.']);
+					break;
 				case 'RECENT':
 					$this->renderingConfig = $this->conf['setup.']['RECENT.'];
 					$output = $this->cObj->cObjGetSingle($this->renderingConfig['renderObj'], $this->renderingConfig['renderObj.']);
@@ -253,11 +257,18 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		switch ($type) {
 			case 'menu':
 				$toc = self::$sphinxReader->getTableOfContents(array($this, 'getLink'));
-
 				$data = $toc ? Tx_Restdoc_Utility_Helper::getMenuData(Tx_Restdoc_Utility_Helper::xmlstr_to_array($toc)) : array();
 
 				// Mark the first entry as 'active'
 				$data[0]['ITEM_STATE'] = 'CUR';
+				break;
+
+			case 'master_menu':
+				$masterToc = self::$sphinxReader->getMasterTableOfContents(array($this, 'getLink'));
+				$data = $masterToc ? Tx_Restdoc_Utility_Helper::getMenuData(Tx_Restdoc_Utility_Helper::xmlstr_to_array($masterToc)) : array();
+
+				// Mark entries as 'active' / 'current'
+				Tx_Restdoc_Utility_Helper::markActiveAndCurrentEntries($data, self::$sphinxReader->getDocument(), self::$current['pathSeparator']);
 				break;
 
 			case 'previous':
