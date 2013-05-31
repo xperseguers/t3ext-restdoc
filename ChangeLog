@@ -1,3 +1,7 @@
+2013-05-31  Xavier Perseguers  <xavier@causal.ch>
+
+	* [TASK] Move index generation method to a utility class (callable from EXT:sphinx)
+
 2013-05-30  Xavier Perseguers  <xavier@causal.ch>
 
 	* [TASK] #48671: Prepare master table of contents for TypoScript

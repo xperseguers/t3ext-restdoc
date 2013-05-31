@@ -606,7 +606,7 @@ JS;
 
 			$contentCategory = '<h2 id="' . $anchor . '">' . htmlspecialchars($category) . '</h2>' . LF;
 			$contentCategory .= '<div class="tx-restdoc-genindextable">' . LF;
-			$contentCategory .= $this->getIndexDefinitionList($documentRoot, $indexGroup[1]);
+			$contentCategory .= Tx_Restdoc_Utility_Helper::getIndexDefinitionList($documentRoot, $indexGroup[1], array($this, 'getLink'));
 			$contentCategory .= '</div>' . LF;
 
 			$contentCategories[] = $contentCategory;
@@ -615,74 +615,6 @@ JS;
 		$output = '<h1>' . $this->pi_getLL('index_title', 'Index', TRUE) . '</h1>' . LF;
 		$output .= '<div class="tx-restdoc-genindex-jumpbox">' . implode(' | ', $linksCategories) . '</div>' . LF;
 		$output .= implode(LF, $contentCategories);
-
-		return $output;
-	}
-
-	/**
-	 * Returns an index definition list as HTML.
-	 *
-	 * @param string $documentRoot
-	 * @param array $index
-	 * @return string
-	 */
-	protected function getIndexDefinitionList($documentRoot, array $index) {
-		$output = '<dl>' . LF;
-		foreach ($index as $dt) {
-			$relativeLinks = array();
-			for ($i = 0; $i < count($dt[1]); $i++) {
-				if (!empty($dt[1][$i]) && t3lib_div::isFirstPartOfStr($dt[1][$i][1], '../')) {
-					$relativeLinks[] = array(
-						'title' => $dt[1][$i][0],
-						'link'  => substr($dt[1][$i][1], 3),
-					);
-				} elseif ($i == 0 && !empty($dt[1][$i]) && is_array($dt[1][$i][0]) && t3lib_div::isFirstPartOfStr($dt[1][$i][0][1], '../')) {
-					$relativeLinks[] = array(
-						'title' => $dt[1][$i][0][0],
-						'link'  => substr($dt[1][$i][0][1], 3),
-					);
-				} else {
-					// No more entry links, we have subentries from now on
-					break;
-				}
-			}
-			// Remove category links from the list of subentries, first subentry is always a link, possibly empty
-			for ($i = 0; $i < max(1, count($relativeLinks)); $i++) {
-				array_shift($dt[1]);
-			}
-
-			$output .= '<dt>';
-			if ($relativeLinks) {
-				for ($i = 0; $i < count($relativeLinks); $i++) {
-					if ($i == 0) {
-						$title = htmlspecialchars($dt[0]);
-					} else {
-						$output .= ', ';
-						$title = '[' . $i . ']';
-					}
-					if ($relativeLinks[$i]['title'] === 'main') {
-						$title = '<strong>' . $title . '</strong>';
-					}
-					$link = $this->getLink($relativeLinks[$i]['link']);
-					$link = str_replace('&amp;', '&', $link);
-					$link = str_replace('&', '&amp;', $link);
-
-					$output .= '<a href="' . $link . '">' . $title . '</a>';
-				}
-			} else {
-				$output .= htmlspecialchars($dt[0]);
-			}
-			$output .= '</dt>' . LF;
-
-			if ($dt[1]) {
-				$output .= '<dd>' . LF;
-				foreach ($dt[1] as $term) {
-					$output .= $this->getIndexDefinitionList($documentRoot, $term);
-				}
-				$output .= '</dd>' . LF;
-			}
-		}
-		$output .= '</dl>' . LF;
 
 		return $output;
 	}
