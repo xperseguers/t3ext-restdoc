@@ -780,8 +780,13 @@ HTML;
 				);
 			}
 		}
-		if (substr($document, 0, 11) === '_downloads/') {
-			$link = $this->cObj->typoLink_URL(array('parameter' => rtrim(self::$current['path'], '/') . '/' . $document));
+		if (substr($document, 0, 11) === '_downloads/' || substr($document, 0, 8) === '_images/') {
+			$basePath = self::$current['path'];
+			if (version_compare(TYPO3_version, '6.0.0', '>=')) {
+				$storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
+				$basePath = rtrim($storageConfiguration['basePath'], '/') . '/' . $basePath;
+			}
+			$link = $this->cObj->typoLink_URL(array('parameter' => rtrim($basePath, '/') . '/' . $document));
 		} else {
 			$typolinkConfig = array(
 				'parameter' => $rootPage ?: $GLOBALS['TSFE']->id,
