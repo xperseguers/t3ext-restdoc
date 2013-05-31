@@ -27,6 +27,9 @@
 			<trans-unit id="pi_flexform.mode.TOC">
 				<source>Table of contents</source>
 			</trans-unit>
+			<trans-unit id="pi_flexform.mode.MASTER_TOC">
+				<source>Master table of contents</source>
+			</trans-unit>
 			<trans-unit id="pi_flexform.mode.RECENT">
 				<source>Recently updated chapters</source>
 			</trans-unit>

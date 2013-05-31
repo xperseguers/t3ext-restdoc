@@ -14,6 +14,7 @@
 			<label index="pi_flexform.mode">Show:</label>
 			<label index="pi_flexform.mode.BODY">Documentation</label>
 			<label index="pi_flexform.mode.TOC">Table of contents</label>
+			<label index="pi_flexform.mode.MASTER_TOC">Master table of contents</label>
 			<label index="pi_flexform.mode.RECENT">Recently updated chapters</label>
 			<label index="pi_flexform.mode.QUICK_NAVIGATION">Quick navigation</label>
 			<label index="pi_flexform.mode.REFERENCES">References</label>
