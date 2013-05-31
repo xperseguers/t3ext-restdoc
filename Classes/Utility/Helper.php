@@ -82,28 +82,33 @@ final class Tx_Restdoc_Utility_Helper {
 	}
 
 	/**
-	 * Marks menu entries as ACTIVE or CURRENT.
+	 * Marks menu entries as ACTIVE or CURRENT and generate real links.
 	 *
 	 * @param array &$data
 	 * @param string $currentDocument
-	 * @param string $pathSeparator
+	 * @param callback $callbackLinks Callback to generate Links in current context
 	 * @return boolean
+	 * @throws RuntimeException
 	 */
-	public static function markActiveAndCurrentEntries(array &$data, $currentDocument, $pathSeparator = '/') {
+	public static function processMasterTableOfContents(array &$data, $currentDocument, $callbackLinks) {
+		$callableName = '';
+		if (!is_callable($callbackLinks, FALSE, $callableName)) {
+			throw new RuntimeException('Invalid callback for links: ' . $callableName, 1370013916);
+		}
+
 		$hasCurrent = FALSE;
 
 		foreach ($data as &$menuEntry) {
-			$link = urldecode($menuEntry['_OVERRIDE_HREF']);
-			// TODO: this does not work when using RealURL
-			if (preg_match('/[?&]tx_restdoc_pi1\[doc\]=([^&#]+)/', $link, $matches)) {
-				$link = rtrim(str_replace($pathSeparator, '/', $matches[1]), '/') . '/';
-				if ($link === $currentDocument) {
-					$hasCurrent = TRUE;
-					$menuEntry['ITEM_STATE'] = 'CUR';
-				}
+			if (substr($menuEntry['_OVERRIDE_HREF'], 0, 3) === '../') {
+				$menuEntry['_OVERRIDE_HREF'] = substr($menuEntry['_OVERRIDE_HREF'], 3);
 			}
+			if ($menuEntry['_OVERRIDE_HREF'] === $currentDocument) {
+				$hasCurrent = TRUE;
+				$menuEntry['ITEM_STATE'] = 'CUR';
+			}
+			$menuEntry['_OVERRIDE_HREF'] = call_user_func($callbackLinks, $menuEntry['_OVERRIDE_HREF']);
 			if (isset($menuEntry['_SUB_MENU'])) {
-				$hasChildCurrent = self::markActiveAndCurrentEntries($menuEntry['_SUB_MENU'], $currentDocument, $pathSeparator);
+				$hasChildCurrent = self::processMasterTableOfContents($menuEntry['_SUB_MENU'], $currentDocument, $callbackLinks);
 				if ($hasChildCurrent) {
 					$menuEntry['ITEM_STATE'] = 'ACT';
 				}

@@ -350,17 +350,13 @@ class Tx_Restdoc_Reader_SphinxJson {
 	 * Returns the master Table of Contents (TOC) of the documentation. That is,
 	 * the general overview of chapters as found on the master document, relative
 	 * to the current document.
+	 * BEWARE: links are kept as this and are not generated for current context
 	 *
-	 * @param callback $callbackLinks Callback to generate Links in current context
+	 * @param boolean $keepRawLinks
 	 * @return string
 	 * @throws RuntimeException
 	 */
-	public function getMasterTableOfContents($callbackLinks) {
-		$callableName = '';
-		if (!is_callable($callbackLinks, FALSE, $callableName)) {
-			throw new RuntimeException('Invalid callback for links: ' . $callableName, 1369907419);
-		}
-
+	public function getMasterTableOfContents() {
 		if ($this->document === $this->defaultFile . '/' && !empty($this->data)) {
 			$data = $this->data;
 		} else {
@@ -379,9 +375,6 @@ class Tx_Restdoc_Reader_SphinxJson {
 			$toc .= '<li class="toctree-l0"><a class="reference internal" href="../' . $this->getDefaultFile() . '/">' . htmlspecialchars($data['title']) . '</a>' . trim($matches[1]) . LF;
 			$toc .= '</li>' . LF;
 			$toc .= '</ul>';
-
-			// Replace links in table of contents
-			$toc = $this->replaceLinks($toc, $callbackLinks, TRUE);
 		} else {
 			$toc = '';
 		}

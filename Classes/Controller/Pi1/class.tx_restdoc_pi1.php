@@ -266,9 +266,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			case 'master_menu':
 				$masterToc = self::$sphinxReader->getMasterTableOfContents(array($this, 'getLink'));
 				$data = $masterToc ? Tx_Restdoc_Utility_Helper::getMenuData(Tx_Restdoc_Utility_Helper::xmlstr_to_array($masterToc)) : array();
-
-				// Mark entries as 'active' / 'current'
-				Tx_Restdoc_Utility_Helper::markActiveAndCurrentEntries($data, self::$sphinxReader->getDocument(), self::$current['pathSeparator']);
+				\Tx_Restdoc_Utility_Helper::processMasterTableOfContents($data, $document, array($this, 'getLink'));
 				break;
 
 			case 'previous':
