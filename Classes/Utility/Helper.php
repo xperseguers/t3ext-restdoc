@@ -110,6 +110,7 @@ final class Tx_Restdoc_Utility_Helper {
 			if (isset($menuEntry['_SUB_MENU'])) {
 				$hasChildCurrent = self::processMasterTableOfContents($menuEntry['_SUB_MENU'], $currentDocument, $callbackLinks);
 				if ($hasChildCurrent) {
+					$hasCurrent = TRUE;
 					$menuEntry['ITEM_STATE'] = 'ACT';
 				}
 			}

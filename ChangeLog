@@ -1,5 +1,6 @@
 2013-06-01  Xavier Perseguers  <xavier@causal.ch>
 
+	* [BUGFIX] Current menu is not shown for 3rd level
 	* [TASK] #48746: Direct links (_images or _downloads) do not work with FAL
 
 2013-05-31  Xavier Perseguers  <xavier@causal.ch>
