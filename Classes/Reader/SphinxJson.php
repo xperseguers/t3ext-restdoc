@@ -352,7 +352,6 @@ class Tx_Restdoc_Reader_SphinxJson {
 	 * to the current document.
 	 * BEWARE: links are kept as this and are not generated for current context
 	 *
-	 * @param boolean $keepRawLinks
 	 * @return string
 	 * @throws RuntimeException
 	 */
