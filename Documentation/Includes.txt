@@ -19,3 +19,23 @@
 .. role::   php(code)
 
 .. highlight:: guess
+
+.. ==================================================
+.. EXTERNAL LINKS
+.. --------------------------------------------------
+
+.. _`5 min tutorial video`: http://www.youtube.com/watch?v=YeGqHMDT7R8
+
+.. _dd_googlesitemap: http://typo3.org/extensions/repository/view/dd_googlesitemap
+
+.. _`post of mine in Google+`: https://plus.google.com/117624290123792924579/posts/R5H1ZUMcwEm
+
+.. _reStructuredText: http://docutils.sourceforge.net/rst.html
+
+.. _SEO: http://en.wikipedia.org/wiki/Search_engine_optimization
+
+.. _`the TYPO3 wiki`: http://wiki.typo3.org/ReST
+
+.. _`Tips and Tricks`: http://wiki.typo3.org/Tips_and_Tricks_%28reST%29
+
+.. _`TypoScript snippets`: http://forge.typo3.org/projects/extension-restdoc/repository/show/trunk/Resources/Private/Examples

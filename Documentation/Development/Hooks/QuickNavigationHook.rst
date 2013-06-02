@@ -5,6 +5,7 @@
 
 .. include:: ../../Includes.txt
 
+
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['restdoc']['quickNavigationHook']
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 

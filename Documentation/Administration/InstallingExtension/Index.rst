@@ -17,7 +17,7 @@ Install the extension from Extension Manager
 
 The reST Documentation Viewer extension can ben installed through the typical TYPO3 installation process using the Extension Manager.
 
-The Extension Manager will create a new table in your database. This table is used to store references to the chapters in the context of the plugin and is used to both generate the menu of recent updates in your documentation and to integrate the structure of your documentation within your website's sitemap, when using this extension together with `dd_googlesitemap <http://typo3.org/extensions/repository/view/dd_googlesitemap>`_.
+The Extension Manager will create a new table in your database. This table is used to store references to the chapters in the context of the plugin and is used to both generate the menu of recent updates in your documentation and to integrate the structure of your documentation within your website's sitemap, when using this extension together with dd_googlesitemap_.
 
 
 Configure RealURL

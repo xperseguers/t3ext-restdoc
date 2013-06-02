@@ -19,9 +19,9 @@ The TypoScript configuration should be generic enough to let you fine tune the r
 
 * Do not do those changes for small inline images (say smaller than 100px width)
 
-This is just a matter of playing with TypoScript, something you should love anyway as a TYPO3 integrator. Please note that the extension comes with a directory containing `TypoScript snippets <http://forge.typo3.org/projects/extension-restdoc/repository/show/trunk/Resources/Private/Examples>`_.
+This is just a matter of playing with TypoScript, something you should love anyway as a TYPO3 integrator. Please note that the extension comes with a directory containing `TypoScript snippets`_.
 
-Need some ideas of what is feasible? Please have a look at a `post of mine in Google+ <https://plus.google.com/117624290123792924579/posts/R5H1ZUMcwEm>`_.
+Need some ideas of what is feasible? Please have a look at a `post of mine in Google+`_.
 
 
 Available modes for the plugin
