@@ -21,7 +21,8 @@ The TypoScript configuration should be generic enough to let you fine tune the r
 
 This is just a matter of playing with TypoScript, something you should love anyway as a TYPO3 integrator. Please note that the extension comes with a directory containing `TypoScript snippets`_.
 
-Need some ideas of what is feasible? Please have a look at a `post of mine in Google+`_.
+.. tip::
+	Need some ideas of what is feasible? Please have a look at a `post of mine in Google+`_.
 
 
 Available modes for the plugin

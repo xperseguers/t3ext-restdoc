@@ -1,5 +1,6 @@
 2013-06-02  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK][DOC] Use admonitions for better rendering (http://docutils.sourceforge.net/docs/ref/rst/directives.html#admonitions)
 	* [TASK][DOC] Convert chapter Configuration and cross-link to TSref
 	* [TASK][DOC] Convert documentation to ReST
 
