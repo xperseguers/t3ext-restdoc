@@ -45,9 +45,7 @@ REST_METADATA
 		* sphinx_version
 		* *(see* ``globalcontext.json`` *for additional fields)*
 
-		**Example:**
-
-		::
+		**Example:** ::
 
 			10 = REST_METADATA
 			10.field = copyright
