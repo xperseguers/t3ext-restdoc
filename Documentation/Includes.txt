@@ -32,6 +32,8 @@
 
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 
+.. _`setup.txt`: http://forge.typo3.org/projects/extension-restdoc/repository/entry/trunk/Configuration/TypoScript/setup.txt
+
 .. _SEO: http://en.wikipedia.org/wiki/Search_engine_optimization
 
 .. _`the TYPO3 wiki`: http://wiki.typo3.org/ReST
@@ -39,3 +41,7 @@
 .. _`Tips and Tricks`: http://wiki.typo3.org/Tips_and_Tricks_%28reST%29
 
 .. _`TypoScript snippets`: http://forge.typo3.org/projects/extension-restdoc/repository/show/trunk/Resources/Private/Examples
+
+.. _Wappalizer: http://wappalyzer.com/
+
+.. _`Webmaster Central Blog`: http://googlewebmastercentral.blogspot.ch/2011/09/pagination-with-relnext-and-relprev.html

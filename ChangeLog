@@ -1,5 +1,6 @@
 2013-06-02  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK][DOC] Convert chapter Configuration and cross-link to TSref
 	* [TASK][DOC] Convert documentation to ReST
 
 2013-06-01  Xavier Perseguers  <xavier@causal.ch>
