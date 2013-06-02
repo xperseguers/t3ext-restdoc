@@ -4,12 +4,15 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../../Includes.txt
+.. include:: Images.txt
 
 
 Plugin options
 ^^^^^^^^^^^^^^
 
 The plugin options let you choose whether the content of the file (BODY), the table of contents (TOC), the master table of contents (MASTER_TOC), the quick navigation (QUICK_NAVIGATION) or a list of references (REFERENCES) should be generated. The table of contents is in fact a contextual menu for the current chapter, aka a "mini-toc" whereas the quick navigation shows previous/next links, typically after the content of the file, in a footer.
+
+|plugin_options|
 
 
 Search Form
