@@ -13,7 +13,9 @@ This hook can be used to post-process the general plugin's output before being w
 
 .. code-block:: html
 
-	<div class="tx-restdoc-pi1"> ... </div>
+	<div class="tx-restdoc-pi1">
+	    ...
+	</div>
 
 Expected method
 ~~~~~~~~~~~~~~~
