@@ -1,3 +1,2 @@
 .. |plugin_options| image:: ../../Images/plugin_options.png
 	:alt: Flexform configuration of the plugin
-	:width: 500
