@@ -13,7 +13,7 @@ ChangeLog
 
 The following is a very high level overview of the changes in this extension. For more details, see the ChangeLog file included with the extension or `read it online <http://forge.typo3.org/projects/extension-restdoc/repository/entry/trunk/ChangeLog>`_.
 
-.. hint::
+.. tip::
 	Release notes and possible quick fixes for published versions are available in the project's wiki: http://forge.typo3.org/projects/extension-restdoc/wiki
 
 

@@ -20,8 +20,8 @@ Search Form
 
 A search form may be generated with option (SEARCH).
 
-.. important::
+.. caution::
 	You must load the jQuery JavaScript framework yourself as the search form automatically includes a few JavaScript libraries that depend on jQuery.
 
-.. tip::
+.. important::
 	The search results may show a context where the search term has been found within a chapter. Make sure to allow sources to be published (TS ``plugin.tx_restdoc_pi1.publishSources``) if you want to take advantage of this feature.

@@ -6,6 +6,8 @@
 .. include:: Includes.txt
 
 
+.. _start:
+
 =========================
 reST Documentation Viewer
 =========================

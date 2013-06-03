@@ -9,7 +9,9 @@
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['restdoc']['renderHook']
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-This hook can be used to post-process the general plugin's output before being wrapped by either your custom TypoScript processing or the standard base class::
+This hook can be used to post-process the general plugin's output before being wrapped by either your custom TypoScript processing or the standard base class:
+
+.. code-block:: html
 
 	<div class="tx-restdoc-pi1"> ... </div>
 
