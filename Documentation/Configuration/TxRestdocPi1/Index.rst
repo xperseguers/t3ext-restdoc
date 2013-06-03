@@ -191,7 +191,9 @@ plugin.tx_restdoc_pi1
 	Description
 		Override the default wrap for the plugin::
 
-			<div class="tx-restdoc-pi1"> ... </div>
+			<div class="tx-restdoc-pi1">
+			    ...
+			</div>
 
 		**Note:** default wrap is NOT applied when mode is either TITLE or FILENAME but baseWrap will be applied if defined.
 

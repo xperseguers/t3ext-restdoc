@@ -29,11 +29,11 @@ If your configuration is automatically generated (you have a ``typo3conf/realurl
 
 If you manually tweaked the configuration (you have a ``typo3conf/realurl_conf.php`` file), here is the configuration we suggest::
 
-	'postVarSets' => array(
-	    '_DEFAULT' => array(
-	        'chapter' => array(
+	"postVarSets" => array(
+	    "_DEFAULT" => array(
+	        "chapter" => array(
 	            array(
-	                'GETvar' => 'tx_restdoc_pi1[doc]',
+	                "GETvar" => "tx_restdoc_pi1[doc]",
 	            ),
 	        ),
 	    ),
