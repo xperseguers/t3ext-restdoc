@@ -1,5 +1,6 @@
 2013-06-04  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] Raise version to 1.3.0
 	* [TASK][DOC] Change of chapter structure to get around https://forge.typo3.org/issues/48820
 	* [TASK][DOC] OpenOffice manual is obsolete
 	* [TASK][DOC] Temporary fix in ReST documentation caused by https://forge.typo3.org/issues/48820
