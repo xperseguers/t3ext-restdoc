@@ -76,7 +76,7 @@ plugin.tx_restdoc_pi1
 	Property
 		.. _tx-restdoc-pi1-showPermanentLink:
 
-		rootPage
+		showPermanentLink
 
 	Data type
 		boolean /:ref:`stdWrap <t3tsref:stdwrap>`
