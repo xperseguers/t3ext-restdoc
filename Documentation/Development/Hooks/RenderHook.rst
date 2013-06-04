@@ -6,8 +6,8 @@
 .. include:: ../../Includes.txt
 
 
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['restdoc']['renderHook']
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+renderHook
+""""""""""
 
 This hook can be used to post-process the general plugin's output before being wrapped by either your custom TypoScript processing or the standard base class:
 
@@ -16,6 +16,13 @@ This hook can be used to post-process the general plugin's output before being w
 	<div class="tx-restdoc-pi1">
 	    ...
 	</div>
+
+Registration
+~~~~~~~~~~~~
+
+You should register your class in::
+
+	$GLOBALS["TYPO3_CONF_VARS"]["EXTCONF"]["restdoc"]["renderHook"]
 
 Expected method
 ~~~~~~~~~~~~~~~
