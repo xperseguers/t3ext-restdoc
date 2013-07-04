@@ -11,11 +11,14 @@ REST_METADATA
 
 .. ### BEGIN~OF~TABLE ###
 
+.. _REST-METADATA-path:
+
+path
+~~~~
+
 .. container:: table-row
 
 	Property
-		.. _REST-METADATA-path:
-
 		path
 
 	Data type
@@ -25,6 +28,9 @@ REST_METADATA
 		Path to the root directory of the documentation.
 
 		Default: *empty*
+
+(stdWrap properties)
+~~~~~~~~~~~~~~~~~~~~
 
 .. container:: table-row
 

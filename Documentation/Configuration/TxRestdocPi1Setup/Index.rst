@@ -11,11 +11,14 @@ plugin.tx_restdoc_pi1.setup
 
 .. ### BEGIN~OF~TABLE ###
 
+.. _tx-restdoc-pi1-setup-defaultFile:
+
+defaultFile
+~~~~~~~~~~~
+
 .. container:: table-row
 
 	Property
-		.. _tx-restdoc-pi1-setup-defaultFile:
-
 		defaultFile
 
 	Data type
@@ -26,11 +29,14 @@ plugin.tx_restdoc_pi1.setup
 
 		Default: *empty*
 
+.. _tx-restdoc-pi1-setup-BODY-image:
+
+BODY.image.renderObj
+~~~~~~~~~~~~~~~~~~~~
+
 .. container:: table-row
 
 	Property
-		.. _tx-restdoc-pi1-setup-BODY-image:
-
 		BODY.image.renderObj
 
 	Data type
@@ -41,11 +47,14 @@ plugin.tx_restdoc_pi1.setup
 
 		Default: *see* `setup.txt`_
 
+.. _tx-restdoc-pi1-setup-TOC:
+
+TOC.renderObj
+~~~~~~~~~~~~~
+
 .. container:: table-row
 
 	Property
-		.. _tx-restdoc-pi1-setup-TOC:
-
 		TOC.renderObj
 
 	Data type
@@ -56,11 +65,14 @@ plugin.tx_restdoc_pi1.setup
 
 		Default: *see* `setup.txt`_
 
+.. _tx-restdoc-pi1-setup-MASTER-TOC:
+
+MASTER_TOC.renderObj
+~~~~~~~~~~~~~~~~~~~~
+
 .. container:: table-row
 
 	Property
-		.. _tx-restdoc-pi1-setup-MASTER-TOC:
-
 		MASTER_TOC.renderObj
 
 	Data type
@@ -71,11 +83,14 @@ plugin.tx_restdoc_pi1.setup
 
 		Default: *see* `setup.txt`_
 
+.. _tx-restdoc-pi1-setup-RECENT:
+
+RECENT.renderObj
+~~~~~~~~~~~~~~~~
+
 .. container:: table-row
 
 	Property
-		.. _tx-restdoc-pi1-setup-RECENT:
-
 		RECENT.renderObj
 
 	Data type
@@ -86,11 +101,14 @@ plugin.tx_restdoc_pi1.setup
 
 		Default: *see* `setup.txt`_
 
+.. _tx-restdoc-pi1-setup-QUICK-NAVIGATION:
+
+QUICK_NAVIGATION.renderObj
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 .. container:: table-row
 
 	Property
-		.. _tx-restdoc-pi1-setup-QUICK-NAVIGATION:
-
 		QUICK_NAVIGATION.renderObj
 
 	Data type
@@ -101,11 +119,14 @@ plugin.tx_restdoc_pi1.setup
 
 		Default: *see* `setup.txt`_
 
+.. _tx-restdoc-pi1-setup-BREADCRUMB:
+
+BREADCRUMB.renderObj
+~~~~~~~~~~~~~~~~~~~~
+
 .. container:: table-row
 
 	Property
-		.. _tx-restdoc-pi1-setup-BREADCRUMB:
-
 		BREADCRUMB.renderObj
 
 	Data type
@@ -116,11 +137,14 @@ plugin.tx_restdoc_pi1.setup
 
 		Default: *see* `setup.txt`_
 
+.. _tx-restdoc-pi1-setup-REFERENCES:
+
+REFERENCES.renderObj
+~~~~~~~~~~~~~~~~~~~~
+
 .. container:: table-row
 
 	Property
-		.. _tx-restdoc-pi1-setup-REFERENCES:
-
 		REFERENCES.renderObj
 
 	Data type

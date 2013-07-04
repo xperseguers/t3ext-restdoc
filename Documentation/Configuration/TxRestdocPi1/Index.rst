@@ -11,11 +11,14 @@ plugin.tx_restdoc_pi1
 
 .. ### BEGIN~OF~TABLE ###
 
+.. _tx-restdoc-pi1-path:
+
+path
+~~~~
+
 .. container:: table-row
 
 	Property
-		.. _tx-restdoc-pi1-path:
-
 		path
 
 	Data type
@@ -26,11 +29,14 @@ plugin.tx_restdoc_pi1
 
 		Default: *empty*
 
+.. _tx-restdoc-pi1-defaultFile:
+
+defaultFile
+~~~~~~~~~~~
+
 .. container:: table-row
 
 	Property
-		.. _tx-restdoc-pi1-defaultFile:
-
 		defaultFile
 
 	Data type
@@ -41,11 +47,14 @@ plugin.tx_restdoc_pi1
 
 		Default: "index"
 
+.. _tx-restdoc-pi1-mode:
+
+mode
+~~~~
+
 .. container:: table-row
 
 	Property
-		.. _tx-restdoc-pi1-mode:
-
 		mode
 
 	Data type
@@ -56,11 +65,14 @@ plugin.tx_restdoc_pi1
 
 		Default: *empty*
 
+.. _tx-restdoc-pi1-rootPage:
+
+rootPage
+~~~~~~~~
+
 .. container:: table-row
 
 	Property
-		.. _tx-restdoc-pi1-rootPage:
-
 		rootPage
 
 	Data type
@@ -71,11 +83,14 @@ plugin.tx_restdoc_pi1
 
 		Default: *empty*
 
+.. _tx-restdoc-pi1-showPermanentLink:
+
+showPermanentLink
+~~~~~~~~~~~~~~~~~
+
 .. container:: table-row
 
 	Property
-		.. _tx-restdoc-pi1-showPermanentLink:
-
 		showPermanentLink
 
 	Data type
@@ -86,11 +101,14 @@ plugin.tx_restdoc_pi1
 
 		Default: 0
 
+.. _tx-restdoc-pi1-pathSeparator:
+
+pathSeparator
+~~~~~~~~~~~~~
+
 .. container:: table-row
 
 	Property
-		.. _tx-restdoc-pi1-pathSeparator:
-
 		pathSeparator
 
 	Data type
@@ -103,11 +121,14 @@ plugin.tx_restdoc_pi1
 
 		Default: "|" (vertical bar)
 
+.. _tx-restdoc-pi1-fallbackPathSeparator:
+
+fallbackPathSeparator
+~~~~~~~~~~~~~~~~~~~~~
+
 .. container:: table-row
 
 	Property
-		.. _tx-restdoc-pi1-fallbackPathSeparator:
-
 		fallbackPathSeparator
 
 	Data type
@@ -118,11 +139,14 @@ plugin.tx_restdoc_pi1
 
 		Default: "\" (backslash)
 
+.. _tx-restdoc-pi1-documentStructureMaxDocuments:
+
+documentStructureMaxDocuments
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 .. container:: table-row
 
 	Property
-		.. _tx-restdoc-pi1-documentStructureMaxDocuments:
-
 		documentStructureMaxDocuments
 
 	Data type
@@ -133,11 +157,14 @@ plugin.tx_restdoc_pi1
 
 		Default: 50
 
+.. _tx-restdoc-pi1-advertiseSphinx:
+
+advertiseSphinx
+~~~~~~~~~~~~~~~
+
 .. container:: table-row
 
 	Property
-		.. _tx-restdoc-pi1-advertiseSphinx:
-
 		advertiseSphinx
 
 	Data type
@@ -148,11 +175,14 @@ plugin.tx_restdoc_pi1
 
 		Default: 1
 
+.. _tx-restdoc-pi1-addHeadPagination:
+
+addHeadPagination
+~~~~~~~~~~~~~~~~~
+
 .. container:: table-row
 
 	Property
-		.. _tx-restdoc-pi1-addHeadPagination:
-
 		addHeadPagination
 
 	Data type
@@ -163,11 +193,14 @@ plugin.tx_restdoc_pi1
 
 		Default: 1
 
+.. _tx-restdoc-pi1-publishSources:
+
+publishSources
+~~~~~~~~~~~~~~
+
 .. container:: table-row
 
 	Property
-		.. _tx-restdoc-pi1-publishSources:
-
 		publishSources
 
 	Data type
@@ -178,11 +211,14 @@ plugin.tx_restdoc_pi1
 
 		Default: 1
 
+.. _tx-restdoc-pi1-baseWrap:
+
+baseWrap
+~~~~~~~~
+
 .. container:: table-row
 
 	Property
-		.. _tx-restdoc-pi1-baseWrap:
-
 		baseWrap
 
 	Data type
