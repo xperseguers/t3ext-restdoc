@@ -3,9 +3,10 @@ if (!defined('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
-t3lib_div::loadTCA('tt_content');
+if (version_compare(TYPO3_version, '6.0.0', '<')) {
+	t3lib_div::loadTCA('tt_content');
+}
 $TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY.'_pi1'] = 'layout,select_key,pages';
-
 
 t3lib_extMgm::addPlugin(array(
 	'LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:tt_content.list_type_pi1',
