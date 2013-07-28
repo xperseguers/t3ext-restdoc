@@ -42,7 +42,7 @@ class tx_restdoc_utility {
 	 * @return array
 	 * @deprecated since 1.2.0, will be removed in 1.4.0 - Use Tx_Restdoc_Utility_Helper::getMetadata()
 	 */
-	public static function getMetadata($path) {
+	static public function getMetadata($path) {
 		t3lib_div::logDeprecatedFunction();
 		return Tx_Restdoc_Utility_Helper::getMetadata($path);
 	}
@@ -54,7 +54,7 @@ class tx_restdoc_utility {
 	 * @return array
 	 * @deprecated since 1.2.0, will be removed in 1.4.0 - Use Tx_Restdoc_Utility_Helper::getMenuData()
 	 */
-	public static function getMenuData(array $entries) {
+	static public function getMenuData(array $entries) {
 		t3lib_div::logDeprecatedFunction();
 		return Tx_Restdoc_Utility_Helper::getMenuData($entries);
 	}
@@ -66,7 +66,7 @@ class tx_restdoc_utility {
 	 * @return array
 	 * @deprecated since 1.2.0, will be removed in 1.4.0 - Use Tx_Restdoc_Utility_Helper::xmlstr_to_array()
 	 */
-	public static function xmlstr_to_array($xmlstr) {
+	static public function xmlstr_to_array($xmlstr) {
 		t3lib_div::logDeprecatedFunction();
 		return Tx_Restdoc_Utility_Helper::xmlstr_to_array($xmlstr);
 	}
@@ -79,7 +79,7 @@ class tx_restdoc_utility {
 	 * @return void Program will stop after calling this method
 	 * @deprecated since 1.2.0, will be removed in 1.4.0 - Use Tx_Restdoc_Utility_Helper::showSources()
 	 */
-	public static function showSources($filename) {
+	static public function showSources($filename) {
 		t3lib_div::logDeprecatedFunction();
 		Tx_Restdoc_Utility_Helper::showSources($filename);
 	}
@@ -92,7 +92,7 @@ class tx_restdoc_utility {
 	 * @return string
 	 * @deprecated since 1.2.0, will be removed in 1.4.0 - Use Tx_Restdoc_Utility_Helper::relativeToAbsolute()
 	 */
-	public static function relativeToAbsolute($fullPath, $relative) {
+	static public function relativeToAbsolute($fullPath, $relative) {
 		t3lib_div::logDeprecatedFunction();
 		return Tx_Restdoc_Utility_Helper::relativeToAbsolute($fullPath, $relative);
 	}

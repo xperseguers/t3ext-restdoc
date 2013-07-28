@@ -40,7 +40,7 @@ final class Tx_Restdoc_Utility_Helper {
 	 * @param string $path Absolute path to the documentation
 	 * @return array
 	 */
-	public static function getMetadata($path) {
+	static public function getMetadata($path) {
 		if (!is_dir($path)) {
 			// Most probably a relative path has been provided
 			$path = PATH_site . $path;
@@ -63,7 +63,7 @@ final class Tx_Restdoc_Utility_Helper {
 	 * @param array $entries
 	 * @return array
 	 */
-	public static function getMenuData(array $entries) {
+	static public function getMenuData(array $entries) {
 		$menu = array();
 		$entries = isset($entries['li'][0]) ? $entries['li'] : array($entries['li']);
 		foreach ($entries as $entry) {
@@ -90,7 +90,7 @@ final class Tx_Restdoc_Utility_Helper {
 	 * @return boolean
 	 * @throws RuntimeException
 	 */
-	public static function processMasterTableOfContents(array &$data, $currentDocument, $callbackLinks) {
+	static public function processMasterTableOfContents(array &$data, $currentDocument, $callbackLinks) {
 		$callableName = '';
 		if (!is_callable($callbackLinks, FALSE, $callableName)) {
 			throw new RuntimeException('Invalid callback for links: ' . $callableName, 1370013916);
@@ -126,7 +126,7 @@ final class Tx_Restdoc_Utility_Helper {
 	 * @return array
 	 * @link https://github.com/gaarf/XML-string-to-PHP-array/blob/master/xmlstr_to_array.php
 	 */
-	public static function xmlstr_to_array($xmlstr) {
+	static public function xmlstr_to_array($xmlstr) {
 		$doc = new DOMDocument();
 		$doc->loadXML($xmlstr);
 		return self::domnode_to_array($doc->documentElement);
@@ -139,7 +139,7 @@ final class Tx_Restdoc_Utility_Helper {
 	 * @param string $filename
 	 * @return void Program will stop after calling this method
 	 */
-	public static function showSources($filename) {
+	static public function showSources($filename) {
 		if (!is_file($filename)) {
 			t3lib_utility_Http::setResponseCodeAndExit(t3lib_utility_Http::HTTP_STATUS_404);
 		}
@@ -168,7 +168,7 @@ final class Tx_Restdoc_Utility_Helper {
 	 * @param string $relative
 	 * @return string
 	 */
-	public static function relativeToAbsolute($fullPath, $relative) {
+	static public function relativeToAbsolute($fullPath, $relative) {
 		$absolute = '';
 		$fullPath = rtrim($fullPath, '/');
 		$fullPathParts = explode('/', $fullPath);
@@ -199,7 +199,7 @@ final class Tx_Restdoc_Utility_Helper {
 	 * @return string
 	 * @throws RuntimeException
 	 */
-	public static function getIndexDefinitionList($documentRoot, array $index, $callbackLinks) {
+	static public function getIndexDefinitionList($documentRoot, array $index, $callbackLinks) {
 		$callableName = '';
 		if (!is_callable($callbackLinks, FALSE, $callableName)) {
 			throw new RuntimeException('Invalid callback for links: ' . $callableName, 1369979755);
