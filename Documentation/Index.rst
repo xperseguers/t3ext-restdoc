@@ -12,40 +12,43 @@
 reST Documentation Viewer
 =========================
 
-:Classification:
-	restdoc
+.. only:: html
 
-:Version:
-	|release|
+	:Classification:
+		restdoc
 
-:Language:
-	en
+	:Version:
+		|release|
 
-:Description:
-	Integrates a reStructuredText documentation (generated as JSON with Sphinx) into a TYPO3 website.
+	:Language:
+		en
 
-:Keywords:
-	reStructuredText, reST, sphinx, documentation
+	:Description:
+		Integrates a reStructuredText documentation (generated as JSON with Sphinx) into a TYPO3 website.
 
-:Copyright:
-	2013
+	:Keywords:
+		reStructuredText, reST, sphinx, documentation
 
-:Author:
-	Xavier Perseguers
+	:Copyright:
+		2013
 
-:Email:
-	xavier@causal.ch
+	:Author:
+		Xavier Perseguers
 
-:License:
-	This document is published under the Open Content License
-	available from http://www.opencontent.org/opl.shtml
+	:Email:
+		xavier@causal.ch
 
-:Rendered:
-	|today|
+	:License:
+		This document is published under the Open Content License
+		available from http://www.opencontent.org/opl.shtml
 
-The content of this document is related to TYPO3
+	:Rendered:
+		|today|
 
-\- a GNU/GPL CMS/Framework available from www.typo3.org
+	The content of this document is related to TYPO3
+
+	\- a GNU/GPL CMS/Framework available from `www.typo3.org <http://www.typo3.org/>`_
+
 
 .. toctree::
 	:maxdepth: 5
