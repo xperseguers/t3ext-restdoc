@@ -64,7 +64,9 @@ SEARCH
 Additional Content Object
 """""""""""""""""""""""""
 
-This extension registers an additional content object to let you access meta-information from your documentation. Example::
+This extension registers an additional content object to let you access meta-information from your documentation. Example:
+
+.. code-block:: typoscript
 
 	10 = REST_METADATA
 	10 {

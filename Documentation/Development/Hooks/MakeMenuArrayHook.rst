@@ -14,7 +14,9 @@ This hook can be used to post-process the menu entries when generating a menu in
 Registration
 ~~~~~~~~~~~~
 
-You should register your class in::
+You should register your class in:
+
+.. code-block:: php
 
 	$GLOBALS["TYPO3_CONF_VARS"]["EXTCONF"]["restdoc"]["makeMenuArrayHook"]
 
@@ -23,7 +25,7 @@ Expected method
 
 Your hook should implement a method ``postProcessTOC()`` of the form
 
-::
+.. code-block:: php
 
 	public function postProcessTOC(array $params) {
 	    // Custom code

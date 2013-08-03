@@ -14,7 +14,9 @@ This hook can be used to pre-process the search form.
 Registration
 ~~~~~~~~~~~~
 
-You should register your class in::
+You should register your class in:
+
+.. code-block:: php
 
 	$GLOBALS["TYPO3_CONF_VARS"]["EXTCONF"]["restdoc"]["searchFormHook"]
 
@@ -23,7 +25,7 @@ Expected method
 
 Your hook should implement a method ``preProcessSEARCH()`` of the form
 
-::
+.. code-block:: php
 
 	public function preProcessSEARCH(array $params) {
 	    // Custom code

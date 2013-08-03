@@ -20,7 +20,9 @@ This hook can be used to post-process the general plugin's output before being w
 Registration
 ~~~~~~~~~~~~
 
-You should register your class in::
+You should register your class in:
+
+.. code-block:: php
 
 	$GLOBALS["TYPO3_CONF_VARS"]["EXTCONF"]["restdoc"]["renderHook"]
 
@@ -29,7 +31,7 @@ Expected method
 
 Your hook should implement a method ``postProcessOutput()`` of the form
 
-::
+.. code-block:: php
 
 	public function postProcessOutput(array $params) {
 	    // Custom code
