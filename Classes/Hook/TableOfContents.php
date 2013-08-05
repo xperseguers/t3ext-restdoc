@@ -74,8 +74,14 @@ class Tx_Restdoc_Hook_TableOfContents {
 		}
 
 		if (version_compare(TYPO3_version, '6.0.0', '>=')) {
-			$storageConfiguration = $this->pObj->getSphinxReader()->getStorage()->getConfiguration();
-			$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
+			$storage = $this->pObj->getSphinxReader()->getStorage();
+			if ($storage !== NULL) {
+				$storageConfiguration = $storage->getConfiguration();
+				$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
+			} else {
+				// FAL is not used
+				$basePath = PATH_site;
+			}
 		} else {
 			$basePath = PATH_site;
 		}

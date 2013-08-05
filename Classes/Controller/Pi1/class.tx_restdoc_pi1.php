@@ -71,8 +71,14 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		$this->pi_USER_INT_obj = 1;    // USER_INT object
 
 		if (version_compare(TYPO3_version, '6.0.0', '>=')) {
-			$storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
-			$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
+			$storage = self::$sphinxReader->getStorage();
+			if ($storage !== NULL) {
+				$storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
+				$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
+			} else {
+				// FAL is not used
+				$basePath = PATH_site;
+			}
 		} else {
 			$basePath = PATH_site;
 		}
@@ -245,8 +251,14 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		$type = isset($conf['userFunc.']['type']) ? $conf['userFunc.']['type'] : 'menu';
 
 		if (version_compare(TYPO3_version, '6.0.0', '>=')) {
-			$storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
-			$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
+			$storage = self::$sphinxReader->getStorage();
+			if ($storage !== NULL) {
+				$storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
+				$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
+			} else {
+				// FAL is not used
+				$basePath = PATH_site;
+			}
 		} else {
 			$basePath = PATH_site;
 		}
@@ -382,8 +394,14 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	 */
 	protected function advertiseSphinx() {
 		if (version_compare(TYPO3_version, '6.0.0', '>=')) {
-			$storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
-			$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
+			$storage = self::$sphinxReader->getStorage();
+			if ($storage !== NULL) {
+				$storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
+				$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
+			} else {
+				// FAL is not used
+				$basePath = PATH_site;
+			}
 		} else {
 			$basePath = PATH_site;
 		}
@@ -643,8 +661,14 @@ JS;
 		}
 
 		if (version_compare(TYPO3_version, '6.0.0', '>=')) {
-			$storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
-			$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
+			$storage = self::$sphinxReader->getStorage();
+			if ($storage !== NULL) {
+				$storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
+				$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
+			} else {
+				// FAL is not used
+				$basePath = PATH_site;
+			}
 		} else {
 			$basePath = PATH_site;
 		}
@@ -783,8 +807,11 @@ HTML;
 		if (substr($document, 0, 11) === '_downloads/' || substr($document, 0, 8) === '_images/') {
 			$basePath = self::$current['path'];
 			if (version_compare(TYPO3_version, '6.0.0', '>=')) {
-				$storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
-				$basePath = rtrim($storageConfiguration['basePath'], '/') . '/' . $basePath;
+				$storage = self::$sphinxReader->getStorage();
+				if ($storage !== NULL) {
+					$storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
+					$basePath = rtrim($storageConfiguration['basePath'], '/') . '/' . $basePath;
+				}
 			}
 			$link = $this->cObj->typoLink_URL(array('parameter' => rtrim($basePath, '/') . '/' . $document));
 		} else {
@@ -915,19 +942,17 @@ HTML;
 
 		self::$sphinxReader = t3lib_div::makeInstance('Tx_Restdoc_Reader_SphinxJson');
 
-		if (version_compare(TYPO3_version, '6.0.0', '>=')) {
-			if (preg_match('/^file:(\d+):(.*)$/', $this->conf['path'], $matches)) {
-				/** @var $storageRepository \TYPO3\CMS\Core\Resource\StorageRepository */
-				$storageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
-				/** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
-				$storage = $storageRepository->findByUid(intval($matches[1]));
-				$storageRecord = $storage->getStorageRecord();
-				if ($storageRecord['driver'] === 'Local') {
-					$this->conf['path'] = substr($matches[2], 1);
-					self::$sphinxReader->setStorage($storage);
-				} else {
-					throw new RuntimeException('Access to the documentation requires an unsupported driver: ' . $storageRecord['driver'], 1365688549);
-				}
+		if (version_compare(TYPO3_version, '6.0.0', '>=') && preg_match('/^file:(\d+):(.*)$/', $this->conf['path'], $matches)) {
+			/** @var $storageRepository \TYPO3\CMS\Core\Resource\StorageRepository */
+			$storageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
+			/** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
+			$storage = $storageRepository->findByUid(intval($matches[1]));
+			$storageRecord = $storage->getStorageRecord();
+			if ($storageRecord['driver'] === 'Local') {
+				$this->conf['path'] = substr($matches[2], 1);
+				self::$sphinxReader->setStorage($storage);
+			} else {
+				throw new RuntimeException('Access to the documentation requires an unsupported driver: ' . $storageRecord['driver'], 1365688549);
 			}
 		}
 
