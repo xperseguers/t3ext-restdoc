@@ -9,7 +9,7 @@
 .. _configuration:
 
 Configuration
--------------
+=============
 
 This chapter describes the TypoScript extension parameters.
 

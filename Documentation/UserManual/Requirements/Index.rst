@@ -7,7 +7,7 @@
 
 
 Requirements
-^^^^^^^^^^^^
+------------
 
 You need a documentation written in reStructuredText and as a Sphinx project. Please visit http://wiki.typo3.org/ReST for further information. You may consider using TYPO3 extension Sphinx to easily set up your environment.
 

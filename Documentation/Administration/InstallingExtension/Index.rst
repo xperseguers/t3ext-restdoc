@@ -7,13 +7,13 @@
 
 
 Installing the extension
-^^^^^^^^^^^^^^^^^^^^^^^^
+------------------------
 
 There are a few steps necessary to install the reST Documentation Viewer extension. If you have installed other extensions in the past, you will run into little new here.
 
 
 Install the extension from Extension Manager
-""""""""""""""""""""""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The reST Documentation Viewer extension can ben installed through the typical TYPO3 installation process using the Extension Manager.
 
@@ -21,7 +21,7 @@ The Extension Manager will create a new table in your database. This table is us
 
 
 Configure RealURL
-"""""""""""""""""
+^^^^^^^^^^^^^^^^^
 
 If you are using RealURL, the good news is that the reST Documentation Viewer extension comes with a configuration for RealURL.
 

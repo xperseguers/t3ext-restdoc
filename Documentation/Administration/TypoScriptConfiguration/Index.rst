@@ -7,7 +7,7 @@
 
 
 TypoScript configuration
-^^^^^^^^^^^^^^^^^^^^^^^^
+------------------------
 
 In order for this extension to be usable, make sure to include the static template that is provided with this extension.
 
@@ -26,7 +26,7 @@ This is just a matter of playing with TypoScript, something you should love anyw
 
 
 Available modes for the plugin
-""""""""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 When integrating the plugin with TypoScript, additional modes of operations are available. These are:
 
@@ -62,7 +62,7 @@ SEARCH
 
 
 Additional Content Object
-"""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This extension registers an additional content object to let you access meta-information from your documentation. Example:
 

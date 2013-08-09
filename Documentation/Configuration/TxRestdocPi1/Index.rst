@@ -7,14 +7,14 @@
 
 
 plugin.tx_restdoc_pi1
-^^^^^^^^^^^^^^^^^^^^^
+---------------------
 
 .. ### BEGIN~OF~TABLE ###
 
 .. _tx-restdoc-pi1-path:
 
 path
-~~~~
+^^^^
 
 .. container:: table-row
 
@@ -32,7 +32,7 @@ path
 .. _tx-restdoc-pi1-defaultFile:
 
 defaultFile
-~~~~~~~~~~~
+^^^^^^^^^^^
 
 .. container:: table-row
 
@@ -50,7 +50,7 @@ defaultFile
 .. _tx-restdoc-pi1-mode:
 
 mode
-~~~~
+^^^^
 
 .. container:: table-row
 
@@ -68,7 +68,7 @@ mode
 .. _tx-restdoc-pi1-rootPage:
 
 rootPage
-~~~~~~~~
+^^^^^^^^
 
 .. container:: table-row
 
@@ -86,7 +86,7 @@ rootPage
 .. _tx-restdoc-pi1-showPermanentLink:
 
 showPermanentLink
-~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^
 
 .. container:: table-row
 
@@ -104,7 +104,7 @@ showPermanentLink
 .. _tx-restdoc-pi1-pathSeparator:
 
 pathSeparator
-~~~~~~~~~~~~~
+^^^^^^^^^^^^^
 
 .. container:: table-row
 
@@ -124,7 +124,7 @@ pathSeparator
 .. _tx-restdoc-pi1-fallbackPathSeparator:
 
 fallbackPathSeparator
-~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^
 
 .. container:: table-row
 
@@ -142,7 +142,7 @@ fallbackPathSeparator
 .. _tx-restdoc-pi1-documentStructureMaxDocuments:
 
 documentStructureMaxDocuments
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. container:: table-row
 
@@ -160,7 +160,7 @@ documentStructureMaxDocuments
 .. _tx-restdoc-pi1-advertiseSphinx:
 
 advertiseSphinx
-~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^
 
 .. container:: table-row
 
@@ -178,7 +178,7 @@ advertiseSphinx
 .. _tx-restdoc-pi1-addHeadPagination:
 
 addHeadPagination
-~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^
 
 .. container:: table-row
 
@@ -196,7 +196,7 @@ addHeadPagination
 .. _tx-restdoc-pi1-publishSources:
 
 publishSources
-~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^
 
 .. container:: table-row
 
@@ -214,7 +214,7 @@ publishSources
 .. _tx-restdoc-pi1-baseWrap:
 
 baseWrap
-~~~~~~~~
+^^^^^^^^
 
 .. container:: table-row
 

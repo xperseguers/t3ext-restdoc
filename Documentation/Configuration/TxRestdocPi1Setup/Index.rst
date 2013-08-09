@@ -7,14 +7,14 @@
 
 
 plugin.tx_restdoc_pi1.setup
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------
 
 .. ### BEGIN~OF~TABLE ###
 
 .. _tx-restdoc-pi1-setup-defaultFile:
 
 defaultFile
-~~~~~~~~~~~
+^^^^^^^^^^^
 
 .. container:: table-row
 
@@ -32,7 +32,7 @@ defaultFile
 .. _tx-restdoc-pi1-setup-BODY-image:
 
 BODY.image.renderObj
-~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^
 
 .. container:: table-row
 
@@ -50,7 +50,7 @@ BODY.image.renderObj
 .. _tx-restdoc-pi1-setup-TOC:
 
 TOC.renderObj
-~~~~~~~~~~~~~
+^^^^^^^^^^^^^
 
 .. container:: table-row
 
@@ -68,7 +68,7 @@ TOC.renderObj
 .. _tx-restdoc-pi1-setup-MASTER-TOC:
 
 MASTER_TOC.renderObj
-~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^
 
 .. container:: table-row
 
@@ -86,7 +86,7 @@ MASTER_TOC.renderObj
 .. _tx-restdoc-pi1-setup-RECENT:
 
 RECENT.renderObj
-~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^
 
 .. container:: table-row
 
@@ -104,7 +104,7 @@ RECENT.renderObj
 .. _tx-restdoc-pi1-setup-QUICK-NAVIGATION:
 
 QUICK_NAVIGATION.renderObj
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. container:: table-row
 
@@ -122,7 +122,7 @@ QUICK_NAVIGATION.renderObj
 .. _tx-restdoc-pi1-setup-BREADCRUMB:
 
 BREADCRUMB.renderObj
-~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^
 
 .. container:: table-row
 
@@ -140,7 +140,7 @@ BREADCRUMB.renderObj
 .. _tx-restdoc-pi1-setup-REFERENCES:
 
 REFERENCES.renderObj
-~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^
 
 .. container:: table-row
 

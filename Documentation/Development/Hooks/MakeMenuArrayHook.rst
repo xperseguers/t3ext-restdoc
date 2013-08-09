@@ -7,12 +7,12 @@
 
 
 makeMenuArrayHook
-"""""""""""""""""
+^^^^^^^^^^^^^^^^^
 
 This hook can be used to post-process the menu entries when generating a menu in TypoScript (general menu, previous/next page, breadcrumb menu, updated chapters).
 
 Registration
-~~~~~~~~~~~~
+""""""""""""
 
 You should register your class in:
 
@@ -21,7 +21,7 @@ You should register your class in:
 	$GLOBALS["TYPO3_CONF_VARS"]["EXTCONF"]["restdoc"]["makeMenuArrayHook"]
 
 Expected method
-~~~~~~~~~~~~~~~
+"""""""""""""""
 
 Your hook should implement a method ``postProcessTOC()`` of the form
 
@@ -32,7 +32,7 @@ Your hook should implement a method ``postProcessTOC()`` of the form
 	}
 
 Parameters
-~~~~~~~~~~
+""""""""""
 
 ``$params`` is an array with following keys:
 

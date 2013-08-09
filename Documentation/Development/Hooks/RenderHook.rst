@@ -7,7 +7,7 @@
 
 
 renderHook
-""""""""""
+^^^^^^^^^^
 
 This hook can be used to post-process the general plugin's output before being wrapped by either your custom TypoScript processing or the standard base class:
 
@@ -18,7 +18,7 @@ This hook can be used to post-process the general plugin's output before being w
 	</div>
 
 Registration
-~~~~~~~~~~~~
+""""""""""""
 
 You should register your class in:
 
@@ -27,7 +27,7 @@ You should register your class in:
 	$GLOBALS["TYPO3_CONF_VARS"]["EXTCONF"]["restdoc"]["renderHook"]
 
 Expected method
-~~~~~~~~~~~~~~~
+"""""""""""""""
 
 Your hook should implement a method ``postProcessOutput()`` of the form
 
@@ -38,7 +38,7 @@ Your hook should implement a method ``postProcessOutput()`` of the form
 	}
 
 Parameters
-~~~~~~~~~~
+""""""""""
 
 ``$params`` is an array with following keys:
 

@@ -7,7 +7,7 @@
 
 
 What does it do?
-^^^^^^^^^^^^^^^^
+----------------
 
 This extension lets you seamlessly integrate a documentation written with Sphinx (the Python Documentation Generator used by the TYPO3 documentation team for all official documentation) into your TYPO3 website. Watch `5 min tutorial video`_.
 
@@ -27,7 +27,7 @@ Sphinx was originally created for the Python documentation and a few features ar
 
 
 And this extension?
-"""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^
 
 The "Sphinx way" of publishing a reST documentation to the Web is to generate either a standalone HTML website (or single page) or a PDF. The drawback of using a standalone HTML website is that it is extremely tedious to adapt the base templates provided by Sphinx to your needs to get something visually comparable to your website's design you try to look like.
 
@@ -37,7 +37,7 @@ This extension uses the JSON content parts and lets you freely place them in you
 
 
 How to start?
-"""""""""""""
+^^^^^^^^^^^^^
 
 If you already have a Sphinx documentation project at hand, generate a JSON output with ``make json`` instead of ``make html``, copy the whole output directory to your website, place a restdoc plugin on your page and you're done!
 

@@ -7,12 +7,12 @@
 
 
 quickNavigationHook
-"""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^
 
 This hook can be used to post-process the quick navigation items.
 
 Registration
-~~~~~~~~~~~~
+""""""""""""
 
 You should register your class in:
 
@@ -21,7 +21,7 @@ You should register your class in:
 	$GLOBALS["TYPO3_CONF_VARS"]["EXTCONF"]["restdoc"]["quickNavigationHook"]
 
 Expected method
-~~~~~~~~~~~~~~~
+"""""""""""""""
 
 Your hook should implement a method ``postProcessQUICK_NAVIGATION()`` of the form
 
@@ -32,7 +32,7 @@ Your hook should implement a method ``postProcessQUICK_NAVIGATION()`` of the for
 	}
 
 Parameters
-~~~~~~~~~~
+""""""""""
 
 ``$params`` is an array with following keys:
 

@@ -9,12 +9,12 @@
 .. _development:
 
 Development
------------
+===========
 
 This chapter describes some internals of the restdoc extension to let you extend it easily.
 
 Hooks
-"""""
+-----
 
 .. toctree::
 	:maxdepth: 1

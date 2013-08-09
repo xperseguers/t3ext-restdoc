@@ -7,14 +7,14 @@
 
 
 REST_METADATA
-^^^^^^^^^^^^^
+-------------
 
 .. ### BEGIN~OF~TABLE ###
 
 .. _REST-METADATA-path:
 
 path
-~~~~
+^^^^
 
 .. container:: table-row
 
@@ -30,7 +30,7 @@ path
 		Default: *empty*
 
 (stdWrap properties)
-~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^
 
 .. container:: table-row
 
