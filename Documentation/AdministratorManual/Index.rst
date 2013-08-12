@@ -6,18 +6,17 @@
 .. include:: ../Includes.txt
 
 
-.. _user-manual:
+.. _admin-manual:
 
-User Manual
-===========
+Administrator manual
+====================
 
-This chapter describes how to use the extension from a user point of view.
+This chapter describes how to manage the extension from a superuser point of view.
 
 .. toctree::
 	:maxdepth: 5
 	:titlesonly:
 	:glob:
 
-	Requirements/Index
-	GeneratingDocumentationJson/Index
-	PluginOptions/Index
+	InstallingExtension/Index
+	TypoScriptConfiguration/Index

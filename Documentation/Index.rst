@@ -49,6 +49,12 @@ reST Documentation Viewer
 	a GNU/GPL CMS/Framework available from `www.typo3.org <http://www.typo3.org/>`_.
 
 
+	**Other version of this document**
+
+	:PDF:
+		http://docs.typo3.org/typo3cms/extensions/restdoc/latest/_pdf/
+
+
 	**Table of Contents**
 
 .. toctree::
@@ -57,8 +63,8 @@ reST Documentation Viewer
 	:glob:
 
 	Introduction/Index
-	UserManual/Index
-	Administration/Index
+	UsersManual/Index
+	AdministratorManual/Index
 	Configuration/Index
 	Development/Index
 	KnownProblems/Index
