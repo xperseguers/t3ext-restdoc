@@ -55,7 +55,7 @@ defaultFile
 :typoscript:`plugin.tx_restdoc_pi1.setup.defaultFile =` :ref:`t3tsref:data-type-string`
 
 .. admonition:: Deprecated
-	:class: admonition warning
+	:class: warning
 
 	Use :ref:`plugin.tx_restdoc_pi1.defaultFile <ts-plugin-tx-restdoc-pi1-defaultFile>` instead.
 
