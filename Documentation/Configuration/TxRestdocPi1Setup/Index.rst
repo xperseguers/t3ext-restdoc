@@ -6,155 +6,125 @@
 .. include:: ../../Includes.txt
 
 
+.. _ts-plugin-tx-restdoc-pi1-setup:
+
 plugin.tx_restdoc_pi1.setup
 ---------------------------
 
-.. ### BEGIN~OF~TABLE ###
+.. only:: html
 
-.. _tx-restdoc-pi1-setup-defaultFile:
+	.. contents::
+		:local:
+		:depth: 1
 
-defaultFile
-^^^^^^^^^^^
 
-.. container:: table-row
+Properties
+^^^^^^^^^^
 
-	Property
-		defaultFile
+.. container:: ts-properties
 
-	Data type
-		string /:ref:`stdWrap <t3tsref:stdwrap>`
+	===================================================== ===================================================================== ======================= ==================
+	Property                                              Data type                                                             :ref:`t3tsref:stdwrap`  Default
+	===================================================== ===================================================================== ======================= ==================
+	defaultFile_ (*deprecated*)                           :ref:`t3tsref:data-type-string`                                       yes                     *empty*
+	`BODY.image.renderObj`_                               :ref:`cObject <t3tsref:cobjects>`                                     no                      *see* `setup.txt`_
+	`TOC.renderObj`_                                      :ref:`cObject <t3tsref:cobjects>`                                     no                      *see* `setup.txt`_
+	`MASTER_TOC.renderObj`_                               :ref:`cObject <t3tsref:cobjects>`                                     no                      *see* `setup.txt`_
+	`RECENT.renderObj`_                                   :ref:`cObject <t3tsref:cobjects>`                                     no                      *see* `setup.txt`_
+	`QUICK_NAVIGATION.renderObj`_                         :ref:`cObject <t3tsref:cobjects>`                                     no                      *see* `setup.txt`_
+	`BREADCRUMB.renderObj`_                               :ref:`cObject <t3tsref:cobjects>`                                     no                      *see* `setup.txt`_
+	`REFERENCES.renderObj`_                               :ref:`cObject <t3tsref:cobjects>`                                     no                      *see* `setup.txt`_
+	===================================================== ===================================================================== ======================= ==================
 
-	Description
-		*Deprecated*, use :ref:`plugin.tx_restdoc_pi1.defaultFile <tx-restdoc-pi1-defaultFile>` instead.
 
-		Default: *empty*
-
-.. _tx-restdoc-pi1-setup-BODY-image:
-
-BODY.image.renderObj
-^^^^^^^^^^^^^^^^^^^^
-
-.. container:: table-row
-
-	Property
-		BODY.image.renderObj
-
-	Data type
-		:ref:`cObject <t3tsref:cobjects>`
-
-	Description
-		Setup to render the images within the documentation.
-
-		Default: *see* `setup.txt`_
-
-.. _tx-restdoc-pi1-setup-TOC:
-
-TOC.renderObj
-^^^^^^^^^^^^^
-
-.. container:: table-row
-
-	Property
-		TOC.renderObj
-
-	Data type
-		:ref:`cObject <t3tsref:cobjects>`
-
-	Description
-		Setup to render the table of contents of the documentation.
-
-		Default: *see* `setup.txt`_
-
-.. _tx-restdoc-pi1-setup-MASTER-TOC:
-
-MASTER_TOC.renderObj
-^^^^^^^^^^^^^^^^^^^^
-
-.. container:: table-row
-
-	Property
-		MASTER_TOC.renderObj
-
-	Data type
-		:ref:`cObject <t3tsref:cobjects>`
-
-	Description
-		Setup to render the master table of contents of the documentation.
-
-		Default: *see* `setup.txt`_
-
-.. _tx-restdoc-pi1-setup-RECENT:
-
-RECENT.renderObj
+Property details
 ^^^^^^^^^^^^^^^^
 
-.. container:: table-row
+.. only:: html
 
-	Property
-		RECENT.renderObj
+	.. contents::
+		:local:
+		:depth: 1
 
-	Data type
-		:ref:`cObject <t3tsref:cobjects>`
 
-	Description
-		Setup to render the list of chapters updated recently.
+.. _ts-plugin-tx-restdoc-pi1-setup-defaultFile:
 
-		Default: *see* `setup.txt`_
+defaultFile
+"""""""""""
 
-.. _tx-restdoc-pi1-setup-QUICK-NAVIGATION:
+:typoscript:`plugin.tx_restdoc_pi1.setup.defaultFile =` :ref:`t3tsref:data-type-string`
+
+.. admonition:: Deprecated
+	:class: admonition warning
+
+	Use :ref:`plugin.tx_restdoc_pi1.defaultFile <ts-plugin-tx-restdoc-pi1-defaultFile>` instead.
+
+
+.. _ts-plugin-tx-restdoc-pi1-setup-BODY-image:
+
+BODY.image.renderObj
+""""""""""""""""""""
+
+:typoscript:`plugin.tx_restdoc_pi1.setup.BODY.image.renderObj =` :ref:`cObject <t3tsref:cobjects>`
+
+Setup to render the images within the documentation.
+
+
+.. _ts-plugin-tx-restdoc-pi1-setup-TOC:
+
+TOC.renderObj
+"""""""""""""
+
+:typoscript:`plugin.tx_restdoc_pi1.setup.TOC.renderObj =` :ref:`cObject <t3tsref:cobjects>`
+
+Setup to render the table of contents of the documentation.
+
+
+.. _ts-plugin-tx-restdoc-pi1-setup-MASTER-TOC:
+
+MASTER_TOC.renderObj
+""""""""""""""""""""
+
+:typoscript:`plugin.tx_restdoc_pi1.setup.MASTER_TOC.renderObj =` :ref:`cObject <t3tsref:cobjects>`
+
+Setup to render the master table of contents of the documentation.
+
+
+.. _ts-plugin-tx-restdoc-pi1-setup-RECENT:
+
+RECENT.renderObj
+""""""""""""""""
+
+:typoscript:`plugin.tx_restdoc_pi1.setup.RECENT.renderObj =` :ref:`cObject <t3tsref:cobjects>`
+
+Setup to render the list of chapters updated recently.
+
+
+.. _ts-plugin-tx-restdoc-pi1-setup-QUICK-NAVIGATION:
 
 QUICK_NAVIGATION.renderObj
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+""""""""""""""""""""""""""
 
-.. container:: table-row
+:typoscript:`plugin.tx_restdoc_pi1.setup.QUICK_NAVIGATION.renderObj =` :ref:`cObject <t3tsref:cobjects>`
 
-	Property
-		QUICK_NAVIGATION.renderObj
+Setup to render the quick navigation (previous/next links).
 
-	Data type
-		:ref:`cObject <t3tsref:cobjects>`
 
-	Description
-		Setup to render the quick navigation (previous/next links).
-
-		Default: *see* `setup.txt`_
-
-.. _tx-restdoc-pi1-setup-BREADCRUMB:
+.. _ts-plugin-tx-restdoc-pi1-setup-BREADCRUMB:
 
 BREADCRUMB.renderObj
-^^^^^^^^^^^^^^^^^^^^
+""""""""""""""""""""
 
-.. container:: table-row
+:typoscript:`plugin.tx_restdoc_pi1.setup.BREADCRUMB.renderObj =` :ref:`cObject <t3tsref:cobjects>`
 
-	Property
-		BREADCRUMB.renderObj
+Setup to render the breadcrumb menu.
 
-	Data type
-		:ref:`cObject <t3tsref:cobjects>`
 
-	Description
-		Setup to render the breadcrumb menu.
-
-		Default: *see* `setup.txt`_
-
-.. _tx-restdoc-pi1-setup-REFERENCES:
+.. _ts-plugin-tx-restdoc-pi1-setup-REFERENCES:
 
 REFERENCES.renderObj
-^^^^^^^^^^^^^^^^^^^^
+""""""""""""""""""""
 
-.. container:: table-row
+:typoscript:`plugin.tx_restdoc_pi1.setup.REFERENCES.renderObj =` :ref:`cObject <t3tsref:cobjects>`
 
-	Property
-		REFERENCES.renderObj
-
-	Data type
-		:ref:`cObject <t3tsref:cobjects>`
-
-	Description
-		Setup to render the list of references.
-
-		Default: *see* `setup.txt`_
-
-.. ###### END~OF~TABLE ######
-
-[tsref:plugin.tx_restdoc_pi1.setup]
+Setup to render the list of references.

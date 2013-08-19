@@ -6,235 +6,183 @@
 .. include:: ../../Includes.txt
 
 
+.. _ts-plugin-tx-restdoc-pi1:
+
 plugin.tx_restdoc_pi1
 ---------------------
 
-.. ### BEGIN~OF~TABLE ###
+.. only:: html
 
-.. _tx-restdoc-pi1-path:
+	.. contents::
+		:local:
+		:depth: 1
+
+
+Properties
+^^^^^^^^^^
+
+.. container:: ts-properties
+
+	===================================================== ===================================================================== ======================= ==================
+	Property                                              Data type                                                             :ref:`t3tsref:stdwrap`  Default
+	===================================================== ===================================================================== ======================= ==================
+	path_                                                 :ref:`t3tsref:data-type-string`                                       yes                     *empty*
+	defaultFile_                                          :ref:`t3tsref:data-type-string`                                       yes                     "index"
+	mode_                                                 :ref:`t3tsref:data-type-string`                                       yes                     *empty*
+	rootPage_                                             :ref:`t3tsref:data-type-integer`                                      yes                     *empty*
+	showPermanentLink_                                    :ref:`t3tsref:data-type-boolean`                                      yes                     0
+	pathSeparator_                                        :ref:`t3tsref:data-type-string`                                       yes                     "|" (vertical bar)
+	fallbackPathSeparator_                                :ref:`t3tsref:data-type-string`                                       yes                     "\\" (backslash)
+	documentStructureMaxDocuments_                        :ref:`t3tsref:data-type-integer`                                      yes                     50
+	advertiseSphinx_                                      :ref:`t3tsref:data-type-boolean`                                      yes                     1
+	addHeadPagination_                                    :ref:`t3tsref:data-type-boolean`                                      yes                     1
+	publishSources_                                       :ref:`t3tsref:data-type-boolean`                                      yes                     1
+	baseWrap_                                             :ref:`t3tsref:stdwrap`                                                yes                     *empty*
+	===================================================== ===================================================================== ======================= ==================
+
+
+Property details
+^^^^^^^^^^^^^^^^
+
+.. only:: html
+
+	.. contents::
+		:local:
+		:depth: 1
+
+
+.. _ts-plugin-tx-restdoc-pi1-path:
 
 path
-^^^^
+""""
 
-.. container:: table-row
+:typoscript:`plugin.tx_restdoc_pi1.path =` :ref:`t3tsref:data-type-string`
 
-	Property
-		path
+Path to the root directory of the documentation.
 
-	Data type
-		string /:ref:`stdWrap <t3tsref:stdwrap>`
 
-	Description
-		Path to the root directory of the documentation.
-
-		Default: *empty*
-
-.. _tx-restdoc-pi1-defaultFile:
+.. _ts-plugin-tx-restdoc-pi1-defaultFile:
 
 defaultFile
-^^^^^^^^^^^
+"""""""""""
 
-.. container:: table-row
+:typoscript:`plugin.tx_restdoc_pi1.defaultFile =` :ref:`t3tsref:data-type-string`
 
-	Property
-		defaultFile
+Default file (main file).
 
-	Data type
-		string /:ref:`stdWrap <t3tsref:stdwrap>`
 
-	Description
-		Default file (main file).
-
-		Default: "index"
-
-.. _tx-restdoc-pi1-mode:
+.. _ts-plugin-tx-restdoc-pi1-mode:
 
 mode
-^^^^
+""""
 
-.. container:: table-row
+:typoscript:`plugin.tx_restdoc_pi1.mode =` :ref:`t3tsref:data-type-string`
 
-	Property
-		mode
+Either ``BODY``, ``TOC``, ``RECENT``, ``TITLE``, ``QUICK_NAVIGATION``, ``BREADCRUMB``, ``REFERENCES``, ``FILENAME``
+or ``SEARCH`` to setup the plugin from TypoScript.
 
-	Data type
-		string /:ref:`stdWrap <t3tsref:stdwrap>`
 
-	Description
-		Either "BODY", "TOC", "RECENT", "TITLE", "QUICK_NAVIGATION", "BREADCRUMB", "REFERENCES", "FILENAME" or "SEARCH" to setup the plugin from TypoScript.
-
-		Default: *empty*
-
-.. _tx-restdoc-pi1-rootPage:
+.. _ts-plugin-tx-restdoc-pi1-rootPage:
 
 rootPage
-^^^^^^^^
+""""""""
 
-.. container:: table-row
+:typoscript:`plugin.tx_restdoc_pi1.rootPage =` :ref:`t3tsref:data-type-integer`
 
-	Property
-		rootPage
+UID of the page showing the documentation. This setting is used when mode_ = ``SEARCH`` to link back to the
+documentation from search results.
 
-	Data type
-		integer /:ref:`stdWrap <t3tsref:stdwrap>`
 
-	Description
-		UID of the page showing the documentation. This setting is used when mode = SEARCH to link back to the documentation from search results.
-
-		Default: *empty*
-
-.. _tx-restdoc-pi1-showPermanentLink:
+.. _ts-plugin-tx-restdoc-pi1-showPermanentLink:
 
 showPermanentLink
-^^^^^^^^^^^^^^^^^
+"""""""""""""""""
 
-.. container:: table-row
+:typoscript:`plugin.tx_restdoc_pi1.showPermanentLink =` :ref:`t3tsref:data-type-boolean`
 
-	Property
-		showPermanentLink
+Whether permanent links should be added to each section.
 
-	Data type
-		boolean /:ref:`stdWrap <t3tsref:stdwrap>`
 
-	Description
-		Whether permanent links should be added to each section.
-
-		Default: 0
-
-.. _tx-restdoc-pi1-pathSeparator:
+.. _ts-plugin-tx-restdoc-pi1-pathSeparator:
 
 pathSeparator
-^^^^^^^^^^^^^
+"""""""""""""
 
-.. container:: table-row
+:typoscript:`plugin.tx_restdoc_pi1.pathSeparator =` :ref:`t3tsref:data-type-string`
 
-	Property
-		pathSeparator
+Separator to be used between directories of the documentation. You may use multiple characters as well.
 
-	Data type
-		string /:ref:`stdWrap <t3tsref:stdwrap>`
+Make sure to read http://forge.typo3.org/issues/45560 before using special characters such as ``\`` (backslash)
+or ``/`` (forward slash).
 
-	Description
-		Separator to be used between directories of the documentation. You may use multiple characters as well.
 
-		Make sure to read http://forge.typo3.org/issues/45560 before using special characters such as \ (backslash) or / (forward slash).
-
-		Default: "|" (vertical bar)
-
-.. _tx-restdoc-pi1-fallbackPathSeparator:
+.. _ts-plugin-tx-restdoc-pi1-fallbackPathSeparator:
 
 fallbackPathSeparator
-^^^^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""""
 
-.. container:: table-row
+:typoscript:`plugin.tx_restdoc_pi1.fallbackPathSeparator =` :ref:`t3tsref:data-type-string`
 
-	Property
-		fallbackPathSeparator
+Comma-separated list of fallback path separators.
 
-	Data type
-		string /:ref:`stdWrap <t3tsref:stdwrap>`
 
-	Description
-		Comma-separated list of fallback path separators.
-
-		Default: "\" (backslash)
-
-.. _tx-restdoc-pi1-documentStructureMaxDocuments:
+.. _ts-plugin-tx-restdoc-pi1-documentStructureMaxDocuments:
 
 documentStructureMaxDocuments
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""""""""""""
 
-.. container:: table-row
+:typoscript:`plugin.tx_restdoc_pi1.documentStructureMaxDocuments =` :ref:`t3tsref:data-type-integer`
 
-	Property
-		documentStructureMaxDocuments
+Maximal number of documents to be processed at once when generating the documentation's structure (requires
+EXT:`dd_googlesitemap`_).
 
-	Data type
-		integer /:ref:`stdWrap <t3tsref:stdwrap>`
 
-	Description
-		Maximal number of documents to be processed at once when generating the documentation's structure (requires EXT:`dd_googlesitemap`_).
-
-		Default: 50
-
-.. _tx-restdoc-pi1-advertiseSphinx:
+.. _ts-plugin-tx-restdoc-pi1-advertiseSphinx:
 
 advertiseSphinx
-^^^^^^^^^^^^^^^
+"""""""""""""""
 
-.. container:: table-row
+:typoscript:`plugin.tx_restdoc_pi1.advertiseSphinx =` :ref:`t3tsref:data-type-boolean`
 
-	Property
-		advertiseSphinx
+Whether header JS block should be generated to advertise Sphinx to plugins such as Wappalizer_.
 
-	Data type
-		boolean /:ref:`stdWrap <t3tsref:stdwrap>`
 
-	Description
-		Whether header JS block should be generated to advertise Sphinx to plugins such as Wappalizer_.
-
-		Default: 1
-
-.. _tx-restdoc-pi1-addHeadPagination:
+.. _ts-plugin-tx-restdoc-pi1-addHeadPagination:
 
 addHeadPagination
-^^^^^^^^^^^^^^^^^
+"""""""""""""""""
 
-.. container:: table-row
+:typoscript:`plugin.tx_restdoc_pi1.addHeadPagination =` :ref:`t3tsref:data-type-boolean`
 
-	Property
-		addHeadPagination
+Whether pagination links should be added to the HEAD part. See Google's `Webmaster Central Blog`_ for additional
+information.
 
-	Data type
-		boolean /:ref:`stdWrap <t3tsref:stdwrap>`
 
-	Description
-		Whether pagination links should be added to the HEAD part. See Google's `Webmaster Central Blog`_ for additional information.
-
-		Default: 1
-
-.. _tx-restdoc-pi1-publishSources:
+.. _ts-plugin-tx-restdoc-pi1-publishSources:
 
 publishSources
-^^^^^^^^^^^^^^
+""""""""""""""
 
-.. container:: table-row
+:typoscript:`plugin.tx_restdoc_pi1.publishSources =` :ref:`t3tsref:data-type-boolean`
 
-	Property
-		publishSources
+If active, the sources of your documentation (content of directory ``_sources/`` will be published. Please note that
+this flag should be set if you want to show a context of where a search term was found.
 
-	Data type
-		boolean /:ref:`stdWrap <t3tsref:stdwrap>`
 
-	Description
-		If active, the sources of your documentation (content of directory ``_sources/`` will be published. Please note that this flag should be set if you want to show a context of where a search term was found.
-
-		Default: 1
-
-.. _tx-restdoc-pi1-baseWrap:
+.. _ts-plugin-tx-restdoc-pi1-baseWrap:
 
 baseWrap
-^^^^^^^^
+""""""""
 
-.. container:: table-row
+:typoscript:`plugin.tx_restdoc_pi1.baseWrap =` :ref:`t3tsref:stdwrap`
 
-	Property
-		baseWrap
+Override the default wrap for the plugin:
 
-	Data type
-		:ref:`stdWrap <t3tsref:stdwrap>`
+.. code-block:: html
 
-	Description
-		Override the default wrap for the plugin::
+	<div class="tx-restdoc-pi1">
+	    ...
+	</div>
 
-			<div class="tx-restdoc-pi1">
-			    ...
-			</div>
-
-		**Note:** default wrap is NOT applied when mode is either TITLE or FILENAME but baseWrap will be applied if defined.
-
-		Default: *empty*
-
-.. ###### END~OF~TABLE ######
-
-[tsref:plugin.tx_restdoc_pi1]
+.. warning::
+	Default wrap is **not** applied when mode_ is either ``TITLE`` or ``FILENAME`` but baseWrap will be applied if defined.

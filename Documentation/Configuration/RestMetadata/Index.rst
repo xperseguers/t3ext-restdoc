@@ -6,56 +6,73 @@
 .. include:: ../../Includes.txt
 
 
+.. _ts-rest-metadata:
+
 REST_METADATA
 -------------
 
-.. ### BEGIN~OF~TABLE ###
+.. only:: html
 
-.. _REST-METADATA-path:
+	.. contents::
+		:local:
+		:depth: 1
+
+
+Properties
+^^^^^^^^^^
+
+.. container:: ts-properties
+
+	===================================================== ===================================================================== ======================= ==================
+	Property                                              Data type                                                             :ref:`t3tsref:stdwrap`  Default
+	===================================================== ===================================================================== ======================= ==================
+	path_                                                 :ref:`t3tsref:data-type-string`                                       yes                     *empty*
+	`(stdWrap properties)`_                               :ref:`stdWrap property <t3tsref:stdwrap>`
+	===================================================== ===================================================================== ======================= ==================
+
+
+Property details
+^^^^^^^^^^^^^^^^
+
+.. only:: html
+
+	.. contents::
+		:local:
+		:depth: 1
+
+
+.. _ts-rest-metadata-path:
 
 path
-^^^^
+""""
 
-.. container:: table-row
+:typoscript:`REST_METADATA.path =` :ref:`t3tsref:data-type-string`
 
-	Property
-		path
+Path to the root directory of the documentation.
 
-	Data type
-		string /:ref:`stdWrap <t3tsref:stdwrap>`
-
-	Description
-		Path to the root directory of the documentation.
-
-		Default: *empty*
 
 (stdWrap properties)
-^^^^^^^^^^^^^^^^^^^^
+""""""""""""""""""""
 
-.. container:: table-row
+:typoscript:`REST_METADATA.<stdWrap property> =` :ref:`stdWrap property <t3tsref:stdwrap>`
 
-	Property
-		(:ref:`stdWrap <t3tsref:stdwrap>` properties)
+Available fields:
 
-	Data type
-		string /:ref:`stdWrap <t3tsref:stdwrap>`
+* shorttitle
+* copyright
+* project
+* version
+* release
+* sphinx_version
+* ...
 
-	Description
-		Available fields:
+.. tip::
+	See ``globalcontext.json`` for additional fields.
 
-		* shorttitle
-		* copyright
-		* project
-		* version
-		* release
-		* sphinx_version
-		* *(see* ``globalcontext.json`` *for additional fields)*
+Example
+~~~~~~~
 
-		**Example:** ::
+.. code-block:: typoscript
 
-			10 = REST_METADATA
-			10.field = copyright
-
-.. ###### END~OF~TABLE ######
-
-[tsref:REST_METADATA]
+	10 = REST_METADATA
+	10.field = copyright

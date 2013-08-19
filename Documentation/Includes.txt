@@ -32,7 +32,7 @@
 
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 
-.. _`setup.txt`: http://forge.typo3.org/projects/extension-restdoc/repository/entry/trunk/Configuration/TypoScript/setup.txt
+.. _`setup.txt`: https://git.typo3.org/TYPO3CMS/Extensions/restdoc.git/blob/HEAD:/Configuration/TypoScript/setup.txt
 
 .. _SEO: http://en.wikipedia.org/wiki/Search_engine_optimization
 
@@ -40,7 +40,7 @@
 
 .. _`Tips and Tricks`: http://wiki.typo3.org/Tips_and_Tricks_%28reST%29
 
-.. _`TypoScript snippets`: http://forge.typo3.org/projects/extension-restdoc/repository/show/trunk/Resources/Private/Examples
+.. _`TypoScript snippets`: https://git.typo3.org/TYPO3CMS/Extensions/restdoc.git/tree/HEAD:/Resources/Private/Examples
 
 .. _Wappalizer: http://wappalyzer.com/
 
