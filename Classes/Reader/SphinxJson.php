@@ -605,5 +605,3 @@ class Tx_Restdoc_Reader_SphinxJson {
 	}
 
 }
-
-?>

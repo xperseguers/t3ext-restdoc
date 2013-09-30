@@ -63,5 +63,3 @@ class tx_restdoc_pi1_wizicon {
 		return $GLOBALS['LANG']->includeLLFile($llFile, FALSE);
 	}
 }
-
-?>

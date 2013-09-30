@@ -79,5 +79,3 @@ class Tx_Restdoc_ContentObject_RestMetadataContentObject {
 	}
 
 }
-
-?>

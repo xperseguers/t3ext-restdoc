@@ -336,5 +336,3 @@ final class Tx_Restdoc_Utility_Helper {
 	}
 
 }
-
-?>

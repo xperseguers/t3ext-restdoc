@@ -315,5 +315,3 @@ class Tx_Restdoc_Hook_TableOfContents {
 	}
 
 }
-
-?>

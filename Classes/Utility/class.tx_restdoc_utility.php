@@ -98,5 +98,3 @@ class tx_restdoc_utility {
 	}
 
 }
-
-?>

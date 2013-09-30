@@ -7,4 +7,3 @@ return array(
 	'tx_restdoc_reader_sphinxjson' => $extensionClassesPath . 'Reader/SphinxJson.php',
 	'tx_restdoc_utility_helper' => $extensionClassesPath . 'Utility/Helper.php',
 );
-?>
