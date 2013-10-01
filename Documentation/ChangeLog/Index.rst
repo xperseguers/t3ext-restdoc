@@ -26,7 +26,7 @@ Version  Changes
          - Compatible with official TYPO3 manuals
 1.2.0    - Compatible with TYPO3 6.x (FAL)
          - Support for metadata and Sphinx advertisement (Wappalizer)
-         - Built-in Sphinx search within the docum
+         - Built-in Sphinx search within the documentation
 1.1.0    Support for index and breadcrumb menu
 1.0.0    Better integration with TypoScript, extension is considered stable
 0.1.0    First release on TER
