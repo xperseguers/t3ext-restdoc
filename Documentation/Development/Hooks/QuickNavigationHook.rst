@@ -18,7 +18,7 @@ You should register your class in:
 
 .. code-block:: php
 
-	$GLOBALS["TYPO3_CONF_VARS"]["EXTCONF"]["restdoc"]["quickNavigationHook"]
+	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['restdoc']['quickNavigationHook']
 
 Expected method
 """""""""""""""

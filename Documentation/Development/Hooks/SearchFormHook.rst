@@ -18,7 +18,7 @@ You should register your class in:
 
 .. code-block:: php
 
-	$GLOBALS["TYPO3_CONF_VARS"]["EXTCONF"]["restdoc"]["searchFormHook"]
+	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['restdoc']['searchFormHook']
 
 Expected method
 """""""""""""""
@@ -43,7 +43,8 @@ config
 
 	* **jsInline:** Inline JavaScript code (loading the index resource)
 
-	* **advertiseSphinx:** Whether to advertise Sphinx (standard inline JavaScript code needed by ``searchtools.js``, thus default to ``TRUE``)
+	* **advertiseSphinx:** Whether to advertise Sphinx (standard inline JavaScript code needed by ``searchtools.js``,
+	  thus default to ``TRUE``)
 
 pObj
 	A reference to the current ``pi_restdoc_pi1`` instance

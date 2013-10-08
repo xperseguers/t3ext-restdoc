@@ -8,9 +8,9 @@
 
 .. _start:
 
-=========================
-reST Documentation Viewer
-=========================
+============================================
+Sphinx/reStructuredText Documentation Viewer
+============================================
 
 .. only:: html
 
@@ -24,10 +24,14 @@ reST Documentation Viewer
 		en
 
 	:Description:
-		Integrates a reStructuredText documentation (generated as JSON with Sphinx) into a TYPO3 website.
+		Seamlessly embeds Sphinx/reStructuredText-based documentation into your TYPO3 website. Instead of publishing
+		your various manual, in-house documents, guides, references, ... solely as PDF, render them as JSON and use this
+		extension to show them as part of your website to enhance the overall user experience and Search Engine
+		Optimization (SEO). Lets you merge the chapter structure with the breadcrumb menu and much more. Documentation
+		styles automatically inherit from your corporate design.
 
 	:Keywords:
-		reStructuredText, reST, sphinx, documentation
+		reStructuredText, reST, sphinx, sphinx-doc, documentation, embedding
 
 	:Copyright:
 		2013
@@ -52,7 +56,7 @@ reST Documentation Viewer
 	**Other version of this document**
 
 	:PDF:
-		http://docs.typo3.org/typo3cms/extensions/restdoc/latest/_pdf/
+		http://docs.typo3.org/typo3cms/extensions/restdoc/1.3.1/_pdf/
 
 
 	**Table of Contents**

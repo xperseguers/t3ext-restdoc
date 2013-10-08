@@ -23,7 +23,7 @@
  ***************************************************************/
 
 /**
- * Plugin 'reST Documentation Viewer' for the 'restdoc' extension.
+ * Plugin 'Sphinx/reStructuredText Documentation Viewer' for the 'restdoc' extension.
  *
  * @category    Plugin
  * @package     TYPO3

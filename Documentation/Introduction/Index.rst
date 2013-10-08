@@ -18,7 +18,23 @@ Introduction
 What does it do?
 ----------------
 
-This extension lets you seamlessly integrate a documentation written with Sphinx (the Python Documentation Generator used by the TYPO3 documentation team for all official documentation) into your TYPO3 website. Watch `5 min tutorial video`_.
+.. only:: latex or missing_sphinxcontrib_youtube
+
+	This extension lets you build documentation projects written with Sphinx_ (the Python Documentation Generator used
+	by the TYPO3 documentation team for all official documentation) from within the TYPO3 Backend.
+	Watch `5 min tutorial video`_.
+
+.. only:: html and not missing_sphinxcontrib_youtube
+
+	This extension lets you build documentation projects written with Sphinx_ (the Python Documentation Generator used
+	by the TYPO3 documentation team for all official documentation) from within the TYPO3 Backend:
+
+	.. youtube:: YeGqHMDT7R8
+		:width: 100%
+
+	|
+
+.. _Sphinx: http://sphinx-doc.org/
 
 The name of this extension comes from the underlying markup language used by Sphinx. In fact, Sphinx uses reStructuredText_ (commonly abbreviated as reST) as its markup language.
 
@@ -51,6 +67,11 @@ How to start?
 If you already have a Sphinx documentation project at hand, generate a JSON output with ``make json`` instead of ``make html``, copy the whole output directory to your website, place a restdoc plugin on your page and you're done!
 
 If you are new to Sphinx, reStructuredText and currently write your documentation with one of the common word processors (OpenOffice Writer, MS Word, ...), don't worry! The TYPO3 documentation team and a few other passionate persons are maintaining tutorials and tips and tricks in `the TYPO3 wiki`_.
+
+.. tip::
+	Wait! "``make json``"? I'm a writer, not a command line aficionado.
+
+	No Problem! Please have a look at extension `Sphinx Python Documentation Generator and Viewer <http://typo3.org/extensions/repository/view/sphinx>`_.
 
 
 .. _screenshots:

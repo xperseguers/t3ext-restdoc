@@ -24,7 +24,7 @@ You should register your class in:
 
 .. code-block:: php
 
-	$GLOBALS["TYPO3_CONF_VARS"]["EXTCONF"]["restdoc"]["renderHook"]
+	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['restdoc']['renderHook']
 
 Expected method
 """""""""""""""

@@ -6,7 +6,7 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="tt_content.list_type_pi1">reST Documentation Viewer</label>
+			<label index="tt_content.list_type_pi1">Sphinx/reStructuredText Documentation Viewer</label>
 			<label index="pi_flexform.sheet_general">General</label>
 			<label index="pi_flexform.path">Documentation Root:</label>
 			<label index="pi_flexform.path.wizard">Select the path to the documentation</label>

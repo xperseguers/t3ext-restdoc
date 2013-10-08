@@ -6,8 +6,8 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="pi1_title">reST Documentation Viewer</label>
-			<label index="pi1_plus_wiz_description">Adds a viewer for a ReStructuredText documentation.</label>
+			<label index="pi1_title">Sphinx/reStructuredText Documentation Viewer</label>
+			<label index="pi1_plus_wiz_description">Adds a viewer for a Sphinx/reStructuredText documentation.</label>
 			<label index="header_toc">Table of Contents</label>
 			<label index="header_previous_topic">Previous Topic</label>
 			<label index="header_next_topic">Next Topic</label>
