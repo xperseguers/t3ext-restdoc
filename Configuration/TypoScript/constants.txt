@@ -3,7 +3,7 @@ plugin.tx_restdoc {
 	path =
 
 	# Name of the default file (without .fjson extension)
-	defaultFile = index
+	defaultFile = Index
 
 	# mode of the plugin (BODY | TOC | MASTER_TOC | RECENT | TITLE | QUICK_NAVIGATION | BREADCRUMB | REFERENCES | FILENAME | SEARCH)
 	mode =
