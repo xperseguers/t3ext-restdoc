@@ -51,6 +51,9 @@ class RestMetadataContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->contentObject->start(array());
 
 		$GLOBALS['TT'] =  \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker');
+		if ($GLOBALS['TSFE'] === NULL) {
+			$GLOBALS['TSFE'] = new \stdClass();
+		}
 		$GLOBALS['TSFE']->cObjectDepthCounter += 3;
 	}
 
