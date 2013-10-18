@@ -278,7 +278,7 @@ final class Tx_Restdoc_Utility_Helper {
 			case XML_CDATA_SECTION_NODE:
 			case XML_TEXT_NODE:
 				$output = trim($node->textContent);
-				break;
+			break;
 
 			case XML_ELEMENT_NODE:
 				for ($i = 0, $m = $node->childNodes->length; $i < $m; $i++) {
@@ -329,7 +329,7 @@ final class Tx_Restdoc_Utility_Helper {
 						}
 					}
 				}
-				break;
+			break;
 		}
 
 		return $output;

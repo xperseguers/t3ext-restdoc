@@ -129,45 +129,45 @@ class tx_restdoc_pi1 extends tslib_pibase {
 				case 'TOC':
 					$this->renderingConfig = $this->conf['setup.']['TOC.'];
 					$output = $this->cObj->cObjGetSingle($this->renderingConfig['renderObj'], $this->renderingConfig['renderObj.']);
-					break;
+				break;
 				case 'MASTER_TOC':
 					$this->renderingConfig = $this->conf['setup.']['MASTER_TOC.'];
 					$output = $this->cObj->cObjGetSingle($this->renderingConfig['renderObj'], $this->renderingConfig['renderObj.']);
-					break;
+				break;
 				case 'RECENT':
 					$this->renderingConfig = $this->conf['setup.']['RECENT.'];
 					$output = $this->cObj->cObjGetSingle($this->renderingConfig['renderObj'], $this->renderingConfig['renderObj.']);
-					break;
+				break;
 				case 'BODY':
 					if ($this->conf['advertiseSphinx']) {
 						$this->advertiseSphinx();
 					}
 					$output = $this->generateBody();
-					break;
+				break;
 				case 'TITLE':
 					$output = self::$sphinxReader->getTitle();
 					$skipDefaultWrap = TRUE;
-					break;
+				break;
 				case 'QUICK_NAVIGATION':
 					$output = $this->generateQuickNavigation();
-					break;
+				break;
 				case 'BREADCRUMB':
 					$this->renderingConfig = $this->conf['setup.']['BREADCRUMB.'];
 					$output = $this->cObj->cObjGetSingle($this->renderingConfig['renderObj'], $this->renderingConfig['renderObj.']);
-					break;
+				break;
 				case 'REFERENCES':
 					$output = $this->generateReferences();
-					break;
+				break;
 				case 'FILENAME':
 					$output = self::$sphinxReader->getJsonFilename();
 					$skipDefaultWrap = TRUE;
-					break;
+				break;
 				case 'SEARCH':
 					$output = $this->generateSearchForm();
-					break;
+				break;
 				default:
 					$output = '';
-					break;
+				break;
 			}
 		} else {
 			switch ($this->conf['mode']) {
@@ -177,15 +177,15 @@ class tx_restdoc_pi1 extends tslib_pibase {
 					}
 					// Generating output for the general index
 					$output = $this->generateIndex($documentRoot, $document);
-					break;
+				break;
 				case 'TITLE':
 					$output = $this->pi_getLL('index_title', 'Index');
 					$skipDefaultWrap = TRUE;
-					break;
+				break;
 				case 'FILENAME':
 					$output = self::$sphinxReader->getJsonFilename();
 					$skipDefaultWrap = TRUE;
-					break;
+				break;
 				default:
 					// Generating TOC, ... for the root document instead
 					$this->piVars['doc'] = '';
@@ -273,13 +273,13 @@ class tx_restdoc_pi1 extends tslib_pibase {
 
 				// Mark the first entry as 'active'
 				$data[0]['ITEM_STATE'] = 'CUR';
-				break;
+			break;
 
 			case 'master_menu':
 				$masterToc = self::$sphinxReader->getMasterTableOfContents(array($this, 'getLink'));
 				$data = $masterToc ? Tx_Restdoc_Utility_Helper::getMenuData(Tx_Restdoc_Utility_Helper::xmlstr_to_array($masterToc)) : array();
 				\Tx_Restdoc_Utility_Helper::processMasterTableOfContents($data, $document, array($this, 'getLink'));
-				break;
+			break;
 
 			case 'previous':
 				$previousDocument = self::$sphinxReader->getPreviousDocument();
@@ -291,7 +291,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 						'_OVERRIDE_HREF' => $link,
 					);
 				}
-				break;
+			break;
 
 			case 'next':
 				$nextDocument = self::$sphinxReader->getNextDocument();
@@ -308,7 +308,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 						'_OVERRIDE_HREF' => $link,
 					);
 				}
-				break;
+			break;
 
 			case 'breadcrumb':
 				$parentDocuments = self::$sphinxReader->getParentDocuments();
@@ -326,7 +326,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 					'_OVERRIDE_HREF' => $this->getLink($document),
 					'ITEM_STATE' => 'CUR',
 				);
-				break;
+			break;
 
 			case 'updated':
 				$limit = t3lib_utility_Math::forceIntegerInRange($conf['limit'], 0, 100);	// max number of items
@@ -365,7 +365,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 						'SYS_LASTCHANGED' => $row[$sortField],
 					);
 				}
-				break;
+			break;
 		}
 
 		// Hook for post-processing the menu entries
