@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012-2013 Xavier Perseguers <xavier@causal.ch>
+ *  (c) 2012-2014 Xavier Perseguers <xavier@causal.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -899,7 +899,9 @@ HTML;
 			// @deprecated since 1.2.0, will be removed in 1.4.0
 			$this->applyStdWrap($this->conf['setup.'], 'defaultFile');
 			if (isset($this->conf['setup.']['defaultFile'])) {
-				t3lib_div::deprecationLog('EXT:' . $this->extKey . ' - TypoScript plugin.' . $this->prefixId . '.setup.defaultFile is deprecated since 1.2.0 and will be removed in 1.4.0. Please use plugin.' . $this->prefixId . '.defaultFile instead.');
+				t3lib_div::deprecationLog('EXT:' . $this->extKey . ' - TypoScript plugin.' . $this->prefixId . '.setup.defaultFile ' .
+					'is deprecated since 1.2.0 and will be removed in 1.4.0. ' .
+					'Please use plugin.' . $this->prefixId . '.defaultFile instead.');
 				$this->conf['defaultFile'] = $this->conf['setup.']['defaultFile'];
 			}
 		}

@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Xavier Perseguers <xavier@causal.ch>
+ *  (c) 2013-2014 Xavier Perseguers <xavier@causal.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -177,7 +177,8 @@ final class Tx_Restdoc_Utility_Helper {
 		$fullPathParts[] = '';
 		$relativeParts = explode('/', $relative);
 
-		for ($i = 0; $i < count($relativeParts); $i++) {
+		$numberOfRelativeParts = count($relativeParts);
+		for ($i = 0; $i < $numberOfRelativeParts; $i++) {
 			if ($relativeParts[$i] == '..' && count($fullPathParts) > 0) {
 				array_pop($fullPathParts);
 			} else {
@@ -208,7 +209,8 @@ final class Tx_Restdoc_Utility_Helper {
 		$output = '<dl>' . LF;
 		foreach ($index as $dt) {
 			$relativeLinks = array();
-			for ($i = 0; $i < count($dt[1]); $i++) {
+			$numberOfDts = count($dt[1]);
+			for ($i = 0; $i < $numberOfDts; $i++) {
 				if (!empty($dt[1][$i]) && t3lib_div::isFirstPartOfStr($dt[1][$i][1], '../')) {
 					$relativeLinks[] = array(
 						'title' => $dt[1][$i][0],
@@ -225,13 +227,15 @@ final class Tx_Restdoc_Utility_Helper {
 				}
 			}
 			// Remove category links from the list of subentries, first subentry is always a link, possibly empty
-			for ($i = 0; $i < max(1, count($relativeLinks)); $i++) {
+			$maxNumberOfRelativeLinks = max(1, count($relativeLinks));
+			for ($i = 0; $i < $maxNumberOfRelativeLinks; $i++) {
 				array_shift($dt[1]);
 			}
 
 			$output .= '<dt>';
-			if ($relativeLinks) {
-				for ($i = 0; $i < count($relativeLinks); $i++) {
+			$numberOfRelativeLinks = count($relativeLinks);
+			if ($numberOfRelativeLinks > 0) {
+				for ($i = 0; $i < $maxNumberOfRelativeLinks; $i++) {
 					if ($i == 0) {
 						$title = htmlspecialchars($dt[0]);
 					} else {
