@@ -128,6 +128,7 @@ final class Tx_Restdoc_Utility_Helper {
 	 */
 	static public function xmlstr_to_array($xmlstr) {
 		$doc = new DOMDocument();
+		$xmlstr = str_replace('&nbsp;', '&#32;', $xmlstr);
 		$doc->loadXML($xmlstr);
 		return self::domnode_to_array($doc->documentElement);
 	}
