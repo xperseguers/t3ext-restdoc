@@ -26,9 +26,6 @@ You have thought of better user experience? Great!
 Translation
 -----------
 
-.. index::
-	single: Translation
-
 Another very easy way to contribute to the success of this extension is to translate it on the
 `TYPO3 translation server`_; other users will thank you much.
 
