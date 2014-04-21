@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Xavier Perseguers <xavier@causal.ch>
+ *  (c) 2013-2014 Xavier Perseguers <xavier@causal.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -210,6 +210,12 @@ class Tx_Restdoc_Reader_SphinxJson {
 				$this->jsonFilename = $defaultJsonFilename;
 				$filename = $defaultFilename;
 				$fileExists = TRUE;
+			} else {
+				throw new RuntimeException(
+					'restdoc: file "' . $this->jsonFilename . '" not found.' .
+						' Please check static TypoScript and configuration.',
+					1398071985
+				);
 			}
 		}
 		if (!$fileExists) {
