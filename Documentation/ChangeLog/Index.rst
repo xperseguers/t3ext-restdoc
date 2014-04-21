@@ -22,12 +22,12 @@ The following is a very high level overview of the changes in this extension. Fo
 =======  ======================================================
 Version  Changes
 =======  ======================================================
-1.3.0    - Refactoring of the JSON reader
+1.3.x    - Refactoring of the JSON reader
          - Compatible with official TYPO3 manuals
-1.2.0    - Compatible with TYPO3 6.x (FAL)
+1.2.x    - Compatible with TYPO3 6.x (FAL)
          - Support for metadata and Sphinx advertisement (Wappalizer)
          - Built-in Sphinx search within the documentation
-1.1.0    Support for index and breadcrumb menu
-1.0.0    Better integration with TypoScript, extension is considered stable
+1.1.x    Support for index and breadcrumb menu
+1.0.x    Better integration with TypoScript, extension is considered stable
 0.1.0    First release on TER
 =======  ======================================================
