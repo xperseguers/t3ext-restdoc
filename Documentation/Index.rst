@@ -34,7 +34,7 @@ Sphinx/reStructuredText Documentation Viewer
 		reStructuredText, reST, sphinx, sphinx-doc, documentation, embedding
 
 	:Copyright:
-		2013
+		2012-2014
 
 	:Author:
 		Xavier Perseguers
@@ -56,7 +56,7 @@ Sphinx/reStructuredText Documentation Viewer
 	**Other version of this document**
 
 	:PDF:
-		http://docs.typo3.org/typo3cms/extensions/restdoc/1.3.1/_pdf/
+		http://docs.typo3.org/typo3cms/extensions/restdoc/1.3.2/_pdf/
 
 
 	**Table of Contents**
