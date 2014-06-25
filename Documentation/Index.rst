@@ -61,16 +61,31 @@ Sphinx/reStructuredText Documentation Viewer
 
 	**Table of Contents**
 
-.. toctree::
-	:maxdepth: 5
-	:titlesonly:
-	:glob:
+	.. toctree::
+		:maxdepth: 5
+		:titlesonly:
 
-	Introduction/Index
-	UsersManual/Index
-	AdministratorManual/Index
-	Configuration/Index
-	Development/Index
-	KnownProblems/Index
-	ToDoList/Index
-	ChangeLog/Index
+		Introduction/Index
+		UsersManual/Index
+		AdministratorManual/Index
+		Configuration/Index
+		Development/Index
+		KnownProblems/Index
+		ToDoList/Index
+		ChangeLog/Index
+		Links
+
+.. only:: latex
+
+	.. toctree::
+		:maxdepth: 5
+		:titlesonly:
+
+		Introduction/Index
+		UsersManual/Index
+		AdministratorManual/Index
+		Configuration/Index
+		Development/Index
+		KnownProblems/Index
+		ToDoList/Index
+		ChangeLog/Index
