@@ -22,6 +22,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Sphinx JSON reader.
  *
@@ -497,7 +499,7 @@ class Tx_Restdoc_Reader_SphinxJson {
 			if (preg_match('#^[a-zA-Z]+://#', $matches[2])) {
 				// External URL
 				return $matches[0];
-			} elseif (t3lib_div::isFirstPartOfStr($matches[2], 'mailto:')) {
+			} elseif (GeneralUtility::isFirstPartOfStr($matches[2], 'mailto:')) {
 				// Email address
 				$email = preg_replace_callback('/(&#(\d{2});)/', function ($m) {
 					return chr($m[2]);
@@ -510,23 +512,23 @@ class Tx_Restdoc_Reader_SphinxJson {
 
 			if ($anchor !== '') {
 				$document .= $anchor;
-			} elseif (t3lib_div::isFirstPartOfStr($matches[2], '_sources/')) {
+			} elseif (GeneralUtility::isFirstPartOfStr($matches[2], '_sources/')) {
 				$document = $matches[2];
 			} else {
 				if ($relativeToDefaultDocument) {
 					$currentDocumentDepth = count(explode('/', $document)) - 1;
-					if (t3lib_div::isFirstPartOfStr($matches[2], '../')) {
+					if (GeneralUtility::isFirstPartOfStr($matches[2], '../')) {
 						$currentDocumentDepth--;
 					}
 					// Pretend the link was generated relative to current document
 					$matches[2] = str_repeat('../', $currentDocumentDepth) . $matches[2];
 				}
 				$segments = explode('/', substr($document, 0, -1));
-				if (count($segments) == 1 && !t3lib_div::isFirstPartOfStr($matches[2], '../')) {
+				if (count($segments) == 1 && !GeneralUtility::isFirstPartOfStr($matches[2], '../')) {
 					// $document's last part is a document, not a directory
 					$matches[2] = '../' . $matches[2];
 				}
-				if (t3lib_div::isFirstPartOfStr($matches[2], '../')) {
+				if (GeneralUtility::isFirstPartOfStr($matches[2], '../')) {
 					$document = substr($document, 0, strrpos(rtrim($document, '/'), '/'));
 				}
 				$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($self->getPath() . $document, $matches[2]);

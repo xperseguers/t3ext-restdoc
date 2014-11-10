@@ -1,5 +1,5 @@
 <?php
-$extensionPath = t3lib_extMgm::extPath('restdoc');
+$extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('restdoc');
 $extensionClassesPath = $extensionPath . 'Classes/';
 return array(
 	'tx_restdoc_utility' => $extensionClassesPath . 'Utility/class.tx_restdoc_utility.php',
