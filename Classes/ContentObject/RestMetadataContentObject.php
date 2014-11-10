@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Xavier Perseguers <xavier@causal.ch>
+ *  (c) 2013-2014 Xavier Perseguers <xavier@causal.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,6 +22,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Implementation of the REST_METADATA content object.
  *
@@ -34,7 +36,7 @@
  */
 class Tx_Restdoc_ContentObject_RestMetadataContentObject {
 
-	/** @var tslib_cObj */
+	/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
 	protected $cObj;
 
 	/**
@@ -43,10 +45,10 @@ class Tx_Restdoc_ContentObject_RestMetadataContentObject {
 	 * @param string $name: name of the cObject ('REST_METADATA')
 	 * @param array $conf: array of TypoScript properties
 	 * @param string $TSkey: TS key set to this cObject
-	 * @param tslib_cObj $pObj
+	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $pObj
 	 * @return string
 	 */
-	public function cObjGetSingleExt($name, array $conf, $TSkey, tslib_cObj $pObj) {
+	public function cObjGetSingleExt($name, array $conf, $TSkey, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $pObj) {
 		$this->cObj = $pObj;
 		$this->applyStdWrap($conf, 'path');
 
@@ -55,8 +57,8 @@ class Tx_Restdoc_ContentObject_RestMetadataContentObject {
 		$output = '';
 		$data = Tx_Restdoc_Utility_Helper::getMetadata(PATH_site . $conf['path']);
 		if ($data) {
-			/** @var $contentObj tslib_cObj */
-			$contentObj = t3lib_div::makeInstance('tslib_cObj');
+			/** @var $contentObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
+			$contentObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 			$contentObj->start($data);
 			$output = $contentObj->stdWrap('', $conf);
 		}

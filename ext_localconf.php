@@ -14,7 +14,7 @@ if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('dd_googlesitem
 }
 
 // Register new TypoScript content object
-$TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'][] = array(
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'][] = array(
 	0 => 'REST_METADATA',
 	1 => 'EXT:restdoc/Classes/ContentObject/RestMetadataContentObject.php:Tx_Restdoc_ContentObject_RestMetadataContentObject',
 );

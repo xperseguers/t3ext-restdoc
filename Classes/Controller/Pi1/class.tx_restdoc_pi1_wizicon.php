@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Xavier Perseguers <xavier@causal.ch>
+ *  (c) 2013-2014 Xavier Perseguers <xavier@causal.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -21,6 +21,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * Class that adds the wizard icon.
@@ -44,7 +46,7 @@ class tx_restdoc_pi1_wizicon {
 		$LL = $this->includeLocalLang();
 
 		$wizardItems['plugins_tx_restdoc_pi1'] = array(
-			'icon'        => t3lib_extMgm::extRelPath('restdoc') . 'Resources/Public/Icons/pi1_ce_wizard.png',
+			'icon'        => ExtensionManagementUtility::extRelPath('restdoc') . 'Resources/Public/Icons/pi1_ce_wizard.png',
 			'title'       => $GLOBALS['LANG']->getLLL('pi1_title', $LL),
 			'description' => $GLOBALS['LANG']->getLLL('pi1_plus_wiz_description', $LL),
 			'params'      => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=restdoc_pi1'
@@ -59,7 +61,7 @@ class tx_restdoc_pi1_wizicon {
 	 * @return array The array with language labels
 	 */
 	protected function includeLocalLang() {
-		$llFile = t3lib_extMgm::extPath('restdoc') . 'Resources/Private/Language/locallang.xml';
+		$llFile = ExtensionManagementUtility::extPath('restdoc') . 'Resources/Private/Language/locallang.xml';
 		return $GLOBALS['LANG']->includeLLFile($llFile, FALSE);
 	}
 }

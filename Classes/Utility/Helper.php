@@ -22,6 +22,9 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
+
 /**
  * Utility class.
  *
@@ -44,7 +47,7 @@ final class Tx_Restdoc_Utility_Helper {
 		if (!is_dir($path)) {
 			// Most probably a relative path has been provided
 			$path = PATH_site . $path;
-			t3lib_div::deprecationLog('EXT:restdoc - Tx_Restdoc_Utility_Helper::getMetadata() needs an absolute path as argument since 1.3.0. Support for relative path will be removed in 1.5.0.');
+			GeneralUtility::deprecationLog('EXT:restdoc - Tx_Restdoc_Utility_Helper::getMetadata() needs an absolute path as argument since 1.3.0. Support for relative path will be removed in 1.5.0.');
 		}
 		$documentRoot = rtrim($path, '/') . '/';
 		$jsonFile = 'globalcontext.json';
@@ -142,7 +145,7 @@ final class Tx_Restdoc_Utility_Helper {
 	 */
 	static public function showSources($filename) {
 		if (!is_file($filename)) {
-			t3lib_utility_Http::setResponseCodeAndExit(t3lib_utility_Http::HTTP_STATUS_404);
+			HttpUtility::setResponseCodeAndExit(HttpUtility::HTTP_STATUS_404);
 		}
 
 		// Getting headers sent by the client.
@@ -151,7 +154,7 @@ final class Tx_Restdoc_Utility_Helper {
 		// Checking if the client is validating his cache and if it is current
 		if (isset($headers['If-Modified-Since']) && (strtotime($headers['If-Modified-Since']) == filemtime($filename))) {
 			// Client's cache is current, so we just respond '304 Not Modified'
-			t3lib_utility_Http::setResponseCodeAndExit(t3lib_utility_Http::HTTP_STATUS_304);
+			HttpUtility::setResponseCodeAndExit(HttpUtility::HTTP_STATUS_304);
 		} else {
 			// Source is not cached or cache is outdated
 			header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filename)) . ' GMT', TRUE, 200);
@@ -212,12 +215,12 @@ final class Tx_Restdoc_Utility_Helper {
 			$relativeLinks = array();
 			$numberOfDts = count($dt[1]);
 			for ($i = 0; $i < $numberOfDts; $i++) {
-				if (!empty($dt[1][$i]) && t3lib_div::isFirstPartOfStr($dt[1][$i][1], '../')) {
+				if (!empty($dt[1][$i]) && GeneralUtility::isFirstPartOfStr($dt[1][$i][1], '../')) {
 					$relativeLinks[] = array(
 						'title' => $dt[1][$i][0],
 						'link'  => substr($dt[1][$i][1], 3),
 					);
-				} elseif ($i == 0 && !empty($dt[1][$i]) && is_array($dt[1][$i][0]) && t3lib_div::isFirstPartOfStr($dt[1][$i][0][1], '../')) {
+				} elseif ($i == 0 && !empty($dt[1][$i]) && is_array($dt[1][$i][0]) && GeneralUtility::isFirstPartOfStr($dt[1][$i][0][1], '../')) {
 					$relativeLinks[] = array(
 						'title' => $dt[1][$i][0][0],
 						'link'  => substr($dt[1][$i][0][1], 3),

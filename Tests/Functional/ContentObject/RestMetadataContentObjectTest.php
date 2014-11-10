@@ -4,7 +4,7 @@ namespace Causal\Restdoc\Tests\Functional\ContentObject;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Xavier Perseguers <xavier@causal.ch>
+ *  (c) 2013-2014 Xavier Perseguers <xavier@causal.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -24,6 +24,8 @@ namespace Causal\Restdoc\Tests\Functional\ContentObject;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Testcase for class Tx_Restdoc_ContentObject_RestMetadataContentObject.
  */
@@ -35,7 +37,7 @@ class RestMetadataContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/** @var array */
 	protected $backupCObjTypeAndClass;
 
-	/** @var \tslib_cObj */
+	/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
 	protected $contentObject;
 
 	public function setUp() {
@@ -47,10 +49,10 @@ class RestMetadataContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			1 => 'EXT:restdoc/Classes/ContentObject/RestMetadataContentObject.php:Tx_Restdoc_ContentObject_RestMetadataContentObject',
 		);
 
-		$this->contentObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_cObj');
+		$this->contentObject = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 		$this->contentObject->start(array());
 
-		$GLOBALS['TT'] =  \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker');
+		$GLOBALS['TT'] =  GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker');
 		if ($GLOBALS['TSFE'] === NULL) {
 			$GLOBALS['TSFE'] = new \stdClass();
 		}

@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Xavier Perseguers <xavier@causal.ch>
+ *  (c) 2013-2014 Xavier Perseguers <xavier@causal.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -21,6 +21,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Integration of the ReStructured documentation into a Google sitemap.
@@ -89,7 +91,7 @@ class Tx_Restdoc_Hook_TxDdgooglesitemapPages {
 	 * @see tx_ddgooglesitemap_pages::getChangeFrequency()
 	 */
 	protected function getChangeFrequency(array $documentInfo) {
-		$timeValues = t3lib_div::intExplode(',', $documentInfo['lastmod'], TRUE);
+		$timeValues = GeneralUtility::intExplode(',', $documentInfo['lastmod'], TRUE);
 		$timeValues[] = $GLOBALS['EXEC_TIME'];
 		sort($timeValues, SORT_NUMERIC);
 		$sum = 0;

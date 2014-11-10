@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Xavier Perseguers <xavier@causal.ch>
+ *  (c) 2013-2014 Xavier Perseguers <xavier@causal.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -21,6 +21,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Storing the documentation structure into the database for integration
@@ -73,20 +75,16 @@ class Tx_Restdoc_Hook_TableOfContents {
 			return;
 		}
 
-		if (version_compare(TYPO3_version, '6.0.0', '>=')) {
-			$storage = $this->pObj->getSphinxReader()->getStorage();
-			if ($storage !== NULL) {
-				$storageConfiguration = $storage->getConfiguration();
-				$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
-			} else {
-				// FAL is not used
-				$basePath = PATH_site;
-			}
+		$storage = $this->pObj->getSphinxReader()->getStorage();
+		if ($storage !== NULL) {
+			$storageConfiguration = $storage->getConfiguration();
+			$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
 		} else {
+			// FAL is not used
 			$basePath = PATH_site;
 		}
 
-		$this->maxDocuments = t3lib_utility_Math::forceIntegerInRange($params['config']['documentStructureMaxDocuments'], 1, 9999);
+		$this->maxDocuments = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($params['config']['documentStructureMaxDocuments'], 1, 9999);
 		$this->pageId = intval($this->pObj->cObj->data['pid']);
 		$this->root = substr($params['documentRoot'], strlen($basePath));
 		$this->flushCache();
@@ -129,7 +127,7 @@ class Tx_Restdoc_Hook_TableOfContents {
 			$data['document'] = $params['document'];
 			$data['url']      = $this->pObj->getLink($params['document'], TRUE);
 		} else {
-			$modifications = t3lib_div::intExplode(',', $cachedData['lastmod'], TRUE);
+			$modifications = GeneralUtility::intExplode(',', $cachedData['lastmod'], TRUE);
 		}
 		if ($add || $refresh) {
 			$modifications[] = $lastModification;

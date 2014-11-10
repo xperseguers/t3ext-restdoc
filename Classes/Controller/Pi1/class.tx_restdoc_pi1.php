@@ -22,6 +22,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Plugin 'Sphinx/reStructuredText Documentation Viewer' for the 'restdoc' extension.
  *
@@ -32,7 +34,7 @@
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class tx_restdoc_pi1 extends tslib_pibase {
+class tx_restdoc_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 	public $prefixId      = 'tx_restdoc_pi1';
 	public $scriptRelPath = 'Classes/Controller/Pi1/class.tx_restdoc_pi1.php';
@@ -70,29 +72,25 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		$this->pi_loadLL();
 		$this->pi_USER_INT_obj = 1;    // USER_INT object
 
-		if (version_compare(TYPO3_version, '6.0.0', '>=')) {
-			$storage = self::$sphinxReader->getStorage();
-			if ($storage !== NULL) {
-				$storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
-				$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
-			} else {
-				// FAL is not used
-				$basePath = PATH_site;
-			}
+		$storage = self::$sphinxReader->getStorage();
+		if ($storage !== NULL) {
+			$storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
+			$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
 		} else {
+			// FAL is not used
 			$basePath = PATH_site;
 		}
 
 		$documentRoot = $basePath . rtrim($this->conf['path'], '/') . '/';
 		$document = self::$defaultFile . '/';
-		$pathSeparators = isset($this->conf['fallbackPathSeparators']) ? t3lib_div::trimExplode(',', $this->conf['fallbackPathSeparators'], TRUE) : array();
+		$pathSeparators = isset($this->conf['fallbackPathSeparators']) ? GeneralUtility::trimExplode(',', $this->conf['fallbackPathSeparators'], TRUE) : array();
 		$pathSeparators[] = $this->conf['pathSeparator'];
 		if (isset($this->piVars['doc']) && strpos($this->piVars['doc'], '..') === FALSE) {
 			$document = str_replace($pathSeparators, '/', $this->piVars['doc']) . '/';
 		}
 
 		// Sources are requested, if allowed and available, return them
-		if ($this->conf['publishSources'] && t3lib_div::isFirstPartOfStr($document, '_sources/')) {
+		if ($this->conf['publishSources'] && GeneralUtility::isFirstPartOfStr($document, '_sources/')) {
 			$sourceFile = rtrim($document, '/');
 			// Security check
 			if (substr($sourceFile, -4) === '.txt' && substr(realpath($documentRoot . $sourceFile), 0, strlen(realpath($documentRoot))) === realpath($documentRoot)) {
@@ -111,9 +109,9 @@ class tx_restdoc_pi1 extends tslib_pibase {
 
 		try {
 			if (!self::$sphinxReader->load()) {
-				throw new RuntimeException('Document failed to load', 1365166377);
+				throw new \RuntimeException('Document failed to load', 1365166377);
 			};
-		} catch (RuntimeException $e) {
+		} catch (\RuntimeException $e) {
 			return $e->getMessage();
 		}
 
@@ -196,7 +194,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		// Hook for post-processing the output
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['renderHook'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['renderHook'] as $classRef) {
-				$hookObject = t3lib_div::getUserObj($classRef);
+				$hookObject = GeneralUtility::getUserObj($classRef);
 				$params = array(
 					'mode' => $this->conf['mode'],
 					'documentRoot' => $documentRoot,
@@ -250,16 +248,12 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		$data = array();
 		$type = isset($conf['userFunc.']['type']) ? $conf['userFunc.']['type'] : 'menu';
 
-		if (version_compare(TYPO3_version, '6.0.0', '>=')) {
-			$storage = self::$sphinxReader->getStorage();
-			if ($storage !== NULL) {
-				$storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
-				$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
-			} else {
-				// FAL is not used
-				$basePath = PATH_site;
-			}
+		$storage = self::$sphinxReader->getStorage();
+		if ($storage !== NULL) {
+			$storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
+			$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
 		} else {
+			// FAL is not used
 			$basePath = PATH_site;
 		}
 
@@ -329,8 +323,8 @@ class tx_restdoc_pi1 extends tslib_pibase {
 			break;
 
 			case 'updated':
-				$limit = t3lib_utility_Math::forceIntegerInRange($conf['limit'], 0, 100);	// max number of items
-				$maxAge = intval(tslib_cObj::calc($conf['maxAge']));
+				$limit = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($conf['limit'], 0, 100);	// max number of items
+				$maxAge = intval($this->cObj->calc($conf['maxAge']));
 				$sortField = 'crdate';
 				$extraWhere = '';
 				if (!empty($conf['excludeChapters'])) {
@@ -338,7 +332,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 						function ($chapter) {
 							return $GLOBALS['TYPO3_DB']->fullQuoteStr($chapter, 'tx_restdoc_toc');
 						},
-						t3lib_div::trimExplode(',', $conf['excludeChapters'])
+						GeneralUtility::trimExplode(',', $conf['excludeChapters'])
 					);
 					if (count($excludeChapters) > 0) {
 						$extraWhere .= ' AND document NOT IN (' . implode(',', $excludeChapters) . ')';
@@ -371,7 +365,7 @@ class tx_restdoc_pi1 extends tslib_pibase {
 		// Hook for post-processing the menu entries
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['makeMenuArrayHook'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['makeMenuArrayHook'] as $classRef) {
-				$hookObject = t3lib_div::getUserObj($classRef);
+				$hookObject = GeneralUtility::getUserObj($classRef);
 				$params = array(
 					'documentRoot' => $documentRoot,
 					'document' => $document,
@@ -393,16 +387,12 @@ class tx_restdoc_pi1 extends tslib_pibase {
 	 * @return void
 	 */
 	protected function advertiseSphinx() {
-		if (version_compare(TYPO3_version, '6.0.0', '>=')) {
-			$storage = self::$sphinxReader->getStorage();
-			if ($storage !== NULL) {
-				$storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
-				$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
-			} else {
-				// FAL is not used
-				$basePath = PATH_site;
-			}
+		$storage = self::$sphinxReader->getStorage();
+		if ($storage !== NULL) {
+			$storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
+			$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
 		} else {
+			// FAL is not used
 			$basePath = PATH_site;
 		}
 		$metadata = Tx_Restdoc_Utility_Helper::getMetadata($basePath . $this->conf['path']);
@@ -507,7 +497,7 @@ JS;
 		// Hook for post-processing the quick navigation
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['quickNavigationHook'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['quickNavigationHook'] as $classRef) {
-				$hookObject = t3lib_div::getUserObj($classRef);
+				$hookObject = GeneralUtility::getUserObj($classRef);
 				$params = array(
 					'documentRoot' => $documentRoot,
 					'document' => $document,
@@ -549,8 +539,8 @@ JS;
 			}
 		}
 
-		/** @var $contentObj tslib_cObj */
-		$contentObj = t3lib_div::makeInstance('tslib_cObj');
+		/** @var $contentObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
+		$contentObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 		$contentObj->start($data);
 		$output = $contentObj->cObjGetSingle($this->renderingConfig['renderObj'], $this->renderingConfig['renderObj.']);
 
@@ -660,16 +650,12 @@ JS;
 			return 'ERROR: File ' . $this->conf['path'] . 'searchindex.json was not found.';
 		}
 
-		if (version_compare(TYPO3_version, '6.0.0', '>=')) {
-			$storage = self::$sphinxReader->getStorage();
-			if ($storage !== NULL) {
-				$storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
-				$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
-			} else {
-				// FAL is not used
-				$basePath = PATH_site;
-			}
+		$storage = self::$sphinxReader->getStorage();
+		if ($storage !== NULL) {
+			$storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
+			$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
 		} else {
+			// FAL is not used
 			$basePath = PATH_site;
 		}
 
@@ -681,7 +667,7 @@ JS;
 				'Resources/Public/JavaScript/underscore.js',
 				'Resources/Public/JavaScript/doctools.js',
 				// Sphinx search library differs in branch v1.2
-				t3lib_div::isFirstPartOfStr($sphinxVersion, '1.2')
+				GeneralUtility::isFirstPartOfStr($sphinxVersion, '1.2')
 					? 'Resources/Public/JavaScript/searchtools.12.js'
 					: 'Resources/Public/JavaScript/searchtools.js'
 			),
@@ -697,7 +683,7 @@ JS;
 		// Hook for pre-processing the search form
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['searchFormHook'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['searchFormHook'] as $classRef) {
-				$hookObject = t3lib_div::getUserObj($classRef);
+				$hookObject = GeneralUtility::getUserObj($classRef);
 				$params = array(
 					'config' => &$config,
 					'pObj' => $this,
@@ -718,10 +704,10 @@ JS;
 			$GLOBALS['TSFE']->additionalJavaScript[$this->extKey . '_search'] = $config['jsInline'];
 		}
 
-		$action = t3lib_div::getIndpEnv('REQUEST_URI');
+		$action = GeneralUtility::getIndpEnv('REQUEST_URI');
 		$parameters = array();
 		if (($pos = strpos($action, '?')) !== FALSE) {
-			$parameters = t3lib_div::trimExplode('&', substr($action, $pos + 1));
+			$parameters = GeneralUtility::trimExplode('&', substr($action, $pos + 1));
 			$action = substr($action, 0, $pos);
 		}
 		$hiddenFields = '';
@@ -755,7 +741,7 @@ HTML;
 	 * @return void
 	 */
 	protected function includeJsFile($file) {
-		$relativeFile = substr(t3lib_extMgm::extPath($this->extKey), strlen(PATH_site)) . $file;
+		$relativeFile = substr(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey), strlen(PATH_site)) . $file;
 		$relativeFile = $this->cObj->typoLink_URL(array('parameter' => $relativeFile));
 		$GLOBALS['TSFE']->additionalHeaderData[$relativeFile] = '<script type="text/javascript" src="' . $relativeFile . '"></script>';
 	}
@@ -770,7 +756,7 @@ HTML;
 	 * @private This method is made public to be accessible from a lambda-function scope
 	 */
 	public function getLink($document, $absolute = FALSE, $rootPage = 0) {
-		if (t3lib_div::isFirstPartOfStr($document, 'mailto:')) {
+		if (GeneralUtility::isFirstPartOfStr($document, 'mailto:')) {
 			// This is an email address, not a document!
 			$link = $this->cObj->typoLink('', array(
 				'parameter' => $document,
@@ -806,12 +792,10 @@ HTML;
 		}
 		if (substr($document, 0, 11) === '_downloads/' || substr($document, 0, 8) === '_images/') {
 			$basePath = self::$current['path'];
-			if (version_compare(TYPO3_version, '6.0.0', '>=')) {
-				$storage = self::$sphinxReader->getStorage();
-				if ($storage !== NULL) {
-					$storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
-					$basePath = rtrim($storageConfiguration['basePath'], '/') . '/' . $basePath;
-				}
+			$storage = self::$sphinxReader->getStorage();
+			if ($storage !== NULL) {
+				$storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
+				$basePath = rtrim($storageConfiguration['basePath'], '/') . '/' . $basePath;
 			}
 			$link = $this->cObj->typoLink_URL(array('parameter' => rtrim($basePath, '/') . '/' . $document));
 		} else {
@@ -820,12 +804,12 @@ HTML;
 				'additionalParams' => '',
 				'forceAbsoluteUrl' => $absolute ? 1 : 0,
 				'forceAbsoluteUrl.' => array(
-					'scheme' => t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https' : 'http',
+					'scheme' => GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https' : 'http',
 				),
 				'returnLast' => 'url',
 			);
 			if ($urlParameters) {
-				$typolinkConfig['additionalParams'] = t3lib_div::implodeArrayForUrl('', $urlParameters);
+				$typolinkConfig['additionalParams'] = GeneralUtility::implodeArrayForUrl('', $urlParameters);
 			}
 			// Prettier to have those additional parameters after the document itself
 			$typolinkConfig['additionalParams'] .= $additionalParameters;
@@ -845,8 +829,8 @@ HTML;
 	 * @private This method is made public to be accessible from a lambda-function scope
 	 */
 	public function processImage(array $data) {
-		/** @var $contentObj tslib_cObj */
-		$contentObj = t3lib_div::makeInstance('tslib_cObj');
+		/** @var $contentObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
+		$contentObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 		$contentObj->start($data);
 
 		return $contentObj->cObjGetSingle(
@@ -927,9 +911,9 @@ HTML;
 			}
 		}
 
-		self::$sphinxReader = t3lib_div::makeInstance('Tx_Restdoc_Reader_SphinxJson');
+		self::$sphinxReader = GeneralUtility::makeInstance('Tx_Restdoc_Reader_SphinxJson');
 
-		if (version_compare(TYPO3_version, '6.0.0', '>=') && preg_match('/^file:(\d+):(.*)$/', $this->conf['path'], $matches)) {
+		if (preg_match('/^file:(\d+):(.*)$/', $this->conf['path'], $matches)) {
 			/** @var $storageRepository \TYPO3\CMS\Core\Resource\StorageRepository */
 			$storageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
 			/** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
@@ -950,7 +934,7 @@ HTML;
 			// The path separator CANNOT be empty
 			$this->conf['pathSeparator'] = '|';
 		}
-		if (t3lib_div::inList('REFERENCES,SEARCH', $this->conf['mode'])) {
+		if (GeneralUtility::inList('REFERENCES,SEARCH', $this->conf['mode'])) {
 			$this->conf['rootPage'] = intval($this->conf['rootPage']);
 		} else {
 			$this->conf['rootPage'] = 0;
@@ -967,9 +951,9 @@ HTML;
 			$basePath = 'EXT:' . $this->extKey . '/Resources/Private/Language/locallang.xml';
 
 			// Read the strings in the required charset (since TYPO3 4.2)
-			$this->LOCAL_LANG = t3lib_div::readLLfile($basePath, $this->LLkey, $GLOBALS['TSFE']->renderCharset);
+			$this->LOCAL_LANG = GeneralUtility::readLLfile($basePath, $this->LLkey, $GLOBALS['TSFE']->renderCharset);
 			if ($this->altLLkey) {
-				$tempLOCAL_LANG = t3lib_div::readLLfile($basePath, $this->altLLkey);
+				$tempLOCAL_LANG = GeneralUtility::readLLfile($basePath, $this->altLLkey);
 				$this->LOCAL_LANG = array_merge(is_array($this->LOCAL_LANG) ? $this->LOCAL_LANG : array(), $tempLOCAL_LANG);
 				unset($tempLOCAL_LANG);
 			}
@@ -982,13 +966,8 @@ HTML;
 						$k = substr($k, 0, -1);
 						foreach ($lA as $llK => $llV) {
 							if (!is_array($llV)) {
-								if (version_compare(TYPO3_version, '4.6.0', '>=')) {
-									// Internal structure is from XLIFF
-									$this->LOCAL_LANG[$k][$llK][0]['target'] = $llV;
-								} else {
-									// Internal structure is from ll-XML
-									$this->LOCAL_LANG[$k][$llK] = $llV;
-								}
+								// Internal structure is from XLIFF
+								$this->LOCAL_LANG[$k][$llK][0]['target'] = $llV;
 
 								// For labels coming from the TypoScript (database) the charset is assumed to be "forceCharset" and if that is not set, assumed to be that of the individual system languages
 								$this->LOCAL_LANG_charset[$k][$llK] = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : $GLOBALS['TSFE']->csConvObj->charSetArray[$k];
