@@ -61,7 +61,7 @@ class Tx_Restdoc_Hook_TxDdgooglesitemapPages {
 	 * @return void
 	 */
 	protected function renderDocumentationSitemap(array $documentationPlugin, array $params) {
-		$documentList = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$documentList = $this->getDatabaseConnection()->exec_SELECTgetRows(
 			'lastmod, title, url',
 			'tx_restdoc_toc',
 			'pid=' . intval($documentationPlugin['pid'])
@@ -113,7 +113,7 @@ class Tx_Restdoc_Hook_TxDdgooglesitemapPages {
 	 * @return void
 	 */
 	protected function initializeDocumentationPlugins($uid) {
-		$plugins = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$plugins = $this->getDatabaseConnection()->exec_SELECTgetRows(
 			'*',
 			'tt_content',
 			'pid=' . intval($uid) .
@@ -121,6 +121,15 @@ class Tx_Restdoc_Hook_TxDdgooglesitemapPages {
 				$GLOBALS['TSFE']->sys_page->enableFields('tt_content', 0)
 		);
 		$this->documentationPlugins = $plugins;
+	}
+
+	/**
+	 * Returns the database connection.
+	 *
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 }

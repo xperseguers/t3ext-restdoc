@@ -923,7 +923,7 @@ HTML;
 				$this->conf['path'] = substr($matches[2], 1);
 				self::$sphinxReader->setStorage($storage);
 			} else {
-				throw new RuntimeException('Access to the documentation requires an unsupported driver: ' . $storageRecord['driver'], 1365688549);
+				throw new \RuntimeException('Access to the documentation requires an unsupported driver: ' . $storageRecord['driver'], 1365688549);
 			}
 		}
 

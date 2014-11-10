@@ -91,12 +91,12 @@ final class Tx_Restdoc_Utility_Helper {
 	 * @param string $currentDocument
 	 * @param callback $callbackLinks Callback to generate Links in current context
 	 * @return boolean
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	static public function processMasterTableOfContents(array &$data, $currentDocument, $callbackLinks) {
 		$callableName = '';
 		if (!is_callable($callbackLinks, FALSE, $callableName)) {
-			throw new RuntimeException('Invalid callback for links: ' . $callableName, 1370013916);
+			throw new \RuntimeException('Invalid callback for links: ' . $callableName, 1370013916);
 		}
 
 		$hasCurrent = FALSE;
@@ -130,7 +130,7 @@ final class Tx_Restdoc_Utility_Helper {
 	 * @link https://github.com/gaarf/XML-string-to-PHP-array/blob/master/xmlstr_to_array.php
 	 */
 	static public function xmlstr_to_array($xmlstr) {
-		$doc = new DOMDocument();
+		$doc = new \DOMDocument();
 		$xmlstr = str_replace('&nbsp;', '&#32;', $xmlstr);
 		$doc->loadXML($xmlstr);
 		return self::domnode_to_array($doc->documentElement);
@@ -202,12 +202,12 @@ final class Tx_Restdoc_Utility_Helper {
 	 * @param array $index
 	 * @param callback $callbackLinks Callback to generate Links in current context
 	 * @return string
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	static public function getIndexDefinitionList($documentRoot, array $index, $callbackLinks) {
 		$callableName = '';
 		if (!is_callable($callbackLinks, FALSE, $callableName)) {
-			throw new RuntimeException('Invalid callback for links: ' . $callableName, 1369979755);
+			throw new \RuntimeException('Invalid callback for links: ' . $callableName, 1369979755);
 		}
 
 		$output = '<dl>' . LF;
@@ -276,10 +276,10 @@ final class Tx_Restdoc_Utility_Helper {
 	/**
 	 * Converts a DOM node into an array.
 	 *
-	 * @param DOMNode $node
+	 * @param \DOMNode $node
 	 * @return array
 	 */
-	protected static function domnode_to_array(DOMNode $node) {
+	protected static function domnode_to_array(\DOMNode $node) {
 		$output = array();
 		switch ($node->nodeType) {
 

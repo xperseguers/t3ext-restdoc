@@ -66,7 +66,7 @@ class Tx_Restdoc_Reader_SphinxJson {
 	 * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storage
 	 * @return $this
 	 */
-	public function setStorage(/* \TYPO3\CMS\Core\Resource\ResourceStorage */ $storage) {
+	public function setStorage(\TYPO3\CMS\Core\Resource\ResourceStorage $storage) {
 		$this->storage = $storage;
 		return $this;
 	}
@@ -185,14 +185,14 @@ class Tx_Restdoc_Reader_SphinxJson {
 	 * Loads the current document.
 	 *
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	public function load() {
 		if (empty($this->path) || !is_dir($this->path)) {
-			throw new RuntimeException('Invalid path: ' . $this->path, 1365165151);
+			throw new \RuntimeException('Invalid path: ' . $this->path, 1365165151);
 		}
 		if (empty($this->document) || substr($this->document, -1) !== '/') {
-			throw new RuntimeException('Invalid document: ' . $this->document, 1365165369);
+			throw new \RuntimeException('Invalid document: ' . $this->document, 1365165369);
 		}
 
 		$this->jsonFilename = substr($this->document, 0, strlen($this->document) - 1) . '.fjson';
@@ -213,7 +213,7 @@ class Tx_Restdoc_Reader_SphinxJson {
 				$filename = $defaultFilename;
 				$fileExists = TRUE;
 			} else {
-				throw new RuntimeException(
+				throw new \RuntimeException(
 					'restdoc: file "' . $this->jsonFilename . '" not found.' .
 						' Please check static TypoScript and configuration.',
 					1398071985
@@ -221,7 +221,7 @@ class Tx_Restdoc_Reader_SphinxJson {
 			}
 		}
 		if (!$fileExists) {
-			throw new RuntimeException('File not found: ' . $this->jsonFilename, 1365165515);
+			throw new \RuntimeException('File not found: ' . $this->jsonFilename, 1365165515);
 		}
 
 		$content = file_get_contents($filename);
@@ -233,11 +233,11 @@ class Tx_Restdoc_Reader_SphinxJson {
 	/**
 	 * Enforces that current document is loaded.
 	 *
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	protected function enforceIsLoaded() {
 		if (empty($this->data)) {
-			throw new RuntimeException('Document is not loaded: ' . $this->document, 1365170112);
+			throw new \RuntimeException('Document is not loaded: ' . $this->document, 1365170112);
 		}
 	}
 
@@ -247,16 +247,16 @@ class Tx_Restdoc_Reader_SphinxJson {
 	 * @param callback $callbackLinks Callback to generate Links in current context
 	 * @param callback $callbackImages function to process images in current context
 	 * @return string
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	public function getBody($callbackLinks, $callbackImages) {
 		$this->enforceIsLoaded();
 		$callableName = '';
 		if (!is_callable($callbackLinks, FALSE, $callableName)) {
-			throw new RuntimeException('Invalid callback for links: ' . $callableName, 1365172111);
+			throw new \RuntimeException('Invalid callback for links: ' . $callableName, 1365172111);
 		}
 		if (!is_callable($callbackImages, FALSE, $callableName)) {
-			throw new RuntimeException('Invalid callback for images: ' . $callableName, 1365630854);
+			throw new \RuntimeException('Invalid callback for images: ' . $callableName, 1365630854);
 		}
 
 		$body = $this->data['body'];
@@ -361,7 +361,7 @@ class Tx_Restdoc_Reader_SphinxJson {
 	 * BEWARE: links are kept as this and are not generated for current context
 	 *
 	 * @return string
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	public function getMasterTableOfContents() {
 		if ($this->document === $this->defaultFile . '/' && !empty($this->data)) {
@@ -369,7 +369,7 @@ class Tx_Restdoc_Reader_SphinxJson {
 		} else {
 			// Temporarily load the master document
 			if (empty($this->path) || !is_dir($this->path)) {
-				throw new RuntimeException('Invalid path: ' . $this->path, 1369907635);
+				throw new \RuntimeException('Invalid path: ' . $this->path, 1369907635);
 			}
 			$filename = $this->path . $this->defaultFile . '.fjson';
 			$content = file_get_contents($filename);
@@ -404,13 +404,13 @@ class Tx_Restdoc_Reader_SphinxJson {
 	 *
 	 * @param callback $callbackLinks Callback to generate Links in current context
 	 * @return string
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	public function getTableOfContents($callbackLinks) {
 		$this->enforceIsLoaded();
 		$callableName = '';
 		if (!is_callable($callbackLinks, FALSE, $callableName)) {
-			throw new RuntimeException('Invalid callback for links: ' . $callableName, 1365172117);
+			throw new \RuntimeException('Invalid callback for links: ' . $callableName, 1365172117);
 		}
 
 		// Replace links in table of contents
@@ -431,11 +431,11 @@ class Tx_Restdoc_Reader_SphinxJson {
 	 * Returns references from the documentation.
 	 *
 	 * @return array
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	public function getReferences() {
 		if (empty($this->path) || !is_dir($this->path)) {
-			throw new RuntimeException('Invalid path: ' . $this->path, 1365165151);
+			throw new \RuntimeException('Invalid path: ' . $this->path, 1365165151);
 		}
 		$filename = $this->path . 'objects.inv';
 		if (!is_file($filename)) {

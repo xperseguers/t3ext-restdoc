@@ -112,11 +112,11 @@ class Tx_Restdoc_Hook_TableOfContents {
 		$data = array(
 			'tstamp' => $GLOBALS['ACCESS_TIME'],
 		);
-		$cachedData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+		$cachedData = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
 			'*',
 			'tx_restdoc_toc',
 			'pid=' . $this->pageId .
-				' AND document=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($params['document'], 'tx_restdoc_toc')
+				' AND document=' . $this->getDatabaseConnection()->fullQuoteStr($params['document'], 'tx_restdoc_toc')
 		);
 		$add = !is_array($cachedData);
 		$refresh = (!$add && $cachedData['checksum'] !== $checksum);
@@ -158,15 +158,15 @@ class Tx_Restdoc_Hook_TableOfContents {
 		$data['crdate'] = $lastModification;
 
 		if ($add) {
-			$GLOBALS['TYPO3_DB']->exec_INSERTquery(
+			$this->getDatabaseConnection()->exec_INSERTquery(
 				'tx_restdoc_toc',
 				$data
 			);
 		} elseif ($refresh) {
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+			$this->getDatabaseConnection()->exec_UPDATEquery(
 				'tx_restdoc_toc',
 				'pid=' . $this->pageId .
-					' AND document=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($params['document'], 'tx_restdoc_toc'),
+					' AND document=' . $this->getDatabaseConnection()->fullQuoteStr($params['document'], 'tx_restdoc_toc'),
 				$data
 			);
 		}
@@ -304,12 +304,21 @@ class Tx_Restdoc_Hook_TableOfContents {
 	 * @return void
 	 */
 	protected function flushCache() {
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
+		$this->getDatabaseConnection()->exec_DELETEquery(
 			'tx_restdoc_toc',
 			'pid=' . $this->pageId .
-				' AND (root<>' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->root, 'tx_restdoc_toc') .
+				' AND (root<>' . $this->getDatabaseConnection()->fullQuoteStr($this->root, 'tx_restdoc_toc') .
 				' OR tstamp<=' . ($GLOBALS['ACCESS_TIME'] - self::CACHE_MAX_AGE) . ')'
 		);
+	}
+
+	/**
+	 * Returns the database connection.
+	 *
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 }
