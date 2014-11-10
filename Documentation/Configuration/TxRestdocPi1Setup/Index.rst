@@ -26,7 +26,6 @@ Properties
 	===================================================== ===================================================================== ======================= ==================
 	Property                                              Data type                                                             :ref:`t3tsref:stdwrap`  Default
 	===================================================== ===================================================================== ======================= ==================
-	defaultFile_ (*deprecated*)                           :ref:`t3tsref:data-type-string`                                       yes                     *empty*
 	`BODY.image.renderObj`_                               :ref:`cObject <t3tsref:cobjects>`                                     no                      *see* `setup.txt`_
 	`TOC.renderObj`_                                      :ref:`cObject <t3tsref:cobjects>`                                     no                      *see* `setup.txt`_
 	`MASTER_TOC.renderObj`_                               :ref:`cObject <t3tsref:cobjects>`                                     no                      *see* `setup.txt`_
@@ -45,19 +44,6 @@ Property details
 	.. contents::
 		:local:
 		:depth: 1
-
-
-.. _ts-plugin-tx-restdoc-pi1-setup-defaultFile:
-
-defaultFile
-"""""""""""
-
-:typoscript:`plugin.tx_restdoc_pi1.setup.defaultFile =` :ref:`t3tsref:data-type-string`
-
-.. admonition:: Deprecated
-	:class: warning
-
-	Use :ref:`plugin.tx_restdoc_pi1.defaultFile <ts-plugin-tx-restdoc-pi1-defaultFile>` instead.
 
 
 .. _ts-plugin-tx-restdoc-pi1-setup-BODY-image:

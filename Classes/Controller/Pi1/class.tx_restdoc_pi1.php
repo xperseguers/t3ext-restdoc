@@ -878,10 +878,6 @@ HTML;
 	protected function init(array $conf) {
 		$this->conf = $conf;
 
-		if (isset($this->conf['oldStaticInclude']) && $this->conf['oldStaticInclude']) {
-			t3lib_div::deprecationLog('EXT:' . $this->extKey . ' - Inclusion of old static TS. This is deprecated since 1.2.0 and will be removed in 1.4.0.');
-		}
-
 		// Apply stdWrap on a few TypoScript configuration options
 		$this->applyStdWrap($this->conf, 'path');
 		$this->applyStdWrap($this->conf, 'defaultFile');
@@ -894,17 +890,6 @@ HTML;
 		$this->applyStdWrap($this->conf, 'advertiseSphinx');
 		$this->applyStdWrap($this->conf, 'addHeadPagination');
 		$this->applyStdWrap($this->conf, 'publishSources');
-
-		if (isset($this->conf['setup.'])) {
-			// @deprecated since 1.2.0, will be removed in 1.4.0
-			$this->applyStdWrap($this->conf['setup.'], 'defaultFile');
-			if (isset($this->conf['setup.']['defaultFile'])) {
-				t3lib_div::deprecationLog('EXT:' . $this->extKey . ' - TypoScript plugin.' . $this->prefixId . '.setup.defaultFile ' .
-					'is deprecated since 1.2.0 and will be removed in 1.4.0. ' .
-					'Please use plugin.' . $this->prefixId . '.defaultFile instead.');
-				$this->conf['defaultFile'] = $this->conf['setup.']['defaultFile'];
-			}
-		}
 
 		// Load the flexform and loop on all its values to override TS setup values
 		// Some properties use a different test (more strict than not empty) and yet some others no test at all

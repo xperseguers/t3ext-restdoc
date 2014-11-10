@@ -16,7 +16,6 @@ $TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY . '_pi1'] = 'pi
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($_EXTKEY . '_pi1', 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/flexform_pi1.xml');
 
 // Initialize static extension templates
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($GLOBALS['_EXTKEY'], 'static/', 'reST Documentation Viewer [DEPRECATED]');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($GLOBALS['_EXTKEY'], 'Configuration/TypoScript/', 'Sphinx/reST Documentation Viewer');
 
 if (TYPO3_MODE === 'BE') {
