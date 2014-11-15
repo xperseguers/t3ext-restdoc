@@ -31,7 +31,7 @@ Sphinx/reStructuredText Documentation Viewer
 		styles automatically inherit from your corporate design.
 
 	:Keywords:
-		reStructuredText, reST, sphinx, sphinx-doc, documentation, embedding
+		reStructuredText, sphinx-doc, documentation
 
 	:Copyright:
 		2012-2014
