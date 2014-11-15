@@ -25,14 +25,14 @@ namespace Causal\Restdoc\Tests\Functional\Reader;
  ***************************************************************/
 
 /**
- * Testcase for class Tx_Restdoc_Reader_SphinxJson.
+ * Testcase for class \Causal\Restdoc\Reader\SphinxJson.
  */
 class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/** @var string */
 	protected $fixturePath;
 
-	/** @var \Tx_Restdoc_Reader_SphinxJson */
+	/** @var \Causal\Restdoc\Reader\SphinxJson */
 	protected $sphinxReader;
 
 	/** @var mixed */
@@ -40,7 +40,7 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function setUp() {
 		$this->fixturePath = substr(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('restdoc') . 'Tests/Functional/Fixtures/_build/json/', strlen(PATH_site));
-		$this->sphinxReader = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Restdoc_Reader_SphinxJson');
+		$this->sphinxReader = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Causal\\Restdoc\\Reader\\SphinxJson');
 	}
 
 	public function tearDown() {

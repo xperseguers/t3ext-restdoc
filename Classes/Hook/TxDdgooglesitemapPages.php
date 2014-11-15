@@ -1,4 +1,6 @@
 <?php
+namespace Causal\Restdoc\Hook;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,7 +36,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Tx_Restdoc_Hook_TxDdgooglesitemapPages {
+class TxDdgooglesitemapPages {
 
 	/** @var array */
 	protected $documentationPlugins;

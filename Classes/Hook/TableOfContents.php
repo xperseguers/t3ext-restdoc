@@ -1,4 +1,6 @@
 <?php
+namespace Causal\Restdoc\Hook;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -35,7 +37,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Tx_Restdoc_Hook_TableOfContents {
+class TableOfContents {
 
 	/**
 	 * Maximum number of timestamps to save
@@ -210,10 +212,10 @@ class Tx_Restdoc_Hook_TableOfContents {
 			return array();
 		}
 
-		$links = $this->getLinksFromToc(Tx_Restdoc_Utility_Helper::xmlstr_to_array($toc));
+		$links = $this->getLinksFromToc(Helper::xmlstr_to_array($toc));
 
 		if (isset($jsonData['prev'])) {
-			$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($params['documentRoot'] . $params['document'], '../' . $jsonData['prev']['link']);
+			$absolute = Helper::relativeToAbsolute($params['documentRoot'] . $params['document'], '../' . $jsonData['prev']['link']);
 			$document = substr($absolute, strlen($params['documentRoot']));
 			if (!isset($links[$document])) {
 				$links[$document] = $this->pObj->getLink($document, TRUE);
@@ -222,7 +224,7 @@ class Tx_Restdoc_Hook_TableOfContents {
 
 		if (isset($jsonData['next'])) {
 			$document = $params['document'] === $this->pObj->getDefaultFile() . '/' ? $params['documentRoot'] : $params['documentRoot'] . $params['document'];
-			$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($document, '../' . $jsonData['next']['link']);
+			$absolute = Helper::relativeToAbsolute($document, '../' . $jsonData['next']['link']);
 			$document = substr($absolute, strlen($params['documentRoot']));
 			if (!isset($links[$document])) {
 				$links[$document] = $this->pObj->getLink($document, TRUE);
@@ -287,7 +289,7 @@ class Tx_Restdoc_Hook_TableOfContents {
 			} else {
 				// $document's last part is a document, not a directory
 				$document = substr($document, 0, strrpos(rtrim($document, '/'), '/'));
-				$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($root . $document, $matches[2]);
+				$absolute = Helper::relativeToAbsolute($root . $document, $matches[2]);
 				$document = substr($absolute, strlen($root));
 			}
 			$url = $plugin->getLink($document, TRUE);

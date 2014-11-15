@@ -1,4 +1,6 @@
 <?php
+namespace Causal\Restdoc\Controller\Pi1;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,7 +36,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class tx_restdoc_pi1_wizicon {
+class WizardIcon {
 
 	/**
 	 * Processes the wizard items array.
@@ -61,7 +63,8 @@ class tx_restdoc_pi1_wizicon {
 	 * @return array The array with language labels
 	 */
 	protected function includeLocalLang() {
-		$llFile = ExtensionManagementUtility::extPath('restdoc') . 'Resources/Private/Language/locallang.xml';
+		$llFile = ExtensionManagementUtility::extPath('restdoc') . 'Resources/Private/Language/locallang.xlf';
 		return $GLOBALS['LANG']->includeLLFile($llFile, FALSE);
 	}
+
 }

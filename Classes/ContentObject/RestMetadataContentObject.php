@@ -1,4 +1,6 @@
 <?php
+namespace Causal\Restdoc\ContentObject;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,6 +25,7 @@
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Causal\Restdoc\Utility\RestHelper;
 
 /**
  * Implementation of the REST_METADATA content object.
@@ -34,7 +37,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Tx_Restdoc_ContentObject_RestMetadataContentObject {
+class RestMetadataContentObject {
 
 	/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
 	protected $cObj;
@@ -55,7 +58,7 @@ class Tx_Restdoc_ContentObject_RestMetadataContentObject {
 		// TODO: Add support for FAL
 
 		$output = '';
-		$data = Tx_Restdoc_Utility_Helper::getMetadata(PATH_site . $conf['path']);
+		$data = RestHelper::getMetadata(PATH_site . $conf['path']);
 		if ($data) {
 			/** @var $contentObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
 			$contentObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');

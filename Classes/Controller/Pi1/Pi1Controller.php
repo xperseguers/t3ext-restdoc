@@ -1,4 +1,6 @@
 <?php
+namespace Causal\Restdoc\Controller\Pi1;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,6 +25,7 @@
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Causal\Restdoc\Utility\RestHelper;
 
 /**
  * Plugin 'Sphinx/reStructuredText Documentation Viewer' for the 'restdoc' extension.
@@ -34,10 +37,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class tx_restdoc_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
+class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 	public $prefixId      = 'tx_restdoc_pi1';
-	public $scriptRelPath = 'Classes/Controller/Pi1/class.tx_restdoc_pi1.php';
+	public $scriptRelPath = 'Classes/Controller/Pi1/Pi1Controller.php';
 	public $extKey        = 'restdoc';
 	public $pi_checkCHash = FALSE;
 
@@ -55,7 +58,7 @@ class tx_restdoc_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 */
 	protected static $current = array();
 
-	/** @var Tx_Restdoc_Reader_SphinxJson */
+	/** @var \Causal\Restdoc\Reader\SphinxJson */
 	protected static $sphinxReader;
 
 	/**
@@ -64,7 +67,7 @@ class tx_restdoc_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @param string $content The plugin content
 	 * @param array $conf The plugin configuration
 	 * @return string The content that is displayed on the website
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	public function main($content, array $conf) {
 		$this->init($conf);
@@ -95,7 +98,7 @@ class tx_restdoc_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			// Security check
 			if (substr($sourceFile, -4) === '.txt' && substr(realpath($documentRoot . $sourceFile), 0, strlen(realpath($documentRoot))) === realpath($documentRoot)) {
 				// Will exit program normally
-				Tx_Restdoc_Utility_Helper::showSources($documentRoot . $sourceFile);
+				RestHelper::showSources($documentRoot . $sourceFile);
 			}
 		}
 
@@ -231,7 +234,7 @@ class tx_restdoc_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Returns the Sphinx Reader.
 	 *
-	 * @return Tx_Restdoc_Reader_SphinxJson
+	 * @return \Causal\Restdoc\Reader\SphinxJson
 	 */
 	public function getSphinxReader() {
 		return self::$sphinxReader;
@@ -263,7 +266,7 @@ class tx_restdoc_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		switch ($type) {
 			case 'menu':
 				$toc = self::$sphinxReader->getTableOfContents(array($this, 'getLink'));
-				$data = $toc ? Tx_Restdoc_Utility_Helper::getMenuData(Tx_Restdoc_Utility_Helper::xmlstr_to_array($toc)) : array();
+				$data = $toc ? RestHelper::getMenuData(RestHelper::xmlstr_to_array($toc)) : array();
 
 				// Mark the first entry as 'active'
 				$data[0]['ITEM_STATE'] = 'CUR';
@@ -271,14 +274,14 @@ class tx_restdoc_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 			case 'master_menu':
 				$masterToc = self::$sphinxReader->getMasterTableOfContents(array($this, 'getLink'));
-				$data = $masterToc ? Tx_Restdoc_Utility_Helper::getMenuData(Tx_Restdoc_Utility_Helper::xmlstr_to_array($masterToc)) : array();
-				\Tx_Restdoc_Utility_Helper::processMasterTableOfContents($data, $document, array($this, 'getLink'));
+				$data = $masterToc ? RestHelper::getMenuData(RestHelper::xmlstr_to_array($masterToc)) : array();
+				RestHelper::processMasterTableOfContents($data, $document, array($this, 'getLink'));
 			break;
 
 			case 'previous':
 				$previousDocument = self::$sphinxReader->getPreviousDocument();
 				if ($previousDocument !== NULL) {
-					$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($documentRoot . $document, '../' . $previousDocument['link']);
+					$absolute = RestHelper::relativeToAbsolute($documentRoot . $document, '../' . $previousDocument['link']);
 					$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 					$data[] = array(
 						'title' => $previousDocument['title'],
@@ -295,7 +298,7 @@ class tx_restdoc_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 					} else {
 						$nextDocumentPath = $documentRoot . $document;
 					}
-					$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($nextDocumentPath, '../' . $nextDocument['link']);
+					$absolute = RestHelper::relativeToAbsolute($nextDocumentPath, '../' . $nextDocument['link']);
 					$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 					$data[] = array(
 						'title' => $nextDocument['title'],
@@ -307,7 +310,7 @@ class tx_restdoc_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			case 'breadcrumb':
 				$parentDocuments = self::$sphinxReader->getParentDocuments();
 				foreach ($parentDocuments as $parent) {
-					$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($documentRoot . $document, '../' . $parent['link']);
+					$absolute = RestHelper::relativeToAbsolute($documentRoot . $document, '../' . $parent['link']);
 					$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 					$data[] = array(
 						'title' => $parent['title'],
@@ -330,7 +333,7 @@ class tx_restdoc_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				if (!empty($conf['excludeChapters'])) {
 					$excludeChapters = array_map(
 						function ($chapter) {
-							return $GLOBALS['TYPO3_DB']->fullQuoteStr($chapter, 'tx_restdoc_toc');
+							return $this->getDatabaseConnection()->fullQuoteStr($chapter, 'tx_restdoc_toc');
 						},
 						GeneralUtility::trimExplode(',', $conf['excludeChapters'])
 					);
@@ -343,10 +346,10 @@ class tx_restdoc_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				}
 				// TODO: prefix root entries with the storage UID when using FAL, to prevent clashes with multiple
 				//       directories with similar names
-				$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				$rows = $this->getDatabaseConnection()->exec_SELECTgetRows(
 					'*',
 					'tx_restdoc_toc',
-					'root=' . $GLOBALS['TYPO3_DB']->fullQuoteStr(substr($documentRoot, strlen($basePath)), 'tx_restdoc_toc') .
+					'root=' . $this->getDatabaseConnection()->fullQuoteStr(substr($documentRoot, strlen($basePath)), 'tx_restdoc_toc') .
 						$extraWhere,
 					'',
 					$sortField . ' DESC',
@@ -395,7 +398,7 @@ class tx_restdoc_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			// FAL is not used
 			$basePath = PATH_site;
 		}
-		$metadata = Tx_Restdoc_Utility_Helper::getMetadata($basePath . $this->conf['path']);
+		$metadata = RestHelper::getMetadata($basePath . $this->conf['path']);
 		if (!empty($metadata['release'])) {
 			$version = $metadata['release'];
 		} elseif (!empty($metadata['version'])) {
@@ -445,7 +448,7 @@ JS;
 		$data['home_uri_absolute'] = $this->getLink('', TRUE);
 
 		if ($previousDocument !== NULL) {
-			$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($documentRoot . $document, '../' . $previousDocument['link']);
+			$absolute = RestHelper::relativeToAbsolute($documentRoot . $document, '../' . $previousDocument['link']);
 			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 			$linkAbsolute = $this->getLink(substr($absolute, strlen($documentRoot)), TRUE);
 
@@ -460,7 +463,7 @@ JS;
 			} else {
 				$nextDocumentPath = $documentRoot . $document;
 			}
-			$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($nextDocumentPath, '../' . $nextDocument['link']);
+			$absolute = RestHelper::relativeToAbsolute($nextDocumentPath, '../' . $nextDocument['link']);
 			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 			$linkAbsolute = $this->getLink(substr($absolute, strlen($documentRoot)), TRUE);
 
@@ -471,7 +474,7 @@ JS;
 
 		if (count($parentDocuments) > 0) {
 			$parent = array_pop($parentDocuments);
-			$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($documentRoot . $document, '../' . $parent['link']);
+			$absolute = RestHelper::relativeToAbsolute($documentRoot . $document, '../' . $parent['link']);
 			$link = $this->getLink(substr($absolute, strlen($documentRoot)));
 			$linkAbsolute = $this->getLink(substr($absolute, strlen($documentRoot)), TRUE);
 
@@ -612,7 +615,7 @@ JS;
 
 			$contentCategory = '<h2 id="' . $anchor . '">' . htmlspecialchars($category) . '</h2>' . LF;
 			$contentCategory .= '<div class="tx-restdoc-genindextable">' . LF;
-			$contentCategory .= Tx_Restdoc_Utility_Helper::getIndexDefinitionList($documentRoot, $indexGroup[1], array($this, 'getLink'));
+			$contentCategory .= RestHelper::getIndexDefinitionList($documentRoot, $indexGroup[1], array($this, 'getLink'));
 			$contentCategory .= '</div>' . LF;
 
 			$contentCategories[] = $contentCategory;
@@ -659,7 +662,7 @@ JS;
 			$basePath = PATH_site;
 		}
 
-		$metadata = Tx_Restdoc_Utility_Helper::getMetadata($basePath . $this->conf['path']);
+		$metadata = RestHelper::getMetadata($basePath . $this->conf['path']);
 		$sphinxVersion = isset($metadata['sphinx_version']) ? $metadata['sphinx_version'] : '1.1.3';
 
 		$config = array(
@@ -911,11 +914,11 @@ HTML;
 			}
 		}
 
-		self::$sphinxReader = GeneralUtility::makeInstance('Tx_Restdoc_Reader_SphinxJson');
+		self::$sphinxReader = GeneralUtility::makeInstance('Causal\\Restdoc\\Reader\\SphinxJson');
 
 		if (preg_match('/^file:(\d+):(.*)$/', $this->conf['path'], $matches)) {
 			/** @var $storageRepository \TYPO3\CMS\Core\Resource\StorageRepository */
-			$storageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
+			$storageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
 			/** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
 			$storage = $storageRepository->findByUid(intval($matches[1]));
 			$storageRecord = $storage->getStorageRecord();
@@ -978,6 +981,15 @@ HTML;
 			}
 		}
 		$this->LOCAL_LANG_loaded = 1;
+	}
+
+	/**
+	 * Returns the database connection.
+	 *
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 }

@@ -24,10 +24,12 @@ namespace Causal\Restdoc\Tests\Unit\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Causal\Restdoc\Utility\RestHelper;
+
 /**
- * Testcase for class Tx_Restdoc_Utility_Helper.
+ * Testcase for class \Causal\Restdoc\Utility\RestHelper.
  */
-class HelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class RestHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
@@ -53,7 +55,7 @@ HTML;
 			),
 		);
 
-		$arr = \Tx_Restdoc_Utility_Helper::xmlstr_to_array($html);
+		$arr = RestHelper::xmlstr_to_array($html);
 		$this->assertEquals($expected, $arr);
 	}
 
@@ -90,7 +92,7 @@ HTML;
 			),
 		);
 
-		$arr = \Tx_Restdoc_Utility_Helper::xmlstr_to_array($html);
+		$arr = RestHelper::xmlstr_to_array($html);
 		$this->assertEquals($expected, $arr);
 	}
 
@@ -116,7 +118,7 @@ HTML;
 			),
 		);
 
-		$arr = \Tx_Restdoc_Utility_Helper::xmlstr_to_array($html);
+		$arr = RestHelper::xmlstr_to_array($html);
 		$this->assertEquals($expected, $arr);
 	}
 

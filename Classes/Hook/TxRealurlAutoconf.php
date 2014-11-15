@@ -1,4 +1,6 @@
 <?php
+namespace Causal\Restdoc\Hook;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,16 +34,16 @@
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Tx_Restdoc_Hook_RealurlAutoconf {
+class RealurlAutoconf {
 
 	/**
 	 * Generates additional RealURL configuration and merges it with provided configuration.
 	 *
 	 * @param array $params
-	 * @param tx_realurl_autoconfgen $pObj
+	 * @param \tx_realurl_autoconfgen $pObj
 	 * @return array
 	 */
-	public function registerDefaultConfiguration(array $params, tx_realurl_autoconfgen $pObj) {
+	public function registerDefaultConfiguration(array $params, \tx_realurl_autoconfgen $pObj) {
 		return array_merge_recursive($params['config'], array(
 			'postVarSets' => array(
 				'_DEFAULT' => array(

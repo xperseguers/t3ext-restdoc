@@ -1,4 +1,6 @@
 <?php
+namespace Causal\Restdoc\Reader;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,6 +25,7 @@
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Causal\Restdoc\Utility\RestHelper;
 
 /**
  * Sphinx JSON reader.
@@ -34,7 +37,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Tx_Restdoc_Reader_SphinxJson {
+class SphinxJson {
 
 	/** @var \TYPO3\CMS\Core\Resource\ResourceStorage */
 	protected $storage = NULL;
@@ -531,7 +534,7 @@ class Tx_Restdoc_Reader_SphinxJson {
 				if (GeneralUtility::isFirstPartOfStr($matches[2], '../')) {
 					$document = substr($document, 0, strrpos(rtrim($document, '/'), '/'));
 				}
-				$absolute = Tx_Restdoc_Utility_Helper::relativeToAbsolute($self->getPath() . $document, $matches[2]);
+				$absolute = RestHelper::relativeToAbsolute($self->getPath() . $document, $matches[2]);
 				$document = substr($absolute, strlen($self->getPath()));
 			}
 			$url = call_user_func($callbackLinks, $document);
@@ -591,7 +594,7 @@ class Tx_Restdoc_Reader_SphinxJson {
 					}
 				}
 			}
-			$src = Tx_Restdoc_Utility_Helper::relativeToAbsolute($root, $attributes['src']);
+			$src = RestHelper::relativeToAbsolute($root, $attributes['src']);
 			$storage = $self->getStorage();
 			if ($storage !== NULL) {
 				$storageConfiguration = $storage->getConfiguration();

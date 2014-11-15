@@ -27,7 +27,7 @@ namespace Causal\Restdoc\Tests\Functional\ContentObject;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Testcase for class Tx_Restdoc_ContentObject_RestMetadataContentObject.
+ * Testcase for class \Causal\Restdoc\ContentObject\RestMetadataContentObject.
  */
 class RestMetadataContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
@@ -46,7 +46,7 @@ class RestMetadataContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->backupCObjTypeAndClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'];
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'][] = array(
 			0 => 'REST_METADATA',
-			1 => 'EXT:restdoc/Classes/ContentObject/RestMetadataContentObject.php:Tx_Restdoc_ContentObject_RestMetadataContentObject',
+			1 => 'EXT:restdoc/Classes/ContentObject/RestMetadataContentObject.php:Causal\\Restdoc\\ContentObject\\RestMetadataContentObject',
 		);
 
 		$this->contentObject = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');

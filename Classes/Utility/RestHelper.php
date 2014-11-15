@@ -1,4 +1,6 @@
 <?php
+namespace Causal\Restdoc\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -35,7 +37,7 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-final class Tx_Restdoc_Utility_Helper {
+final class RestHelper {
 
 	/**
 	 * Returns Sphinx-related metadata.
@@ -47,7 +49,7 @@ final class Tx_Restdoc_Utility_Helper {
 		if (!is_dir($path)) {
 			// Most probably a relative path has been provided
 			$path = PATH_site . $path;
-			GeneralUtility::deprecationLog('EXT:restdoc - Tx_Restdoc_Utility_Helper::getMetadata() needs an absolute path as argument since 1.3.0. Support for relative path will be removed in 1.5.0.');
+			GeneralUtility::deprecationLog('EXT:restdoc - \\Causal\\Restdoc\\Utility\\RestHelper::getMetadata() needs an absolute path as argument since 1.3.0. Support for relative path will be removed in 1.5.0.');
 		}
 		$documentRoot = rtrim($path, '/') . '/';
 		$jsonFile = 'globalcontext.json';
