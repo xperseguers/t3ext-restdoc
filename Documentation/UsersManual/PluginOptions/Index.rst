@@ -15,7 +15,7 @@ The plugin options let you choose whether the content of the file (BODY), the ta
 |plugin_options|
 
 .. tip::
-	Screenshot above shows a non-FAL documentation root. When using TYPO3 6.x, both syntaxes are supported, mainly to
+	Screenshot above shows a non-FAL documentation root. However, both syntaxes are supported, mainly to
 	ensure backward compatibility:
 
 	- ``fileadmin/path/to/documentation/``

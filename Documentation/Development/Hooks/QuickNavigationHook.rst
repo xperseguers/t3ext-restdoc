@@ -56,4 +56,4 @@ config
 	Configuration of the plugin
 
 pObj
-	A reference to the current ``pi_restdoc_pi1`` instance
+	A reference to the current ``\Causal\Restdoc\Controller\Pi1\Pi1Controller`` instance
