@@ -1,11 +1,24 @@
 {
   "name": "causal/restdoc",
   "description": "Seamlessly embeds Sphinx/reStructuredText-based documentation into your TYPO3 website. Instead of publishing your various manual, in-house documents, guides, references, ... solely as PDF, render them as JSON and use this extension to show them as part of your website to enhance the overall user experience and Search Engine Optimization (SEO). Lets you merge the chapter structure with the breadcrumb menu and much more. Documentation styles automatically inherit from your corporate design.",
+  "version": "1.4.1-dev",
   "type": "typo3-cms-extension",
   "keywords": ["TYPO3 CMS", "reStructuredText", "sphinx-doc", "documentation"],
   "homepage": "https://forge.typo3.org/projects/extension-restdoc",
   "license": "GPL-2.0+",
-  "version": "1.4.0",
+  "authors": [
+    {
+      "name": "Xavier Perseguers",
+      "email": "xavier@causal.ch",
+      "company": "Causal Sàrl",
+      "homepage": "https://www.causal.ch",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">= 5.3.3, <= 5.6.99",
+    "typo3/cms": ">= 6.2.0, <= 7.99.99"
+  },
   "support": {
 	"issues": "https://forge.typo3.org/projects/extension-restdoc/issues"
   }
