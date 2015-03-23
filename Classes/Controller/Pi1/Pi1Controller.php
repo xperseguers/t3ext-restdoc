@@ -32,13 +32,16 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	public $prefixId      = 'tx_restdoc_pi1';
 	public $scriptRelPath = 'Classes/Controller/Pi1/Pi1Controller.php';
 	public $extKey        = 'restdoc';
-	public $pi_checkCHash = FALSE;
+	public $pi_checkCHash;
 
 	/** @var string */
 	protected static $defaultFile = 'index';
 
 	/** @var array */
 	public $renderingConfig = array();
+
+	/** @var array */
+	protected $settings = array();
 
 	/**
 	 * Current chapter information as static to be accessible from
@@ -50,6 +53,12 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 	/** @var \Causal\Restdoc\Reader\SphinxJson */
 	protected static $sphinxReader;
+
+	public function __construct() {
+		$this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
+		$this->pi_checkCHash = (bool)$this->settings['cache_plugin_output'];
+		parent::__construct();
+	}
 
 	/**
 	 * The main method of the Plugin.
@@ -63,7 +72,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$this->init($conf);
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
-		$this->pi_USER_INT_obj = 1;    // USER_INT object
+		$this->pi_USER_INT_obj = (bool)$this->settings['cache_plugin_output'] ? 0 : 1;
 
 		$storage = self::$sphinxReader->getStorage();
 		if ($storage !== NULL) {
@@ -800,6 +809,7 @@ HTML;
 					'scheme' => GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https' : 'http',
 				),
 				'returnLast' => 'url',
+				'useCacheHash' => $this->pi_checkCHash,
 			);
 			if ($urlParameters) {
 				$typolinkConfig['additionalParams'] = GeneralUtility::implodeArrayForUrl('', $urlParameters);

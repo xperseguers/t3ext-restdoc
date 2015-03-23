@@ -3,6 +3,9 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2013-04-04T12:23:51Z" product-name="restdoc">
 		<header/>
 		<body>
+			<trans-unit id="settings.cache_plugin_output">
+				<source>Cache plugin output: If ticked the plugin will be cached (USER) instead of being uncached (USER_INT).</source>
+			</trans-unit>
 			<trans-unit id="tt_content.list_type_pi1">
 				<source>reST Documentation Viewer</source>
 			</trans-unit>
