@@ -15,6 +15,7 @@ namespace Causal\Restdoc\Hook;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Causal\Restdoc\Utility\RestHelper;
 
 /**
  * Storing the documentation structure into the database for integration
@@ -202,10 +203,10 @@ class TableOfContents {
 			return array();
 		}
 
-		$links = $this->getLinksFromToc(Helper::xmlstr_to_array($toc));
+		$links = $this->getLinksFromToc(RestHelper::xmlstr_to_array($toc));
 
 		if (isset($jsonData['prev'])) {
-			$absolute = Helper::relativeToAbsolute($params['documentRoot'] . $params['document'], '../' . $jsonData['prev']['link']);
+			$absolute = RestHelper::relativeToAbsolute($params['documentRoot'] . $params['document'], '../' . $jsonData['prev']['link']);
 			$document = substr($absolute, strlen($params['documentRoot']));
 			if (!isset($links[$document])) {
 				$links[$document] = $this->pObj->getLink($document, TRUE);
@@ -214,7 +215,7 @@ class TableOfContents {
 
 		if (isset($jsonData['next'])) {
 			$document = $params['document'] === $this->pObj->getDefaultFile() . '/' ? $params['documentRoot'] : $params['documentRoot'] . $params['document'];
-			$absolute = Helper::relativeToAbsolute($document, '../' . $jsonData['next']['link']);
+			$absolute = RestHelper::relativeToAbsolute($document, '../' . $jsonData['next']['link']);
 			$document = substr($absolute, strlen($params['documentRoot']));
 			if (!isset($links[$document])) {
 				$links[$document] = $this->pObj->getLink($document, TRUE);
@@ -279,7 +280,7 @@ class TableOfContents {
 			} else {
 				// $document's last part is a document, not a directory
 				$document = substr($document, 0, strrpos(rtrim($document, '/'), '/'));
-				$absolute = Helper::relativeToAbsolute($root . $document, $matches[2]);
+				$absolute = RestHelper::relativeToAbsolute($root . $document, $matches[2]);
 				$document = substr($absolute, strlen($root));
 			}
 			$url = $plugin->getLink($document, TRUE);
