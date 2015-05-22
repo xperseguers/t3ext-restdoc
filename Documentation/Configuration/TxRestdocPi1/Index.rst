@@ -125,6 +125,9 @@ fallbackPathSeparator
 
 Comma-separated list of fallback path separators.
 
+When a documentation structure has been indexed (e.g., by Google) with an old directory separator (such as the backslash
+``\``), the indexed page cannot be shown anymore and fails with a page not found exception (Error code 404).
+
 
 .. _ts-plugin-tx-restdoc-pi1-documentStructureMaxDocuments:
 

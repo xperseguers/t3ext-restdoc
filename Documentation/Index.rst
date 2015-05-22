@@ -34,7 +34,7 @@ Sphinx/reStructuredText Documentation Viewer
 		reStructuredText, sphinx-doc, documentation
 
 	:Copyright:
-		2012-2014
+		2012-2015
 
 	:Author:
 		Xavier Perseguers
