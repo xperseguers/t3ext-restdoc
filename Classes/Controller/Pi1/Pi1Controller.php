@@ -88,7 +88,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$pathSeparators = isset($this->conf['fallbackPathSeparators']) ? GeneralUtility::trimExplode(',', $this->conf['fallbackPathSeparators'], TRUE) : array();
 		$pathSeparators[] = $this->conf['pathSeparator'];
 		if (isset($this->piVars['doc']) && strpos($this->piVars['doc'], '..') === FALSE) {
-			$document = str_replace($pathSeparators, '/', $this->piVars['doc']) . '/';
+			$document = rtrim(str_replace($pathSeparators, '/', $this->piVars['doc']), '/') . '/';
 		}
 
 		// Sources are requested, if allowed and available, return them
@@ -413,7 +413,9 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		}
 		$hasSource = isset($metadata['has_source']) && $metadata['has_source'] && $this->conf['publishSources'];
 		$hasSource = $hasSource ? 'true' : 'false';
-		$separator = urlencode(self::$current['pathSeparator']);
+		$separator = self::$current['pathSeparator'] === '/'
+			? self::$current['pathSeparator']
+			: urlencode(self::$current['pathSeparator']);
 
 		$GLOBALS['TSFE']->additionalJavaScript[$this->prefixId . '_sphinx'] = <<<JS
 var DOCUMENTATION_OPTIONS = {
@@ -817,6 +819,9 @@ HTML;
 			// Prettier to have those additional parameters after the document itself
 			$typolinkConfig['additionalParams'] .= $additionalParameters;
 			$link = $this->cObj->typoLink('', $typolinkConfig);
+			// When using forward slash as separator (beware: needs proper configuration),
+			// it is encoded as %2F and should be decoded
+			$link = str_replace('%2F', '/', $link);
 			if ($anchor !== '') {
 				$link .= '#' . $anchor;
 			}
@@ -933,10 +938,18 @@ HTML;
 		if (isset($this->conf['defaultFile'])) {
 			self::$defaultFile = $this->conf['defaultFile'];
 		}
+
 		if (empty($this->conf['pathSeparator'])) {
 			// The path separator CANNOT be empty
 			$this->conf['pathSeparator'] = '|';
 		}
+		if (!(isset($this->settings['enable_slash_as_separator']) && (bool)$this->settings['enable_slash_as_separator'])) {
+			if ($this->conf['pathSeparator'] === '/') {
+				// Slash ("/") is not valid separator
+				$this->conf['pathSeparator'] = '|';
+			}
+		}
+
 		if (GeneralUtility::inList('REFERENCES,SEARCH', $this->conf['mode'])) {
 			$this->conf['rootPage'] = intval($this->conf['rootPage']);
 		} else {

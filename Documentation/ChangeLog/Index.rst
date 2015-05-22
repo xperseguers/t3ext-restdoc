@@ -22,6 +22,7 @@ The following is a very high level overview of the changes in this extension. Fo
 =======  ======================================================
 Version  Changes
 =======  ======================================================
+1.5.x    Extended support for RealURL
 1.4.x    Compatibility with TYPO3 6.2 - 7.x
 1.3.x    - Refactoring of the JSON reader
          - Compatible with official TYPO3 manuals

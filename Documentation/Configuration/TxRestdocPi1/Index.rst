@@ -112,8 +112,13 @@ pathSeparator
 
 Separator to be used between directories of the documentation. You may use multiple characters as well.
 
-Make sure to read http://forge.typo3.org/issues/45560 before using special characters such as ``\`` (backslash)
-or ``/`` (forward slash).
+.. warning::
+	Make sure to read http://forge.typo3.org/issues/45560 before using special characters such as ``\`` (backslash)
+	or ``/`` (forward slash).
+
+.. hint::
+	Since version 1.5, the forward slash is properly supported when using EXT:realurl but it requires a proper
+	configuration as suggested in the chapter describing :ref:`how to install this extension <admin-manual-install-realurl>`.
 
 
 .. _ts-plugin-tx-restdoc-pi1-fallbackPathSeparator:

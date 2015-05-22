@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class TxDdgooglesitemapPages {
+class Ddgooglesitemap {
 
 	/** @var array */
 	protected $documentationPlugins;

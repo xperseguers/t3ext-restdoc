@@ -6,6 +6,9 @@
 			<trans-unit id="settings.cache_plugin_output">
 				<source>Cache plugin output: If ticked the plugin will be cached (USER) instead of being uncached (USER_INT).</source>
 			</trans-unit>
+			<trans-unit id="settings.enable_slash_as_separator">
+				<source>Enable forward slash ("/") as separator: Allow "/" for plugin.tx_restdoc_pi1.pathSeparator. BEWARE! This requires EXT:realurl and you should have read the documentation of this extension to ensure you understand the implication.</source>
+			</trans-unit>
 			<trans-unit id="tt_content.list_type_pi1">
 				<source>reST Documentation Viewer</source>
 			</trans-unit>
