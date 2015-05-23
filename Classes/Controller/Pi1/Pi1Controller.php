@@ -94,6 +94,11 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		// Sources are requested, if allowed and available, return them
 		if ($this->conf['publishSources'] && GeneralUtility::isFirstPartOfStr($document, '_sources/')) {
 			$sourceFile = rtrim($document, '/');
+			$lastDot = strrpos($sourceFile, '.');
+			if ($lastDot === FALSE || $lastDot < strrpos($sourceFile, '/')) {
+				// ".txt" extension has been removed by \Causal\Restdoc\Hooks\Realurl::decodeSpURL_preProc()
+				$sourceFile .= '.txt';
+			}
 			// Security check
 			if (substr($sourceFile, -4) === '.txt' && substr(realpath($documentRoot . $sourceFile), 0, strlen(realpath($documentRoot))) === realpath($documentRoot)) {
 				// Will exit program normally
@@ -408,9 +413,11 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 		$urlRoot = str_replace('___PLACEHOLDER___', '', $this->getLink('___PLACEHOLDER___/', TRUE, $this->conf['rootPage']));
 		// Support for RealURL
-		if (substr($urlRoot, -6) === '/.html') {
-			$urlRoot = substr($urlRoot, 0, strlen($urlRoot) - 5);	// .html suffix is not a must have
+		if (substr($urlRoot, -5) === '.html') {
+			$urlRoot = substr($urlRoot, 0, -5);	// .html suffix is not a must have
 		}
+		// Trailing slash is however required
+		$urlRoot = rtrim($urlRoot, '/') . '/';
 		$hasSource = isset($metadata['has_source']) && $metadata['has_source'] && $this->conf['publishSources'];
 		$hasSource = $hasSource ? 'true' : 'false';
 		$separator = self::$current['pathSeparator'] === '/'
@@ -606,7 +613,7 @@ JS;
 
 			$conf = array(
 				$this->prefixId => array(
-					'doc' => str_replace('/', $this->conf['pathSeparator'], substr($document, 0, strlen($document) - 1)),
+					'doc' => str_replace('/', $this->conf['pathSeparator'], substr($document, 0, -1)),
 				)
 			);
 			$link = $this->pi_getPageLink($GLOBALS['TSFE']->id, '', $conf);
@@ -664,7 +671,7 @@ JS;
 		}
 
 		$metadata = RestHelper::getMetadata($basePath . $this->conf['path']);
-		$sphinxVersion = isset($metadata['sphinx_version']) ? $metadata['sphinx_version'] : '1.1.3';
+		$sphinxVersion = isset($metadata['sphinx_version']) ? $metadata['sphinx_version'] : '1.3.1';
 
 		$config = array(
 			'jsLibs' => array(
@@ -785,7 +792,7 @@ HTML;
 			if (substr($document, -5) === '.html') {
 				$document = substr($document, 0, -5) . '/';
 			}
-			$doc = str_replace('/', self::$current['pathSeparator'], substr($document, 0, strlen($document) - 1));
+			$doc = str_replace('/', self::$current['pathSeparator'], substr($document, 0, -1));
 			if ($doc) {
 				$urlParameters = array(
 					$this->prefixId => array(

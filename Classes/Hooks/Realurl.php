@@ -1,5 +1,5 @@
 <?php
-namespace Causal\Restdoc\Hook;
+namespace Causal\Restdoc\Hooks;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -61,6 +61,22 @@ class Realurl {
 	}
 
 	/**
+	 * Pre-process an URL and ensure access to source files of a reStructuredText
+	 * chapter is properly passed to RealURL for decoding by changing the .txt file
+	 * extension into .html.
+	 *
+	 * @param array $parameters
+	 * @return void
+	 */
+	public function decodeSpURL_preProc(array $parameters) {
+		$segments = explode('/', $parameters['URL']);
+		if ($segments[1] === '_sources' && substr($parameters['URL'], -4) === '.txt') {
+			$suffix = (bool)$parameters['pObj']->extConf['fileName']['acceptHTMLsuffix'] ? '.html' : '/';
+			$parameters['URL'] = substr($parameters['URL'], 0, -4) . $suffix;
+		}
+	}
+
+	/**
 	 * This methods will "eat" every remaining segment in the URL to make it part
 	 * of the requested document.
 	 *
@@ -83,20 +99,20 @@ class Realurl {
 
 	/**
 	 * Generates a default "fixedPostVars" configuration for RealURL
-	 * based on leaf pages containing a restdoc plugin.
+	 * based on pages containing a restdoc plugin.
 	 *
 	 * @return array
 	 */
 	protected function getFixedPostVarsConfiguration() {
 		$fixedPostVarsConfiguration = array();
 
-		// Search (leaf) pages with a restdoc plugin
+		// Search pages with a restdoc plugin
 		$databaseConnection = $this->getDatabaseConnection();
 		$pages = $databaseConnection->exec_SELECTgetRows(
 			'DISTINCT pid',
 			'tt_content',
 			'list_type=' . $databaseConnection->fullQuoteStr('restdoc_pi1', 'tt_content') .
-			' AND deleted=0 AND hidden=0',
+				' AND deleted=0 AND hidden=0',
 			'',
 			'',
 			'',
@@ -105,30 +121,13 @@ class Realurl {
 		$pages = array_keys($pages);
 
 		if (!empty($pages)) {
-			$leafPages = $databaseConnection->exec_SELECTgetRows(
-				'uid',
-				'pages',
-				'uid IN (' . implode(',', $pages) . ')' .
-					' AND deleted=0 AND hidden=0' .
-					' AND uid NOT IN (' .
-						$databaseConnection->SELECTquery('pid', 'pages', 'deleted=0 AND hidden=0') .
-					')',
-				'',
-				'',
-				'',
-				'uid'
+			$fixedPostVarsConfiguration['fixedPostVars'] = array_fill_keys($pages, 'restdoc_advanced_url');
+			$fixedPostVarsConfiguration['fixedPostVars']['restdoc_advanced_url'] = array(
+				array(
+					'GETvar' => 'tx_restdoc_pi1[doc]',
+					'userFunc' => 'Causal\\Restdoc\\Hooks\\Realurl->decodeSpURL_getSequence',
+				),
 			);
-			$leafPages = array_keys($leafPages);
-
-			if (!empty($leafPages)) {
-				$fixedPostVarsConfiguration['fixedPostVars'] = array_fill_keys($leafPages, 'restdoc_advanced_url');
-				$fixedPostVarsConfiguration['fixedPostVars']['restdoc_advanced_url'] = array(
-					array(
-						'GETvar' => 'tx_restdoc_pi1[doc]',
-						'userFunc' => 'Causal\\Restdoc\\Hook\\Realurl->decodeSpURL_getSequence',
-					),
-				);
-			}
 		}
 
 		return $fixedPostVarsConfiguration;

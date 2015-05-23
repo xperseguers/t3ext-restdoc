@@ -22,10 +22,15 @@ conf.py:
     t3tsref:
     - http://docs.typo3.org/typo3cms/TyposcriptReference/
     - null
+  extlinks:
+    forge:
+    - http://forge.typo3.org/issues/%s
+    - 'Forget ticket #'
   extensions:
     - sphinx.ext.intersphinx
     - t3sphinx.ext.t3extras
     - t3sphinx.ext.t3tablerows
     - t3sphinx.ext.targets
+    - sphinx.ext.extlinks
     - sphinxcontrib.youtube
 ...

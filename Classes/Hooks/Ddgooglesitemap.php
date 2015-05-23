@@ -1,5 +1,5 @@
 <?php
-namespace Causal\Restdoc\Hook;
+namespace Causal\Restdoc\Hooks;
 
 /*
  * This file is part of the TYPO3 CMS project.

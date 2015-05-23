@@ -188,7 +188,7 @@ class SphinxJson {
 			throw new \RuntimeException('Invalid document: ' . $this->document, 1365165369);
 		}
 
-		$this->jsonFilename = substr($this->document, 0, strlen($this->document) - 1) . '.fjson';
+		$this->jsonFilename = substr($this->document, 0, -1) . '.fjson';
 		$filename = $this->path . $this->jsonFilename;
 
 		// Security check
@@ -198,7 +198,7 @@ class SphinxJson {
 		}
 		if (!$fileExists && $this->fallbackToDefaultFile) {
 			$defaultDocument = $this->getDefaultFile() . '/';
-			$defaultJsonFilename = substr($defaultDocument, 0, strlen($defaultDocument) - 1) . '.fjson';
+			$defaultJsonFilename = substr($defaultDocument, 0, -1) . '.fjson';
 			$defaultFilename = $this->path . $defaultJsonFilename;
 			if (is_file($defaultFilename)) {
 				$this->document = $defaultDocument;

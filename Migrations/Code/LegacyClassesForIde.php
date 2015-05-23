@@ -19,17 +19,17 @@ class Tx_Restdoc_ContentObject_RestMetadataContentObject extends \Causal\Restdoc
 /**
  * @deprecated since 1.4 will be removed in 1.6
  */
-class Tx_Restdoc_Hook_TableOfContents extends \Causal\Restdoc\Hook\TableOfContents {}
+class Tx_Restdoc_Hook_TableOfContents extends \Causal\Restdoc\Hooks\TableOfContents {}
 
 /**
  * @deprecated since 1.4 will be removed in 1.6
  */
-class Tx_Restdoc_Hook_TxDdgooglesitemapPages extends \Causal\Restdoc\Hook\TxDdgooglesitemapPages {}
+class Tx_Restdoc_Hook_TxDdgooglesitemapPages extends \Causal\Restdoc\Hooks\Ddgooglesitemap {}
 
 /**
  * @deprecated since 1.4 will be removed in 1.6
  */
-class Tx_Restdoc_Hook_RealurlAutoconf extends \Causal\Restdoc\Hook\RealurlAutoconf {}
+class Tx_Restdoc_Hook_RealurlAutoconf extends \Causal\Restdoc\Hooks\Realurl {}
 
 /**
  * @deprecated since 1.4 will be removed in 1.6

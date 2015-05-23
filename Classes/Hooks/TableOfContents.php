@@ -1,5 +1,5 @@
 <?php
-namespace Causal\Restdoc\Hook;
+namespace Causal\Restdoc\Hooks;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -92,7 +92,7 @@ class TableOfContents {
 	 * @return void
 	 */
 	protected function extractLinks(array $params) {
-		$jsonFile = substr($params['document'], 0, strlen($params['document']) - 1) . '.fjson';
+		$jsonFile = substr($params['document'], 0, -1) . '.fjson';
 		$filename = $params['documentRoot'] . $jsonFile;
 		if (!is_file($filename)) {
 			return;

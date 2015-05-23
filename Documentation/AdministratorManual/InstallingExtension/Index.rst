@@ -57,8 +57,7 @@ we suggest:
 
 You may even fully and transparently embed your documentation within the URL, without any "chapter" segment if you
 use a forward slash for :ref:`plugin.tx_restdoc_pi1.pathSeparator <ts-plugin-tx-restdoc-pi1-pathSeparator>` and
-enable this behaviour in Extension Manager. This will work if the pages where you use the plugin do not have any
-children (these are thus "leaf" pages).
+enable this behaviour in Extension Manager.
 
 .. code-block:: php
 
@@ -68,12 +67,12 @@ children (these are thus "leaf" pages).
 	    'restdoc_advanced_url' => array(
 	        array(
 	            'GETvar' => 'tx_restdoc_pi1[doc]',
-	            'userFunc' => 'Causal\\Restdoc\\Hook\\Realurl->decodeSpURL_getSequence',
+	            'userFunc' => 'Causal\\Restdoc\\Hooks\\Realurl->decodeSpURL_getSequence',
 	        ),
 	    ),
 	),
 
-where ``123`` and ``456`` are your leaf page uids.
+where ``123`` and ``456`` are page uids with a restdoc plugin.
 
 .. hint::
 	If you switch from standard configuration with a pipe (``|``) as separator to a forward slash, you probably should
