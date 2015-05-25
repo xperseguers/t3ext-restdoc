@@ -19,6 +19,9 @@
     "php": ">= 5.3.3, <= 5.6.99",
     "typo3/cms-core": ">= 6.2.0, <= 7.99.99"
   },
+  "suggest": {
+    "realurl": "Allows total and indistinct blend of the reStructuredText documentation into the website"
+  },
   "support": {
 	"issues": "https://forge.typo3.org/projects/extension-restdoc/issues"
   }
