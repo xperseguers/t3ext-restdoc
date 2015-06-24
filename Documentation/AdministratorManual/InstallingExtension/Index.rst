@@ -11,8 +11,8 @@
 Installing the extension
 ------------------------
 
-There are a few steps necessary to install the Sphinx/reStructuredText Documentation Viewer extension. If you have
-installed other extensions in the past, you will run into little new here.
+There are a few steps necessary to install the Sphinx Documentation Viewer Plugin extension. If you have installed other
+extensions in the past, you will run into little new here.
 
 
 .. _admin-manual-install-em:
@@ -20,8 +20,8 @@ installed other extensions in the past, you will run into little new here.
 Install the extension from Extension Manager
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Sphinx/reStructuredText Documentation Viewer extension can ben installed through the typical TYPO3 installation
-process using the Extension Manager.
+The Sphinx Documentation Viewer Plugin extension can ben installed through the typical TYPO3 installation process using
+the Extension Manager.
 
 The Extension Manager will create a new table in your database. This table is used to store references to the chapters
 in the context of the plugin and is used to both generate the menu of recent updates in your documentation and to
@@ -34,7 +34,7 @@ dd_googlesitemap_.
 Configure RealURL
 ^^^^^^^^^^^^^^^^^
 
-If you are using RealURL, the good news is that the Sphinx/reStructuredText Documentation Viewer extension comes with a
+If you are using RealURL, the good news is that the Sphinx Documentation Viewer Plugin extension comes with a
 configuration for RealURL.
 
 If your configuration is automatically generated (you have a ``typo3conf/realurl_autoconf.php`` file), delete it. It

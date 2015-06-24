@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Causal\Restdoc\Utility\RestHelper;
 
 /**
- * Plugin 'Sphinx/reStructuredText Documentation Viewer' for the 'restdoc' extension.
+ * Plugin 'Sphinx Documentation Viewer Plugin' for the 'restdoc' extension.
  *
  * @category    Plugin
  * @package     TYPO3

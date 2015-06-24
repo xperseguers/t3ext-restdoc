@@ -8,9 +8,9 @@
 
 .. _start:
 
-============================================
-Sphinx/reStructuredText Documentation Viewer
-============================================
+==================================
+Sphinx Documentation Viewer Plugin
+==================================
 
 .. only:: html
 
@@ -56,7 +56,7 @@ Sphinx/reStructuredText Documentation Viewer
 	**Other version of this document**
 
 	:PDF:
-		http://docs.typo3.org/typo3cms/extensions/restdoc/1.4.0/_pdf/
+		http://docs.typo3.org/typo3cms/extensions/restdoc/1.5.0/_pdf/
 
 
 	**Table of Contents**

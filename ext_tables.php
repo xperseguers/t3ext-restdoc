@@ -14,7 +14,7 @@ $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY . '_
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($_EXTKEY . '_pi1', 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/flexform_pi1.xml');
 
 // Initialize static extension templates
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($GLOBALS['_EXTKEY'], 'Configuration/TypoScript/', 'Sphinx/reST Documentation Viewer');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($GLOBALS['_EXTKEY'], 'Configuration/TypoScript/', 'Sphinx Documentation Viewer Plugin');
 
 if (TYPO3_MODE === 'BE') {
 	$GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses']['Causal\\Restdoc\\Controller\\Pi1\\WizardIcon'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/Controller/Pi1/WizardIcon.php';
