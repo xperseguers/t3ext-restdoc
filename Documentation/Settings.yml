@@ -7,7 +7,7 @@ conf.py:
   copyright: 2012-2015
   project: Sphinx Documentation Viewer Plugin
   version: 1.5
-  release: 1.5.0
+  release: 1.5.1-dev
   latex_documents:
   - - Index
     - restdoc.tex
