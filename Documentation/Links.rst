@@ -21,7 +21,7 @@ Links
 	https://git.typo3.org/TYPO3CMS/Extensions/restdoc.git
 
 :Translation:
-	http://translation.typo3.org/projects/TYPO3.TYPO3.ext.restdoc/
+	http://translation.typo3.org/projects/TYPO3.ext.restdoc/
 
 :Contact:
 	`@xperseguers <https://twitter.com/xperseguers>`_
