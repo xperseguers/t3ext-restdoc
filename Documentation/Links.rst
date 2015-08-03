@@ -15,13 +15,16 @@ Links
 	https://typo3.org/extensions/repository/view/restdoc
 
 :Bug Tracker:
-	http://forge.typo3.org/projects/extension-restdoc/issues
+	https://forge.typo3.org/projects/extension-restdoc/issues
+
+:Release Notes:
+	https://forge.typo3.org/projects/extension-restdoc/wiki
 
 :Git Repository:
 	https://git.typo3.org/TYPO3CMS/Extensions/restdoc.git
 
 :Translation:
-	http://translation.typo3.org/projects/TYPO3.ext.restdoc/
+	https://translation.typo3.org/projects/TYPO3.ext.restdoc/
 
 :Contact:
 	`@xperseguers <https://twitter.com/xperseguers>`_
