@@ -19,13 +19,15 @@ use Causal\Restdoc\Utility\RestHelper;
 /**
  * Testcase for class \Causal\Restdoc\Utility\RestHelper.
  */
-class RestHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class RestHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+{
 
-	/**
-	 * @test
-	 */
-	public function oneLevelMenuHtmlCanBeExtractedAsArray() {
-		$html = <<<HTML
+    /**
+     * @test
+     */
+    public function oneLevelMenuHtmlCanBeExtractedAsArray()
+    {
+        $html = <<<HTML
 <div>
 	<ul>
 		<li>Menu 1</li>
@@ -35,25 +37,26 @@ class RestHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 </div>
 HTML;
 
-		$expected = array(
-			'ul' => array(
-				'li' => array(
-					0 => 'Menu 1',
-					1 => 'Menu 2',
-					2 => 'Menu 3',
-				)
-			),
-		);
+        $expected = array(
+            'ul' => array(
+                'li' => array(
+                    0 => 'Menu 1',
+                    1 => 'Menu 2',
+                    2 => 'Menu 3',
+                )
+            ),
+        );
 
-		$arr = RestHelper::xmlstr_to_array($html);
-		$this->assertEquals($expected, $arr);
-	}
+        $arr = RestHelper::xmlstr_to_array($html);
+        $this->assertEquals($expected, $arr);
+    }
 
-	/**
-	 * @test
-	 */
-	public function twoLevelMenuHtmlCanBeExtractedAsArray() {
-		$html = <<<HTML
+    /**
+     * @test
+     */
+    public function twoLevelMenuHtmlCanBeExtractedAsArray()
+    {
+        $html = <<<HTML
 <div>
 	<ul>
 		<li>Menu 1</li>
@@ -67,30 +70,31 @@ HTML;
 </div>
 HTML;
 
-		$expected = array(
-			'ul' => array(
-				'li' => array(
-					0 => 'Menu 1',
-					1 => array(
-						0 => 'Menu 2',
-						'ul' => array(
-							'li' => 'Menu 2.1'
-						),
-					),
-					2 => 'Menu 3',
-				)
-			),
-		);
+        $expected = array(
+            'ul' => array(
+                'li' => array(
+                    0 => 'Menu 1',
+                    1 => array(
+                        0 => 'Menu 2',
+                        'ul' => array(
+                            'li' => 'Menu 2.1'
+                        ),
+                    ),
+                    2 => 'Menu 3',
+                )
+            ),
+        );
 
-		$arr = RestHelper::xmlstr_to_array($html);
-		$this->assertEquals($expected, $arr);
-	}
+        $arr = RestHelper::xmlstr_to_array($html);
+        $this->assertEquals($expected, $arr);
+    }
 
-	/**
-	 * @test
-	 */
-	public function menuCanContainFormatting() {
-		$html = <<<HTML
+    /**
+     * @test
+     */
+    public function menuCanContainFormatting()
+    {
+        $html = <<<HTML
 <div>
 	<ul>
 		<li>Some <em>important</em> word</li>
@@ -99,17 +103,17 @@ HTML;
 </div>
 HTML;
 
-		$expected = array(
-			'ul' => array(
-				'li' => array(
-					0 => 'Some <em>important</em> word',
-					1 => '<strong>Very</strong> important',
-				),
-			),
-		);
+        $expected = array(
+            'ul' => array(
+                'li' => array(
+                    0 => 'Some <em>important</em> word',
+                    1 => '<strong>Very</strong> important',
+                ),
+            ),
+        );
 
-		$arr = RestHelper::xmlstr_to_array($html);
-		$this->assertEquals($expected, $arr);
-	}
+        $arr = RestHelper::xmlstr_to_array($html);
+        $this->assertEquals($expected, $arr);
+    }
 
 }

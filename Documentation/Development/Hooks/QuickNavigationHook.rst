@@ -27,7 +27,8 @@ Your hook should implement a method ``postProcessQUICK_NAVIGATION()`` of the for
 
 .. code-block:: php
 
-	public function postProcessQUICK_NAVIGATION(array $params) {
+	public function postProcessQUICK_NAVIGATION(array $params)
+	{
 	    // Custom code
 	}
 

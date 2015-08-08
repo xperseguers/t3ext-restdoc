@@ -27,7 +27,8 @@ Your hook should implement a method ``postProcessTOC()`` of the form
 
 .. code-block:: php
 
-	public function postProcessTOC(array $params) {
+	public function postProcessTOC(array $params)
+	{
 	    // Custom code
 	}
 

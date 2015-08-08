@@ -27,50 +27,53 @@ use Causal\Restdoc\Utility\RestHelper;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class RestMetadataContentObject {
+class RestMetadataContentObject
+{
 
-	/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
-	protected $cObj;
+    /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
+    protected $cObj;
 
-	/**
-	 * Rendering the cObject, REST_METADATA.
-	 *
-	 * @param string $name: name of the cObject ('REST_METADATA')
-	 * @param array $conf: array of TypoScript properties
-	 * @param string $TSkey: TS key set to this cObject
-	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $pObj
-	 * @return string
-	 */
-	public function cObjGetSingleExt($name, array $conf, $TSkey, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $pObj) {
-		$this->cObj = $pObj;
-		$this->applyStdWrap($conf, 'path');
+    /**
+     * Rendering the cObject, REST_METADATA.
+     *
+     * @param string $name name of the cObject ('REST_METADATA')
+     * @param array $conf array of TypoScript properties
+     * @param string $TSkey TS key set to this cObject
+     * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $pObj
+     * @return string
+     */
+    public function cObjGetSingleExt($name, array $conf, $TSkey, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $pObj)
+    {
+        $this->cObj = $pObj;
+        $this->applyStdWrap($conf, 'path');
 
-		// TODO: Add support for FAL
+        // TODO: Add support for FAL
 
-		$output = '';
-		$data = RestHelper::getMetadata(PATH_site . $conf['path']);
-		if ($data) {
-			/** @var $contentObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
-			$contentObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
-			$contentObj->start($data);
-			$output = $contentObj->stdWrap('', $conf);
-		}
+        $output = '';
+        $data = RestHelper::getMetadata(PATH_site . $conf['path']);
+        if ($data) {
+            /** @var $contentObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
+            $contentObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+            $contentObj->start($data);
+            $output = $contentObj->stdWrap('', $conf);
+        }
 
-		return $output;
-	}
+        return $output;
+    }
 
-	/**
-	 * Applies stdWrap to a given key in a configuration array.
-	 *
-	 * @param array &$conf
-	 * @param string $baseKey
-	 * @return void
-	 */
-	protected function applyStdWrap(array &$conf, $baseKey) {
-		if (isset($conf[$baseKey . '.'])) {
-			$conf[$baseKey] = $this->cObj->stdWrap($conf[$baseKey], $conf[$baseKey . '.']);
-			unset($conf[$baseKey . '.']);
-		}
-	}
+    /**
+     * Applies stdWrap to a given key in a configuration array.
+     *
+     * @param array &$conf
+     * @param string $baseKey
+     * @return void
+     */
+    protected function applyStdWrap(array &$conf, $baseKey)
+    {
+        if (isset($conf[$baseKey . '.'])) {
+            $conf[$baseKey] = $this->cObj->stdWrap($conf[$baseKey], $conf[$baseKey . '.']);
+            unset($conf[$baseKey . '.']);
+        }
+    }
 
 }

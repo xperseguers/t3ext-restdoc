@@ -33,7 +33,8 @@ Your hook should implement a method ``postProcessOutput()`` of the form
 
 .. code-block:: php
 
-	public function postProcessOutput(array $params) {
+	public function postProcessOutput(array $params)
+	{
 	    // Custom code
 	}
 

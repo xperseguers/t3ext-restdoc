@@ -28,290 +28,299 @@ use Causal\Restdoc\Utility\RestHelper;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class TableOfContents {
+class TableOfContents
+{
 
-	/**
-	 * Maximum number of timestamps to save
-	 */
-	const MAX_ENTRIES = 5;
+    /**
+     * Maximum number of timestamps to save
+     */
+    const MAX_ENTRIES = 5;
 
-	/**
-	 * Max age of a cache entry without having been refreshed
-	 */
-	const CACHE_MAX_AGE = 7776000;	// 86400 * 30 * 3 = 3 months
+    /**
+     * Max age of a cache entry without having been refreshed
+     */
+    const CACHE_MAX_AGE = 7776000;    // 86400 * 30 * 3 = 3 months
 
-	/** @var tx_restdoc_pi1 */
-	protected $pObj;
+    /** @var tx_restdoc_pi1 */
+    protected $pObj;
 
-	/** @var string */
-	protected $root;
+    /** @var string */
+    protected $root;
 
-	/** @var integer */
-	protected $pageId;
+    /** @var integer */
+    protected $pageId;
 
-	/** @var integer */
-	protected $maxDocuments;
+    /** @var integer */
+    protected $maxDocuments;
 
-	/** @var array */
-	protected $processedDocuments = array();
+    /** @var array */
+    protected $processedDocuments = array();
 
-	/**
-	 * Stores the TOC into database for future inclusion within EXT:dd_googlesitemap.
-	 *
-	 * @param array $params
-	 * @return void
-	 */
-	public function postProcessOutput(array $params) {
-		$this->pObj = $params['pObj'];
+    /**
+     * Stores the TOC into database for future inclusion within EXT:dd_googlesitemap.
+     *
+     * @param array $params
+     * @return void
+     */
+    public function postProcessOutput(array $params)
+    {
+        $this->pObj = $params['pObj'];
 
-		if ($params['mode'] !== 'BODY') {
-			return;
-		}
+        if ($params['mode'] !== 'BODY') {
+            return;
+        }
 
-		$storage = $this->pObj->getSphinxReader()->getStorage();
-		if ($storage !== NULL) {
-			$storageConfiguration = $storage->getConfiguration();
-			$basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
-		} else {
-			// FAL is not used
-			$basePath = PATH_site;
-		}
+        $storage = $this->pObj->getSphinxReader()->getStorage();
+        if ($storage !== NULL) {
+            $storageConfiguration = $storage->getConfiguration();
+            $basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
+        } else {
+            // FAL is not used
+            $basePath = PATH_site;
+        }
 
-		$this->maxDocuments = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($params['config']['documentStructureMaxDocuments'], 1, 9999);
-		$this->pageId = intval($this->pObj->cObj->data['pid']);
-		$this->root = substr($params['documentRoot'], strlen($basePath));
-		$this->flushCache();
+        $this->maxDocuments = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($params['config']['documentStructureMaxDocuments'], 1, 9999);
+        $this->pageId = intval($this->pObj->cObj->data['pid']);
+        $this->root = substr($params['documentRoot'], strlen($basePath));
+        $this->flushCache();
 
-		$this->extractLinks($params);
-	}
+        $this->extractLinks($params);
+    }
 
-	/**
-	 * Extracts the links recursively.
-	 *
-	 * @param array $params
-	 * @return void
-	 */
-	protected function extractLinks(array $params) {
-		$jsonFile = substr($params['document'], 0, -1) . '.fjson';
-		$filename = $params['documentRoot'] . $jsonFile;
-		if (!is_file($filename)) {
-			return;
-		}
+    /**
+     * Extracts the links recursively.
+     *
+     * @param array $params
+     * @return void
+     */
+    protected function extractLinks(array $params)
+    {
+        $jsonFile = substr($params['document'], 0, -1) . '.fjson';
+        $filename = $params['documentRoot'] . $jsonFile;
+        if (!is_file($filename)) {
+            return;
+        }
 
-		$lastModification = filemtime($filename);
-		$content = file_get_contents($filename);
-		$checksum = md5($content);
+        $lastModification = filemtime($filename);
+        $content = file_get_contents($filename);
+        $checksum = md5($content);
 
-		$data = array(
-			'tstamp' => $GLOBALS['ACCESS_TIME'],
-		);
-		$cachedData = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-			'*',
-			'tx_restdoc_toc',
-			'pid=' . $this->pageId .
-				' AND document=' . $this->getDatabaseConnection()->fullQuoteStr($params['document'], 'tx_restdoc_toc')
-		);
-		$add = !is_array($cachedData);
-		$refresh = (!$add && $cachedData['checksum'] !== $checksum);
-		if ($add) {
-			$modifications = array();
-			$data['pid']      = $this->pageId;
-			$data['root']     = $this->root;
-			$data['document'] = $params['document'];
-			$data['url']      = $this->pObj->getLink($params['document'], TRUE);
-		} else {
-			$modifications = GeneralUtility::intExplode(',', $cachedData['lastmod'], TRUE);
-		}
-		if ($add || $refresh) {
-			$modifications[] = $lastModification;
-			$jsonData = json_decode($content, TRUE);
-			$data['title'] = isset($jsonData['title']) ? $jsonData['title'] : '';
-			$data['checksum'] = $checksum;
+        $data = array(
+            'tstamp' => $GLOBALS['ACCESS_TIME'],
+        );
+        $cachedData = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
+            '*',
+            'tx_restdoc_toc',
+            'pid=' . $this->pageId .
+            ' AND document=' . $this->getDatabaseConnection()->fullQuoteStr($params['document'], 'tx_restdoc_toc')
+        );
+        $add = !is_array($cachedData);
+        $refresh = (!$add && $cachedData['checksum'] !== $checksum);
+        if ($add) {
+            $modifications = array();
+            $data['pid'] = $this->pageId;
+            $data['root'] = $this->root;
+            $data['document'] = $params['document'];
+            $data['url'] = $this->pObj->getLink($params['document'], TRUE);
+        } else {
+            $modifications = GeneralUtility::intExplode(',', $cachedData['lastmod'], TRUE);
+        }
+        if ($add || $refresh) {
+            $modifications[] = $lastModification;
+            $jsonData = json_decode($content, TRUE);
+            $data['title'] = isset($jsonData['title']) ? $jsonData['title'] : '';
+            $data['checksum'] = $checksum;
 
-			$links = $this->processToc($content, $params);
-			foreach ($links as $doc => $href) {
-				if (!in_array($doc, $this->processedDocuments)) {
-					$this->processedDocuments[] = $doc;
-					if ($doc !== $params['document']) {
-						$p2 = $params;
-						$p2['document'] = $doc;
-						$this->extractLinks($p2);
-					}
-				}
-				if (count($this->processedDocuments) >= $this->maxDocuments) {
-					break;
-				}
-			}
-		}
+            $links = $this->processToc($content, $params);
+            foreach ($links as $doc => $href) {
+                if (!in_array($doc, $this->processedDocuments)) {
+                    $this->processedDocuments[] = $doc;
+                    if ($doc !== $params['document']) {
+                        $p2 = $params;
+                        $p2['document'] = $doc;
+                        $this->extractLinks($p2);
+                    }
+                }
+                if (count($this->processedDocuments) >= $this->maxDocuments) {
+                    break;
+                }
+            }
+        }
 
-		if (count($modifications) > self::MAX_ENTRIES) {
-			$modifications = array_slice($modifications, -self::MAX_ENTRIES);
-		}
-		$data['lastmod'] = implode(',', $modifications);
-		$data['crdate'] = $lastModification;
+        if (count($modifications) > self::MAX_ENTRIES) {
+            $modifications = array_slice($modifications, -self::MAX_ENTRIES);
+        }
+        $data['lastmod'] = implode(',', $modifications);
+        $data['crdate'] = $lastModification;
 
-		if ($add) {
-			$this->getDatabaseConnection()->exec_INSERTquery(
-				'tx_restdoc_toc',
-				$data
-			);
-		} elseif ($refresh) {
-			$this->getDatabaseConnection()->exec_UPDATEquery(
-				'tx_restdoc_toc',
-				'pid=' . $this->pageId .
-					' AND document=' . $this->getDatabaseConnection()->fullQuoteStr($params['document'], 'tx_restdoc_toc'),
-				$data
-			);
-		}
+        if ($add) {
+            $this->getDatabaseConnection()->exec_INSERTquery(
+                'tx_restdoc_toc',
+                $data
+            );
+        } elseif ($refresh) {
+            $this->getDatabaseConnection()->exec_UPDATEquery(
+                'tx_restdoc_toc',
+                'pid=' . $this->pageId .
+                ' AND document=' . $this->getDatabaseConnection()->fullQuoteStr($params['document'], 'tx_restdoc_toc'),
+                $data
+            );
+        }
 
-	}
+    }
 
-	/**
-	 * Processes the TOC and its subpages and store an absolute URL to the page.
-	 *
-	 * @param string $content
-	 * @param array $params
-	 * @return array
-	 */
-	protected function processToc($content, array $params) {
-		$jsonData = json_decode($content, TRUE);
-		$links = $this->extractToc($jsonData, $params);
-		return $links;
-	}
+    /**
+     * Processes the TOC and its subpages and store an absolute URL to the page.
+     *
+     * @param string $content
+     * @param array $params
+     * @return array
+     */
+    protected function processToc($content, array $params)
+    {
+        $jsonData = json_decode($content, TRUE);
+        $links = $this->extractToc($jsonData, $params);
+        return $links;
+    }
 
-	/**
-	 * Extracts the table of contents.
-	 *
-	 * @param array $jsonData
-	 * @param array $params
-	 * @return array
-	 * @see tx_restdoc_pi1::generateTableOfContents()
-	 */
-	protected function extractToc(array $jsonData, array $params) {
-		// Replace links in table of contents
-		$toc = $this->replaceLinks($params['documentRoot'], $params['document'], $jsonData['toc']);
-		// Remove empty sublevels
-		$toc = preg_replace('#<ul>\s*</ul>#', '', $toc);
-		// Fix TOC to make it XML compliant
-		$toc = preg_replace_callback('# href="([^"]+)"#', function ($matches) {
-			$url = str_replace('&amp;', '&', $matches[1]);
-			$url = str_replace('&', '&amp;', $url);
-			return ' href="' . $url . '"';
-		}, $toc);
+    /**
+     * Extracts the table of contents.
+     *
+     * @param array $jsonData
+     * @param array $params
+     * @return array
+     * @see tx_restdoc_pi1::generateTableOfContents()
+     */
+    protected function extractToc(array $jsonData, array $params)
+    {
+        // Replace links in table of contents
+        $toc = $this->replaceLinks($params['documentRoot'], $params['document'], $jsonData['toc']);
+        // Remove empty sublevels
+        $toc = preg_replace('#<ul>\s*</ul>#', '', $toc);
+        // Fix TOC to make it XML compliant
+        $toc = preg_replace_callback('# href="([^"]+)"#', function ($matches) {
+            $url = str_replace('&amp;', '&', $matches[1]);
+            $url = str_replace('&', '&amp;', $url);
+            return ' href="' . $url . '"';
+        }, $toc);
 
-		if (!$toc) {
-			return array();
-		}
+        if (!$toc) {
+            return array();
+        }
 
-		$links = $this->getLinksFromToc(RestHelper::xmlstr_to_array($toc));
+        $links = $this->getLinksFromToc(RestHelper::xmlstr_to_array($toc));
 
-		if (isset($jsonData['prev'])) {
-			$absolute = RestHelper::relativeToAbsolute($params['documentRoot'] . $params['document'], '../' . $jsonData['prev']['link']);
-			$document = substr($absolute, strlen($params['documentRoot']));
-			if (!isset($links[$document])) {
-				$links[$document] = $this->pObj->getLink($document, TRUE);
-			}
-		}
+        if (isset($jsonData['prev'])) {
+            $absolute = RestHelper::relativeToAbsolute($params['documentRoot'] . $params['document'], '../' . $jsonData['prev']['link']);
+            $document = substr($absolute, strlen($params['documentRoot']));
+            if (!isset($links[$document])) {
+                $links[$document] = $this->pObj->getLink($document, TRUE);
+            }
+        }
 
-		if (isset($jsonData['next'])) {
-			$document = $params['document'] === $this->pObj->getDefaultFile() . '/' ? $params['documentRoot'] : $params['documentRoot'] . $params['document'];
-			$absolute = RestHelper::relativeToAbsolute($document, '../' . $jsonData['next']['link']);
-			$document = substr($absolute, strlen($params['documentRoot']));
-			if (!isset($links[$document])) {
-				$links[$document] = $this->pObj->getLink($document, TRUE);
-			}
-		}
+        if (isset($jsonData['next'])) {
+            $document = $params['document'] === $this->pObj->getDefaultFile() . '/' ? $params['documentRoot'] : $params['documentRoot'] . $params['document'];
+            $absolute = RestHelper::relativeToAbsolute($document, '../' . $jsonData['next']['link']);
+            $document = substr($absolute, strlen($params['documentRoot']));
+            if (!isset($links[$document])) {
+                $links[$document] = $this->pObj->getLink($document, TRUE);
+            }
+        }
 
-		return $links;
-	}
+        return $links;
+    }
 
-	/**
-	 * Returns a flat-list of menu entries along with the corresponding document name.
-	 *
-	 * @param array $entries
-	 * @return array
-	 * @see tx_restdoc_utility::getMenuData()
-	 */
-	public function getLinksFromToc(array $entries) {
-		$menu = array();
-		$entries = isset($entries['li'][0]) ? $entries['li'] : array($entries['li']);
-		foreach ($entries as $entry) {
-			$document = $entry['a']['@attributes']['data-document'];
-			if (strpos($document, '#') !== FALSE) {
-				$document = substr($document, 0, strpos($document, '#'));
-			}
-			$href = $entry['a']['@attributes']['href'];
-			if (strpos($href, '#') !== FALSE) {
-				$href = substr($href, 0, strpos($href, '#'));
-			}
-			$menu[$document] = $href;
-			if (isset($entry['ul'])) {
-				$submenu = $this->getLinksFromToc($entry['ul']);
-				$menu = array_merge($menu, $submenu);
-			}
-		}
+    /**
+     * Returns a flat-list of menu entries along with the corresponding document name.
+     *
+     * @param array $entries
+     * @return array
+     * @see tx_restdoc_utility::getMenuData()
+     */
+    public function getLinksFromToc(array $entries)
+    {
+        $menu = array();
+        $entries = isset($entries['li'][0]) ? $entries['li'] : array($entries['li']);
+        foreach ($entries as $entry) {
+            $document = $entry['a']['@attributes']['data-document'];
+            if (strpos($document, '#') !== FALSE) {
+                $document = substr($document, 0, strpos($document, '#'));
+            }
+            $href = $entry['a']['@attributes']['href'];
+            if (strpos($href, '#') !== FALSE) {
+                $href = substr($href, 0, strpos($href, '#'));
+            }
+            $menu[$document] = $href;
+            if (isset($entry['ul'])) {
+                $submenu = $this->getLinksFromToc($entry['ul']);
+                $menu = array_merge($menu, $submenu);
+            }
+        }
 
-		return $menu;
-	}
+        return $menu;
+    }
 
-	/**
-	 * Replaces links in a reST document using ABSOLUTE URL.
-	 *
-	 * @param string $root
-	 * @param string $document
-	 * @param string $content
-	 * @return string
-	 * @see tx_restdoc_pi1::replaceLinks()
-	 */
-	protected function replaceLinks($root, $document, $content) {
-		$plugin = $this->pObj;
-		$ret = preg_replace_callback('#(<a .*? href=")([^"]+)#', function ($matches) use ($plugin, $root, $document) {
-			/** @var $plugin tx_restdoc_pi1 */
-			$anchor = '';
-			if (preg_match('#^[a-zA-Z]+://#', $matches[2])) {
-				// External URL
-				return $matches[0];
-			} elseif ($matches[2]{0} === '#') {
-				$anchor = $matches[2];
-			}
+    /**
+     * Replaces links in a reST document using ABSOLUTE URL.
+     *
+     * @param string $root
+     * @param string $document
+     * @param string $content
+     * @return string
+     * @see tx_restdoc_pi1::replaceLinks()
+     */
+    protected function replaceLinks($root, $document, $content)
+    {
+        $plugin = $this->pObj;
+        $ret = preg_replace_callback('#(<a .*? href=")([^"]+)#', function ($matches) use ($plugin, $root, $document) {
+            /** @var $plugin tx_restdoc_pi1 */
+            $anchor = '';
+            if (preg_match('#^[a-zA-Z]+://#', $matches[2])) {
+                // External URL
+                return $matches[0];
+            } elseif ($matches[2]{0} === '#') {
+                $anchor = $matches[2];
+            }
 
-			if ($anchor !== '') {
-				$document .= $anchor;
-			} else {
-				// $document's last part is a document, not a directory
-				$document = substr($document, 0, strrpos(rtrim($document, '/'), '/'));
-				$absolute = RestHelper::relativeToAbsolute($root . $document, $matches[2]);
-				$document = substr($absolute, strlen($root));
-			}
-			$url = $plugin->getLink($document, TRUE);
-			$url = str_replace('&amp;', '&', $url);
-			$url = str_replace('&', '&amp;', $url);
-			return $matches[1] . $url . '" data-document="' . $document;
-		}, $content);
-		return $ret;
-	}
+            if ($anchor !== '') {
+                $document .= $anchor;
+            } else {
+                // $document's last part is a document, not a directory
+                $document = substr($document, 0, strrpos(rtrim($document, '/'), '/'));
+                $absolute = RestHelper::relativeToAbsolute($root . $document, $matches[2]);
+                $document = substr($absolute, strlen($root));
+            }
+            $url = $plugin->getLink($document, TRUE);
+            $url = str_replace('&amp;', '&', $url);
+            $url = str_replace('&', '&amp;', $url);
+            return $matches[1] . $url . '" data-document="' . $document;
+        }, $content);
+        return $ret;
+    }
 
-	/**
-	 * Flushes cache of a given plugin if root changed.
-	 *
-	 * @return void
-	 */
-	protected function flushCache() {
-		$this->getDatabaseConnection()->exec_DELETEquery(
-			'tx_restdoc_toc',
-			'pid=' . $this->pageId .
-				' AND (root<>' . $this->getDatabaseConnection()->fullQuoteStr($this->root, 'tx_restdoc_toc') .
-				' OR tstamp<=' . ($GLOBALS['ACCESS_TIME'] - self::CACHE_MAX_AGE) . ')'
-		);
-	}
+    /**
+     * Flushes cache of a given plugin if root changed.
+     *
+     * @return void
+     */
+    protected function flushCache()
+    {
+        $this->getDatabaseConnection()->exec_DELETEquery(
+            'tx_restdoc_toc',
+            'pid=' . $this->pageId .
+            ' AND (root<>' . $this->getDatabaseConnection()->fullQuoteStr($this->root, 'tx_restdoc_toc') .
+            ' OR tstamp<=' . ($GLOBALS['ACCESS_TIME'] - self::CACHE_MAX_AGE) . ')'
+        );
+    }
 
-	/**
-	 * Returns the database connection.
-	 *
-	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
-	}
+    /**
+     * Returns the database connection.
+     *
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
+    }
 
 }

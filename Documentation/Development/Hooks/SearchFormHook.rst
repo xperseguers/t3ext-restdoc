@@ -27,7 +27,8 @@ Your hook should implement a method ``preProcessSEARCH()`` of the form
 
 .. code-block:: php
 
-	public function preProcessSEARCH(array $params) {
+	public function preProcessSEARCH(array $params)
+	{
 	    // Custom code
 	}
 

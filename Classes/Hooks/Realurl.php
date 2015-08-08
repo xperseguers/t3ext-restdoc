@@ -24,122 +24,128 @@ namespace Causal\Restdoc\Hooks;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Realurl {
+class Realurl
+{
 
-	/**
-	 * Generates additional RealURL configuration and merges it with provided configuration.
-	 *
-	 * @param array $params
-	 * @param \tx_realurl_autoconfgen $pObj
-	 * @return array
-	 */
-	public function registerDefaultConfiguration(array $params, \tx_realurl_autoconfgen $pObj) {
-		$fixedPostVarsConfiguration = array();
+    /**
+     * Generates additional RealURL configuration and merges it with provided configuration.
+     *
+     * @param array $params
+     * @param \tx_realurl_autoconfgen $pObj
+     * @return array
+     */
+    public function registerDefaultConfiguration(array $params, \tx_realurl_autoconfgen $pObj)
+    {
+        $fixedPostVarsConfiguration = array();
 
-		$settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['restdoc']);
-		if (isset($settings['enable_slash_as_separator']) && (bool)$settings['enable_slash_as_separator']) {
-			$fixedPostVarsConfiguration = $this->getFixedPostVarsConfiguration();
-		}
+        $settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['restdoc']);
+        if (isset($settings['enable_slash_as_separator']) && (bool)$settings['enable_slash_as_separator']) {
+            $fixedPostVarsConfiguration = $this->getFixedPostVarsConfiguration();
+        }
 
-		$defaultConfiguration = array_merge_recursive(
-			$params['config'],
-			$fixedPostVarsConfiguration,
-			array(
-				'postVarSets' => array(
-					'_DEFAULT' => array(
-						'chapter' => array(
-							array(
-								'GETvar' => 'tx_restdoc_pi1[doc]',
-							),
-						),
-					),
-				),
-			)
-		);
+        $defaultConfiguration = array_merge_recursive(
+            $params['config'],
+            $fixedPostVarsConfiguration,
+            array(
+                'postVarSets' => array(
+                    '_DEFAULT' => array(
+                        'chapter' => array(
+                            array(
+                                'GETvar' => 'tx_restdoc_pi1[doc]',
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        );
 
-		return $defaultConfiguration;
-	}
+        return $defaultConfiguration;
+    }
 
-	/**
-	 * Pre-process an URL and ensure access to source files of a reStructuredText
-	 * chapter is properly passed to RealURL for decoding by changing the .txt file
-	 * extension into .html.
-	 *
-	 * @param array $parameters
-	 * @return void
-	 */
-	public function decodeSpURL_preProc(array $parameters) {
-		$segments = explode('/', $parameters['URL']);
-		if ($segments[1] === '_sources' && substr($parameters['URL'], -4) === '.txt') {
-			$suffix = (bool)$parameters['pObj']->extConf['fileName']['acceptHTMLsuffix'] ? '.html' : '/';
-			$parameters['URL'] = substr($parameters['URL'], 0, -4) . $suffix;
-		}
-	}
+    /**
+     * Pre-process an URL and ensure access to source files of a reStructuredText
+     * chapter is properly passed to RealURL for decoding by changing the .txt file
+     * extension into .html.
+     *
+     * @param array $parameters
+     * @return void
+     */
+    public function decodeSpURL_preProc(array $parameters)
+    {
+        $segments = explode('/', $parameters['URL']);
+        if ($segments[1] === '_sources' && substr($parameters['URL'], -4) === '.txt') {
+            $suffix = (bool)$parameters['pObj']->extConf['fileName']['acceptHTMLsuffix'] ? '.html' : '/';
+            $parameters['URL'] = substr($parameters['URL'], 0, -4) . $suffix;
+        }
+    }
 
-	/**
-	 * This methods will "eat" every remaining segment in the URL to make it part
-	 * of the requested document.
-	 *
-	 * @param array $parameters
-	 * @return void
-	 */
-	public function decodeSpURL_getSequence(array $parameters) {
-		$value = $parameters['value'];
+    /**
+     * This methods will "eat" every remaining segment in the URL to make it part
+     * of the requested document.
+     *
+     * @param array $parameters
+     * @return void
+     */
+    public function decodeSpURL_getSequence(array $parameters)
+    {
+        $value = $parameters['value'];
 
-		if ((bool)$parameters['decodeAlias']) {
-			if (!empty($parameters['pathParts'])) {
-				// Eat every remaining segment
-				$value .= '/' . implode('/', $parameters['pathParts']);
-				$parameters['pathParts'] = array();
-			}
-		}
+        if ((bool)$parameters['decodeAlias']) {
+            if (!empty($parameters['pathParts'])) {
+                // Eat every remaining segment
+                $value .= '/' . implode('/', $parameters['pathParts']);
+                $parameters['pathParts'] = array();
+            }
+        }
 
-		return $value;
-	}
+        return $value;
+    }
 
-	/**
-	 * Generates a default "fixedPostVars" configuration for RealURL
-	 * based on pages containing a restdoc plugin.
-	 *
-	 * @return array
-	 */
-	protected function getFixedPostVarsConfiguration() {
-		$fixedPostVarsConfiguration = array();
+    /**
+     * Generates a default "fixedPostVars" configuration for RealURL
+     * based on pages containing a restdoc plugin.
+     *
+     * @return array
+     */
+    protected function getFixedPostVarsConfiguration()
+    {
+        $fixedPostVarsConfiguration = array();
 
-		// Search pages with a restdoc plugin
-		$databaseConnection = $this->getDatabaseConnection();
-		$pages = $databaseConnection->exec_SELECTgetRows(
-			'DISTINCT pid',
-			'tt_content',
-			'list_type=' . $databaseConnection->fullQuoteStr('restdoc_pi1', 'tt_content') .
-				' AND deleted=0 AND hidden=0',
-			'',
-			'',
-			'',
-			'pid'
-		);
-		$pages = array_keys($pages);
+        // Search pages with a restdoc plugin
+        $databaseConnection = $this->getDatabaseConnection();
+        $pages = $databaseConnection->exec_SELECTgetRows(
+            'DISTINCT pid',
+            'tt_content',
+            'list_type=' . $databaseConnection->fullQuoteStr('restdoc_pi1', 'tt_content') .
+            ' AND deleted=0 AND hidden=0',
+            '',
+            '',
+            '',
+            'pid'
+        );
+        $pages = array_keys($pages);
 
-		if (!empty($pages)) {
-			$fixedPostVarsConfiguration['fixedPostVars'] = array_fill_keys($pages, 'restdoc_advanced_url');
-			$fixedPostVarsConfiguration['fixedPostVars']['restdoc_advanced_url'] = array(
-				array(
-					'GETvar' => 'tx_restdoc_pi1[doc]',
-					'userFunc' => 'Causal\\Restdoc\\Hooks\\Realurl->decodeSpURL_getSequence',
-				),
-			);
-		}
+        if (!empty($pages)) {
+            $fixedPostVarsConfiguration['fixedPostVars'] = array_fill_keys($pages, 'restdoc_advanced_url');
+            $fixedPostVarsConfiguration['fixedPostVars']['restdoc_advanced_url'] = array(
+                array(
+                    'GETvar' => 'tx_restdoc_pi1[doc]',
+                    'userFunc' => 'Causal\\Restdoc\\Hooks\\Realurl->decodeSpURL_getSequence',
+                ),
+            );
+        }
 
-		return $fixedPostVarsConfiguration;
-	}
+        return $fixedPostVarsConfiguration;
+    }
 
-	/**
-	 * Returns the database connection.
-	 *
-	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
-	}
+    /**
+     * Returns the database connection.
+     *
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
+    }
 
 }
