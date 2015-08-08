@@ -87,7 +87,7 @@ class Ddgooglesitemap
      */
     protected function getChangeFrequency(array $documentInfo)
     {
-        $timeValues = GeneralUtility::intExplode(',', $documentInfo['lastmod'], TRUE);
+        $timeValues = GeneralUtility::intExplode(',', $documentInfo['lastmod'], true);
         $timeValues[] = $GLOBALS['EXEC_TIME'];
         sort($timeValues, SORT_NUMERIC);
         $sum = 0;

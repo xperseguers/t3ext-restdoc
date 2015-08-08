@@ -71,7 +71,7 @@ class TableOfContents
         }
 
         $storage = $this->pObj->getSphinxReader()->getStorage();
-        if ($storage !== NULL) {
+        if ($storage !== null) {
             $storageConfiguration = $storage->getConfiguration();
             $basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
         } else {
@@ -121,13 +121,13 @@ class TableOfContents
             $data['pid'] = $this->pageId;
             $data['root'] = $this->root;
             $data['document'] = $params['document'];
-            $data['url'] = $this->pObj->getLink($params['document'], TRUE);
+            $data['url'] = $this->pObj->getLink($params['document'], true);
         } else {
-            $modifications = GeneralUtility::intExplode(',', $cachedData['lastmod'], TRUE);
+            $modifications = GeneralUtility::intExplode(',', $cachedData['lastmod'], true);
         }
         if ($add || $refresh) {
             $modifications[] = $lastModification;
-            $jsonData = json_decode($content, TRUE);
+            $jsonData = json_decode($content, true);
             $data['title'] = isset($jsonData['title']) ? $jsonData['title'] : '';
             $data['checksum'] = $checksum;
 
@@ -178,7 +178,7 @@ class TableOfContents
      */
     protected function processToc($content, array $params)
     {
-        $jsonData = json_decode($content, TRUE);
+        $jsonData = json_decode($content, true);
         $links = $this->extractToc($jsonData, $params);
         return $links;
     }
@@ -214,7 +214,7 @@ class TableOfContents
             $absolute = RestHelper::relativeToAbsolute($params['documentRoot'] . $params['document'], '../' . $jsonData['prev']['link']);
             $document = substr($absolute, strlen($params['documentRoot']));
             if (!isset($links[$document])) {
-                $links[$document] = $this->pObj->getLink($document, TRUE);
+                $links[$document] = $this->pObj->getLink($document, true);
             }
         }
 
@@ -223,7 +223,7 @@ class TableOfContents
             $absolute = RestHelper::relativeToAbsolute($document, '../' . $jsonData['next']['link']);
             $document = substr($absolute, strlen($params['documentRoot']));
             if (!isset($links[$document])) {
-                $links[$document] = $this->pObj->getLink($document, TRUE);
+                $links[$document] = $this->pObj->getLink($document, true);
             }
         }
 
@@ -243,11 +243,11 @@ class TableOfContents
         $entries = isset($entries['li'][0]) ? $entries['li'] : array($entries['li']);
         foreach ($entries as $entry) {
             $document = $entry['a']['@attributes']['data-document'];
-            if (strpos($document, '#') !== FALSE) {
+            if (strpos($document, '#') !== false) {
                 $document = substr($document, 0, strpos($document, '#'));
             }
             $href = $entry['a']['@attributes']['href'];
-            if (strpos($href, '#') !== FALSE) {
+            if (strpos($href, '#') !== false) {
                 $href = substr($href, 0, strpos($href, '#'));
             }
             $menu[$document] = $href;
@@ -290,7 +290,7 @@ class TableOfContents
                 $absolute = RestHelper::relativeToAbsolute($root . $document, $matches[2]);
                 $document = substr($absolute, strlen($root));
             }
-            $url = $plugin->getLink($document, TRUE);
+            $url = $plugin->getLink($document, true);
             $url = str_replace('&amp;', '&', $url);
             $url = str_replace('&', '&amp;', $url);
             return $matches[1] . $url . '" data-document="' . $document;

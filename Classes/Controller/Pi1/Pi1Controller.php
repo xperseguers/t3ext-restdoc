@@ -78,7 +78,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $this->pi_USER_INT_obj = (bool)$this->settings['cache_plugin_output'] ? 0 : 1;
 
         $storage = self::$sphinxReader->getStorage();
-        if ($storage !== NULL) {
+        if ($storage !== null) {
             $storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
             $basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
         } else {
@@ -88,9 +88,9 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         $documentRoot = $basePath . rtrim($this->conf['path'], '/') . '/';
         $document = self::$defaultFile . '/';
-        $pathSeparators = isset($this->conf['fallbackPathSeparators']) ? GeneralUtility::trimExplode(',', $this->conf['fallbackPathSeparators'], TRUE) : array();
+        $pathSeparators = isset($this->conf['fallbackPathSeparators']) ? GeneralUtility::trimExplode(',', $this->conf['fallbackPathSeparators'], true) : array();
         $pathSeparators[] = $this->conf['pathSeparator'];
-        if (isset($this->piVars['doc']) && strpos($this->piVars['doc'], '..') === FALSE) {
+        if (isset($this->piVars['doc']) && strpos($this->piVars['doc'], '..') === false) {
             $document = rtrim(str_replace($pathSeparators, '/', $this->piVars['doc']), '/') . '/';
         }
 
@@ -98,7 +98,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         if ($this->conf['publishSources'] && GeneralUtility::isFirstPartOfStr($document, '_sources/')) {
             $sourceFile = rtrim($document, '/');
             $lastDot = strrpos($sourceFile, '.');
-            if ($lastDot === FALSE || $lastDot < strrpos($sourceFile, '/')) {
+            if ($lastDot === false || $lastDot < strrpos($sourceFile, '/')) {
                 // ".txt" extension has been removed by \Causal\Restdoc\Hooks\Realurl::decodeSpURL_preProc()
                 $sourceFile .= '.txt';
             }
@@ -125,14 +125,14 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             return $e->getMessage();
         }
 
-        $skipDefaultWrap = FALSE;
+        $skipDefaultWrap = false;
 
         self::$current = array(
             'path' => $this->conf['path'],
             'pathSeparator' => $this->conf['pathSeparator'],
         );
 
-        if (self::$sphinxReader->getIndexEntries() === NULL) {
+        if (self::$sphinxReader->getIndexEntries() === null) {
             switch ($this->conf['mode']) {
                 case 'TOC':
                     $this->renderingConfig = $this->conf['setup.']['TOC.'];
@@ -154,7 +154,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     break;
                 case 'TITLE':
                     $output = self::$sphinxReader->getTitle();
-                    $skipDefaultWrap = TRUE;
+                    $skipDefaultWrap = true;
                     break;
                 case 'QUICK_NAVIGATION':
                     $output = $this->generateQuickNavigation();
@@ -168,7 +168,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     break;
                 case 'FILENAME':
                     $output = self::$sphinxReader->getJsonFilename();
-                    $skipDefaultWrap = TRUE;
+                    $skipDefaultWrap = true;
                     break;
                 case 'SEARCH':
                     $output = $this->generateSearchForm();
@@ -188,11 +188,11 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     break;
                 case 'TITLE':
                     $output = $this->pi_getLL('index_title', 'Index');
-                    $skipDefaultWrap = TRUE;
+                    $skipDefaultWrap = true;
                     break;
                 case 'FILENAME':
                     $output = self::$sphinxReader->getJsonFilename();
-                    $skipDefaultWrap = TRUE;
+                    $skipDefaultWrap = true;
                     break;
                 default:
                     // Generating TOC, ... for the root document instead
@@ -262,7 +262,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $type = isset($conf['userFunc.']['type']) ? $conf['userFunc.']['type'] : 'menu';
 
         $storage = self::$sphinxReader->getStorage();
-        if ($storage !== NULL) {
+        if ($storage !== null) {
             $storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
             $basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
         } else {
@@ -290,7 +290,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
             case 'previous':
                 $previousDocument = self::$sphinxReader->getPreviousDocument();
-                if ($previousDocument !== NULL) {
+                if ($previousDocument !== null) {
                     $absolute = RestHelper::relativeToAbsolute($documentRoot . $document, '../' . $previousDocument['link']);
                     $link = $this->getLink(substr($absolute, strlen($documentRoot)));
                     $data[] = array(
@@ -302,7 +302,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
             case 'next':
                 $nextDocument = self::$sphinxReader->getNextDocument();
-                if ($nextDocument !== NULL) {
+                if ($nextDocument !== null) {
                     if ($document === $this->getDefaultFile() . '/' && substr($nextDocument['link'], 0, 3) !== '../') {
                         $nextDocumentPath = $documentRoot;
                     } else {
@@ -402,7 +402,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     protected function advertiseSphinx()
     {
         $storage = self::$sphinxReader->getStorage();
-        if ($storage !== NULL) {
+        if ($storage !== null) {
             $storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
             $basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
         } else {
@@ -418,7 +418,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $version = '1.0.0';
         }
 
-        $urlRoot = str_replace('___PLACEHOLDER___', '', $this->getLink('___PLACEHOLDER___/', TRUE, $this->conf['rootPage']));
+        $urlRoot = str_replace('___PLACEHOLDER___', '', $this->getLink('___PLACEHOLDER___/', true, $this->conf['rootPage']));
         // Support for RealURL
         if (substr($urlRoot, -5) === '.html') {
             $urlRoot = substr($urlRoot, 0, -5);    // .html suffix is not a must have
@@ -461,19 +461,19 @@ JS;
         $data = array();
         $data['home_title'] = $this->pi_getLL('home_title', 'Home');
         $data['home_uri'] = $this->getLink('');
-        $data['home_uri_absolute'] = $this->getLink('', TRUE);
+        $data['home_uri_absolute'] = $this->getLink('', true);
 
-        if ($previousDocument !== NULL) {
+        if ($previousDocument !== null) {
             $absolute = RestHelper::relativeToAbsolute($documentRoot . $document, '../' . $previousDocument['link']);
             $link = $this->getLink(substr($absolute, strlen($documentRoot)));
-            $linkAbsolute = $this->getLink(substr($absolute, strlen($documentRoot)), TRUE);
+            $linkAbsolute = $this->getLink(substr($absolute, strlen($documentRoot)), true);
 
             $data['previous_title'] = $previousDocument['title'];
             $data['previous_uri'] = $link;
             $data['previous_uri_absolute'] = $linkAbsolute;
         }
 
-        if ($nextDocument !== NULL) {
+        if ($nextDocument !== null) {
             if ($document === $this->getDefaultFile() . '/' && substr($nextDocument['link'], 0, 3) !== '../') {
                 $nextDocumentPath = $documentRoot;
             } else {
@@ -481,7 +481,7 @@ JS;
             }
             $absolute = RestHelper::relativeToAbsolute($nextDocumentPath, '../' . $nextDocument['link']);
             $link = $this->getLink(substr($absolute, strlen($documentRoot)));
-            $linkAbsolute = $this->getLink(substr($absolute, strlen($documentRoot)), TRUE);
+            $linkAbsolute = $this->getLink(substr($absolute, strlen($documentRoot)), true);
 
             $data['next_title'] = $nextDocument['title'];
             $data['next_uri'] = $link;
@@ -492,7 +492,7 @@ JS;
             $parent = array_pop($parentDocuments);
             $absolute = RestHelper::relativeToAbsolute($documentRoot . $document, '../' . $parent['link']);
             $link = $this->getLink(substr($absolute, strlen($documentRoot)));
-            $linkAbsolute = $this->getLink(substr($absolute, strlen($documentRoot)), TRUE);
+            $linkAbsolute = $this->getLink(substr($absolute, strlen($documentRoot)), true);
 
             $data['parent_title'] = $parent['title'];
             $data['parent_uri'] = $link;
@@ -501,7 +501,7 @@ JS;
 
         if (is_file($documentRoot . 'genindex.fjson')) {
             $link = $this->getLink('genindex/');
-            $linkAbsolute = $this->getLink('genindex/', TRUE);
+            $linkAbsolute = $this->getLink('genindex/', true);
 
             $data['index_title'] = $this->pi_getLL('index_title', 'Index');
             $data['index_uri'] = $link;
@@ -583,7 +583,7 @@ JS;
                 if (!$reference['name']) {
                     continue;
                 }
-                $link = $this->getLink($reference['link'], FALSE, $this->conf['rootPage']);
+                $link = $this->getLink($reference['link'], false, $this->conf['rootPage']);
                 $link = str_replace('&amp;', '&', $link);
                 $link = str_replace('&', '&amp;', $link);
 
@@ -639,7 +639,7 @@ JS;
             $contentCategories[] = $contentCategory;
         }
 
-        $output = '<h1>' . $this->pi_getLL('index_title', 'Index', TRUE) . '</h1>' . LF;
+        $output = '<h1>' . $this->pi_getLL('index_title', 'Index', true) . '</h1>' . LF;
         $output .= '<div class="tx-restdoc-genindex-jumpbox">' . implode(' | ', $linksCategories) . '</div>' . LF;
         $output .= implode(LF, $contentCategories);
 
@@ -674,7 +674,7 @@ JS;
         }
 
         $storage = self::$sphinxReader->getStorage();
-        if ($storage !== NULL) {
+        if ($storage !== null) {
             $storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
             $basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
         } else {
@@ -695,7 +695,7 @@ JS;
                     : 'Resources/Public/JavaScript/searchtools.js'
             ),
             'jsInline' => '',
-            'advertiseSphinx' => TRUE,
+            'advertiseSphinx' => true,
         );
 
         $searchIndexContent = file_get_contents($searchIndexFile);
@@ -729,7 +729,7 @@ JS;
 
         $action = GeneralUtility::getIndpEnv('REQUEST_URI');
         $parameters = array();
-        if (($pos = strpos($action, '?')) !== FALSE) {
+        if (($pos = strpos($action, '?')) !== false) {
             $parameters = GeneralUtility::trimExplode('&', substr($action, $pos + 1));
             $action = substr($action, 0, $pos);
         }
@@ -739,8 +739,8 @@ JS;
             if ($key === 'q') continue;
             $hiddenFields .= sprintf('<input type="hidden" name="%s" value="%s" />', $key, $value) . LF;
         }
-        $searchPlaceholder = $this->pi_getLL('search_placeholder', 'search', TRUE);
-        $searchAction = $this->pi_getLL('search_action', 'search', TRUE);
+        $searchPlaceholder = $this->pi_getLL('search_placeholder', 'search', true);
+        $searchAction = $this->pi_getLL('search_action', 'search', true);
 
         return <<<HTML
 <form action="$action" method="get">
@@ -779,7 +779,7 @@ HTML;
      * @return string
      * @private This method is made public to be accessible from a lambda-function scope
      */
-    public function getLink($document, $absolute = FALSE, $rootPage = 0)
+    public function getLink($document, $absolute = false, $rootPage = 0)
     {
         if (GeneralUtility::isFirstPartOfStr($document, 'mailto:')) {
             // This is an email address, not a document!
@@ -794,11 +794,11 @@ HTML;
         $anchor = '';
         $additionalParameters = '';
         if ($document !== '') {
-            if (($pos = strrpos($document, '#')) !== FALSE) {
+            if (($pos = strrpos($document, '#')) !== false) {
                 $anchor = substr($document, $pos + 1);
                 $document = substr($document, 0, $pos);
             }
-            if (($pos = strrpos($document, '?')) !== FALSE) {
+            if (($pos = strrpos($document, '?')) !== false) {
                 $additionalParameters = urldecode(substr($document, $pos + 1));
                 $additionalParameters = '&' . str_replace('&amp;', '&', $additionalParameters);
                 $document = substr($document, 0, $pos) . '/';
@@ -818,7 +818,7 @@ HTML;
         if (substr($document, 0, 11) === '_downloads/' || substr($document, 0, 8) === '_images/') {
             $basePath = self::$current['path'];
             $storage = self::$sphinxReader->getStorage();
-            if ($storage !== NULL) {
+            if ($storage !== null) {
                 $storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
                 $basePath = rtrim($storageConfiguration['basePath'], '/') . '/' . $basePath;
             }

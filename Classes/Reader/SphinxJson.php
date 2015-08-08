@@ -31,22 +31,22 @@ class SphinxJson
 {
 
     /** @var \TYPO3\CMS\Core\Resource\ResourceStorage */
-    protected $storage = NULL;
+    protected $storage = null;
 
     /** @var string */
-    protected $path = NULL;
+    protected $path = null;
 
     /** @var string */
-    protected $document = NULL;
+    protected $document = null;
 
     /** @var string */
-    protected $jsonFilename = NULL;
+    protected $jsonFilename = null;
 
     /** @var boolean */
-    protected $keepPermanentLinks = FALSE;
+    protected $keepPermanentLinks = false;
 
     /** @var boolean */
-    protected $fallbackToDefaultFile = FALSE;
+    protected $fallbackToDefaultFile = false;
 
     /** @var string */
     protected $defaultFile = 'index';
@@ -161,7 +161,7 @@ class SphinxJson
      */
     public function enableDefaultDocumentFallback()
     {
-        $this->fallbackToDefaultFile = TRUE;
+        $this->fallbackToDefaultFile = true;
         return $this;
     }
 
@@ -190,7 +190,7 @@ class SphinxJson
     /**
      * Loads the current document.
      *
-     * @return boolean TRUE if operation succeeded, otherwise FALSE
+     * @return boolean true if operation succeeded, otherwise false
      * @throws \RuntimeException
      */
     public function load()
@@ -208,7 +208,7 @@ class SphinxJson
         // Security check
         $fileExists = is_file($filename);
         if ($fileExists && substr(realpath($filename), 0, strlen(realpath($this->path))) !== realpath($this->path)) {
-            $fileExists = FALSE;
+            $fileExists = false;
         }
         if (!$fileExists && $this->fallbackToDefaultFile) {
             $defaultDocument = $this->getDefaultFile() . '/';
@@ -218,7 +218,7 @@ class SphinxJson
                 $this->document = $defaultDocument;
                 $this->jsonFilename = $defaultJsonFilename;
                 $filename = $defaultFilename;
-                $fileExists = TRUE;
+                $fileExists = true;
             } else {
                 throw new \RuntimeException(
                     'restdoc: file "' . $this->jsonFilename . '" not found.' .
@@ -232,9 +232,9 @@ class SphinxJson
         }
 
         $content = file_get_contents($filename);
-        $this->data = json_decode($content, TRUE);
+        $this->data = json_decode($content, true);
 
-        return $this->data !== NULL;
+        return $this->data !== null;
     }
 
     /**
@@ -261,10 +261,10 @@ class SphinxJson
     {
         $this->enforceIsLoaded();
         $callableName = '';
-        if (!is_callable($callbackLinks, FALSE, $callableName)) {
+        if (!is_callable($callbackLinks, false, $callableName)) {
             throw new \RuntimeException('Invalid callback for links: ' . $callableName, 1365172111);
         }
-        if (!is_callable($callbackImages, FALSE, $callableName)) {
+        if (!is_callable($callbackImages, false, $callableName)) {
             throw new \RuntimeException('Invalid callback for images: ' . $callableName, 1365630854);
         }
 
@@ -319,23 +319,23 @@ class SphinxJson
     /**
      * Returns previous document's information.
      *
-     * @return array|NULL
+     * @return array|null
      */
     public function getPreviousDocument()
     {
         $this->enforceIsLoaded();
-        return isset($this->data['prev']) ? $this->data['prev'] : NULL;
+        return isset($this->data['prev']) ? $this->data['prev'] : null;
     }
 
     /**
      * Returns next document's information.
      *
-     * @return array|NULL
+     * @return array|null
      */
     public function getNextDocument()
     {
         $this->enforceIsLoaded();
-        return isset($this->data['next']) ? $this->data['next'] : NULL;
+        return isset($this->data['next']) ? $this->data['next'] : null;
     }
 
     /**
@@ -363,12 +363,12 @@ class SphinxJson
     /**
      * Returns the index entries.
      *
-     * @return array|NULL
+     * @return array|null
      */
     public function getIndexEntries()
     {
         $this->enforceIsLoaded();
-        return isset($this->data['genindexentries']) ? $this->data['genindexentries'] : NULL;
+        return isset($this->data['genindexentries']) ? $this->data['genindexentries'] : null;
     }
 
     /**
@@ -391,7 +391,7 @@ class SphinxJson
             }
             $filename = $this->path . $this->defaultFile . '.fjson';
             $content = file_get_contents($filename);
-            $data = json_decode($content, TRUE);
+            $data = json_decode($content, true);
         }
 
         if (preg_match('#<div class="toctree-wrapper compound">(.*?)</div>#s', $data['body'], $matches)) {
@@ -428,7 +428,7 @@ class SphinxJson
     {
         $this->enforceIsLoaded();
         $callableName = '';
-        if (!is_callable($callbackLinks, FALSE, $callableName)) {
+        if (!is_callable($callbackLinks, false, $callableName)) {
             throw new \RuntimeException('Invalid callback for links: ' . $callableName, 1365172117);
         }
 
@@ -511,7 +511,7 @@ class SphinxJson
      * @param boolean $relativeToDefaultDocument
      * @return string
      */
-    protected function replaceLinks($content, $callbackLinks, $relativeToDefaultDocument = FALSE)
+    protected function replaceLinks($content, $callbackLinks, $relativeToDefaultDocument = false)
     {
         $self = $this;
         $ret = preg_replace_callback('#(<a .*? href=")([^"]+)#', function ($matches) use ($self, $callbackLinks, $relativeToDefaultDocument) {
@@ -615,7 +615,7 @@ class SphinxJson
             }
             $src = RestHelper::relativeToAbsolute($root, $attributes['src']);
             $storage = $self->getStorage();
-            if ($storage !== NULL) {
+            if ($storage !== null) {
                 $storageConfiguration = $storage->getConfiguration();
                 $basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
                 $fileIdentifier = substr($src, strlen($basePath) - 1);

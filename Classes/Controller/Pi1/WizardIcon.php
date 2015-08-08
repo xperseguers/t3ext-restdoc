@@ -57,7 +57,7 @@ class WizardIcon
     protected function includeLocalLang()
     {
         $llFile = ExtensionManagementUtility::extPath('restdoc') . 'Resources/Private/Language/locallang.xlf';
-        return $GLOBALS['LANG']->includeLLFile($llFile, FALSE);
+        return $GLOBALS['LANG']->includeLLFile($llFile, false);
     }
 
 }

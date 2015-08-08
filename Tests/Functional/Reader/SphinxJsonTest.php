@@ -214,8 +214,8 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->initializeReader('genindex/');
         $value = $this->sphinxReader->getIndexEntries();
-        $this->assertTRUE(is_array($value), 'NULL instead of array');
-        $this->assertTRUE(count($value) > 0, 'Expected at least 1 index entry');
+        $this->asserttrue(is_array($value), 'null instead of array');
+        $this->asserttrue(count($value) > 0, 'Expected at least 1 index entry');
     }
 
     /**
@@ -226,7 +226,7 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * @param integer $rootPage UID of the page showing the documentation
      * @return string
      */
-    public function getLink($document, $absolute = FALSE, $rootPage = 0)
+    public function getLink($document, $absolute = false, $rootPage = 0)
     {
         $this->buffer[] = $document;
         return $document;

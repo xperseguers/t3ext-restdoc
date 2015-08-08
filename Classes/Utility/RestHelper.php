@@ -49,7 +49,7 @@ final class RestHelper
         $data = array();
         if (is_file($documentRoot . $jsonFile)) {
             $content = file_get_contents($documentRoot . $jsonFile);
-            $data = json_decode($content, TRUE);
+            $data = json_decode($content, true);
         }
         return $data;
     }
@@ -91,25 +91,25 @@ final class RestHelper
     static public function processMasterTableOfContents(array &$data, $currentDocument, $callbackLinks)
     {
         $callableName = '';
-        if (!is_callable($callbackLinks, FALSE, $callableName)) {
+        if (!is_callable($callbackLinks, false, $callableName)) {
             throw new \RuntimeException('Invalid callback for links: ' . $callableName, 1370013916);
         }
 
-        $hasCurrent = FALSE;
+        $hasCurrent = false;
 
         foreach ($data as &$menuEntry) {
             if (substr($menuEntry['_OVERRIDE_HREF'], 0, 3) === '../') {
                 $menuEntry['_OVERRIDE_HREF'] = substr($menuEntry['_OVERRIDE_HREF'], 3);
             }
             if ($menuEntry['_OVERRIDE_HREF'] === $currentDocument) {
-                $hasCurrent = TRUE;
+                $hasCurrent = true;
                 $menuEntry['ITEM_STATE'] = 'CUR';
             }
             $menuEntry['_OVERRIDE_HREF'] = call_user_func($callbackLinks, $menuEntry['_OVERRIDE_HREF']);
             if (isset($menuEntry['_SUB_MENU'])) {
                 $hasChildCurrent = self::processMasterTableOfContents($menuEntry['_SUB_MENU'], $currentDocument, $callbackLinks);
                 if ($hasChildCurrent) {
-                    $hasCurrent = TRUE;
+                    $hasCurrent = true;
                     $menuEntry['ITEM_STATE'] = 'ACT';
                 }
             }
@@ -155,7 +155,7 @@ final class RestHelper
             HttpUtility::setResponseCodeAndExit(HttpUtility::HTTP_STATUS_304);
         } else {
             // Source is not cached or cache is outdated
-            header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filename)) . ' GMT', TRUE, 200);
+            header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filename)) . ' GMT', true, 200);
             header('Content-Length: ' . filesize($filename));
             header('Content-Type: text/plain; charset=utf-8');
             echo file_get_contents($filename);
@@ -206,7 +206,7 @@ final class RestHelper
     static public function getIndexDefinitionList($documentRoot, array $index, $callbackLinks)
     {
         $callableName = '';
-        if (!is_callable($callbackLinks, FALSE, $callableName)) {
+        if (!is_callable($callbackLinks, false, $callableName)) {
             throw new \RuntimeException('Invalid callback for links: ' . $callableName, 1369979755);
         }
 
