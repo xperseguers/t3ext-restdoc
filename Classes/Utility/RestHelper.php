@@ -36,7 +36,7 @@ final class RestHelper
      * @param string $path Absolute path to the documentation
      * @return array
      */
-    static public function getMetadata($path)
+    public static function getMetadata($path)
     {
         if (!is_dir($path)) {
             // Most probably a relative path has been provided
@@ -60,7 +60,7 @@ final class RestHelper
      * @param array $entries
      * @return array
      */
-    static public function getMenuData(array $entries)
+    public static function getMenuData(array $entries)
     {
         $menu = array();
         $entries = isset($entries['li'][0]) ? $entries['li'] : array($entries['li']);
@@ -88,7 +88,7 @@ final class RestHelper
      * @return boolean
      * @throws \RuntimeException
      */
-    static public function processMasterTableOfContents(array &$data, $currentDocument, $callbackLinks)
+    public static function processMasterTableOfContents(array &$data, $currentDocument, $callbackLinks)
     {
         $callableName = '';
         if (!is_callable($callbackLinks, false, $callableName)) {
@@ -125,7 +125,7 @@ final class RestHelper
      * @return array
      * @link https://github.com/gaarf/XML-string-to-PHP-array/blob/master/xmlstr_to_array.php
      */
-    static public function xmlstr_to_array($xmlstr)
+    public static function xmlstr_to_array($xmlstr)
     {
         $doc = new \DOMDocument();
         $xmlstr = str_replace('&nbsp;', '&#32;', $xmlstr);
@@ -140,7 +140,7 @@ final class RestHelper
      * @param string $filename
      * @return void Program will stop after calling this method
      */
-    static public function showSources($filename)
+    public static function showSources($filename)
     {
         if (!is_file($filename)) {
             HttpUtility::setResponseCodeAndExit(HttpUtility::HTTP_STATUS_404);
@@ -170,7 +170,7 @@ final class RestHelper
      * @param string $relative
      * @return string
      */
-    static public function relativeToAbsolute($fullPath, $relative)
+    public static function relativeToAbsolute($fullPath, $relative)
     {
         $absolute = '';
         $fullPath = rtrim($fullPath, '/');
@@ -203,7 +203,7 @@ final class RestHelper
      * @return string
      * @throws \RuntimeException
      */
-    static public function getIndexDefinitionList($documentRoot, array $index, $callbackLinks)
+    public static function getIndexDefinitionList($documentRoot, array $index, $callbackLinks)
     {
         $callableName = '';
         if (!is_callable($callbackLinks, false, $callableName)) {
