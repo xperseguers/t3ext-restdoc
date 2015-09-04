@@ -27,6 +27,11 @@
   "replace": {
     "restdoc": "*"
   },
+  "autoload": {
+    "psr-4": {
+      "Causal\\Restdoc\\": "Classes/"
+    }
+  },
   "extra": {
     "helhum/class-alias-loader": {
       "class-alias-maps": [
