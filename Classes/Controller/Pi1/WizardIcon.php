@@ -1,6 +1,4 @@
 <?php
-namespace Causal\Restdoc\Controller\Pi1;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -13,6 +11,8 @@ namespace Causal\Restdoc\Controller\Pi1;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace Causal\Restdoc\Controller\Pi1;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 

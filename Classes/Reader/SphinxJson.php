@@ -1,6 +1,4 @@
 <?php
-namespace Causal\Restdoc\Reader;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -13,6 +11,8 @@ namespace Causal\Restdoc\Reader;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace Causal\Restdoc\Reader;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Causal\Restdoc\Utility\RestHelper;

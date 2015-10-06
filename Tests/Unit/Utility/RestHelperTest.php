@@ -1,6 +1,4 @@
 <?php
-namespace Causal\Restdoc\Tests\Unit\Utility;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -13,6 +11,8 @@ namespace Causal\Restdoc\Tests\Unit\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace Causal\Restdoc\Tests\Unit\Utility;
 
 use Causal\Restdoc\Utility\RestHelper;
 
