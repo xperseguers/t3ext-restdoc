@@ -989,7 +989,7 @@ HTML;
     public function pi_loadLL()
     {
         if (!$this->LOCAL_LANG_loaded && $this->scriptRelPath) {
-            $basePath = 'EXT:' . $this->extKey . '/Resources/Private/Language/locallang.xml';
+            $basePath = 'EXT:' . $this->extKey . '/Resources/Private/Language/locallang.xlf';
 
             // Read the strings in the required charset (since TYPO3 4.2)
             $this->LOCAL_LANG = GeneralUtility::readLLfile($basePath, $this->LLkey, $GLOBALS['TSFE']->renderCharset);
