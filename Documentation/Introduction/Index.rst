@@ -71,7 +71,7 @@ If you are new to Sphinx, reStructuredText and currently write your documentatio
 .. tip::
 	Wait! "``make json``"? I'm a writer, not a command line aficionado.
 
-	No Problem! Please have a look at extension `Sphinx Python Documentation Generator and Viewer <http://typo3.org/extensions/repository/view/sphinx>`_.
+	No Problem! Please have a look at extension `Sphinx Python Documentation Generator and Viewer <https://typo3.org/extensions/repository/view/sphinx>`_.
 
 
 .. _screenshots:

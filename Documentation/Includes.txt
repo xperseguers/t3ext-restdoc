@@ -26,7 +26,7 @@
 
 .. _`5 min tutorial video`: http://www.youtube.com/watch?v=YeGqHMDT7R8
 
-.. _dd_googlesitemap: http://typo3.org/extensions/repository/view/dd_googlesitemap
+.. _dd_googlesitemap: https://typo3.org/extensions/repository/view/dd_googlesitemap
 
 .. _`post of mine in Google+`: https://plus.google.com/117624290123792924579/posts/R5H1ZUMcwEm
 

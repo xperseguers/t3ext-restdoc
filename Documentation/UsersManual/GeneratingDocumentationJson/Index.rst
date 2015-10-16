@@ -22,4 +22,4 @@ directory is what should be published to your TYPO3 website, typically somewhere
 
 .. tip::
 	Instead of manually setting up a Sphinx environment on your computer, you may consider
-	using `TYPO3 extension Sphinx <http://typo3.org/extensions/repository/view/sphinx>`_ available off TER.
+	using `TYPO3 extension Sphinx <https://typo3.org/extensions/repository/view/sphinx>`_ available off TER.
