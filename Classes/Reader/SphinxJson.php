@@ -233,6 +233,7 @@ class SphinxJson
 
         $content = file_get_contents($filename);
         $this->data = json_decode($content, true);
+        $this->data['last_modification'] = filemtime($filename);
 
         return $this->data !== null;
     }
@@ -377,10 +378,11 @@ class SphinxJson
      * to the current document.
      * BEWARE: links are kept as this and are not generated for current context
      *
+     * @param bool $firstLevelIsMasterDocument
      * @return string
      * @throws \RuntimeException
      */
-    public function getMasterTableOfContents()
+    public function getMasterTableOfContents($firstLevelIsMasterDocument = true)
     {
         if ($this->document === $this->defaultFile . '/' && !empty($this->data)) {
             $data = $this->data;
@@ -394,14 +396,17 @@ class SphinxJson
             $data = json_decode($content, true);
         }
 
+        $toc = '';
         if (preg_match('#<div class="toctree-wrapper compound">(.*?)</div>#s', $data['body'], $matches)) {
-            // Put the master document as first level
-            $toc = '<ul>' . LF;
-            $toc .= '<li class="toctree-l0"><a class="reference internal" href="../' . $this->getDefaultFile() . '/">' . htmlspecialchars($data['title']) . '</a>' . trim($matches[1]) . LF;
-            $toc .= '</li>' . LF;
-            $toc .= '</ul>';
-        } else {
-            $toc = '';
+            if ($firstLevelIsMasterDocument) {
+                // Put the master document as first level
+                $toc .= '<ul>' . LF;
+                $toc .= '<li class="toctree-l0"><a class="reference internal" href="../' . $this->getDefaultFile() . '/">' . htmlspecialchars($data['title']) . '</a>' . trim($matches[1]) . LF;
+                $toc .= '</li>' . LF;
+                $toc .= '</ul>';
+            } else {
+                $toc .= trim($matches[1]);
+            }
         }
 
         // Remove empty sublevels
@@ -444,6 +449,16 @@ class SphinxJson
         }, $toc);
 
         return $toc;
+    }
+
+    /**
+     * Returns the raw data.
+     *
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 
     /**
