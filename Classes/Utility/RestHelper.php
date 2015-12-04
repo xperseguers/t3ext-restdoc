@@ -65,10 +65,18 @@ final class RestHelper
         $menu = array();
         $entries = isset($entries['li'][0]) ? $entries['li'] : array($entries['li']);
         foreach ($entries as $entry) {
+            $linkAttributes = isset($entry['a']['@attributes']['class'])
+                ? explode(' ', $entry['a']['@attributes']['class'])
+                : array();
             $menuEntry = array(
                 'title' => $entry['a']['@content'],
                 '_OVERRIDE_HREF' => $entry['a']['@attributes']['href'],
             );
+            if (in_array('current', $linkAttributes)) {
+                $menuEntry['ITEM_STATE'] = 'CUR';
+            } elseif (in_array('active', $linkAttributes)) {
+                $menuEntry['ITEM_STATE'] = 'ACT';
+            }
             if (isset($entry['ul'])) {
                 $menuEntry['_SUB_MENU'] = self::getMenuData($entry['ul']);
             }
@@ -83,7 +91,7 @@ final class RestHelper
      * Marks menu entries as ACTIVE or CURRENT and generate real links.
      *
      * @param array &$data
-     * @param string $currentDocument
+     * @param null|string $currentDocument This parameter should probably be deprecated altogether, internally passed as null
      * @param callback $callbackLinks Callback to generate Links in current context
      * @return boolean
      * @throws \RuntimeException

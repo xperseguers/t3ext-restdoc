@@ -63,6 +63,7 @@ class SphinxJson
     public function setStorage(\TYPO3\CMS\Core\Resource\ResourceStorage $storage)
     {
         $this->storage = $storage;
+
         return $this;
     }
 
@@ -85,6 +86,7 @@ class SphinxJson
     public function setPath($path)
     {
         $this->path = rtrim($path, '/') . '/';
+
         return $this;
     }
 
@@ -108,6 +110,7 @@ class SphinxJson
     public function setDocument($document)
     {
         $this->document = $document;
+
         return $this;
     }
 
@@ -140,6 +143,7 @@ class SphinxJson
     public function setKeepPermanentLinks($active)
     {
         $this->keepPermanentLinks = $active;
+
         return $this;
     }
 
@@ -162,6 +166,7 @@ class SphinxJson
     public function enableDefaultDocumentFallback()
     {
         $this->fallbackToDefaultFile = true;
+
         return $this;
     }
 
@@ -174,6 +179,7 @@ class SphinxJson
     public function setDefaultFile($defaultFile)
     {
         $this->defaultFile = $defaultFile;
+
         return $this;
     }
 
@@ -292,6 +298,7 @@ class SphinxJson
     public function getTitle()
     {
         $this->enforceIsLoaded();
+
         return $this->data['title'];
     }
 
@@ -303,6 +310,7 @@ class SphinxJson
     public function getSourceName()
     {
         $this->enforceIsLoaded();
+
         return $this->data['sourcename'];
     }
 
@@ -314,6 +322,7 @@ class SphinxJson
     public function getCurrentPageName()
     {
         $this->enforceIsLoaded();
+
         return $this->data['current_page_name'];
     }
 
@@ -325,6 +334,7 @@ class SphinxJson
     public function getPreviousDocument()
     {
         $this->enforceIsLoaded();
+
         return isset($this->data['prev']) ? $this->data['prev'] : null;
     }
 
@@ -336,6 +346,7 @@ class SphinxJson
     public function getNextDocument()
     {
         $this->enforceIsLoaded();
+
         return isset($this->data['next']) ? $this->data['next'] : null;
     }
 
@@ -347,6 +358,7 @@ class SphinxJson
     public function getParentDocuments()
     {
         $this->enforceIsLoaded();
+
         return $this->data['parents'];
     }
 
@@ -358,6 +370,7 @@ class SphinxJson
     public function getRelativeLinks()
     {
         $this->enforceIsLoaded();
+
         return $this->data['rellinks'];
     }
 
@@ -369,6 +382,7 @@ class SphinxJson
     public function getIndexEntries()
     {
         $this->enforceIsLoaded();
+
         return isset($this->data['genindexentries']) ? $this->data['genindexentries'] : null;
     }
 
@@ -415,8 +429,50 @@ class SphinxJson
         $toc = preg_replace_callback('# href="([^"]+)"#', function ($matches) {
             $url = str_replace('&amp;', '&', $matches[1]);
             $url = str_replace('&', '&amp;', $url);
+
             return ' href="' . $url . '"';
         }, $toc);
+
+        // Mark current document as "active"
+        $needle = '<a class="reference internal" href="../' . $this->document . '"';
+        $position = strpos($toc, $needle);
+        if ($position === false) {
+            // Strange, current page is not found!
+            return $toc;
+        }
+        $toc = str_replace($needle, str_replace('"reference internal"', '"current reference internal"', $needle), $toc);
+
+        // Mark parent pages in the breadcrumb as "active" by extracting
+        // the depth, found in the outer element <li class="toctree-l<depth>"...
+        $haystack = substr($toc, 0, $position);
+        $needle = '<li class="toctree-l';
+        $position = strrpos($haystack, $needle);
+        $depth = (int)substr(
+            $toc,
+            $position + strlen($needle),
+            strpos(
+                $haystack,
+                '"',
+                $position + strlen($needle)
+            ) - ($position + strlen($needle))
+        );
+
+        // ... and going up to root
+        while (--$depth > 0) {
+            // Search for closest parent <li>
+            $liNeedle = $needle . $depth . '"';
+            $haystack = substr($toc, 0, $position);
+            $position = strrpos($haystack, $liNeedle);
+            // Search for first <a> after the <li>
+            $aNeedle = '<a class="';
+            $position = strpos($haystack, $aNeedle, $position);
+
+            // Parent page is found, mark it as "active"
+            $newToc = substr($toc, 0, $position + strlen($aNeedle));
+            $newToc .= 'active ';
+            $newToc .= substr($toc, $position + strlen($aNeedle));
+            $toc = $newToc;
+        }
 
         return $toc;
     }
@@ -445,6 +501,7 @@ class SphinxJson
         $toc = preg_replace_callback('# href="([^"]+)"#', function ($matches) {
             $url = str_replace('&amp;', '&', $matches[1]);
             $url = str_replace('&', '&amp;', $url);
+
             return ' href="' . $url . '"';
         }, $toc);
 
@@ -541,6 +598,7 @@ class SphinxJson
                     return chr($m[2]);
                 }, $matches[2]);
                 $link = call_user_func($callbackLinks, urldecode($email));
+
                 return $matches[1] . $link;
             } elseif ($matches[2]{0} === '#') {
                 $anchor = $matches[2];
@@ -573,8 +631,10 @@ class SphinxJson
             $url = call_user_func($callbackLinks, $document);
             $url = str_replace('&amp;', '&', $url);
             $url = str_replace('&', '&amp;', $url);
+
             return $matches[1] . $url;
         }, $content);
+
         return $ret;
     }
 
@@ -639,6 +699,7 @@ class SphinxJson
                 // FAL is not used
                 $attributes['src'] = substr($src, strlen(PATH_site));
             }
+
             return call_user_func($callbackImages, $attributes);
         }, $content);
 

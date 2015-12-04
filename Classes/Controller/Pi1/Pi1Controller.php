@@ -283,9 +283,9 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 break;
 
             case 'master_menu':
-                $masterToc = self::$sphinxReader->getMasterTableOfContents(array($this, 'getLink'));
+                $masterToc = self::$sphinxReader->getMasterTableOfContents();
                 $data = $masterToc ? RestHelper::getMenuData(RestHelper::xmlstr_to_array($masterToc)) : array();
-                RestHelper::processMasterTableOfContents($data, $document, array($this, 'getLink'));
+                RestHelper::processMasterTableOfContents($data, null, array($this, 'getLink'));
                 break;
 
             case 'previous':
