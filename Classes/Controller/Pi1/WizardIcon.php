@@ -14,6 +14,7 @@
 
 namespace Causal\Restdoc\Controller\Pi1;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
@@ -47,7 +48,7 @@ class WizardIcon
         ];
         if (version_compare(TYPO3_version, '7.5', '>=')) {
             /** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
-            $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\IconRegistry');
+            $iconRegistry = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\IconRegistry');
             $iconRegistry->registerIcon('extensions-restdoc-wizard',
                 'TYPO3\\CMS\\Core\\Imaging\\IconProvider\\BitmapIconProvider',
                 array(
