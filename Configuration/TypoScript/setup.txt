@@ -25,6 +25,16 @@ plugin.tx_restdoc_pi1 {
 				file.maxW < tt_content.image.20.maxW
 				altText.field = alt
 				titleText.field = alt
+				params.field = style
+				params.wrap = style="|"
+				params.required = 1
+
+				layoutKey = sphinx
+				layout {
+					sphinx {
+						element = <img src="###SRC###" ###PARAMS######ALTPARAMS######BORDER######SELFCLOSINGTAGSLASH###>
+					}
+				}
 
 				imageLinkWrap = 1
 				imageLinkWrap {
