@@ -36,7 +36,10 @@ plugin.tx_restdoc_pi1 {
 					}
 				}
 
-				imageLinkWrap = 1
+				# imageLinkWrap is deactivated by default because it prevents
+				# external links to be put onto images in reStructuredText
+				# see https://forge.typo3.org/issues/75292
+				imageLinkWrap = 0
 				imageLinkWrap {
 					enable.cObject = TEXT
 					enable.cObject {
