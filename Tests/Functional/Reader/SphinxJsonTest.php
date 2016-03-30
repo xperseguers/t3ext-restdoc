@@ -214,8 +214,8 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->initializeReader('genindex/');
         $value = $this->sphinxReader->getIndexEntries();
-        $this->asserttrue(is_array($value), 'null instead of array');
-        $this->asserttrue(count($value) > 0, 'Expected at least 1 index entry');
+        $this->assertTrue(is_array($value), 'null instead of array');
+        $this->assertTrue(count($value) > 0, 'Expected at least 1 index entry');
     }
 
     /**

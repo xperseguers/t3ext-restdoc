@@ -84,7 +84,7 @@ class Realurl
      * of the requested document.
      *
      * @param array $parameters
-     * @return void
+     * @return string
      */
     public function decodeSpURL_getSequence(array $parameters)
     {

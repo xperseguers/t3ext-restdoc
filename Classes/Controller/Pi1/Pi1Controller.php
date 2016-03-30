@@ -930,7 +930,7 @@ HTML;
                             $tempValues = explode(',', $value);
                             $tempKeys = array();
                             foreach ($tempValues as $tempValue) {
-                                list($k, $v) = explode('|', $tempValue);
+                                list($k, $_) = explode('|', $tempValue);
                                 $tempKeys[] = $k;
                             }
                             $value = implode(',', $tempKeys);
@@ -984,6 +984,7 @@ HTML;
     /**
      * Loads the locallang file.
      *
+     * @param string $languageFilePath
      * @return void
      */
     public function pi_loadLL($languageFilePath = '')
