@@ -31,10 +31,10 @@ class Realurl
      * Generates additional RealURL configuration and merges it with provided configuration.
      *
      * @param array $params
-     * @param \tx_realurl_autoconfgen $pObj
+     * @param \tx_realurl_autoconfgen|object $pObj
      * @return array
      */
-    public function registerDefaultConfiguration(array $params, \tx_realurl_autoconfgen $pObj)
+    public function registerDefaultConfiguration(array $params, $pObj)
     {
         $fixedPostVarsConfiguration = array();
 
