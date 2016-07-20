@@ -287,6 +287,8 @@ class SphinxJson
         // Replace images in body
         $body = $this->replaceImages($body, $callbackImages);
 
+        $body = $this->invokePostProcessors('body', $body);
+
         return $body;
     }
 
@@ -704,6 +706,28 @@ class SphinxJson
         }, $content);
 
         return $ret;
+    }
+
+    /**
+     * Invokes registered hooks to post-process the content.
+     *
+     * @param string $name
+     * @param string $content
+     * @return string $content
+     */
+    protected function invokePostProcessors($name, $content)
+    {
+        $key = 'postProcess' . ucfirst($name);
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['restdoc'][$key])) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['restdoc'][$key] as $funcRef) {
+                $params = array(
+                    'content' => &$content,
+                );
+                GeneralUtility::callUserFunction($funcRef, $params, $this);
+            }
+        }
+
+        return $content;
     }
 
 }

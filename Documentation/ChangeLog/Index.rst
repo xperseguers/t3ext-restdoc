@@ -22,6 +22,7 @@ The following is a very high level overview of the changes in this extension. Fo
 =======  ======================================================
 Version  Changes
 =======  ======================================================
+1.7.x    Post-processing of content with `SphinxJson`
 1.6.x    - Compatibility with TYPO3 6.2 - 8.x
          - Compatibility with PHP 7
 1.5.x    Extended support for RealURL
