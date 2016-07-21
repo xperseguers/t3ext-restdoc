@@ -24,7 +24,9 @@ if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('realurl')) {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/realurl/class.tx_realurl_autoconfgen.php']['extensionConfiguration'][$_EXTKEY] =
         'Causal\\Restdoc\\Hooks\\Realurl->registerDefaultConfiguration';
 
-    // Hook to grant access to reStructuredText source files
-    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['decodeSpURL_preProc'][] =
-        'Causal\\Restdoc\\Hooks\\Realurl->decodeSpURL_preProc';
+    // Hook to grant access to reStructuredText source files, works only for EXT:realurl 1.x
+    if (is_dir(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('realurl') . 'doc')) {
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['decodeSpURL_preProc'][] =
+            'Causal\\Restdoc\\Hooks\\Realurl->decodeSpURL_preProc';
+    }
 }
