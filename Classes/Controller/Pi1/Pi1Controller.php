@@ -945,6 +945,18 @@ HTML;
 
         self::$sphinxReader = GeneralUtility::makeInstance('Causal\\Restdoc\\Reader\\SphinxJson');
 
+        // New format since TYPO3 v8
+        if (preg_match('#^t3://#', $this->conf['path'])) {
+            /** @var \TYPO3\CMS\Core\LinkHandling\LinkService $linkService */
+            $linkService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\LinkHandling\LinkService::class);
+            $data = $linkService->resolveByStringRepresentation($this->conf['path']);
+            if ($data['type'] === 'folder') {
+                /** @var \TYPO3\CMS\Core\Resource\Folder $folder */
+                $folder = $data['folder'];
+                $this->conf['path'] = 'file:' . $folder->getCombinedIdentifier();
+            }
+        }
+
         if (preg_match('/^file:(\d+):(.*)$/', $this->conf['path'], $matches)) {
             /** @var $storageRepository \TYPO3\CMS\Core\Resource\StorageRepository */
             $storageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
