@@ -46,7 +46,7 @@ final class RestHelper
         $documentRoot = rtrim($path, '/') . '/';
         $jsonFile = 'globalcontext.json';
 
-        $data = array();
+        $data = [];
         if (is_file($documentRoot . $jsonFile)) {
             $content = file_get_contents($documentRoot . $jsonFile);
             $data = json_decode($content, true);
@@ -62,16 +62,16 @@ final class RestHelper
      */
     public static function getMenuData(array $entries)
     {
-        $menu = array();
-        $entries = isset($entries['li'][0]) ? $entries['li'] : array($entries['li']);
+        $menu = [];
+        $entries = isset($entries['li'][0]) ? $entries['li'] : [$entries['li']];
         foreach ($entries as $entry) {
             $linkAttributes = isset($entry['a']['@attributes']['class'])
                 ? explode(' ', $entry['a']['@attributes']['class'])
-                : array();
-            $menuEntry = array(
+                : [];
+            $menuEntry = [
                 'title' => $entry['a']['@content'],
                 '_OVERRIDE_HREF' => $entry['a']['@attributes']['href'],
-            );
+            ];
             if (in_array('current', $linkAttributes)) {
                 $menuEntry['ITEM_STATE'] = 'CUR';
             } elseif (in_array('active', $linkAttributes)) {
@@ -155,7 +155,7 @@ final class RestHelper
         }
 
         // Getting headers sent by the client.
-        $headers = function_exists('apache_request_headers') ? apache_request_headers() : array();
+        $headers = function_exists('apache_request_headers') ? apache_request_headers() : [];
 
         // Checking if the client is validating his cache and if it is current
         if (isset($headers['If-Modified-Since']) && (strtotime($headers['If-Modified-Since']) == filemtime($filename))) {
@@ -220,19 +220,19 @@ final class RestHelper
 
         $output = '<dl>' . LF;
         foreach ($index as $dt) {
-            $relativeLinks = array();
+            $relativeLinks = [];
             $numberOfDts = count($dt[1]);
             for ($i = 0; $i < $numberOfDts; $i++) {
                 if (!empty($dt[1][$i]) && GeneralUtility::isFirstPartOfStr($dt[1][$i][1], '../')) {
-                    $relativeLinks[] = array(
+                    $relativeLinks[] = [
                         'title' => $dt[1][$i][0],
                         'link' => substr($dt[1][$i][1], 3),
-                    );
+                    ];
                 } elseif ($i == 0 && !empty($dt[1][$i]) && is_array($dt[1][$i][0]) && GeneralUtility::isFirstPartOfStr($dt[1][$i][0][1], '../')) {
-                    $relativeLinks[] = array(
+                    $relativeLinks[] = [
                         'title' => $dt[1][$i][0][0],
                         'link' => substr($dt[1][$i][0][1], 3),
-                    );
+                    ];
                 } else {
                     // No more entry links, we have subentries from now on
                     break;
@@ -289,7 +289,7 @@ final class RestHelper
      */
     protected static function domnode_to_array(\DOMNode $node)
     {
-        $output = array();
+        $output = [];
         switch ($node->nodeType) {
 
             case XML_CDATA_SECTION_NODE:
@@ -303,11 +303,11 @@ final class RestHelper
                     $v = self::domnode_to_array($child);
                     if (isset($child->tagName)) {
                         if (!is_array($output)) {
-                            $output = array($output);
+                            $output = [$output];
                         }
                         $t = $child->tagName;
                         if (!isset($output[$t])) {
-                            $output[$t] = array();
+                            $output[$t] = [];
                         }
                         $output[$t][] = $v;
                     } elseif ($v || $v === '0') {
@@ -329,11 +329,11 @@ final class RestHelper
                     }
                 }
                 if ($node->attributes->length && !is_array($output)) { // Has attributes but isn't an array
-                    $output = array('@content' => $output); // Change output into an array.
+                    $output = ['@content' => $output]; // Change output into an array.
                 }
                 if (is_array($output)) {
                     if ($node->attributes->length) {
-                        $a = array();
+                        $a = [];
                         foreach ($node->attributes as $attrName => $attrNode) {
                             $a[$attrName] = (string)$attrNode->value;
                         }

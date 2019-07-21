@@ -41,19 +41,19 @@ class WizardIcon
         $LL = $this->includeLocalLang();
         $wizardIcon = 'Resources/Public/Icons/pi1_ce_wizard.png';
 
-        $wizardItem = array(
+        $wizardItem = [
             'title' => $GLOBALS['LANG']->getLLL('pi1_title', $LL),
             'description' => $GLOBALS['LANG']->getLLL('pi1_plus_wiz_description', $LL),
             'params' => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=restdoc_pi1'
-        );
+        ];
         if (version_compare(TYPO3_version, '7.5', '>=')) {
             /** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
             $iconRegistry = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\IconRegistry');
             $iconRegistry->registerIcon('extensions-restdoc-wizard',
                 'TYPO3\\CMS\\Core\\Imaging\\IconProvider\\BitmapIconProvider',
-                array(
+                [
                     'source' => 'EXT:restdoc/' . $wizardIcon,
-                )
+                ]
             );
             $wizardItem['iconIdentifier'] = 'extensions-restdoc-wizard';
         } else {

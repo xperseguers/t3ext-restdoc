@@ -14,10 +14,10 @@ if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('dd_googlesitem
 }
 
 // Register new TypoScript content object
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'][] = array(
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'][] = [
     0 => 'REST_METADATA',
     1 => 'Causal\\Restdoc\\ContentObject\\RestMetadataContentObject',
-);
+];
 
 if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('realurl')) {
     // RealURL auto-configuration

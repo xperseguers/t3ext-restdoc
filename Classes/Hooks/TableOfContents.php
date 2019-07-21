@@ -54,7 +54,7 @@ class TableOfContents
     protected $maxDocuments;
 
     /** @var array */
-    protected $processedDocuments = array();
+    protected $processedDocuments = [];
 
     /**
      * Stores the TOC into database for future inclusion within EXT:dd_googlesitemap.
@@ -105,9 +105,9 @@ class TableOfContents
         $content = file_get_contents($filename);
         $checksum = md5($content);
 
-        $data = array(
+        $data = [
             'tstamp' => $GLOBALS['ACCESS_TIME'],
-        );
+        ];
         $cachedData = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
             '*',
             'tx_restdoc_toc',
@@ -117,7 +117,7 @@ class TableOfContents
         $add = !is_array($cachedData);
         $refresh = (!$add && $cachedData['checksum'] !== $checksum);
         if ($add) {
-            $modifications = array();
+            $modifications = [];
             $data['pid'] = $this->pageId;
             $data['root'] = $this->root;
             $data['document'] = $params['document'];
@@ -205,7 +205,7 @@ class TableOfContents
         }, $toc);
 
         if (!$toc) {
-            return array();
+            return [];
         }
 
         $links = $this->getLinksFromToc(RestHelper::xmlstr_to_array($toc));
@@ -239,8 +239,8 @@ class TableOfContents
      */
     public function getLinksFromToc(array $entries)
     {
-        $menu = array();
-        $entries = isset($entries['li'][0]) ? $entries['li'] : array($entries['li']);
+        $menu = [];
+        $entries = isset($entries['li'][0]) ? $entries['li'] : [$entries['li']];
         foreach ($entries as $entry) {
             $document = $entry['a']['@attributes']['data-document'];
             if (strpos($document, '#') !== false) {

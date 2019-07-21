@@ -36,7 +36,7 @@ class Realurl
      */
     public function registerDefaultConfiguration(array $params, $pObj)
     {
-        $fixedPostVarsConfiguration = array();
+        $fixedPostVarsConfiguration = [];
 
         $settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['restdoc']);
         if (isset($settings['enable_slash_as_separator']) && (bool)$settings['enable_slash_as_separator']) {
@@ -46,17 +46,17 @@ class Realurl
         $defaultConfiguration = array_merge_recursive(
             $params['config'],
             $fixedPostVarsConfiguration,
-            array(
-                'postVarSets' => array(
-                    '_DEFAULT' => array(
-                        'chapter' => array(
-                            array(
+            [
+                'postVarSets' => [
+                    '_DEFAULT' => [
+                        'chapter' => [
+                            [
                                 'GETvar' => 'tx_restdoc_pi1[doc]',
-                            ),
-                        ),
-                    ),
-                ),
-            )
+                            ],
+                        ],
+                    ],
+                ],
+            ]
         );
 
         return $defaultConfiguration;
@@ -94,7 +94,7 @@ class Realurl
             if (!empty($parameters['pathParts'])) {
                 // Eat every remaining segment
                 $value .= '/' . implode('/', $parameters['pathParts']);
-                $parameters['pathParts'] = array();
+                $parameters['pathParts'] = [];
             }
         }
 
@@ -109,7 +109,7 @@ class Realurl
      */
     protected function getFixedPostVarsConfiguration()
     {
-        $fixedPostVarsConfiguration = array();
+        $fixedPostVarsConfiguration = [];
 
         // Search pages with a restdoc plugin
         $databaseConnection = $this->getDatabaseConnection();
@@ -127,12 +127,12 @@ class Realurl
 
         if (!empty($pages)) {
             $fixedPostVarsConfiguration['fixedPostVars'] = array_fill_keys($pages, 'restdoc_advanced_url');
-            $fixedPostVarsConfiguration['fixedPostVars']['restdoc_advanced_url'] = array(
-                array(
+            $fixedPostVarsConfiguration['fixedPostVars']['restdoc_advanced_url'] = [
+                [
                     'GETvar' => 'tx_restdoc_pi1[doc]',
                     'userFunc' => 'Causal\\Restdoc\\Hooks\\Realurl->decodeSpURL_getSequence',
-                ),
-            );
+                ],
+            ];
         }
 
         return $fixedPostVarsConfiguration;

@@ -39,10 +39,10 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     protected static $defaultFile = 'index';
 
     /** @var array */
-    public $renderingConfig = array();
+    public $renderingConfig = [];
 
     /** @var array */
-    protected $settings = array();
+    protected $settings = [];
 
     /**
      * Current chapter information as static to be accessible from
@@ -50,7 +50,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      *
      * @var array
      */
-    protected static $current = array();
+    protected static $current = [];
 
     /** @var \Causal\Restdoc\Reader\SphinxJson */
     protected static $sphinxReader;
@@ -88,7 +88,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         $documentRoot = $basePath . rtrim($this->conf['path'], '/') . '/';
         $document = self::$defaultFile . '/';
-        $pathSeparators = isset($this->conf['fallbackPathSeparators']) ? GeneralUtility::trimExplode(',', $this->conf['fallbackPathSeparators'], true) : array();
+        $pathSeparators = isset($this->conf['fallbackPathSeparators']) ? GeneralUtility::trimExplode(',', $this->conf['fallbackPathSeparators'], true) : [];
         $pathSeparators[] = $this->conf['pathSeparator'];
         if (isset($this->piVars['doc']) && strpos($this->piVars['doc'], '..') === false) {
             $document = rtrim(str_replace($pathSeparators, '/', $this->piVars['doc']), '/') . '/';
@@ -127,10 +127,10 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         $skipDefaultWrap = false;
 
-        self::$current = array(
+        self::$current = [
             'path' => $this->conf['path'],
             'pathSeparator' => $this->conf['pathSeparator'],
-        );
+        ];
 
         if (self::$sphinxReader->getIndexEntries() === null) {
             switch ($this->conf['mode']) {
@@ -205,15 +205,15 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['renderHook'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['renderHook'] as $classRef) {
                 $hookObject = GeneralUtility::getUserObj($classRef);
-                $params = array(
+                $params = [
                     'mode' => $this->conf['mode'],
                     'documentRoot' => $documentRoot,
                     'document' => $document,
                     'output' => &$output,
                     'config' => $this->conf,
                     'pObj' => $this,
-                );
-                if (is_callable(array($hookObject, 'postProcessOutput'))) {
+                ];
+                if (is_callable([$hookObject, 'postProcessOutput'])) {
                     $hookObject->postProcessOutput($params);
                 }
             }
@@ -258,7 +258,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     public function makeMenuArray($content, array $conf)
     {
-        $data = array();
+        $data = [];
         $type = isset($conf['userFunc.']['type']) ? $conf['userFunc.']['type'] : 'menu';
 
         $storage = self::$sphinxReader->getStorage();
@@ -275,8 +275,8 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         switch ($type) {
             case 'menu':
-                $toc = self::$sphinxReader->getTableOfContents(array($this, 'getLink'));
-                $data = $toc ? RestHelper::getMenuData(RestHelper::xmlstr_to_array($toc)) : array();
+                $toc = self::$sphinxReader->getTableOfContents([$this, 'getLink']);
+                $data = $toc ? RestHelper::getMenuData(RestHelper::xmlstr_to_array($toc)) : [];
 
                 // Mark the first entry as 'active'
                 $data[0]['ITEM_STATE'] = 'CUR';
@@ -284,8 +284,8 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
             case 'master_menu':
                 $masterToc = self::$sphinxReader->getMasterTableOfContents();
-                $data = $masterToc ? RestHelper::getMenuData(RestHelper::xmlstr_to_array($masterToc)) : array();
-                RestHelper::processMasterTableOfContents($data, null, array($this, 'getLink'));
+                $data = $masterToc ? RestHelper::getMenuData(RestHelper::xmlstr_to_array($masterToc)) : [];
+                RestHelper::processMasterTableOfContents($data, null, [$this, 'getLink']);
                 break;
 
             case 'previous':
@@ -293,10 +293,10 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 if ($previousDocument !== null) {
                     $absolute = RestHelper::relativeToAbsolute($documentRoot . $document, '../' . $previousDocument['link']);
                     $link = $this->getLink(substr($absolute, strlen($documentRoot)));
-                    $data[] = array(
+                    $data[] = [
                         'title' => $previousDocument['title'],
                         '_OVERRIDE_HREF' => $link,
-                    );
+                    ];
                 }
                 break;
 
@@ -310,10 +310,10 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     }
                     $absolute = RestHelper::relativeToAbsolute($nextDocumentPath, '../' . $nextDocument['link']);
                     $link = $this->getLink(substr($absolute, strlen($documentRoot)));
-                    $data[] = array(
+                    $data[] = [
                         'title' => $nextDocument['title'],
                         '_OVERRIDE_HREF' => $link,
-                    );
+                    ];
                 }
                 break;
 
@@ -322,17 +322,17 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 foreach ($parentDocuments as $parent) {
                     $absolute = RestHelper::relativeToAbsolute($documentRoot . $document, '../' . $parent['link']);
                     $link = $this->getLink(substr($absolute, strlen($documentRoot)));
-                    $data[] = array(
+                    $data[] = [
                         'title' => $parent['title'],
                         '_OVERRIDE_HREF' => $link,
-                    );
+                    ];
                 }
                 // Add current page to breadcrumb menu
-                $data[] = array(
+                $data[] = [
                     'title' => self::$sphinxReader->getTitle(),
                     '_OVERRIDE_HREF' => $this->getLink($document),
                     'ITEM_STATE' => 'CUR',
-                );
+                ];
                 break;
 
             case 'updated':
@@ -366,11 +366,11 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     $limit
                 );
                 foreach ($rows as $row) {
-                    $data[] = array(
+                    $data[] = [
                         'title' => $row['title'] ?: '[no title]',
                         '_OVERRIDE_HREF' => $row['url'],
                         'SYS_LASTCHANGED' => $row[$sortField],
-                    );
+                    ];
                 }
                 break;
         }
@@ -379,13 +379,13 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['makeMenuArrayHook'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['makeMenuArrayHook'] as $classRef) {
                 $hookObject = GeneralUtility::getUserObj($classRef);
-                $params = array(
+                $params = [
                     'documentRoot' => $documentRoot,
                     'document' => $document,
                     'data' => &$data,
                     'pObj' => $this,
-                );
-                if (is_callable(array($hookObject, 'postProcessMakeMenuArray'))) {
+                ];
+                if (is_callable([$hookObject, 'postProcessMakeMenuArray'])) {
                     $hookObject->postProcessTOC($params);
                 }
             }
@@ -458,7 +458,7 @@ JS;
         $nextDocument = self::$sphinxReader->getNextDocument();
         $parentDocuments = self::$sphinxReader->getParentDocuments();
 
-        $data = array();
+        $data = [];
         $data['home_title'] = $this->pi_getLL('home_title', 'Home');
         $data['home_uri'] = $this->getLink('');
         $data['home_uri_absolute'] = $this->getLink('', true);
@@ -517,13 +517,13 @@ JS;
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['quickNavigationHook'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['quickNavigationHook'] as $classRef) {
                 $hookObject = GeneralUtility::getUserObj($classRef);
-                $params = array(
+                $params = [
                     'documentRoot' => $documentRoot,
                     'document' => $document,
                     'data' => &$data,
                     'pObj' => $this,
-                );
-                if (is_callable(array($hookObject, 'postProcessQUICK_NAVIGATION'))) {
+                ];
+                if (is_callable([$hookObject, 'postProcessQUICK_NAVIGATION'])) {
                     $hookObject->postProcessQUICK_NAVIGATION($params);
                 }
             }
@@ -573,12 +573,12 @@ JS;
      */
     protected function generateReferences()
     {
-        $output = array();
+        $output = [];
         $output[] = '<ul class="tx-restdoc-references">';
 
         $references = self::$sphinxReader->getReferences();
         foreach ($references as $chapter => $refs) {
-            $referencesOutput = array();
+            $referencesOutput = [];
             foreach ($refs as $reference) {
                 if (!$reference['name']) {
                     continue;
@@ -613,19 +613,19 @@ JS;
      */
     protected function generateIndex($documentRoot, $document)
     {
-        $linksCategories = array();
-        $contentCategories = array();
+        $linksCategories = [];
+        $contentCategories = [];
         $indexEntries = self::$sphinxReader->getIndexEntries();
 
         foreach ($indexEntries as $indexGroup) {
             $category = $indexGroup[0];
             $anchor = 'tx-restdoc-index-' . htmlspecialchars($category);
 
-            $conf = array(
-                $this->prefixId => array(
+            $conf = [
+                $this->prefixId => [
                     'doc' => str_replace('/', $this->conf['pathSeparator'], substr($document, 0, -1)),
-                )
-            );
+                ]
+            ];
             $link = $this->pi_getPageLink($GLOBALS['TSFE']->id, '', $conf);
             $link .= '#' . $anchor;
 
@@ -633,7 +633,7 @@ JS;
 
             $contentCategory = '<h2 id="' . $anchor . '">' . htmlspecialchars($category) . '</h2>' . LF;
             $contentCategory .= '<div class="tx-restdoc-genindextable">' . LF;
-            $contentCategory .= RestHelper::getIndexDefinitionList($documentRoot, $indexGroup[1], array($this, 'getLink'));
+            $contentCategory .= RestHelper::getIndexDefinitionList($documentRoot, $indexGroup[1], [$this, 'getLink']);
             $contentCategory .= '</div>' . LF;
 
             $contentCategories[] = $contentCategory;
@@ -655,8 +655,8 @@ JS;
     {
         $this->renderingConfig = $this->conf['setup.']['BODY.'];
         $body = self::$sphinxReader->getBody(
-            array($this, 'getLink'),
-            array($this, 'processImage')
+            [$this, 'getLink'],
+            [$this, 'processImage']
         );
         return $body;
     }
@@ -685,18 +685,18 @@ JS;
         $metadata = RestHelper::getMetadata($basePath . $this->conf['path']);
         $sphinxVersion = isset($metadata['sphinx_version']) ? $metadata['sphinx_version'] : '1.3.1';
 
-        $config = array(
-            'jsLibs' => array(
+        $config = [
+            'jsLibs' => [
                 'Resources/Public/JavaScript/underscore.js',
                 'Resources/Public/JavaScript/doctools.js',
                 // Sphinx search library differs in branch v1.2
                 GeneralUtility::isFirstPartOfStr($sphinxVersion, '1.2')
                     ? 'Resources/Public/JavaScript/searchtools.12.js'
                     : 'Resources/Public/JavaScript/searchtools.js'
-            ),
+            ],
             'jsInline' => '',
             'advertiseSphinx' => true,
-        );
+        ];
 
         $searchIndexContent = file_get_contents($searchIndexFile);
         $config['jsInline'] = <<<JS
@@ -707,11 +707,11 @@ JS;
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['searchFormHook'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['searchFormHook'] as $classRef) {
                 $hookObject = GeneralUtility::getUserObj($classRef);
-                $params = array(
+                $params = [
                     'config' => &$config,
                     'pObj' => $this,
-                );
-                if (is_callable(array($hookObject, 'preProcessSEARCH'))) {
+                ];
+                if (is_callable([$hookObject, 'preProcessSEARCH'])) {
                     $hookObject->preProcessSEARCH($params);
                 }
             }
@@ -728,7 +728,7 @@ JS;
         }
 
         $action = GeneralUtility::getIndpEnv('REQUEST_URI');
-        $parameters = array();
+        $parameters = [];
         if (($pos = strpos($action, '?')) !== false) {
             $parameters = GeneralUtility::trimExplode('&', substr($action, $pos + 1));
             $action = substr($action, 0, $pos);
@@ -766,7 +766,7 @@ HTML;
     protected function includeJsFile($file)
     {
         $relativeFile = substr(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey), strlen(PATH_site)) . $file;
-        $relativeFile = $this->cObj->typoLink_URL(array('parameter' => $relativeFile));
+        $relativeFile = $this->cObj->typoLink_URL(['parameter' => $relativeFile]);
         $GLOBALS['TSFE']->additionalHeaderData[$relativeFile] = '<script type="text/javascript" src="' . $relativeFile . '"></script>';
     }
 
@@ -783,14 +783,14 @@ HTML;
     {
         if (GeneralUtility::isFirstPartOfStr($document, 'mailto:')) {
             // This is an email address, not a document!
-            $link = $this->cObj->typoLink('', array(
+            $link = $this->cObj->typoLink('', [
                 'parameter' => $document,
                 'returnLast' => 'url',
-            ));
+            ]);
             return $link;
         }
 
-        $urlParameters = array();
+        $urlParameters = [];
         $anchor = '';
         $additionalParameters = '';
         if ($document !== '') {
@@ -808,11 +808,11 @@ HTML;
             }
             $doc = str_replace('/', self::$current['pathSeparator'], substr($document, 0, -1));
             if ($doc) {
-                $urlParameters = array(
-                    $this->prefixId => array(
+                $urlParameters = [
+                    $this->prefixId => [
                         'doc' => $doc,
-                    )
-                );
+                    ]
+                ];
             }
         }
         if (substr($document, 0, 11) === '_downloads/' || substr($document, 0, 8) === '_images/') {
@@ -822,18 +822,18 @@ HTML;
                 $storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
                 $basePath = rtrim($storageConfiguration['basePath'], '/') . '/' . $basePath;
             }
-            $link = $this->cObj->typoLink_URL(array('parameter' => rtrim($basePath, '/') . '/' . $document));
+            $link = $this->cObj->typoLink_URL(['parameter' => rtrim($basePath, '/') . '/' . $document]);
         } else {
-            $typolinkConfig = array(
+            $typolinkConfig = [
                 'parameter' => $rootPage ?: $GLOBALS['TSFE']->id,
                 'additionalParams' => '',
                 'forceAbsoluteUrl' => $absolute ? 1 : 0,
-                'forceAbsoluteUrl.' => array(
+                'forceAbsoluteUrl.' => [
                     'scheme' => GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https' : 'http',
-                ),
+                ],
                 'returnLast' => 'url',
                 'useCacheHash' => $this->pi_checkCHash,
-            );
+            ];
             if ($urlParameters) {
                 $typolinkConfig['additionalParams'] = GeneralUtility::implodeArrayForUrl('', $urlParameters);
             }
@@ -916,7 +916,7 @@ HTML;
         $piFlexForm = $this->cObj->data['pi_flexform'];
 
         if (is_array($piFlexForm['data'])) {
-            $multiValueKeys = array();
+            $multiValueKeys = [];
             // Traverse the entire array based on the language
             // and assign each configuration option to $this->settings array...
             foreach ($piFlexForm['data'] as $sheet => $data) {
@@ -928,7 +928,7 @@ HTML;
                             // Funny, FF contains a comma-separated list of key|value and
                             // we only want to have key...
                             $tempValues = explode(',', $value);
-                            $tempKeys = array();
+                            $tempKeys = [];
                             foreach ($tempValues as $tempValue) {
                                 list($k, $_) = explode('|', $tempValue);
                                 $tempKeys[] = $k;
@@ -999,14 +999,14 @@ HTML;
                 $this->LOCAL_LANG = $languageFactory->getParsedData($basePath, $this->LLkey, $GLOBALS['TSFE']->renderCharset);
                 if ($this->altLLkey) {
                     $tempLOCAL_LANG = $languageFactory->getParsedData($basePath, $this->altLLkey);
-                    $this->LOCAL_LANG = array_merge(is_array($this->LOCAL_LANG) ? $this->LOCAL_LANG : array(), $tempLOCAL_LANG);
+                    $this->LOCAL_LANG = array_merge(is_array($this->LOCAL_LANG) ? $this->LOCAL_LANG : [], $tempLOCAL_LANG);
                     unset($tempLOCAL_LANG);
                 }
             } else {
                 $this->LOCAL_LANG = GeneralUtility::readLLfile($basePath, $this->LLkey, $GLOBALS['TSFE']->renderCharset);
                 if ($this->altLLkey) {
                     $tempLOCAL_LANG = GeneralUtility::readLLfile($basePath, $this->altLLkey);
-                    $this->LOCAL_LANG = array_merge(is_array($this->LOCAL_LANG) ? $this->LOCAL_LANG : array(), $tempLOCAL_LANG);
+                    $this->LOCAL_LANG = array_merge(is_array($this->LOCAL_LANG) ? $this->LOCAL_LANG : [], $tempLOCAL_LANG);
                     unset($tempLOCAL_LANG);
                 }
             }

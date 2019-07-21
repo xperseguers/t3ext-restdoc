@@ -52,7 +52,7 @@ class SphinxJson
     protected $defaultFile = 'index';
 
     /** @var array */
-    protected $data = array();
+    protected $data = [];
 
     /**
      * Sets the storage.
@@ -550,7 +550,7 @@ class SphinxJson
 
         $lines = explode(LF, $content);
 
-        $references = array();
+        $references = [];
         foreach ($lines as $line) {
             $data = explode(' ', $line, 5);
             if (!count($data) === 5) {
@@ -559,13 +559,13 @@ class SphinxJson
             }
 
             $chapter = substr($data[3], 0, strpos($data[3], '#') - 1);
-            $references[$chapter][$data[0]] = array(
+            $references[$chapter][$data[0]] = [
                 'name' => $data[0],
                 'type' => $data[1],
                 'index' => $data[2],
                 'link' => $data[3],
                 'title' => $data[4],
-            );
+            ];
         }
 
         // Sort references by chapter, then by name
@@ -672,7 +672,7 @@ class SphinxJson
 
         $ret = preg_replace_callback($tagPattern, function ($matches) use ($self, $root, $attributePattern, $callbackImages) {
             // Parse tag attributes, if any
-            $attributes = array();
+            $attributes = [];
             if (!empty($matches['attributes'][0])) {
                 if (preg_match_all($attributePattern, $matches['attributes'], $attributeData, PREG_SET_ORDER)) {
                     // Turn the attribute data into a name->value array
@@ -720,9 +720,9 @@ class SphinxJson
         $key = 'postProcess' . ucfirst($name);
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['restdoc'][$key])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['restdoc'][$key] as $funcRef) {
-                $params = array(
+                $params = [
                     'content' => &$content,
-                );
+                ];
                 GeneralUtility::callUserFunction($funcRef, $params, $this);
             }
         }

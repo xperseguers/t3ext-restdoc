@@ -10,7 +10,7 @@
  * writing. "version" and "dependencies" must not be touched!
  ***************************************************************/
 
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF[$_EXTKEY] = [
     'title' => 'Sphinx Documentation Viewer Plugin',
     'description' => 'Seamlessly embeds Sphinx/reStructuredText-based documentation into your TYPO3 website. Instead of publishing your various manual, in-house documents, guides, references, ... solely as PDF, render them as JSON and use this extension to show them as part of your website to enhance the overall user experience and Search Engine Optimization (SEO). Lets you merge the chapter structure with the breadcrumb menu and much more. Documentation styles automatically inherit from your corporate design.',
     'category' => 'plugin',
@@ -30,19 +30,19 @@ $EM_CONF[$_EXTKEY] = array(
     'clearCacheOnLoad' => 0,
     'lockType' => '',
     'version' => '1.7.0-dev',
-    'constraints' => array(
-        'depends' => array(
-            'php' => '5.3.3-7.3.99',
-            'typo3' => '6.2.0-8.7.99',
-        ),
-        'conflicts' => array(),
-        'suggests' => array(
+    'constraints' => [
+        'depends' => [
+            'php' => '7.2.0-7.3.99',
+            'typo3' => '8.7.0-8.7.99',
+        ],
+        'conflicts' => [],
+        'suggests' => [
             'realurl' => '',
-        ),
-    ),
+        ],
+    ],
     '_md5_values_when_last_written' => '',
-    'suggests' => array(),
-    'autoload' => array(
-        'psr-4' => array('Causal\\Restdoc\\' => 'Classes')
-    ),
-);
+    'suggests' => [],
+    'autoload' => [
+        'psr-4' => ['Causal\\Restdoc\\' => 'Classes']
+    ],
+];
