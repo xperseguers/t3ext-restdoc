@@ -211,6 +211,11 @@ class SphinxJson
         $this->jsonFilename = substr($this->document, 0, -1) . '.fjson';
         $filename = $this->path . $this->jsonFilename;
 
+        if (!is_file($filename)) {
+            $this->jsonFilename = $this->document . $this->getDefaultFile() . '.fjson';
+            $filename = $this->path . $this->jsonFilename;
+        }
+
         // Security check
         $fileExists = is_file($filename);
         if ($fileExists && substr(realpath($filename), 0, strlen(realpath($this->path))) !== realpath($this->path)) {
