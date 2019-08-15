@@ -14,6 +14,7 @@
 
 namespace Causal\Restdoc\Hooks;
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -56,11 +57,16 @@ class Ddgooglesitemap
      */
     protected function renderDocumentationSitemap(array $documentationPlugin, array $params)
     {
-        $documentList = $this->getDatabaseConnection()->exec_SELECTgetRows(
-            'lastmod, title, url',
-            'tx_restdoc_toc',
-            'pid=' . intval($documentationPlugin['pid'])
-        );
+        $documentList = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('tx_restdoc_toc')
+            ->select(
+                ['lastmod', 'title', 'url'],
+                'tx_restdoc_toc',
+                [
+                    'pid' => (int)$documentationPlugin['pid'],
+                ]
+            )
+            ->fetchAll();
 
         while (!empty($documentList) && $params['generatedItemCount'] - $params['offset'] <= $params['limit']) {
             $documentInfo = array_shift($documentList);
@@ -105,29 +111,25 @@ class Ddgooglesitemap
      * Initializes the list of tx_restdoc_pi1 plugins publicly accessible on
      * a given page.
      *
-     * @param integer $uid A page uid
+     * @param int $uid A page uid
      * @return void
      */
     protected function initializeDocumentationPlugins($uid)
     {
-        $plugins = $this->getDatabaseConnection()->exec_SELECTgetRows(
-            '*',
-            'tt_content',
-            'pid=' . intval($uid) .
-            ' AND CType=\'list\' AND list_type=\'restdoc_pi1\'' .
-            $GLOBALS['TSFE']->sys_page->enableFields('tt_content', 0)
-        );
-        $this->documentationPlugins = $plugins;
-    }
+        $plugins = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('tt_content')
+            ->select(
+                ['*'],
+                'tt_content',
+                [
+                    'pid' => (int)$uid,
+                    'CType' => 'list',
+                    'list_type' => 'restdoc_pi1',
+                ]
+            )
+            ->fetchAll();
 
-    /**
-     * Returns the database connection.
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
+        $this->documentationPlugins = $plugins;
     }
 
 }

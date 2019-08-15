@@ -14,6 +14,9 @@
 
 namespace Causal\Restdoc\Hooks;
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * RealURL auto-configuration and segment decoder.
  *
@@ -112,40 +115,32 @@ class Realurl
         $fixedPostVarsConfiguration = [];
 
         // Search pages with a restdoc plugin
-        $databaseConnection = $this->getDatabaseConnection();
-        $pages = $databaseConnection->exec_SELECTgetRows(
-            'DISTINCT pid',
-            'tt_content',
-            'list_type=' . $databaseConnection->fullQuoteStr('restdoc_pi1', 'tt_content') .
-            ' AND deleted=0 AND hidden=0',
-            '',
-            '',
-            '',
-            'pid'
-        );
-        $pages = array_keys($pages);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tt_content');
+        $rows = $queryBuilder
+            ->selectLiteral('DISTINCT ' . $queryBuilder->quoteIdentifier('pid'))
+            ->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->eq('list_type', $queryBuilder->quote('restdoc_pi1'))
+            )
+            ->execute()
+            ->fetchAll();
+        $pages = [];
+        foreach ($rows as $row) {
+            $pages[] = $row['pid'];
+        }
 
         if (!empty($pages)) {
             $fixedPostVarsConfiguration['fixedPostVars'] = array_fill_keys($pages, 'restdoc_advanced_url');
             $fixedPostVarsConfiguration['fixedPostVars']['restdoc_advanced_url'] = [
                 [
                     'GETvar' => 'tx_restdoc_pi1[doc]',
-                    'userFunc' => 'Causal\\Restdoc\\Hooks\\Realurl->decodeSpURL_getSequence',
+                    'userFunc' => Realurl::class . '->decodeSpURL_getSequence',
                 ],
             ];
         }
 
         return $fixedPostVarsConfiguration;
-    }
-
-    /**
-     * Returns the database connection.
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
 }

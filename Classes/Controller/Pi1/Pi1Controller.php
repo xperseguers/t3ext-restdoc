@@ -14,6 +14,7 @@
 
 namespace Causal\Restdoc\Controller\Pi1;
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Causal\Restdoc\Utility\RestHelper;
 
@@ -339,32 +340,37 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $limit = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($conf['limit'], 0, 100);    // max number of items
                 $maxAge = intval($this->cObj->calc($conf['maxAge']));
                 $sortField = 'crdate';
-                $extraWhere = '';
+
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable('tx_restdoc_toc');
+                $conditions = [];
+
                 if (!empty($conf['excludeChapters'])) {
                     $excludeChapters = array_map(
-                        function ($chapter) {
-                            return $this->getDatabaseConnection()->fullQuoteStr($chapter, 'tx_restdoc_toc');
+                        function ($chapter) use ($queryBuilder) {
+                            return $queryBuilder->quote($chapter);
                         },
                         GeneralUtility::trimExplode(',', $conf['excludeChapters'])
                     );
-                    if (count($excludeChapters) > 0) {
-                        $extraWhere .= ' AND document NOT IN (' . implode(',', $excludeChapters) . ')';
+                    if (!empty($excludeChapters)) {
+                        $conditions[] = $queryBuilder->expr()->notIn('document', $excludeChapters);
                     }
                 }
                 if ($maxAge > 0) {
-                    $extraWhere .= ' AND ' . $sortField . '>' . ($GLOBALS['SIM_ACCESS_TIME'] - $maxAge);
+                    $conditions[] = $queryBuilder->expr()->gt($sortField, $queryBuilder->createNamedParameter($GLOBALS['SIM_ACCESS_TIME'] - $maxAge, \PDO::PARAM_INT));
                 }
                 // TODO: prefix root entries with the storage UID when using FAL, to prevent clashes with multiple
                 //       directories with similar names
-                $rows = $this->getDatabaseConnection()->exec_SELECTgetRows(
-                    '*',
-                    'tx_restdoc_toc',
-                    'root=' . $this->getDatabaseConnection()->fullQuoteStr(substr($documentRoot, strlen($basePath)), 'tx_restdoc_toc') .
-                    $extraWhere,
-                    '',
-                    $sortField . ' DESC',
-                    $limit
-                );
+                $conditions[] = $queryBuilder->expr()->eq('root', $queryBuilder->createNamedParameter(substr($documentRoot, strlen($basePath)), \PDO::PARAM_STR));
+
+                $rows = $queryBuilder
+                    ->select('*')
+                    ->from('tx_restdoc_toc')
+                    ->where(... $conditions)
+                    ->orderBy($sortField, 'DESC')
+                    ->setMaxResults($limit)
+                    ->execute()
+                    ->fetchAll();
                 foreach ($rows as $row) {
                     $data[] = [
                         'title' => $row['title'] ?: '[no title]',
@@ -1033,16 +1039,6 @@ HTML;
             }
         }
         $this->LOCAL_LANG_loaded = 1;
-    }
-
-    /**
-     * Returns the database connection.
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
 }

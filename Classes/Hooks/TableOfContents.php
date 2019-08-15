@@ -14,6 +14,7 @@
 
 namespace Causal\Restdoc\Hooks;
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Causal\Restdoc\Utility\RestHelper;
 
@@ -108,12 +109,17 @@ class TableOfContents
         $data = [
             'tstamp' => $GLOBALS['ACCESS_TIME'],
         ];
-        $cachedData = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-            '*',
-            'tx_restdoc_toc',
-            'pid=' . $this->pageId .
-            ' AND document=' . $this->getDatabaseConnection()->fullQuoteStr($params['document'], 'tx_restdoc_toc')
-        );
+        $cachedData = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('tx_restdoc_toc')
+            ->select(
+                ['*'],
+                'tx_restdoc_toc',
+                [
+                    'pid' => $this->pageId,
+                    'document' => $params['document'],
+                ]
+            )
+            ->fetchAll();
         $add = !is_array($cachedData);
         $refresh = (!$add && $cachedData['checksum'] !== $checksum);
         if ($add) {
@@ -154,19 +160,24 @@ class TableOfContents
         $data['crdate'] = $lastModification;
 
         if ($add) {
-            $this->getDatabaseConnection()->exec_INSERTquery(
-                'tx_restdoc_toc',
-                $data
-            );
+            GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('tx_restdoc_toc')
+                ->insert(
+                    'tx_restdoc_toc',
+                    $data
+                );
         } elseif ($refresh) {
-            $this->getDatabaseConnection()->exec_UPDATEquery(
-                'tx_restdoc_toc',
-                'pid=' . $this->pageId .
-                ' AND document=' . $this->getDatabaseConnection()->fullQuoteStr($params['document'], 'tx_restdoc_toc'),
-                $data
-            );
+            GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('tx_restdoc_toc')
+                ->update(
+                    'tx_restdoc_toc',
+                    $data,
+                    [
+                        'pid' => $this->pageId,
+                        'document' => $params['document'],
+                    ]
+                );
         }
-
     }
 
     /**
@@ -305,22 +316,18 @@ class TableOfContents
      */
     protected function flushCache()
     {
-        $this->getDatabaseConnection()->exec_DELETEquery(
-            'tx_restdoc_toc',
-            'pid=' . $this->pageId .
-            ' AND (root<>' . $this->getDatabaseConnection()->fullQuoteStr($this->root, 'tx_restdoc_toc') .
-            ' OR tstamp<=' . ($GLOBALS['ACCESS_TIME'] - self::CACHE_MAX_AGE) . ')'
-        );
-    }
-
-    /**
-     * Returns the database connection.
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tx_restdoc_toc');
+        $queryBuilder
+            ->delete('tx_restdoc_toc')
+            ->where(
+                $queryBuilder->expr()->eq('pid', $this->pageId),
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->neq('root', $queryBuilder->createNamedParameter($this->root, \PDO::PARAM_STR)),
+                    $queryBuilder->expr()->lte('tstamp', $queryBuilder->createNamedParameter($GLOBALS['ACCESS_TIME'] - static::CACHE_MAX_AGE, \PDO::PARAM_INT))
+                )
+            )
+            ->execute();
     }
 
 }
