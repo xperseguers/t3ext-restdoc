@@ -997,7 +997,6 @@ HTML;
      * Loads the locallang file.
      *
      * @param string $languageFilePath
-     * @return void
      */
     public function pi_loadLL($languageFilePath = '')
     {
@@ -1005,22 +1004,13 @@ HTML;
             $basePath = 'EXT:' . $this->extKey . '/Resources/Private/Language/locallang.xlf';
 
             // Read the strings in the required charset (since TYPO3 4.2)
-            if (version_compare(TYPO3_version, '7.6', '>=')) {
-                /** @var $languageFactory \TYPO3\CMS\Core\Localization\LocalizationFactory */
-                $languageFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LocalizationFactory::class);
-                $this->LOCAL_LANG = $languageFactory->getParsedData($basePath, $this->LLkey, $GLOBALS['TSFE']->renderCharset);
-                if ($this->altLLkey) {
-                    $tempLOCAL_LANG = $languageFactory->getParsedData($basePath, $this->altLLkey);
-                    $this->LOCAL_LANG = array_merge(is_array($this->LOCAL_LANG) ? $this->LOCAL_LANG : [], $tempLOCAL_LANG);
-                    unset($tempLOCAL_LANG);
-                }
-            } else {
-                $this->LOCAL_LANG = GeneralUtility::readLLfile($basePath, $this->LLkey, $GLOBALS['TSFE']->renderCharset);
-                if ($this->altLLkey) {
-                    $tempLOCAL_LANG = GeneralUtility::readLLfile($basePath, $this->altLLkey);
-                    $this->LOCAL_LANG = array_merge(is_array($this->LOCAL_LANG) ? $this->LOCAL_LANG : [], $tempLOCAL_LANG);
-                    unset($tempLOCAL_LANG);
-                }
+            /** @var $languageFactory \TYPO3\CMS\Core\Localization\LocalizationFactory */
+            $languageFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LocalizationFactory::class);
+            $this->LOCAL_LANG = $languageFactory->getParsedData($basePath, $this->LLkey, 'utf-8');
+            if ($this->altLLkey) {
+                $tempLOCAL_LANG = $languageFactory->getParsedData($basePath, $this->altLLkey);
+                $this->LOCAL_LANG = array_merge(is_array($this->LOCAL_LANG) ? $this->LOCAL_LANG : [], $tempLOCAL_LANG);
+                unset($tempLOCAL_LANG);
             }
 
             // Overlaying labels from TypoScript (including fictitious language keys for non-system languages!):
