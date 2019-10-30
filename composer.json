@@ -31,7 +31,6 @@
     }
   },
   "replace": {
-    "restdoc": "self.version",
     "typo3-ter/restdoc": "self.version"
   },
   "suggest": {
@@ -52,6 +51,7 @@
       "dev-master": "1.7.x-dev"
     },
     "typo3/cms": {
+      "extension-key": "restdoc",
       "cms-package-dir": "{$vendor-dir}/typo3/cms",
       "web-dir": ".Build/Web"
     },
