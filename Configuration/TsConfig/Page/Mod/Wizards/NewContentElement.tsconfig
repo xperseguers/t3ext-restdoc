@@ -1,0 +1,17 @@
+mod.wizards {
+    newContentElement.wizardItems {
+        plugins {
+            elements {
+                restdoc_pi1 {
+                    iconIdentifier = extensions-restdoc-wizard
+                    title = LLL:EXT:restdoc/Resources/Private/Language/locallang.xlf:pi1_title
+                    description = LLL:EXT:restdoc/Resources/Private/Language/locallang.xlf:pi1_plus_wiz_description
+                    tt_content_defValues {
+                        CType = list
+                        list_type = restdoc_pi1
+                    }
+                }
+            }
+        }
+    }
+}
