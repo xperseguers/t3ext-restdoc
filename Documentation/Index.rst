@@ -34,7 +34,7 @@ Sphinx Documentation Viewer Plugin
 		reStructuredText, sphinx-doc, documentation
 
 	:Copyright:
-		2012-2017
+		2012-2020
 
 	:Author:
 		Xavier Perseguers
@@ -51,12 +51,6 @@ Sphinx Documentation Viewer Plugin
 
 	The content of this document is related to TYPO3,
 	a GNU/GPL CMS/Framework available from `www.typo3.org <https://typo3.org/>`__.
-
-
-	**Other version of this document**
-
-	:PDF:
-		https://docs.typo3.org/typo3cms/extensions/restdoc/1.6.0/_pdf/
 
 
 	**Table of Contents**
