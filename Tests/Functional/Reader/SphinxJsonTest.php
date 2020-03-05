@@ -14,6 +14,8 @@
 
 namespace Causal\Restdoc\Tests\Functional\Reader;
 
+use TYPO3\CMS\Core\Core\Environment;
+
 /**
  * Testcase for class \Causal\Restdoc\Reader\SphinxJson.
  */
@@ -31,7 +33,10 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     public function setUp()
     {
-        $this->fixturePath = substr(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('restdoc') . 'Tests/Functional/Fixtures/_build/json/', strlen(PATH_site));
+        $pathSite = version_compare(TYPO3_version, '9.0', '<')
+            ? PATH_site
+            : Environment::getPublicPath();
+        $this->fixturePath = substr(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('restdoc') . 'Tests/Functional/Fixtures/_build/json/', strlen($pathSite));
         $this->sphinxReader = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Causal\\Restdoc\\Reader\\SphinxJson');
     }
 
@@ -58,7 +63,10 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function documentIsMandatory()
     {
-        $this->sphinxReader->setPath(PATH_site . $this->fixturePath);
+        $pathSite = version_compare(TYPO3_version, '9.0', '<')
+            ? PATH_site
+            : Environment::getPublicPath();
+        $this->sphinxReader->setPath($pathSite . $this->fixturePath);
         $this->sphinxReader->load();
     }
 
@@ -240,7 +248,10 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function initializeReader($document)
     {
-        $this->sphinxReader->setPath(PATH_site . $this->fixturePath);
+        $pathSite = version_compare(TYPO3_version, '9.0', '<')
+            ? PATH_site
+            : Environment::getPublicPath();
+        $this->sphinxReader->setPath($pathSite . $this->fixturePath);
         $this->sphinxReader->setDocument($document);
         return $this->sphinxReader->load();
     }

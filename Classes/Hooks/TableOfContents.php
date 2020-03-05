@@ -14,6 +14,7 @@
 
 namespace Causal\Restdoc\Hooks;
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Causal\Restdoc\Utility\RestHelper;
@@ -42,16 +43,16 @@ class TableOfContents
      */
     const CACHE_MAX_AGE = 7776000;    // 86400 * 30 * 3 = 3 months
 
-    /** @var tx_restdoc_pi1 */
+    /** @var \tx_restdoc_pi1 */
     protected $pObj;
 
     /** @var string */
     protected $root;
 
-    /** @var integer */
+    /** @var int */
     protected $pageId;
 
-    /** @var integer */
+    /** @var int */
     protected $maxDocuments;
 
     /** @var array */
@@ -77,7 +78,9 @@ class TableOfContents
             $basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
         } else {
             // FAL is not used
-            $basePath = PATH_site;
+            $basePath = version_compare(TYPO3_version, '9.0', '<')
+                ? PATH_site
+                : Environment::getPublicPath();
         }
 
         $this->maxDocuments = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($params['config']['documentStructureMaxDocuments'], 1, 9999);

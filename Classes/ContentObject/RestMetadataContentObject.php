@@ -14,6 +14,7 @@
 
 namespace Causal\Restdoc\ContentObject;
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Causal\Restdoc\Utility\RestHelper;
 
@@ -50,10 +51,13 @@ class RestMetadataContentObject
         // TODO: Add support for FAL
 
         $output = '';
-        $data = RestHelper::getMetadata(PATH_site . $conf['path']);
+        $pathSite = version_compare(TYPO3_version, '9.0', '<')
+            ? PATH_site
+            : Environment::getPublicPath();
+        $data = RestHelper::getMetadata($pathSite . $conf['path']);
         if ($data) {
             /** @var $contentObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
-            $contentObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+            $contentObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
             $contentObj->start($data);
             $output = $contentObj->stdWrap('', $conf);
         }

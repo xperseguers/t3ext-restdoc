@@ -14,6 +14,7 @@
 
 namespace Causal\Restdoc\Utility;
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 
@@ -40,7 +41,10 @@ final class RestHelper
     {
         if (!is_dir($path)) {
             // Most probably a relative path has been provided
-            $path = PATH_site . $path;
+            $pathSite = version_compare(TYPO3_version, '9.0', '<')
+                ? PATH_site
+                : Environment::getPublicPath();
+            $path = $pathSite . $path;
             GeneralUtility::deprecationLog('EXT:restdoc - \\Causal\\Restdoc\\Utility\\RestHelper::getMetadata() needs an absolute path as argument since 1.3.0. Support for relative path will be removed in 1.5.0.');
         }
         $documentRoot = rtrim($path, '/') . '/';

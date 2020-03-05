@@ -14,6 +14,7 @@
 
 namespace Causal\Restdoc\Reader;
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Causal\Restdoc\Utility\RestHelper;
 
@@ -704,7 +705,10 @@ class SphinxJson
                 $attributes['src'] = $storage->getUid() . ':' . $fileIdentifier;
             } else {
                 // FAL is not used
-                $attributes['src'] = substr($src, strlen(PATH_site));
+                $pathSite = version_compare(TYPO3_version, '9.0', '<')
+                    ? PATH_site
+                    : Environment::getPublicPath();
+                $attributes['src'] = substr($src, strlen($pathSite));
             }
 
             return call_user_func($callbackImages, $attributes);
