@@ -14,6 +14,7 @@
 
 namespace Causal\Restdoc\Controller\Pi1;
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Causal\Restdoc\Utility\RestHelper;
@@ -58,7 +59,12 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
     public function __construct()
     {
-        $this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
+        if (version_compare(TYPO3_version, '9.0', '<')) {
+            $this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
+        } else {
+            $this->settings = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
+        }
+
         $this->pi_checkCHash = (bool)$this->settings['cache_plugin_output'];
         parent::__construct();
     }

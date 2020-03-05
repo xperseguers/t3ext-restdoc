@@ -14,6 +14,7 @@
 
 namespace Causal\Restdoc\Hooks;
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -41,7 +42,11 @@ class Realurl
     {
         $fixedPostVarsConfiguration = [];
 
-        $settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['restdoc']);
+        if (version_compare(TYPO3_version, '9.0', '<')) {
+            $settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['restdoc']);
+        } else {
+            $settings = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('restdoc');
+        }
         if (isset($settings['enable_slash_as_separator']) && (bool)$settings['enable_slash_as_separator']) {
             $fixedPostVarsConfiguration = $this->getFixedPostVarsConfiguration();
         }
