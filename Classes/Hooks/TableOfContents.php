@@ -80,7 +80,7 @@ class TableOfContents
             // FAL is not used
             $basePath = version_compare(TYPO3_version, '9.0', '<')
                 ? PATH_site
-                : Environment::getPublicPath();
+                : Environment::getPublicPath() . '/';
         }
 
         $this->maxDocuments = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($params['config']['documentStructureMaxDocuments'], 1, 9999);

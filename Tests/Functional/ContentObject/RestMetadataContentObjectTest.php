@@ -36,7 +36,7 @@ class RestMetadataContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $pathSite = version_compare(TYPO3_version, '9.0', '<')
             ? PATH_site
-            : Environment::getPublicPath();
+            : Environment::getPublicPath() . '/';
         $this->fixturePath = substr(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('restdoc') . 'Tests/Functional/Fixtures/_build/json/', strlen($pathSite));
 
         $this->backupCObjTypeAndClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'];

@@ -93,7 +93,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             // FAL is not used
             $basePath = version_compare(TYPO3_version, '9.0', '<')
                 ? PATH_site
-                : Environment::getPublicPath();
+                : Environment::getPublicPath() . '/';
         }
 
         $documentRoot = $basePath . rtrim($this->conf['path'], '/') . '/';
@@ -279,7 +279,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             // FAL is not used
             $basePath = version_compare(TYPO3_version, '9.0', '<')
                 ? PATH_site
-                : Environment::getPublicPath();
+                : Environment::getPublicPath() . '/';
         }
 
         $documentRoot = self::$sphinxReader->getPath();
@@ -426,7 +426,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             // FAL is not used
             $basePath = version_compare(TYPO3_version, '9.0', '<')
                 ? PATH_site
-                : Environment::getPublicPath();
+                : Environment::getPublicPath() . '/';
         }
         $metadata = RestHelper::getMetadata($basePath . $this->conf['path']);
         if (!empty($metadata['release'])) {
@@ -700,7 +700,7 @@ JS;
             // FAL is not used
             $basePath = version_compare(TYPO3_version, '9.0', '<')
                 ? PATH_site
-                : Environment::getPublicPath();
+                : Environment::getPublicPath() . '/';
         }
 
         $metadata = RestHelper::getMetadata($basePath . $this->conf['path']);
@@ -788,7 +788,7 @@ HTML;
     {
         $pathSite = version_compare(TYPO3_version, '9.0', '<')
             ? PATH_site
-            : Environment::getPublicPath();
+            : Environment::getPublicPath() . '/';
         $relativeFile = substr(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey), strlen($pathSite)) . $file;
         $relativeFile = $this->cObj->typoLink_URL(['parameter' => $relativeFile]);
         $GLOBALS['TSFE']->additionalHeaderData[$relativeFile] = '<script type="text/javascript" src="' . $relativeFile . '"></script>';

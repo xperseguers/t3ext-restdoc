@@ -707,7 +707,7 @@ class SphinxJson
                 // FAL is not used
                 $pathSite = version_compare(TYPO3_version, '9.0', '<')
                     ? PATH_site
-                    : Environment::getPublicPath();
+                    : Environment::getPublicPath() . '/';
                 $attributes['src'] = substr($src, strlen($pathSite));
             }
 

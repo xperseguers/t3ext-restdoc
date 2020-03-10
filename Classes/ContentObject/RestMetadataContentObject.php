@@ -53,7 +53,7 @@ class RestMetadataContentObject
         $output = '';
         $pathSite = version_compare(TYPO3_version, '9.0', '<')
             ? PATH_site
-            : Environment::getPublicPath();
+            : Environment::getPublicPath() . '/';
         $data = RestHelper::getMetadata($pathSite . $conf['path']);
         if ($data) {
             /** @var $contentObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */

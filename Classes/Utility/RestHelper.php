@@ -43,7 +43,7 @@ final class RestHelper
             // Most probably a relative path has been provided
             $pathSite = version_compare(TYPO3_version, '9.0', '<')
                 ? PATH_site
-                : Environment::getPublicPath();
+                : Environment::getPublicPath() . '/';
             $path = $pathSite . $path;
             GeneralUtility::deprecationLog('EXT:restdoc - \\Causal\\Restdoc\\Utility\\RestHelper::getMetadata() needs an absolute path as argument since 1.3.0. Support for relative path will be removed in 1.5.0.');
         }
