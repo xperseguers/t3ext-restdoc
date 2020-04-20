@@ -41,7 +41,10 @@ final class RestHelper
     {
         if (!is_dir($path)) {
             // Most probably a relative path has been provided
-            $pathSite = version_compare(TYPO3_version, '9.0', '<')
+            $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+                ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+                : TYPO3_branch;
+            $pathSite = version_compare($typo3Branch, '9.0', '<')
                 ? PATH_site
                 : Environment::getPublicPath() . '/';
             $path = $pathSite . $path;

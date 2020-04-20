@@ -60,8 +60,11 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
     public function __construct()
     {
-        if (version_compare(TYPO3_version, '9.0', '<')) {
-            $this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
+        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+            : TYPO3_branch;
+        if (version_compare($typo3Branch, '9.0', '<')) {
+            $this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey] ?? '') ?? [];
         } else {
             $this->settings = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
         }
@@ -91,7 +94,10 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
         } else {
             // FAL is not used
-            $basePath = version_compare(TYPO3_version, '9.0', '<')
+            $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+                ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+                : TYPO3_branch;
+            $basePath = version_compare($typo3Branch, '9.0', '<')
                 ? PATH_site
                 : Environment::getPublicPath() . '/';
         }
@@ -277,7 +283,10 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
         } else {
             // FAL is not used
-            $basePath = version_compare(TYPO3_version, '9.0', '<')
+            $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+                ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+                : TYPO3_branch;
+            $basePath = version_compare($typo3Branch, '9.0', '<')
                 ? PATH_site
                 : Environment::getPublicPath() . '/';
         }
@@ -424,7 +433,10 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
         } else {
             // FAL is not used
-            $basePath = version_compare(TYPO3_version, '9.0', '<')
+            $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+                ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+                : TYPO3_branch;
+            $basePath = version_compare($typo3Branch, '9.0', '<')
                 ? PATH_site
                 : Environment::getPublicPath() . '/';
         }
@@ -698,7 +710,10 @@ JS;
             $basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
         } else {
             // FAL is not used
-            $basePath = version_compare(TYPO3_version, '9.0', '<')
+            $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+                ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+                : TYPO3_branch;
+            $basePath = version_compare($typo3Branch, '9.0', '<')
                 ? PATH_site
                 : Environment::getPublicPath() . '/';
         }
@@ -786,7 +801,10 @@ HTML;
      */
     protected function includeJsFile($file)
     {
-        $pathSite = version_compare(TYPO3_version, '9.0', '<')
+        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+            : TYPO3_branch;
+        $pathSite = version_compare($typo3Branch, '9.0', '<')
             ? PATH_site
             : Environment::getPublicPath() . '/';
         $relativeFile = substr(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey), strlen($pathSite)) . $file;

@@ -1,8 +1,11 @@
 <?php
 defined('TYPO3_MODE') || die();
 
-$boot = function ($_EXTKEY) {
-    if (version_compare(TYPO3_version, '9.0', '<')) {
+$boot = function (string $_EXTKEY): void {
+    $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+        ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+        : TYPO3_branch;
+    if (version_compare($typo3Branch, '9.0', '<')) {
         $config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY]);
     } else {
         $config = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get($_EXTKEY);

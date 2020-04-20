@@ -51,7 +51,10 @@ class RestMetadataContentObject
         // TODO: Add support for FAL
 
         $output = '';
-        $pathSite = version_compare(TYPO3_version, '9.0', '<')
+        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+            : TYPO3_branch;
+        $pathSite = version_compare($typo3Branch, '9.0', '<')
             ? PATH_site
             : Environment::getPublicPath() . '/';
         $data = RestHelper::getMetadata($pathSite . $conf['path']);
