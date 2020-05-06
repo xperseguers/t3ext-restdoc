@@ -285,9 +285,9 @@ final class RestHelper
      * Converts a DOM node into an array.
      *
      * @param \DOMNode $node
-     * @return array
+     * @return array|string
      */
-    protected static function domnode_to_array(\DOMNode $node): array
+    protected static function domnode_to_array(\DOMNode $node)
     {
         $output = [];
         switch ($node->nodeType) {
