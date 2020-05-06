@@ -271,7 +271,9 @@ final class RestHelper
             if ($dt[1]) {
                 $output .= '<dd>' . LF;
                 foreach ($dt[1] as $term) {
-                    $output .= self::getIndexDefinitionList($documentRoot, $term, $callbackLinks);
+                    if ($term !== null) {
+                        $output .= self::getIndexDefinitionList($documentRoot, $term, $callbackLinks);
+                    }
                 }
                 $output .= '</dd>' . LF;
             }
