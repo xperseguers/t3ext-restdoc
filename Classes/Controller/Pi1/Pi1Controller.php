@@ -88,15 +88,16 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $this->pi_loadLL();
         $this->pi_USER_INT_obj = (bool)$this->settings['cache_plugin_output'] ? 0 : 1;
 
+        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+            : TYPO3_branch;
+
         $storage = self::$sphinxReader->getStorage();
         if ($storage !== null) {
             $storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
             $basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
         } else {
             // FAL is not used
-            $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-                ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-                : TYPO3_branch;
             $basePath = version_compare($typo3Branch, '9.0', '<')
                 ? PATH_site
                 : Environment::getPublicPath() . '/';
@@ -220,7 +221,11 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // Hook for post-processing the output
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['renderHook'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['renderHook'] as $classRef) {
-                $hookObject = GeneralUtility::getUserObj($classRef);
+                if (version_compare($typo3Branch, '9.0', '>=')) {
+                    $hookObject = GeneralUtility::makeInstance($classRef);
+                } else {
+                    $hookObject = GeneralUtility::getUserObj($classRef);
+                }
                 $params = [
                     'mode' => $this->conf['mode'],
                     'documentRoot' => $documentRoot,
@@ -277,15 +282,16 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $data = [];
         $type = isset($conf['userFunc.']['type']) ? $conf['userFunc.']['type'] : 'menu';
 
+        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+            : TYPO3_branch;
+
         $storage = self::$sphinxReader->getStorage();
         if ($storage !== null) {
             $storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
             $basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
         } else {
             // FAL is not used
-            $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-                ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-                : TYPO3_branch;
             $basePath = version_compare($typo3Branch, '9.0', '<')
                 ? PATH_site
                 : Environment::getPublicPath() . '/';
@@ -404,7 +410,11 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // Hook for post-processing the menu entries
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['makeMenuArrayHook'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['makeMenuArrayHook'] as $classRef) {
-                $hookObject = GeneralUtility::getUserObj($classRef);
+                if (version_compare($typo3Branch, '9.0', '>=')) {
+                    $hookObject = GeneralUtility::makeInstance($classRef);
+                } else {
+                    $hookObject = GeneralUtility::getUserObj($classRef);
+                }
                 $params = [
                     'documentRoot' => $documentRoot,
                     'document' => $document,
@@ -489,6 +499,10 @@ JS;
         $nextDocument = self::$sphinxReader->getNextDocument();
         $parentDocuments = self::$sphinxReader->getParentDocuments();
 
+        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+            : TYPO3_branch;
+
         $data = [];
         $data['home_title'] = $this->pi_getLL('home_title', 'Home');
         $data['home_uri'] = $this->getLink('');
@@ -547,7 +561,11 @@ JS;
         // Hook for post-processing the quick navigation
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['quickNavigationHook'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['quickNavigationHook'] as $classRef) {
-                $hookObject = GeneralUtility::getUserObj($classRef);
+                if (version_compare($typo3Branch, '9.0', '>=')) {
+                    $hookObject = GeneralUtility::makeInstance($classRef);
+                } else {
+                    $hookObject = GeneralUtility::getUserObj($classRef);
+                }
                 $params = [
                     'documentRoot' => $documentRoot,
                     'document' => $document,
@@ -699,6 +717,10 @@ JS;
      */
     protected function generateSearchForm()
     {
+        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+            : TYPO3_branch;
+
         $searchIndexFile = self::$sphinxReader->getPath() . 'searchindex.json';
         if (!is_file($searchIndexFile)) {
             return 'ERROR: File ' . $this->conf['path'] . 'searchindex.json was not found.';
@@ -722,15 +744,11 @@ JS;
         // Hook for pre-processing the search form
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['searchFormHook'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['searchFormHook'] as $classRef) {
-                $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-                    ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-                    : TYPO3_branch;
                 if (version_compare($typo3Branch, '9.0', '>=')) {
                     $hookObject = GeneralUtility::makeInstance($classRef);
                 } else {
                     $hookObject = GeneralUtility::getUserObj($classRef);
                 }
-
                 $params = [
                     'config' => &$config,
                     'pObj' => $this,
