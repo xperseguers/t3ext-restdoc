@@ -704,31 +704,11 @@ JS;
             return 'ERROR: File ' . $this->conf['path'] . 'searchindex.json was not found.';
         }
 
-        $storage = self::$sphinxReader->getStorage();
-        if ($storage !== null) {
-            $storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
-            $basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
-        } else {
-            // FAL is not used
-            $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-                ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-                : TYPO3_branch;
-            $basePath = version_compare($typo3Branch, '9.0', '<')
-                ? PATH_site
-                : Environment::getPublicPath() . '/';
-        }
-
-        $metadata = RestHelper::getMetadata($basePath . $this->conf['path']);
-        $sphinxVersion = isset($metadata['sphinx_version']) ? $metadata['sphinx_version'] : '1.3.1';
-
         $config = [
             'jsLibs' => [
                 'Resources/Public/JavaScript/underscore.js',
                 'Resources/Public/JavaScript/doctools.js',
-                // Sphinx search library differs in branch v1.2
-                GeneralUtility::isFirstPartOfStr($sphinxVersion, '1.2')
-                    ? 'Resources/Public/JavaScript/searchtools.12.js'
-                    : 'Resources/Public/JavaScript/searchtools.js'
+                'Resources/Public/JavaScript/searchtools.js',
             ],
             'jsInline' => '',
             'advertiseSphinx' => true,
@@ -742,7 +722,15 @@ JS;
         // Hook for pre-processing the search form
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['searchFormHook'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['searchFormHook'] as $classRef) {
-                $hookObject = GeneralUtility::getUserObj($classRef);
+                $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+                    ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+                    : TYPO3_branch;
+                if (version_compare($typo3Branch, '9.0', '>=')) {
+                    $hookObject = GeneralUtility::makeInstance($classRef);
+                } else {
+                    $hookObject = GeneralUtility::getUserObj($classRef);
+                }
+
                 $params = [
                     'config' => &$config,
                     'pObj' => $this,
