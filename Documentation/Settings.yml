@@ -6,8 +6,8 @@
 conf.py:
   copyright: 2012-2020
   project: Sphinx Documentation Viewer Plugin
-  version: 1.7
-  release: 1.7.0
+  version: 2.0
+  release: 2.0.0
   latex_documents:
   - - Index
     - restdoc.tex
@@ -20,7 +20,7 @@ conf.py:
     preamble: \usepackage{typo3}
   intersphinx_mapping:
     t3tsref:
-    - https://docs.typo3.org/typo3cms/TyposcriptReference/
+    - https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/
     - null
   extlinks:
     forge:
