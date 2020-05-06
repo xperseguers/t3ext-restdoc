@@ -14,6 +14,7 @@
 
 namespace Causal\Restdoc\Hooks;
 
+use Causal\Restdoc\Controller\Pi1\Pi1Controller;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -43,28 +44,37 @@ class TableOfContents
      */
     const CACHE_MAX_AGE = 7776000;    // 86400 * 30 * 3 = 3 months
 
-    /** @var \tx_restdoc_pi1 */
+    /**
+     * @var Pi1Controller
+     */
     protected $pObj;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $root;
 
-    /** @var int */
+    /**
+     * @var int
+     */
     protected $pageId;
 
-    /** @var int */
+    /**
+     * @var int
+     */
     protected $maxDocuments;
 
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $processedDocuments = [];
 
     /**
      * Stores the TOC into database for future inclusion within EXT:dd_googlesitemap.
      *
      * @param array $params
-     * @return void
      */
-    public function postProcessOutput(array $params)
+    public function postProcessOutput(array $params): void
     {
         $this->pObj = $params['pObj'];
 
@@ -98,9 +108,8 @@ class TableOfContents
      * Extracts the links recursively.
      *
      * @param array $params
-     * @return void
      */
-    protected function extractLinks(array $params)
+    protected function extractLinks(array $params): void
     {
         $jsonFile = substr($params['document'], 0, -1) . '.fjson';
         $filename = $params['documentRoot'] . $jsonFile;
@@ -193,7 +202,7 @@ class TableOfContents
      * @param array $params
      * @return array
      */
-    protected function processToc($content, array $params)
+    protected function processToc(string $content, array $params): array
     {
         $jsonData = json_decode($content, true);
         $links = $this->extractToc($jsonData, $params);
@@ -206,9 +215,9 @@ class TableOfContents
      * @param array $jsonData
      * @param array $params
      * @return array
-     * @see tx_restdoc_pi1::generateTableOfContents()
+     * @see \Causal\Restdoc\Reader\SphinxJson::getTableOfContents()
      */
-    protected function extractToc(array $jsonData, array $params)
+    protected function extractToc(array $jsonData, array $params): array
     {
         // Replace links in table of contents
         $toc = $this->replaceLinks($params['documentRoot'], $params['document'], $jsonData['toc']);
@@ -252,9 +261,9 @@ class TableOfContents
      *
      * @param array $entries
      * @return array
-     * @see tx_restdoc_utility::getMenuData()
+     * @see \Causal\Restdoc\Utility\RestHelper::getMenuData()
      */
-    public function getLinksFromToc(array $entries)
+    public function getLinksFromToc(array $entries): array
     {
         $menu = [];
         $entries = isset($entries['li'][0]) ? $entries['li'] : [$entries['li']];
@@ -284,43 +293,45 @@ class TableOfContents
      * @param string $document
      * @param string $content
      * @return string
-     * @see tx_restdoc_pi1::replaceLinks()
+     * @see \Causal\Restdoc\Reader\SphinxJson::replaceLinks()
      */
-    protected function replaceLinks($root, $document, $content)
+    protected function replaceLinks(string $root, string $document, string $content): string
     {
         $plugin = $this->pObj;
-        $ret = preg_replace_callback('#(<a .*? href=")([^"]+)#', function ($matches) use ($plugin, $root, $document) {
-            /** @var $plugin tx_restdoc_pi1 */
-            $anchor = '';
-            if (preg_match('#^[a-zA-Z]+://#', $matches[2])) {
-                // External URL
-                return $matches[0];
-            } elseif ($matches[2]{0} === '#') {
-                $anchor = $matches[2];
-            }
+        $ret = preg_replace_callback(
+            '#(<a .*? href=")([^"]+)#',
+            function (array $matches) use ($plugin, $root, $document) {
+                /** @var Pi1Controller $plugin */
+                $anchor = '';
+                if (preg_match('#^[a-zA-Z]+://#', $matches[2])) {
+                    // External URL
+                    return $matches[0];
+                } elseif ($matches[2]{0} === '#') {
+                    $anchor = $matches[2];
+                }
 
-            if ($anchor !== '') {
-                $document .= $anchor;
-            } else {
-                // $document's last part is a document, not a directory
-                $document = substr($document, 0, strrpos(rtrim($document, '/'), '/'));
-                $absolute = RestHelper::relativeToAbsolute($root . $document, $matches[2]);
-                $document = substr($absolute, strlen($root));
-            }
-            $url = $plugin->getLink($document, true);
-            $url = str_replace('&amp;', '&', $url);
-            $url = str_replace('&', '&amp;', $url);
-            return $matches[1] . $url . '" data-document="' . $document;
-        }, $content);
+                if ($anchor !== '') {
+                    $document .= $anchor;
+                } else {
+                    // $document's last part is a document, not a directory
+                    $document = substr($document, 0, strrpos(rtrim($document, '/'), '/'));
+                    $absolute = RestHelper::relativeToAbsolute($root . $document, $matches[2]);
+                    $document = substr($absolute, strlen($root));
+                }
+                $url = $plugin->getLink($document, true);
+                $url = str_replace('&amp;', '&', $url);
+                $url = str_replace('&', '&amp;', $url);
+                return $matches[1] . $url . '" data-document="' . $document;
+            },
+            $content
+        );
         return $ret;
     }
 
     /**
      * Flushes cache of a given plugin if root changed.
-     *
-     * @return void
      */
-    protected function flushCache()
+    protected function flushCache(): void
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('tx_restdoc_toc');

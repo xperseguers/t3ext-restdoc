@@ -15,6 +15,7 @@
 namespace Causal\Restdoc\Reader;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Causal\Restdoc\Utility\RestHelper;
 
@@ -31,49 +32,64 @@ use Causal\Restdoc\Utility\RestHelper;
 class SphinxJson
 {
 
-    /** @var \TYPO3\CMS\Core\Resource\ResourceStorage */
+    /**
+     * @var ResourceStorage
+     */
     protected $storage = null;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $path = null;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $document = null;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $jsonFilename = null;
 
-    /** @var boolean */
+    /**
+     * @var bool
+     */
     protected $keepPermanentLinks = false;
 
-    /** @var boolean */
+    /**
+     * @var bool
+     */
     protected $fallbackToDefaultFile = false;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $defaultFile = 'index';
 
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $data = [];
 
     /**
      * Sets the storage.
      *
-     * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storage
-     * @return $this
+     * @param ResourceStorage $storage
+     * @return SphinxJson
      */
-    public function setStorage(\TYPO3\CMS\Core\Resource\ResourceStorage $storage)
+    public function setStorage(ResourceStorage $storage): SphinxJson
     {
         $this->storage = $storage;
-
         return $this;
     }
 
     /**
      * Returns the storage.
      *
-     * @return \TYPO3\CMS\Core\Resource\ResourceStorage
+     * @return ResourceStorage
      */
-    public function getStorage()
+    public function getStorage(): ResourceStorage
     {
         return $this->storage;
     }
@@ -82,12 +98,11 @@ class SphinxJson
      * Sets the root path to the documentation.
      *
      * @param string $path
-     * @return $this
+     * @return SphinxJson
      */
-    public function setPath($path)
+    public function setPath(string $path): SphinxJson
     {
         $this->path = rtrim($path, '/') . '/';
-
         return $this;
     }
 
@@ -96,7 +111,7 @@ class SphinxJson
      *
      * @return string
      */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
@@ -106,12 +121,11 @@ class SphinxJson
      * Format is expected to be URI segments such as Path/To/Chapter/
      *
      * @param string $document
-     * @return $this
+     * @return SphinxJson
      */
-    public function setDocument($document)
+    public function setDocument(string $document): SphinxJson
     {
         $this->document = $document;
-
         return $this;
     }
 
@@ -120,7 +134,7 @@ class SphinxJson
      *
      * @return string
      */
-    public function getDocument()
+    public function getDocument(): string
     {
         return $this->document;
     }
@@ -130,7 +144,7 @@ class SphinxJson
      *
      * @return string
      */
-    public function getJsonFilename()
+    public function getJsonFilename(): string
     {
         return $this->jsonFilename;
     }
@@ -138,22 +152,21 @@ class SphinxJson
     /**
      * Sets whether permanent links to sections in BODY should be kept.
      *
-     * @param boolean $active
-     * @return $this
+     * @param bool $active
+     * @return SphinxJson
      */
-    public function setKeepPermanentLinks($active)
+    public function setKeepPermanentLinks(bool $active): SphinxJson
     {
         $this->keepPermanentLinks = $active;
-
         return $this;
     }
 
     /**
      * Returns whether permanent links to sections in BODY should be kept.
      *
-     * @return boolean
+     * @return bool
      */
-    public function getKeepPermanentLinks()
+    public function getKeepPermanentLinks(): bool
     {
         return $this->keepPermanentLinks;
     }
@@ -162,12 +175,11 @@ class SphinxJson
      * Silently falls back to default document instead of throwing an
      * error if an invalid document is specified.
      *
-     * @return $this
+     * @return SphinxJson
      */
-    public function enableDefaultDocumentFallback()
+    public function enableDefaultDocumentFallback(): SphinxJson
     {
         $this->fallbackToDefaultFile = true;
-
         return $this;
     }
 
@@ -175,12 +187,11 @@ class SphinxJson
      * Sets the default file (e.g., 'index').
      *
      * @param string $defaultFile
-     * @return $this
+     * @return SphinxJson
      */
-    public function setDefaultFile($defaultFile)
+    public function setDefaultFile(string $defaultFile): SphinxJson
     {
         $this->defaultFile = $defaultFile;
-
         return $this;
     }
 
@@ -189,7 +200,7 @@ class SphinxJson
      *
      * @return string
      */
-    public function getDefaultFile()
+    public function getDefaultFile(): string
     {
         return $this->defaultFile;
     }
@@ -197,10 +208,10 @@ class SphinxJson
     /**
      * Loads the current document.
      *
-     * @return boolean true if operation succeeded, otherwise false
+     * @return bool true if operation succeeded, otherwise false
      * @throws \RuntimeException
      */
-    public function load()
+    public function load(): bool
     {
         if (empty($this->path) || !is_dir($this->path)) {
             throw new \RuntimeException('Invalid path: ' . $this->path, 1365165151);
@@ -255,7 +266,7 @@ class SphinxJson
      *
      * @throws \RuntimeException
      */
-    protected function enforceIsLoaded()
+    protected function enforceIsLoaded(): void
     {
         if (empty($this->data)) {
             throw new \RuntimeException('Document is not loaded: ' . $this->document, 1365170112);
@@ -270,7 +281,7 @@ class SphinxJson
      * @return string
      * @throws \RuntimeException
      */
-    public function getBody($callbackLinks, $callbackImages)
+    public function getBody($callbackLinks, $callbackImages): string
     {
         $this->enforceIsLoaded();
         $callableName = '';
@@ -303,7 +314,7 @@ class SphinxJson
      *
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         $this->enforceIsLoaded();
 
@@ -315,7 +326,7 @@ class SphinxJson
      *
      * @return string
      */
-    public function getSourceName()
+    public function getSourceName(): string
     {
         $this->enforceIsLoaded();
 
@@ -327,7 +338,7 @@ class SphinxJson
      *
      * @return string
      */
-    public function getCurrentPageName()
+    public function getCurrentPageName(): string
     {
         $this->enforceIsLoaded();
 
@@ -339,7 +350,7 @@ class SphinxJson
      *
      * @return array|null
      */
-    public function getPreviousDocument()
+    public function getPreviousDocument(): ?array
     {
         $this->enforceIsLoaded();
 
@@ -351,7 +362,7 @@ class SphinxJson
      *
      * @return array|null
      */
-    public function getNextDocument()
+    public function getNextDocument(): ?array
     {
         $this->enforceIsLoaded();
 
@@ -363,7 +374,7 @@ class SphinxJson
      *
      * @return array
      */
-    public function getParentDocuments()
+    public function getParentDocuments(): array
     {
         $this->enforceIsLoaded();
 
@@ -375,7 +386,7 @@ class SphinxJson
      *
      * @return array
      */
-    public function getRelativeLinks()
+    public function getRelativeLinks(): array
     {
         $this->enforceIsLoaded();
 
@@ -387,7 +398,7 @@ class SphinxJson
      *
      * @return array|null
      */
-    public function getIndexEntries()
+    public function getIndexEntries(): ?array
     {
         $this->enforceIsLoaded();
 
@@ -404,7 +415,7 @@ class SphinxJson
      * @return string
      * @throws \RuntimeException
      */
-    public function getMasterTableOfContents($firstLevelIsMasterDocument = true)
+    public function getMasterTableOfContents(bool $firstLevelIsMasterDocument = true): string
     {
         if ($this->document === $this->defaultFile . '/' && !empty($this->data)) {
             $data = $this->data;
@@ -493,7 +504,7 @@ class SphinxJson
      * @return string
      * @throws \RuntimeException
      */
-    public function getTableOfContents($callbackLinks)
+    public function getTableOfContents($callbackLinks): string
     {
         $this->enforceIsLoaded();
         $callableName = '';
@@ -521,7 +532,7 @@ class SphinxJson
      *
      * @return array
      */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }
@@ -532,7 +543,7 @@ class SphinxJson
      * @return array
      * @throws \RuntimeException
      */
-    public function getReferences()
+    public function getReferences(): array
     {
         if (empty($this->path) || !is_dir($this->path)) {
             throw new \RuntimeException('Invalid path: ' . $this->path, 1365165151);
@@ -544,7 +555,7 @@ class SphinxJson
 
         $content = file_get_contents($filename);
         // Remove ASCII comments at the beginning of the file
-        while ($content{0} === '#') {
+        while (substr($content, 0, 1) === '#') {
             $content = substr($content, strpos($content, LF) + 1);
         }
         // Uncompress the references
@@ -588,60 +599,64 @@ class SphinxJson
      *
      * @param string $content
      * @param callback $callbackLinks function to generate Links in current context
-     * @param boolean $relativeToDefaultDocument
+     * @param bool $relativeToDefaultDocument
      * @return string
      */
-    protected function replaceLinks($content, $callbackLinks, $relativeToDefaultDocument = false)
+    protected function replaceLinks(string $content, $callbackLinks, bool $relativeToDefaultDocument = false): string
     {
         $self = $this;
-        $ret = preg_replace_callback('#(<a .*? href=")([^"]+)#', function ($matches) use ($self, $callbackLinks, $relativeToDefaultDocument) {
-            $document = $self->getDocument();
-            $anchor = '';
-            if (preg_match('#^[a-zA-Z]+://#', $matches[2])) {
-                // External URL
-                return $matches[0];
-            } elseif (GeneralUtility::isFirstPartOfStr($matches[2], 'mailto:')) {
-                // Email address
-                $email = preg_replace_callback('/(&#(\d{2});)/', function ($m) {
-                    return chr($m[2]);
-                }, $matches[2]);
-                $link = call_user_func($callbackLinks, urldecode($email));
+        $ret = preg_replace_callback(
+            '#(<a .*? href=")([^"]+)#',
+            function (array $matches) use ($self, $callbackLinks, $relativeToDefaultDocument) {
+                $document = $self->getDocument();
+                $anchor = '';
+                if (preg_match('#^[a-zA-Z]+://#', $matches[2])) {
+                    // External URL
+                    return $matches[0];
+                } elseif (GeneralUtility::isFirstPartOfStr($matches[2], 'mailto:')) {
+                    // Email address
+                    $email = preg_replace_callback('/(&#(\d{2});)/', function ($m) {
+                        return chr($m[2]);
+                    }, $matches[2]);
+                    $link = call_user_func($callbackLinks, urldecode($email));
 
-                return $matches[1] . $link;
-            } elseif ($matches[2]{0} === '#') {
-                $anchor = $matches[2];
-            }
+                    return $matches[1] . $link;
+                } elseif ($matches[2]{0} === '#') {
+                    $anchor = $matches[2];
+                }
 
-            if ($anchor !== '') {
-                $document .= $anchor;
-            } elseif (GeneralUtility::isFirstPartOfStr($matches[2], '_sources/')) {
-                $document = $matches[2];
-            } else {
-                if ($relativeToDefaultDocument) {
-                    $currentDocumentDepth = count(explode('/', $document)) - 1;
-                    if (GeneralUtility::isFirstPartOfStr($matches[2], '../')) {
-                        $currentDocumentDepth--;
+                if ($anchor !== '') {
+                    $document .= $anchor;
+                } elseif (GeneralUtility::isFirstPartOfStr($matches[2], '_sources/')) {
+                    $document = $matches[2];
+                } else {
+                    if ($relativeToDefaultDocument) {
+                        $currentDocumentDepth = count(explode('/', $document)) - 1;
+                        if (GeneralUtility::isFirstPartOfStr($matches[2], '../')) {
+                            $currentDocumentDepth--;
+                        }
+                        // Pretend the link was generated relative to current document
+                        $matches[2] = str_repeat('../', $currentDocumentDepth) . $matches[2];
                     }
-                    // Pretend the link was generated relative to current document
-                    $matches[2] = str_repeat('../', $currentDocumentDepth) . $matches[2];
+                    $segments = explode('/', substr($document, 0, -1));
+                    if (count($segments) == 1 && !GeneralUtility::isFirstPartOfStr($matches[2], '../')) {
+                        // $document's last part is a document, not a directory
+                        $matches[2] = '../' . $matches[2];
+                    }
+                    if (GeneralUtility::isFirstPartOfStr($matches[2], '../')) {
+                        $document = substr($document, 0, strrpos(rtrim($document, '/'), '/'));
+                    }
+                    $absolute = RestHelper::relativeToAbsolute($self->getPath() . $document, $matches[2]);
+                    $document = substr($absolute, strlen($self->getPath()));
                 }
-                $segments = explode('/', substr($document, 0, -1));
-                if (count($segments) == 1 && !GeneralUtility::isFirstPartOfStr($matches[2], '../')) {
-                    // $document's last part is a document, not a directory
-                    $matches[2] = '../' . $matches[2];
-                }
-                if (GeneralUtility::isFirstPartOfStr($matches[2], '../')) {
-                    $document = substr($document, 0, strrpos(rtrim($document, '/'), '/'));
-                }
-                $absolute = RestHelper::relativeToAbsolute($self->getPath() . $document, $matches[2]);
-                $document = substr($absolute, strlen($self->getPath()));
-            }
-            $url = call_user_func($callbackLinks, $document);
-            $url = str_replace('&amp;', '&', $url);
-            $url = str_replace('&', '&amp;', $url);
+                $url = call_user_func($callbackLinks, $document);
+                $url = str_replace('&amp;', '&', $url);
+                $url = str_replace('&', '&amp;', $url);
 
-            return $matches[1] . $url;
-        }, $content);
+                return $matches[1] . $url;
+            },
+            $content
+        );
 
         return $ret;
     }
@@ -654,7 +669,7 @@ class SphinxJson
      * @return string
      * @link http://w-shadow.com/blog/2009/10/20/how-to-extract-html-tags-and-their-attributes-with-php/
      */
-    protected function replaceImages($content, $callbackImages)
+    protected function replaceImages(string $content, $callbackImages): string
     {
         $self = $this;
         $root = $this->path . $this->document;
@@ -676,7 +691,7 @@ class SphinxJson
                 )
             @xsi';
 
-        $ret = preg_replace_callback($tagPattern, function ($matches) use ($self, $root, $attributePattern, $callbackImages) {
+        $ret = preg_replace_callback($tagPattern, function (array $matches) use ($self, $root, $attributePattern, $callbackImages) {
             // Parse tag attributes, if any
             $attributes = [];
             if (!empty($matches['attributes'][0])) {
@@ -727,7 +742,7 @@ class SphinxJson
      * @param string $content
      * @return string $content
      */
-    protected function invokePostProcessors($name, $content)
+    protected function invokePostProcessors(string $name, string $content): string
     {
         $key = 'postProcess' . ucfirst($name);
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['restdoc'][$key])) {

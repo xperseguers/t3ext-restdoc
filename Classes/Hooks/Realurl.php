@@ -38,7 +38,7 @@ class Realurl
      * @param \tx_realurl_autoconfgen|object $pObj
      * @return array
      */
-    public function registerDefaultConfiguration(array $params, $pObj)
+    public function registerDefaultConfiguration(array $params, $pObj): array
     {
         $fixedPostVarsConfiguration = [];
 
@@ -79,9 +79,8 @@ class Realurl
      * extension into .html.
      *
      * @param array $parameters
-     * @return void
      */
-    public function decodeSpURL_preProc(array $parameters)
+    public function decodeSpURL_preProc(array $parameters): void
     {
         $segments = explode('/', $parameters['URL']);
         if ($segments[1] === '_sources' && substr($parameters['URL'], -4) === '.txt') {
@@ -97,7 +96,7 @@ class Realurl
      * @param array $parameters
      * @return string
      */
-    public function decodeSpURL_getSequence(array $parameters)
+    public function decodeSpURL_getSequence(array $parameters): string
     {
         $value = $parameters['value'];
 
@@ -118,7 +117,7 @@ class Realurl
      *
      * @return array
      */
-    protected function getFixedPostVarsConfiguration()
+    protected function getFixedPostVarsConfiguration(): array
     {
         $fixedPostVarsConfiguration = [];
 

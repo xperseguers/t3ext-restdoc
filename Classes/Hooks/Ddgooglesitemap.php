@@ -30,16 +30,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class Ddgooglesitemap
 {
 
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $documentationPlugins;
 
     /**
      * Inserts the documentation structure in the sitemap of current page.
      *
      * @param array $params
-     * @return void
      */
-    public function postProcessPageInfo(array $params)
+    public function postProcessPageInfo(array $params): void
     {
         $this->initializeDocumentationPlugins($params['pageInfo']['uid']);
 
@@ -53,9 +54,8 @@ class Ddgooglesitemap
      *
      * @param array $documentationPlugin
      * @param array $params
-     * @return void
      */
-    protected function renderDocumentationSitemap(array $documentationPlugin, array $params)
+    protected function renderDocumentationSitemap(array $documentationPlugin, array $params): void
     {
         $documentList = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('tx_restdoc_toc')
@@ -91,7 +91,7 @@ class Ddgooglesitemap
      * @return string
      * @see tx_ddgooglesitemap_pages::getChangeFrequency()
      */
-    protected function getChangeFrequency(array $documentInfo)
+    protected function getChangeFrequency(array $documentInfo): string
     {
         $timeValues = GeneralUtility::intExplode(',', $documentInfo['lastmod'], true);
         $timeValues[] = $GLOBALS['EXEC_TIME'];
@@ -112,9 +112,8 @@ class Ddgooglesitemap
      * a given page.
      *
      * @param int $uid A page uid
-     * @return void
      */
-    protected function initializeDocumentationPlugins($uid)
+    protected function initializeDocumentationPlugins(int $uid): void
     {
         $plugins = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('tt_content')
@@ -122,7 +121,7 @@ class Ddgooglesitemap
                 ['*'],
                 'tt_content',
                 [
-                    'pid' => (int)$uid,
+                    'pid' => $uid,
                     'CType' => 'list',
                     'list_type' => 'restdoc_pi1',
                 ]

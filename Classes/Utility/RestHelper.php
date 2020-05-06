@@ -37,18 +37,10 @@ final class RestHelper
      * @param string $path Absolute path to the documentation
      * @return array
      */
-    public static function getMetadata($path)
+    public static function getMetadata(string $path): array
     {
         if (!is_dir($path)) {
-            // Most probably a relative path has been provided
-            $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-                ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-                : TYPO3_branch;
-            $pathSite = version_compare($typo3Branch, '9.0', '<')
-                ? PATH_site
-                : Environment::getPublicPath() . '/';
-            $path = $pathSite . $path;
-            GeneralUtility::deprecationLog('EXT:restdoc - \\Causal\\Restdoc\\Utility\\RestHelper::getMetadata() needs an absolute path as argument since 1.3.0. Support for relative path will be removed in 1.5.0.');
+            throw new \RuntimeException('Relative path detected: ' . $path . '. This has been deprecated for a very long time.', 1588775932);
         }
         $documentRoot = rtrim($path, '/') . '/';
         $jsonFile = 'globalcontext.json';
@@ -67,7 +59,7 @@ final class RestHelper
      * @param array $entries
      * @return array
      */
-    public static function getMenuData(array $entries)
+    public static function getMenuData(array $entries): array
     {
         $menu = [];
         $entries = isset($entries['li'][0]) ? $entries['li'] : [$entries['li']];
@@ -100,10 +92,10 @@ final class RestHelper
      * @param array &$data
      * @param null|string $currentDocument This parameter should probably be deprecated altogether, internally passed as null
      * @param callback $callbackLinks Callback to generate Links in current context
-     * @return boolean
+     * @return bool
      * @throws \RuntimeException
      */
-    public static function processMasterTableOfContents(array &$data, $currentDocument, $callbackLinks)
+    public static function processMasterTableOfContents(array &$data, ?string $currentDocument, $callbackLinks): bool
     {
         $callableName = '';
         if (!is_callable($callbackLinks, false, $callableName)) {
@@ -140,7 +132,7 @@ final class RestHelper
      * @return array
      * @link https://github.com/gaarf/XML-string-to-PHP-array/blob/master/xmlstr_to_array.php
      */
-    public static function xmlstr_to_array($xmlstr)
+    public static function xmlstr_to_array(string $xmlstr): array
     {
         $doc = new \DOMDocument();
         $xmlstr = str_replace('&nbsp;', '&#32;', $xmlstr);
@@ -152,10 +144,11 @@ final class RestHelper
      * Sends a given ReStructuredText document to the browser.
      * One-way method: will exit program normally at the end.
      *
+     * Note: Program will stop after calling this method.
+     *
      * @param string $filename
-     * @return void Program will stop after calling this method
      */
-    public static function showSources($filename)
+    public static function showSources(string $filename): void
     {
         if (!is_file($filename)) {
             HttpUtility::setResponseCodeAndExit(HttpUtility::HTTP_STATUS_404);
@@ -185,7 +178,7 @@ final class RestHelper
      * @param string $relative
      * @return string
      */
-    public static function relativeToAbsolute($fullPath, $relative)
+    public static function relativeToAbsolute(string $fullPath, string $relative): string
     {
         $absolute = '';
         $fullPath = rtrim($fullPath, '/');
@@ -218,7 +211,7 @@ final class RestHelper
      * @return string
      * @throws \RuntimeException
      */
-    public static function getIndexDefinitionList($documentRoot, array $index, $callbackLinks)
+    public static function getIndexDefinitionList(string $documentRoot, array $index, $callbackLinks): string
     {
         $callableName = '';
         if (!is_callable($callbackLinks, false, $callableName)) {
@@ -294,7 +287,7 @@ final class RestHelper
      * @param \DOMNode $node
      * @return array
      */
-    protected static function domnode_to_array(\DOMNode $node)
+    protected static function domnode_to_array(\DOMNode $node): array
     {
         $output = [];
         switch ($node->nodeType) {

@@ -17,6 +17,7 @@ namespace Causal\Restdoc\ContentObject;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Causal\Restdoc\Utility\RestHelper;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Implementation of the REST_METADATA content object.
@@ -31,7 +32,9 @@ use Causal\Restdoc\Utility\RestHelper;
 class RestMetadataContentObject
 {
 
-    /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
+    /**
+     * @var ContentObjectRenderer
+     */
     protected $cObj;
 
     /**
@@ -40,10 +43,10 @@ class RestMetadataContentObject
      * @param string $name name of the cObject ('REST_METADATA')
      * @param array $conf array of TypoScript properties
      * @param string $TSkey TS key set to this cObject
-     * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $pObj
+     * @param ContentObjectRenderer $pObj
      * @return string
      */
-    public function cObjGetSingleExt($name, array $conf, $TSkey, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $pObj)
+    public function cObjGetSingleExt(string $name, array $conf, string $TSkey, ContentObjectRenderer $pObj): string
     {
         $this->cObj = $pObj;
         $this->applyStdWrap($conf, 'path');
@@ -59,8 +62,8 @@ class RestMetadataContentObject
             : Environment::getPublicPath() . '/';
         $data = RestHelper::getMetadata($pathSite . $conf['path']);
         if ($data) {
-            /** @var $contentObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
-            $contentObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+            /** @var ContentObjectRenderer $contentObj */
+            $contentObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
             $contentObj->start($data);
             $output = $contentObj->stdWrap('', $conf);
         }
@@ -73,9 +76,8 @@ class RestMetadataContentObject
      *
      * @param array &$conf
      * @param string $baseKey
-     * @return void
      */
-    protected function applyStdWrap(array &$conf, $baseKey)
+    protected function applyStdWrap(array &$conf, string $baseKey): void
     {
         if (isset($conf[$baseKey . '.'])) {
             $conf[$baseKey] = $this->cObj->stdWrap($conf[$baseKey], $conf[$baseKey . '.']);

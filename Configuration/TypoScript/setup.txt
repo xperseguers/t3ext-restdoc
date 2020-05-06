@@ -1,4 +1,7 @@
 plugin.tx_restdoc_pi1 {
+	# Needed for pibase-based plugin using namespaces
+	userFunc = Causal\Restdoc\Controller\Pi1\Pi1Controller->main
+
 	## baseWrap supports stdWrap properties, if set will replace the default wrap
 	## around the plugin: <div class="tx-restdoc-pi1"> ... </div>
 	#baseWrap {

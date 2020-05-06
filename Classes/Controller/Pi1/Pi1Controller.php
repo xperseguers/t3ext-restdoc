@@ -14,11 +14,17 @@
 
 namespace Causal\Restdoc\Controller\Pi1;
 
+use Causal\Restdoc\Reader\SphinxJson;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Causal\Restdoc\Utility\RestHelper;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Plugin 'Sphinx Documentation Viewer Plugin' for the 'restdoc' extension.
@@ -38,13 +44,19 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     public $extKey = 'restdoc';
     public $pi_checkCHash;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected static $defaultFile = 'index';
 
-    /** @var array */
+    /**
+     * @var array
+     */
     public $renderingConfig = [];
 
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $settings = [];
 
     /**
@@ -55,9 +67,14 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     protected static $current = [];
 
-    /** @var \Causal\Restdoc\Reader\SphinxJson */
+    /**
+     * @var SphinxJson
+     */
     protected static $sphinxReader;
 
+    /**
+     * Pi1Controller constructor.
+     */
     public function __construct()
     {
         $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
@@ -81,7 +98,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      * @return string The content that is displayed on the website
      * @throws \RuntimeException
      */
-    public function main($content, array $conf)
+    public function main(string $content, array $conf): string
     {
         $this->init($conf);
         $this->pi_setPiVarDefaults();
@@ -255,7 +272,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      *
      * @return string
      */
-    public function getDefaultFile()
+    public function getDefaultFile(): string
     {
         return self::$defaultFile;
     }
@@ -263,9 +280,9 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * Returns the Sphinx Reader.
      *
-     * @return \Causal\Restdoc\Reader\SphinxJson
+     * @return SphinxJson
      */
-    public function getSphinxReader()
+    public function getSphinxReader(): SphinxJson
     {
         return self::$sphinxReader;
     }
@@ -277,7 +294,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      * @param array $conf
      * @return array
      */
-    public function makeMenuArray($content, array $conf)
+    public function makeMenuArray(string $content, array $conf): array
     {
         $data = [];
         $type = isset($conf['userFunc.']['type']) ? $conf['userFunc.']['type'] : 'menu';
@@ -432,10 +449,8 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
     /**
      * Advertises Sphinx.
-     *
-     * @return void
      */
-    protected function advertiseSphinx()
+    protected function advertiseSphinx(): void
     {
         $storage = self::$sphinxReader->getStorage();
         if ($storage !== null) {
@@ -489,7 +504,7 @@ JS;
      *
      * @return string
      */
-    protected function generateQuickNavigation()
+    protected function generateQuickNavigation(): string
     {
         $this->renderingConfig = $this->conf['setup.']['QUICK_NAVIGATION.'];
 
@@ -607,8 +622,8 @@ JS;
             }
         }
 
-        /** @var $contentObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
-        $contentObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+        /** @var ContentObjectRenderer $contentObj */
+        $contentObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $contentObj->start($data);
         $output = $contentObj->cObjGetSingle($this->renderingConfig['renderObj'], $this->renderingConfig['renderObj.']);
 
@@ -620,7 +635,7 @@ JS;
      *
      * @return string
      */
-    protected function generateReferences()
+    protected function generateReferences(): string
     {
         $output = [];
         $output[] = '<ul class="tx-restdoc-references">';
@@ -660,7 +675,7 @@ JS;
      * @param string $document
      * @return string
      */
-    protected function generateIndex($documentRoot, $document)
+    protected function generateIndex(string $documentRoot, string $document): string
     {
         $linksCategories = [];
         $contentCategories = [];
@@ -700,7 +715,7 @@ JS;
      *
      * @return string
      */
-    protected function generateBody()
+    protected function generateBody(): string
     {
         $this->renderingConfig = $this->conf['setup.']['BODY.'];
         $body = self::$sphinxReader->getBody(
@@ -715,7 +730,7 @@ JS;
      *
      * @return string
      */
-    protected function generateSearchForm()
+    protected function generateSearchForm(): string
     {
         $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
             ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
@@ -803,9 +818,8 @@ HTML;
      * Includes a JavaScript library in header.
      *
      * @param string $file
-     * @return void
      */
-    protected function includeJsFile($file)
+    protected function includeJsFile(string $file)
     {
         $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
             ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
@@ -822,12 +836,12 @@ HTML;
      * Generates a link to navigate within a reST documentation project.
      *
      * @param string $document Target document
-     * @param boolean $absolute Whether absolute URI should be generated
-     * @param integer $rootPage UID of the page showing the documentation
+     * @param bool $absolute Whether absolute URI should be generated
+     * @param int $rootPage UID of the page showing the documentation
      * @return string
-     * @private This method is made public to be accessible from a lambda-function scope
+     * @internal This method is made public to be accessible from a lambda-function scope
      */
-    public function getLink($document, $absolute = false, $rootPage = 0)
+    public function getLink(string $document, bool $absolute = false, int $rootPage = 0): string
     {
         if (GeneralUtility::isFirstPartOfStr($document, 'mailto:')) {
             // This is an email address, not a document!
@@ -903,12 +917,12 @@ HTML;
      *
      * @param array $data
      * @return string
-     * @private This method is made public to be accessible from a lambda-function scope
+     * @internal This method is made public to be accessible from a lambda-function scope
      */
-    public function processImage(array $data)
+    public function processImage(array $data): string
     {
-        /** @var $contentObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
-        $contentObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+        /** @var ContentObjectRenderer $contentObj */
+        $contentObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $contentObj->start($data);
 
         return $contentObj->cObjGetSingle(
@@ -922,9 +936,8 @@ HTML;
      *
      * @param array &$conf
      * @param string $baseKey
-     * @return void
      */
-    protected function applyStdWrap(array &$conf, $baseKey)
+    protected function applyStdWrap(array &$conf, string $baseKey): void
     {
         if (isset($conf[$baseKey . '.'])) {
             $conf[$baseKey] = $this->cObj->stdWrap($conf[$baseKey], $conf[$baseKey . '.']);
@@ -936,9 +949,8 @@ HTML;
      * This method performs various initializations.
      *
      * @param array $conf : Plugin configuration, as received by the main() method
-     * @return void
      */
-    protected function init(array $conf)
+    protected function init(array $conf): void
     {
         $this->conf = $conf;
 
@@ -991,24 +1003,24 @@ HTML;
             }
         }
 
-        self::$sphinxReader = GeneralUtility::makeInstance('Causal\\Restdoc\\Reader\\SphinxJson');
+        self::$sphinxReader = GeneralUtility::makeInstance(SphinxJson::class);
 
         // New format since TYPO3 v8
         if (preg_match('#^t3://#', $this->conf['path'])) {
-            /** @var \TYPO3\CMS\Core\LinkHandling\LinkService $linkService */
-            $linkService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\LinkHandling\LinkService::class);
+            /** @var LinkService $linkService */
+            $linkService = GeneralUtility::makeInstance(LinkService::class);
             $data = $linkService->resolveByStringRepresentation($this->conf['path']);
             if ($data['type'] === 'folder') {
-                /** @var \TYPO3\CMS\Core\Resource\Folder $folder */
+                /** @var Folder $folder */
                 $folder = $data['folder'];
                 $this->conf['path'] = 'file:' . $folder->getCombinedIdentifier();
             }
         }
 
         if (preg_match('/^file:(\d+):(.*)$/', $this->conf['path'], $matches)) {
-            /** @var $storageRepository \TYPO3\CMS\Core\Resource\StorageRepository */
-            $storageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
-            /** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
+            /** @var $storageRepository StorageRepository */
+            $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
+            /** @var $storage ResourceStorage */
             $storage = $storageRepository->findByUid(intval($matches[1]));
             $storageRecord = $storage->getStorageRecord();
             if ($storageRecord['driver'] === 'Local') {
