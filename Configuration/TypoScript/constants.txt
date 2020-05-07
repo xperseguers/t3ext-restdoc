@@ -14,7 +14,7 @@ plugin.tx_restdoc {
 	# set it to 1 to show permanent links in sections
 	showPermanentLink = 0
 
-	# separator for the documentation's directory (see http://forge.typo3.org/issues/45560) [DEPRECATED as of TYPO3 v9]
+	# separator for the documentation's directory (see https://forge.typo3.org/issues/45560) [DEPRECATED as of TYPO3 v9]
 	pathSeparator = |
 
 	# comma-separated list of fallback path separators (see https://forge.typo3.org/issues/46174) [DEPRECATED as of TYPO3 v9]
@@ -23,7 +23,7 @@ plugin.tx_restdoc {
 	# maximal number of documents to process at once when generating the documentation's structure
 	documentStructureMaxDocuments = 50
 
-	# whether Sphinx should be advertised (see http://wappalyzer.com/applications/sphinx)
+	# whether Sphinx should be advertised (see https://www.wappalyzer.com/technologies/documentation-tools/sphinx)
 	advertiseSphinx = 1
 
 	# whether pagination should be generated with rel="next" and rel="prev"

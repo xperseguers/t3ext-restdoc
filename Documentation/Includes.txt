@@ -24,24 +24,24 @@
 .. EXTERNAL LINKS
 .. --------------------------------------------------
 
-.. _`5 min tutorial video`: http://www.youtube.com/watch?v=YeGqHMDT7R8
+.. _`5 min tutorial video`: https://www.youtube.com/watch?v=YeGqHMDT7R8
 
-.. _dd_googlesitemap: https://typo3.org/extensions/repository/view/dd_googlesitemap
+.. _dd_googlesitemap: https://extensions.typo3.org/extension/dd_googlesitemap
 
 .. _`post of mine in Google+`: https://plus.google.com/117624290123792924579/posts/R5H1ZUMcwEm
 
-.. _reStructuredText: http://docutils.sourceforge.net/rst.html
+.. _reStructuredText: https://docutils.sourceforge.io/rst.html
 
-.. _`setup.txt`: https://git.typo3.org/TYPO3CMS/Extensions/restdoc.git/blob/HEAD:/Configuration/TypoScript/setup.txt
+.. _`setup.txt`: https://github.com/xperseguers/t3ext-restdoc/blob/master/Configuration/TypoScript/setup.txt
 
-.. _SEO: http://en.wikipedia.org/wiki/Search_engine_optimization
+.. _SEO: https://en.wikipedia.org/wiki/Search_engine_optimization
 
-.. _`the TYPO3 wiki`: http://wiki.typo3.org/ReST
+.. _`the TYPO3 wiki`: https://wiki.typo3.org/ReST
 
-.. _`Tips and Tricks`: http://wiki.typo3.org/Tips_and_Tricks_%28reST%29
+.. _`Tips and Tricks`: https://wiki.typo3.org/Tips_and_Tricks_%28reST%29
 
-.. _`TypoScript snippets`: https://git.typo3.org/TYPO3CMS/Extensions/restdoc.git/tree/HEAD:/Resources/Private/Examples
+.. _`TypoScript snippets`: https://github.com/xperseguers/t3ext-restdoc/tree/master/Resources/Private/Examples
 
-.. _Wappalizer: http://wappalyzer.com/
+.. _Wappalizer: https://www.wappalyzer.com/
 
-.. _`Webmaster Central Blog`: http://googlewebmastercentral.blogspot.ch/2011/09/pagination-with-relnext-and-relprev.html
+.. _`Webmaster Central Blog`: https://webmasters.googleblog.com/2011/09/pagination-with-relnext-and-relprev.html

@@ -113,7 +113,7 @@ pathSeparator
 Separator to be used between directories of the documentation. You may use multiple characters as well.
 
 .. warning::
-	Make sure to read http://forge.typo3.org/issues/45560 before using special characters such as ``\`` (backslash)
+	Make sure to read http://forges.typo3.org/issues/45560 before using special characters such as ``\`` (backslash)
 	or ``/`` (forward slash).
 
 .. hint::

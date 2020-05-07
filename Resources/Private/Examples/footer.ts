@@ -11,6 +11,6 @@ lib.sphinx.footer {
 
 		20 = TEXT
 		20.field = sphinx_version
-		20.noTrimWrap = | Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> |.|
+		20.noTrimWrap = | Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> |.|
 	}
 }
