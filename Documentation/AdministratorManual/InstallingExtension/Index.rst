@@ -29,10 +29,31 @@ integrate the structure of your documentation within your website's sitemap, whe
 dd_googlesitemap_.
 
 
+.. _admin-manual-install-routing:
+
+Configure Routing (since TYPO3 v9)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In order to get pretty URL, you are advised to edit file :file:`config/sites/*/config.yaml` and extend it like that:
+
+.. code-block:: yaml
+
+   routeEnhancers:
+     Restdoc:
+       type: Plugin
+       limitToPages: [1]
+       routePath: '/{doc}'
+       namespace: 'tx_restdoc_pi1'
+       requirements:
+         doc: '.+'
+
+You should naturally adapt ``limitToPages`` to the pages where the restdoc plugin is located.
+
+
 .. _admin-manual-install-realurl:
 
-Configure RealURL
-^^^^^^^^^^^^^^^^^
+Configure RealURL (TYPO3 v8)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If you are using RealURL, the good news is that the Sphinx Documentation Viewer Plugin extension comes with a
 configuration for RealURL.
