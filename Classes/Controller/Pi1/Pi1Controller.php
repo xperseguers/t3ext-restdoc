@@ -80,13 +80,14 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
             ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
             : TYPO3_branch;
-        if (version_compare($typo3Branch, '9.0', '<')) {
-            $this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey] ?? '') ?? [];
-        } else {
+        if (version_compare($typo3Branch, '9.0', '>=')) {
             $this->settings = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
+            $this->pi_checkCHash = true;
+        } else {
+            $this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey] ?? '') ?? [];
+            $this->pi_checkCHash = (bool)$this->settings['cache_plugin_output'];
         }
 
-        $this->pi_checkCHash = (bool)$this->settings['cache_plugin_output'];
         parent::__construct();
     }
 
@@ -122,7 +123,13 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         $documentRoot = $basePath . rtrim($this->conf['path'], '/') . '/';
         $document = self::$defaultFile . '/';
-        $pathSeparators = isset($this->conf['fallbackPathSeparators']) ? GeneralUtility::trimExplode(',', $this->conf['fallbackPathSeparators'], true) : [];
+        if (version_compare($typo3Branch, '9.0', '>=')) {
+            $pathSeparators = [];
+        } else {
+            $pathSeparators = isset($this->conf['fallbackPathSeparators'])
+                ? GeneralUtility::trimExplode(',', $this->conf['fallbackPathSeparators'], true)
+                : [];
+        }
         $pathSeparators[] = $this->conf['pathSeparator'];
         if (isset($this->piVars['doc']) && strpos($this->piVars['doc'], '..') === false) {
             $document = rtrim(str_replace($pathSeparators, '/', $this->piVars['doc']), '/') . '/';
@@ -1035,14 +1042,23 @@ HTML;
             self::$defaultFile = $this->conf['defaultFile'];
         }
 
-        if (empty($this->conf['pathSeparator'])) {
-            // The path separator CANNOT be empty
-            $this->conf['pathSeparator'] = '|';
-        }
-        if (!(isset($this->settings['enable_slash_as_separator']) && (bool)$this->settings['enable_slash_as_separator'])) {
-            if ($this->conf['pathSeparator'] === '/') {
-                // Slash ("/") is not valid separator
+        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
+            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
+            : TYPO3_branch;
+        if (version_compare($typo3Branch, '9.0', '>=')) {
+            // Path separator is always a forward slash, why would someone ever use something different now?
+            $this->conf['pathSeparator'] = '/';
+        } else {
+            if (empty($this->conf['pathSeparator'])) {
+                // The path separator CANNOT be empty
                 $this->conf['pathSeparator'] = '|';
+            }
+
+            if (!(isset($this->settings['enable_slash_as_separator']) && (bool)$this->settings['enable_slash_as_separator'])) {
+                if ($this->conf['pathSeparator'] === '/') {
+                    // Slash ("/") is not valid separator
+                    $this->conf['pathSeparator'] = '|';
+                }
             }
         }
 
