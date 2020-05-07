@@ -74,5 +74,5 @@ Example
 
 .. code-block:: typoscript
 
-	10 = REST_METADATA
-	10.field = copyright
+   10 = REST_METADATA
+   10.field = copyright

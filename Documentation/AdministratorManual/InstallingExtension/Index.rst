@@ -66,15 +66,15 @@ we suggest:
 
 .. code-block:: php
 
-	'postVarSets' => array(
-	    '_DEFAULT' => array(
-	        'chapter' => array(
-	            array(
-	                'GETvar' => 'tx_restdoc_pi1[doc]',
-	            ),
-	        ),
-	    ),
-	),
+   'postVarSets' => [
+       '_DEFAULT' => [
+           'chapter' => [
+               [
+                   'GETvar' => 'tx_restdoc_pi1[doc]',
+               ],
+           ],
+       ],
+   ],
 
 You may even fully and transparently embed your documentation within the URL, without any "chapter" segment if you
 use a forward slash for :ref:`plugin.tx_restdoc_pi1.pathSeparator <ts-plugin-tx-restdoc-pi1-pathSeparator>` and
@@ -82,25 +82,28 @@ enable this behaviour in Extension Manager.
 
 .. code-block:: php
 
-	'fixedPostVars' => array(
-	    '123' => 'restdoc_advanced_url',
-	    '456' => 'restdoc_advanced_url',
-	    'restdoc_advanced_url' => array(
-	        array(
-	            'GETvar' => 'tx_restdoc_pi1[doc]',
-	            'userFunc' => 'Causal\\Restdoc\\Hooks\\Realurl->decodeSpURL_getSequence',
-	        ),
-	    ),
-	),
+   'fixedPostVars' => [
+       '123' => 'restdoc_advanced_url',
+       '456' => 'restdoc_advanced_url',
+       'restdoc_advanced_url' => [
+           [
+               'GETvar' => 'tx_restdoc_pi1[doc]',
+               'userFunc' => \Causal\Restdoc\Hooks\Realurl::class . '->decodeSpURL_getSequence',
+           ],
+       ],
+   ],
 
 where ``123`` and ``456`` are page uids with a restdoc plugin.
 
 .. hint::
-	If you switch from standard configuration with a pipe (``|``) as separator to a forward slash, you probably should
-	consider adding the pipe to the comma-separated list of
-	:ref:`plugin.tx_restdoc_pi1.fallbackPathSeparator <ts-plugin-tx-restdoc-pi1-fallbackPathSeparator>` to prevent
-	invalidating every existing search engine page result.
+
+   If you switch from standard configuration with a pipe (``|``) as separator to a forward slash, you probably should
+   consider adding the pipe to the comma-separated list of
+   :ref:`plugin.tx_restdoc_pi1.fallbackPathSeparator <ts-plugin-tx-restdoc-pi1-fallbackPathSeparator>` to prevent
+   invalidating every existing search engine page result.
+
 
 .. note::
-	If you generate links to chapters in TypoScript, you may need to manually replace the encoded forward slash
-	(``%2F``) to a non-encoded one (``/``) with :ref:`stdWrap's replacement <t3tsref:replacement>`.
+
+   If you generate links to chapters in TypoScript, you may need to manually replace the encoded forward slash
+   (``%2F``) to a non-encoded one (``/``) with :ref:`stdWrap's replacement <t3tsref:replacement>`.

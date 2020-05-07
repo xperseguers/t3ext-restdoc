@@ -18,7 +18,7 @@ You should register your class in:
 
 .. code-block:: php
 
-	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['restdoc']['makeMenuArrayHook']
+   $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['restdoc']['makeMenuArrayHook']
 
 Expected method
 """""""""""""""
@@ -27,10 +27,10 @@ Your hook should implement a method ``postProcessTOC()`` of the form
 
 .. code-block:: php
 
-	public function postProcessTOC(array $params)
-	{
-	    // Custom code
-	}
+   public function postProcessTOC(array $params)
+   {
+       // Custom code
+   }
 
 Parameters
 """"""""""

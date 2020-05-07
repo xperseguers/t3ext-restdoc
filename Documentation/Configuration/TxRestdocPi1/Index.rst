@@ -113,12 +113,14 @@ pathSeparator
 Separator to be used between directories of the documentation. You may use multiple characters as well.
 
 .. warning::
-	Make sure to read http://forges.typo3.org/issues/45560 before using special characters such as ``\`` (backslash)
-	or ``/`` (forward slash).
+
+   Make sure to read http://forges.typo3.org/issues/45560 before using special characters such as ``\`` (backslash)
+   or ``/`` (forward slash).
 
 .. hint::
-	Since version 1.5, the forward slash is properly supported when using EXT:realurl but it requires a proper
-	configuration as suggested in the chapter describing :ref:`how to install this extension <admin-manual-install-realurl>`.
+
+   Since version 1.5, the forward slash is properly supported when using EXT:realurl but it requires a proper
+   configuration as suggested in the chapter describing :ref:`how to install this extension <admin-manual-install-realurl>`.
 
 
 .. _ts-plugin-tx-restdoc-pi1-fallbackPathSeparator:
@@ -188,9 +190,11 @@ Override the default wrap for the plugin:
 
 .. code-block:: html
 
-	<div class="tx-restdoc-pi1">
-	    ...
-	</div>
+   <div class="tx-restdoc-pi1">
+       ...
+   </div>
 
 .. warning::
-	Default wrap is **not** applied when mode_ is either ``TITLE`` or ``FILENAME`` but baseWrap will be applied if defined.
+
+   Default wrap is **not** applied when mode_ is either ``TITLE`` or ``FILENAME`` but baseWrap will be applied if
+   defined.

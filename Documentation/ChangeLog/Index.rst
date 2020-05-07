@@ -11,10 +11,13 @@
 ChangeLog
 =========
 
-The following is a very high level overview of the changes in this extension. For more details, `read the online log <https://git.typo3.org/TYPO3CMS/Extensions/restdoc.git/log>`_.
+The following is a very high level overview of the changes in this extension. For more details,
+`read the online log <https://github.com/xperseguers/t3ext-restdoc/commits/master>`__.
 
 .. tip::
-	Release notes and possible quick fixes for published versions are available in the project's wiki: https://forge.typo3.org/projects/extension-restdoc/wiki
+
+   Release notes and possible quick fixes for published versions are available in the project's wiki:
+   https://forge.typo3.org/projects/extension-restdoc/wiki.
 
 
 .. tabularcolumns:: |r|p{13.7cm}|
@@ -22,6 +25,7 @@ The following is a very high level overview of the changes in this extension. Fo
 =======  ======================================================
 Version  Changes
 =======  ======================================================
+2.0.0    Compatibility with TYPO3 v8 to v10
 1.7.x    Post-processing of content with `SphinxJson`
 1.6.x    - Compatibility with TYPO3 6.2 - 8.x
          - Compatibility with PHP 7

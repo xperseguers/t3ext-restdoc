@@ -18,7 +18,7 @@ You should register your class in:
 
 .. code-block:: php
 
-	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['restdoc']['searchFormHook']
+   $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['restdoc']['searchFormHook']
 
 Expected method
 """""""""""""""
@@ -27,10 +27,10 @@ Your hook should implement a method ``preProcessSEARCH()`` of the form
 
 .. code-block:: php
 
-	public function preProcessSEARCH(array $params)
-	{
-	    // Custom code
-	}
+   public function preProcessSEARCH(array $params)
+   {
+       // Custom code
+   }
 
 Parameters
 """"""""""

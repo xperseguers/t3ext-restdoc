@@ -20,7 +20,8 @@ You have thought of better user experience? Great!
 	|finger|
 
 .. note::
-	Please use the extension's bug tracker on Forge to propose new features: https://forge.typo3.org/projects/extension-restdoc/issues
+
+   Please use the extension's bug tracker on Forge to propose new features: https://github.com/xperseguers/t3ext-restdoc/issues
 
 
 Translation

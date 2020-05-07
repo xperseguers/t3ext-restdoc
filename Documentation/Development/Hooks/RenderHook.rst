@@ -13,9 +13,9 @@ This hook can be used to post-process the general plugin's output before being w
 
 .. code-block:: html
 
-	<div class="tx-restdoc-pi1">
-	    ...
-	</div>
+   <div class="tx-restdoc-pi1">
+       ...
+   </div>
 
 Registration
 """"""""""""
@@ -24,7 +24,7 @@ You should register your class in:
 
 .. code-block:: php
 
-	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['restdoc']['renderHook']
+   $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['restdoc']['renderHook']
 
 Expected method
 """""""""""""""
@@ -33,10 +33,10 @@ Your hook should implement a method ``postProcessOutput()`` of the form
 
 .. code-block:: php
 
-	public function postProcessOutput(array $params)
-	{
-	    // Custom code
-	}
+   public function postProcessOutput(array $params)
+   {
+       // Custom code
+   }
 
 Parameters
 """"""""""
