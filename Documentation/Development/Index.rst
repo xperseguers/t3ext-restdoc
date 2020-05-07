@@ -30,6 +30,9 @@ Hooks
 
 .. _development-extending:
 
+Extending even more
+-------------------
+
 In case you want to really extend the output, you may want to take a whole different approach and only take advantage
 of the internal Sphinx JSON reader but create the plugin on your own, possibly using Extbase instead of the plugin we
 provide.
