@@ -1,7 +1,7 @@
 <?php
 defined('TYPO3_MODE') || die();
 
-$boot = function (string $_EXTKEY): void {
+(static function (string $_EXTKEY) {
     $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
         ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
         : TYPO3_branch;
@@ -52,7 +52,4 @@ $boot = function (string $_EXTKEY): void {
                 \Causal\Restdoc\Hooks\Realurl::class . '->decodeSpURL_preProc';
         }
     }
-};
-
-$boot('restdoc');
-unset($boot);
+})('restdoc');
