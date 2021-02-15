@@ -4,7 +4,7 @@
 
 ---
 conf.py:
-  copyright: 2012-2020
+  copyright: 2012-2021
   project: Sphinx Documentation Viewer Plugin
   version: 2.0
   release: 2.0.0
