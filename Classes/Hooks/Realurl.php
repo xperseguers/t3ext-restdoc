@@ -142,7 +142,7 @@ class Realurl
             $fixedPostVarsConfiguration['fixedPostVars']['restdoc_advanced_url'] = [
                 [
                     'GETvar' => 'tx_restdoc_pi1[doc]',
-                    'userFunc' => Realurl::class . '->decodeSpURL_getSequence',
+                    'userFunc' => __CLASS__ . '->decodeSpURL_getSequence',
                 ],
             ];
         }

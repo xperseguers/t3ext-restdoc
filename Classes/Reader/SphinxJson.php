@@ -35,22 +35,22 @@ class SphinxJson
     /**
      * @var ResourceStorage
      */
-    protected $storage = null;
+    protected $storage;
 
     /**
      * @var string
      */
-    protected $path = null;
+    protected $path;
 
     /**
      * @var string
      */
-    protected $document = null;
+    protected $document;
 
     /**
      * @var string
      */
-    protected $jsonFilename = null;
+    protected $jsonFilename;
 
     /**
      * @var bool
@@ -230,7 +230,7 @@ class SphinxJson
 
         // Security check
         $fileExists = is_file($filename);
-        if ($fileExists && substr(realpath($filename), 0, strlen(realpath($this->path))) !== realpath($this->path)) {
+        if ($fileExists && strpos(realpath($filename), realpath($this->path)) !== 0) {
             $fileExists = false;
         }
         if (!$fileExists && $this->fallbackToDefaultFile) {
@@ -354,7 +354,7 @@ class SphinxJson
     {
         $this->enforceIsLoaded();
 
-        return isset($this->data['prev']) ? $this->data['prev'] : null;
+        return $this->data['prev'] ?? null;
     }
 
     /**
@@ -366,7 +366,7 @@ class SphinxJson
     {
         $this->enforceIsLoaded();
 
-        return isset($this->data['next']) ? $this->data['next'] : null;
+        return $this->data['next'] ?? null;
     }
 
     /**
@@ -402,7 +402,7 @@ class SphinxJson
     {
         $this->enforceIsLoaded();
 
-        return isset($this->data['genindexentries']) ? $this->data['genindexentries'] : null;
+        return $this->data['genindexentries'] ?? null;
     }
 
     /**
@@ -445,7 +445,7 @@ class SphinxJson
         // Remove empty sublevels
         $toc = preg_replace('#<ul(\s+[^>]+)>\s*</ul>#s', '', $toc);
         // Fix TOC to make it XML compliant
-        $toc = preg_replace_callback('# href="([^"]+)"#', function ($matches) {
+        $toc = preg_replace_callback('# href="([^"]+)"#', static function ($matches) {
             $url = str_replace('&amp;', '&', $matches[1]);
             $url = str_replace('&', '&amp;', $url);
 
@@ -517,7 +517,7 @@ class SphinxJson
         // Remove empty sublevels
         $toc = preg_replace('#<ul>\s*</ul>#', '', $toc);
         // Fix TOC to make it XML compliant
-        $toc = preg_replace_callback('# href="([^"]+)"#', function ($matches) {
+        $toc = preg_replace_callback('# href="([^"]+)"#', static function ($matches) {
             $url = str_replace('&amp;', '&', $matches[1]);
             $url = str_replace('&', '&amp;', $url);
 
@@ -555,7 +555,7 @@ class SphinxJson
 
         $content = file_get_contents($filename);
         // Remove ASCII comments at the beginning of the file
-        while (substr($content, 0, 1) === '#') {
+        while (strpos($content, '#') === 0) {
             $content = substr($content, strpos($content, LF) + 1);
         }
         // Uncompress the references
@@ -607,7 +607,7 @@ class SphinxJson
         $self = $this;
         $ret = preg_replace_callback(
             '#(<a .*? href=")([^"]+)#',
-            function (array $matches) use ($self, $callbackLinks, $relativeToDefaultDocument) {
+            static function (array $matches) use ($self, $callbackLinks, $relativeToDefaultDocument) {
                 $document = $self->getDocument();
                 $anchor = '';
                 if (preg_match('#^[a-zA-Z]+://#', $matches[2])) {
@@ -615,13 +615,13 @@ class SphinxJson
                     return $matches[0];
                 } elseif (GeneralUtility::isFirstPartOfStr($matches[2], 'mailto:')) {
                     // Email address
-                    $email = preg_replace_callback('/(&#(\d{2});)/', function ($m) {
+                    $email = preg_replace_callback('/(&#(\d{2});)/', static function ($m) {
                         return chr($m[2]);
                     }, $matches[2]);
-                    $link = call_user_func($callbackLinks, urldecode($email));
+                    $link = $callbackLinks(urldecode($email));
 
                     return $matches[1] . $link;
-                } elseif ($matches[2]{0} === '#') {
+                } elseif (strpos($matches[2], '#') === 0) {
                     $anchor = $matches[2];
                 }
 
@@ -639,7 +639,7 @@ class SphinxJson
                         $matches[2] = str_repeat('../', $currentDocumentDepth) . $matches[2];
                     }
                     $segments = explode('/', substr($document, 0, -1));
-                    if (count($segments) == 1 && !GeneralUtility::isFirstPartOfStr($matches[2], '../')) {
+                    if (count($segments) === 1 && !GeneralUtility::isFirstPartOfStr($matches[2], '../')) {
                         // $document's last part is a document, not a directory
                         $matches[2] = '../' . $matches[2];
                     }
@@ -649,7 +649,7 @@ class SphinxJson
                     $absolute = RestHelper::relativeToAbsolute($self->getPath() . $document, $matches[2]);
                     $document = substr($absolute, strlen($self->getPath()));
                 }
-                $url = call_user_func($callbackLinks, $document);
+                $url = $callbackLinks($document);
                 $url = str_replace('&amp;', '&', $url);
                 $url = str_replace('&', '&amp;', $url);
 
@@ -691,7 +691,7 @@ class SphinxJson
                 )
             @xsi';
 
-        $ret = preg_replace_callback($tagPattern, function (array $matches) use ($self, $root, $attributePattern, $callbackImages) {
+        $ret = preg_replace_callback($tagPattern, static function (array $matches) use ($self, $root, $attributePattern, $callbackImages) {
             // Parse tag attributes, if any
             $attributes = [];
             if (!empty($matches['attributes'][0])) {
@@ -729,7 +729,7 @@ class SphinxJson
                 $attributes['src'] = substr($src, strlen($pathSite));
             }
 
-            return call_user_func($callbackImages, $attributes);
+            return $callbackImages($attributes);
         }, $content);
 
         return $ret;

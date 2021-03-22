@@ -25,7 +25,7 @@ class RestHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function oneLevelMenuHtmlCanBeExtractedAsArray()
+    public function oneLevelMenuHtmlCanBeExtractedAsArray(): void
     {
         $html = <<<HTML
 <div>
@@ -54,7 +54,7 @@ HTML;
     /**
      * @test
      */
-    public function twoLevelMenuHtmlCanBeExtractedAsArray()
+    public function twoLevelMenuHtmlCanBeExtractedAsArray(): void
     {
         $html = <<<HTML
 <div>
@@ -92,7 +92,7 @@ HTML;
     /**
      * @test
      */
-    public function menuCanContainFormatting()
+    public function menuCanContainFormatting(): void
     {
         $html = <<<HTML
 <div>

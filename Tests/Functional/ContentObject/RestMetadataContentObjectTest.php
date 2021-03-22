@@ -15,7 +15,9 @@
 namespace Causal\Restdoc\Tests\Functional\ContentObject;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\TimeTracker\NullTimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Testcase for class \Causal\Restdoc\ContentObject\RestMetadataContentObject.
@@ -32,7 +34,7 @@ class RestMetadataContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
     protected $contentObject;
 
-    public function setUp()
+    public function setUp(): void
     {
         $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
             ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
@@ -48,28 +50,26 @@ class RestMetadataContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             1 => 'EXT:restdoc/Classes/ContentObject/RestMetadataContentObject.php:Causal\\Restdoc\\ContentObject\\RestMetadataContentObject',
         );
 
-        $this->contentObject = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+        $this->contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $this->contentObject->start(array());
 
-        $GLOBALS['TT'] = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker');
+        $GLOBALS['TT'] = GeneralUtility::makeInstance(NullTimeTracker::class);
         if ($GLOBALS['TSFE'] === null) {
             $GLOBALS['TSFE'] = new \stdClass();
         }
         $GLOBALS['TSFE']->cObjectDepthCounter += 3;
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'] = $this->backupCObjTypeAndClass;
-        unset($this->fixturePath);
-        unset($this->backupCObjTypeAndClass);
-        unset($this->contentObject);
+        unset($this->fixturePath, $this->backupCObjTypeAndClass, $this->contentObject);
     }
 
     /**
      * @test
      */
-    public function canExtractProject()
+    public function canExtractProject(): void
     {
         $config = array(
             'path' => $this->fixturePath,
@@ -87,7 +87,7 @@ class RestMetadataContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function canProcessCopyrightWithDynamicPath()
+    public function canProcessCopyrightWithDynamicPath(): void
     {
         $pathParts = explode('/', $this->fixturePath, 2);
         $config = array(

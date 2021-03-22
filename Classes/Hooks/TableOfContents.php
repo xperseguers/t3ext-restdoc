@@ -37,12 +37,12 @@ class TableOfContents
     /**
      * Maximum number of timestamps to save
      */
-    const MAX_ENTRIES = 5;
+    public const MAX_ENTRIES = 5;
 
     /**
      * Max age of a cache entry without having been refreshed
      */
-    const CACHE_MAX_AGE = 7776000;    // 86400 * 30 * 3 = 3 months
+    public const CACHE_MAX_AGE = 7776000;    // 86400 * 30 * 3 = 3 months
 
     /**
      * @var Pi1Controller
@@ -97,7 +97,7 @@ class TableOfContents
         }
 
         $this->maxDocuments = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($params['config']['documentStructureMaxDocuments'], 1, 9999);
-        $this->pageId = intval($this->pObj->cObj->data['pid']);
+        $this->pageId = (int)$this->pObj->cObj->data['pid'];
         $this->root = substr($params['documentRoot'], strlen($basePath));
         $this->flushCache();
 
@@ -149,12 +149,12 @@ class TableOfContents
         if ($add || $refresh) {
             $modifications[] = $lastModification;
             $jsonData = json_decode($content, true);
-            $data['title'] = isset($jsonData['title']) ? $jsonData['title'] : '';
+            $data['title'] = $jsonData['title'] ?? '';
             $data['checksum'] = $checksum;
 
             $links = $this->processToc($content, $params);
             foreach ($links as $doc => $href) {
-                if (!in_array($doc, $this->processedDocuments)) {
+                if (!in_array($doc, $this->processedDocuments, true)) {
                     $this->processedDocuments[] = $doc;
                     if ($doc !== $params['document']) {
                         $p2 = $params;
@@ -224,7 +224,7 @@ class TableOfContents
         // Remove empty sublevels
         $toc = preg_replace('#<ul>\s*</ul>#', '', $toc);
         // Fix TOC to make it XML compliant
-        $toc = preg_replace_callback('# href="([^"]+)"#', function ($matches) {
+        $toc = preg_replace_callback('# href="([^"]+)"#', static function ($matches) {
             $url = str_replace('&amp;', '&', $matches[1]);
             $url = str_replace('&', '&amp;', $url);
             return ' href="' . $url . '"';
@@ -300,7 +300,7 @@ class TableOfContents
         $plugin = $this->pObj;
         $ret = preg_replace_callback(
             '#(<a .*? href=")([^"]+)#',
-            function (array $matches) use ($plugin, $root, $document) {
+            static function (array $matches) use ($plugin, $root, $document) {
                 /** @var Pi1Controller $plugin */
                 $anchor = '';
                 if (preg_match('#^[a-zA-Z]+://#', $matches[2])) {

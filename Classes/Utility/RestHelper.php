@@ -71,9 +71,9 @@ final class RestHelper
                 'title' => $entry['a']['@content'],
                 '_OVERRIDE_HREF' => $entry['a']['@attributes']['href'],
             ];
-            if (in_array('current', $linkAttributes)) {
+            if (in_array('current', $linkAttributes, true)) {
                 $menuEntry['ITEM_STATE'] = 'CUR';
-            } elseif (in_array('active', $linkAttributes)) {
+            } elseif (in_array('active', $linkAttributes, true)) {
                 $menuEntry['ITEM_STATE'] = 'ACT';
             }
             if (isset($entry['ul'])) {
@@ -105,14 +105,14 @@ final class RestHelper
         $hasCurrent = false;
 
         foreach ($data as &$menuEntry) {
-            if (substr($menuEntry['_OVERRIDE_HREF'], 0, 3) === '../') {
+            if (strpos($menuEntry['_OVERRIDE_HREF'], '../') === 0) {
                 $menuEntry['_OVERRIDE_HREF'] = substr($menuEntry['_OVERRIDE_HREF'], 3);
             }
             if ($menuEntry['_OVERRIDE_HREF'] === $currentDocument) {
                 $hasCurrent = true;
                 $menuEntry['ITEM_STATE'] = 'CUR';
             }
-            $menuEntry['_OVERRIDE_HREF'] = call_user_func($callbackLinks, $menuEntry['_OVERRIDE_HREF']);
+            $menuEntry['_OVERRIDE_HREF'] = $callbackLinks($menuEntry['_OVERRIDE_HREF']);
             if (isset($menuEntry['_SUB_MENU'])) {
                 $hasChildCurrent = self::processMasterTableOfContents($menuEntry['_SUB_MENU'], $currentDocument, $callbackLinks);
                 if ($hasChildCurrent) {
@@ -158,7 +158,7 @@ final class RestHelper
         $headers = function_exists('apache_request_headers') ? apache_request_headers() : [];
 
         // Checking if the client is validating his cache and if it is current
-        if (isset($headers['If-Modified-Since']) && (strtotime($headers['If-Modified-Since']) == filemtime($filename))) {
+        if (isset($headers['If-Modified-Since']) && (strtotime($headers['If-Modified-Since']) === filemtime($filename))) {
             // Client's cache is current, so we just respond '304 Not Modified'
             HttpUtility::setResponseCodeAndExit(HttpUtility::HTTP_STATUS_304);
         } else {
@@ -190,7 +190,7 @@ final class RestHelper
 
         $numberOfRelativeParts = count($relativeParts);
         for ($i = 0; $i < $numberOfRelativeParts; $i++) {
-            if ($relativeParts[$i] == '..' && count($fullPathParts) > 0) {
+            if ($relativeParts[$i] === '..' && count($fullPathParts) > 0) {
                 array_pop($fullPathParts);
             } else {
                 $absolute = implode('/', $fullPathParts) . '/';
@@ -228,7 +228,7 @@ final class RestHelper
                         'title' => $dt[1][$i][0],
                         'link' => substr($dt[1][$i][1], 3),
                     ];
-                } elseif ($i == 0 && !empty($dt[1][$i]) && is_array($dt[1][$i][0]) && GeneralUtility::isFirstPartOfStr($dt[1][$i][0][1], '../')) {
+                } elseif ($i === 0 && !empty($dt[1][$i]) && is_array($dt[1][$i][0]) && GeneralUtility::isFirstPartOfStr($dt[1][$i][0][1], '../')) {
                     $relativeLinks[] = [
                         'title' => $dt[1][$i][0][0],
                         'link' => substr($dt[1][$i][0][1], 3),
@@ -248,7 +248,7 @@ final class RestHelper
             $numberOfRelativeLinks = count($relativeLinks);
             if ($numberOfRelativeLinks > 0) {
                 for ($i = 0; $i < $maxNumberOfRelativeLinks; $i++) {
-                    if ($i == 0) {
+                    if ($i === 0) {
                         $title = htmlspecialchars($dt[0]);
                     } else {
                         $output .= ', ';
@@ -257,7 +257,7 @@ final class RestHelper
                     if ($relativeLinks[$i]['title'] === 'main') {
                         $title = '<strong>' . $title . '</strong>';
                     }
-                    $link = call_user_func($callbackLinks, $relativeLinks[$i]['link']);
+                    $link = $callbackLinks($relativeLinks[$i]['link']);
                     $link = str_replace('&amp;', '&', $link);
                     $link = str_replace('&', '&amp;', $link);
 
@@ -342,7 +342,7 @@ final class RestHelper
                         $output['@attributes'] = $a;
                     }
                     foreach ($output as $t => $v) {
-                        if (is_array($v) && count($v) === 1 && $t !== '@attributes') {
+                        if ($t !== '@attributes' && is_array($v) && count($v) === 1) {
                             $output[$t] = $v[0];
                         }
                     }

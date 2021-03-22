@@ -19,12 +19,15 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Causal\Restdoc\Utility\RestHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
 /**
  * Plugin 'Sphinx Documentation Viewer Plugin' for the 'restdoc' extension.
@@ -36,7 +39,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
+class Pi1Controller extends AbstractPlugin
 {
 
     public $prefixId = 'tx_restdoc_pi1';
@@ -144,7 +147,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $sourceFile .= '.txt';
             }
             // Security check
-            if (substr($sourceFile, -4) === '.txt' && substr(realpath($documentRoot . $sourceFile), 0, strlen(realpath($documentRoot))) === realpath($documentRoot)) {
+            if (substr($sourceFile, -4) === '.txt' && strpos(realpath($documentRoot . $sourceFile), realpath($documentRoot)) === 0) {
                 // Will exit program normally
                 RestHelper::showSources($documentRoot . $sourceFile);
             }
@@ -153,7 +156,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         self::$sphinxReader
             ->setPath($documentRoot)
             ->setDocument($document)
-            ->setKeepPermanentLinks($this->conf['showPermanentLink'] != 0)
+            ->setKeepPermanentLinks((int)$this->conf['showPermanentLink'] !== 0)
             ->setDefaultFile($this->conf['defaultFile'])
             // TODO: only for TOC, BREADCRUMB, ... ? (question's context is when generating the general index)
             ->enableDefaultDocumentFallback();
@@ -161,7 +164,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         try {
             if (!self::$sphinxReader->load()) {
                 throw new \RuntimeException('Document failed to load', 1365166377);
-            };
+            }
         } catch (\RuntimeException $e) {
             return $e->getMessage();
         }
@@ -304,7 +307,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     public function makeMenuArray(string $content, array $conf): array
     {
         $data = [];
-        $type = isset($conf['userFunc.']['type']) ? $conf['userFunc.']['type'] : 'menu';
+        $type = $conf['userFunc.']['type'] ?? 'menu';
 
         $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
             ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
@@ -354,7 +357,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             case 'next':
                 $nextDocument = self::$sphinxReader->getNextDocument();
                 if ($nextDocument !== null) {
-                    if ($document === $this->getDefaultFile() . '/' && substr($nextDocument['link'], 0, 3) !== '../') {
+                    if ($document === $this->getDefaultFile() . '/' && strpos($nextDocument['link'], '../') !== 0) {
                         $nextDocumentPath = $documentRoot;
                     } else {
                         $nextDocumentPath = $documentRoot . $document;
@@ -388,7 +391,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
             case 'updated':
                 $limit = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($conf['limit'], 0, 100);    // max number of items
-                $maxAge = intval($this->cObj->calc($conf['maxAge']));
+                $maxAge = (int)$this->cObj->calc($conf['maxAge']);
                 $sortField = 'crdate';
 
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -397,7 +400,7 @@ class Pi1Controller extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
                 if (!empty($conf['excludeChapters'])) {
                     $excludeChapters = array_map(
-                        function ($chapter) use ($queryBuilder) {
+                        static function ($chapter) use ($queryBuilder) {
                             return $queryBuilder->quote($chapter);
                         },
                         GeneralUtility::trimExplode(',', $conf['excludeChapters'])
@@ -541,7 +544,7 @@ JS;
         }
 
         if ($nextDocument !== null) {
-            if ($document === $this->getDefaultFile() . '/' && substr($nextDocument['link'], 0, 3) !== '../') {
+            if ($document === $this->getDefaultFile() . '/' && strpos($nextDocument['link'], '../') !== 0) {
                 $nextDocumentPath = $documentRoot;
             } else {
                 $nextDocumentPath = $documentRoot . $document;
@@ -710,7 +713,7 @@ JS;
             $contentCategories[] = $contentCategory;
         }
 
-        $output = '<h1>' . $this->pi_getLL('index_title', 'Index', true) . '</h1>' . LF;
+        $output = '<h1>' . htmlspecialchars($this->pi_getLL('index_title', 'Index')) . '</h1>' . LF;
         $output .= '<div class="tx-restdoc-genindex-jumpbox">' . implode(' | ', $linksCategories) . '</div>' . LF;
         $output .= implode(LF, $contentCategories);
 
@@ -799,12 +802,14 @@ JS;
         }
         $hiddenFields = '';
         foreach ($parameters as $parameter) {
-            list($key, $value) = explode('=', $parameter);
-            if ($key === 'q') continue;
+            [$key, $value] = explode('=', $parameter);
+            if ($key === 'q') {
+                continue;
+            }
             $hiddenFields .= sprintf('<input type="hidden" name="%s" value="%s" />', $key, $value) . LF;
         }
-        $searchPlaceholder = $this->pi_getLL('search_placeholder', 'search', true);
-        $searchAction = $this->pi_getLL('search_action', 'search', true);
+        $searchPlaceholder = htmlspecialchars($this->pi_getLL('search_placeholder', 'search'));
+        $searchAction = htmlspecialchars($this->pi_getLL('search_action', 'search'));
 
         return <<<HTML
 <form action="$action" method="get">
@@ -826,7 +831,7 @@ HTML;
      *
      * @param string $file
      */
-    protected function includeJsFile(string $file)
+    protected function includeJsFile(string $file): void
     {
         $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
             ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
@@ -834,7 +839,7 @@ HTML;
         $pathSite = version_compare($typo3Branch, '9.0', '<')
             ? PATH_site
             : Environment::getPublicPath() . '/';
-        $relativeFile = substr(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey), strlen($pathSite)) . $file;
+        $relativeFile = substr(ExtensionManagementUtility::extPath($this->extKey), strlen($pathSite)) . $file;
         $relativeFile = $this->cObj->typoLink_URL(['parameter' => $relativeFile]);
         $GLOBALS['TSFE']->additionalHeaderData[$relativeFile] = '<script type="text/javascript" src="' . $relativeFile . '"></script>';
     }
@@ -884,7 +889,7 @@ HTML;
                 ];
             }
         }
-        if (substr($document, 0, 11) === '_downloads/' || substr($document, 0, 8) === '_images/') {
+        if (strpos($document, '_downloads/') === 0 || strpos($document, '_images/') === 0) {
             $basePath = self::$current['path'];
             $storage = self::$sphinxReader->getStorage();
             if ($storage !== null) {
@@ -991,18 +996,18 @@ HTML;
                     /** @var $value array */
                     foreach ($value as $key => $val) {
                         $value = $this->pi_getFFvalue($piFlexForm, $key, $sheet);
-                        if (trim($value) !== '' && in_array($key, $multiValueKeys)) {
+                        if (trim($value) !== '' && in_array($key, $multiValueKeys, true)) {
                             // Funny, FF contains a comma-separated list of key|value and
                             // we only want to have key...
                             $tempValues = explode(',', $value);
                             $tempKeys = [];
                             foreach ($tempValues as $tempValue) {
-                                list($k, $_) = explode('|', $tempValue);
+                                [$k, $_] = explode('|', $tempValue);
                                 $tempKeys[] = $k;
                             }
                             $value = implode(',', $tempKeys);
                         }
-                        if (trim($value) !== '' || !isset($this->conf[$key])) {
+                        if (!isset($this->conf[$key]) || trim($value) !== '') {
                             $this->conf[$key] = $value;
                         }
                     }
@@ -1028,7 +1033,7 @@ HTML;
             /** @var $storageRepository StorageRepository */
             $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
             /** @var $storage ResourceStorage */
-            $storage = $storageRepository->findByUid(intval($matches[1]));
+            $storage = $storageRepository->findByUid((int)$matches[1]);
             $storageRecord = $storage->getStorageRecord();
             if ($storageRecord['driver'] === 'Local') {
                 $this->conf['path'] = substr($matches[2], 1);
@@ -1063,7 +1068,7 @@ HTML;
         }
 
         if (GeneralUtility::inList('REFERENCES,SEARCH', $this->conf['mode'])) {
-            $this->conf['rootPage'] = intval($this->conf['rootPage']);
+            $this->conf['rootPage'] = (int)$this->conf['rootPage'];
         } else {
             $this->conf['rootPage'] = 0;
         }
@@ -1080,8 +1085,8 @@ HTML;
             $basePath = 'EXT:' . $this->extKey . '/Resources/Private/Language/locallang.xlf';
 
             // Read the strings in the required charset (since TYPO3 4.2)
-            /** @var $languageFactory \TYPO3\CMS\Core\Localization\LocalizationFactory */
-            $languageFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LocalizationFactory::class);
+            /** @var $languageFactory LocalizationFactory */
+            $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
             $this->LOCAL_LANG = $languageFactory->getParsedData($basePath, $this->LLkey, 'utf-8');
             if ($this->altLLkey) {
                 $tempLOCAL_LANG = $languageFactory->getParsedData($basePath, $this->altLLkey);
@@ -1101,7 +1106,7 @@ HTML;
                                 $this->LOCAL_LANG[$k][$llK][0]['target'] = $llV;
 
                                 // For labels coming from the TypoScript (database) the charset is assumed to be "forceCharset" and if that is not set, assumed to be that of the individual system languages
-                                $this->LOCAL_LANG_charset[$k][$llK] = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : $GLOBALS['TSFE']->csConvObj->charSetArray[$k];
+                                $this->LOCAL_LANG_charset[$k][$llK] = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ?: $GLOBALS['TSFE']->csConvObj->charSetArray[$k];
                             }
                         }
                     }

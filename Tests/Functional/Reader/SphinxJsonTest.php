@@ -15,6 +15,7 @@
 namespace Causal\Restdoc\Tests\Functional\Reader;
 
 use TYPO3\CMS\Core\Core\Environment;
+use Causal\Restdoc\Reader\SphinxJson;
 
 /**
  * Testcase for class \Causal\Restdoc\Reader\SphinxJson.
@@ -31,7 +32,7 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /** @var mixed */
     protected $buffer;
 
-    public function setUp()
+    public function setUp(): void
     {
         $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
             ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
@@ -40,21 +41,19 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             ? PATH_site
             : Environment::getPublicPath() . '/';
         $this->fixturePath = substr(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('restdoc') . 'Tests/Functional/Fixtures/_build/json/', strlen($pathSite));
-        $this->sphinxReader = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Causal\\Restdoc\\Reader\\SphinxJson');
+        $this->sphinxReader = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(SphinxJson::class);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
-        unset($this->fixturePath);
-        unset($this->sphinxReader);
-        unset($this->buffer);
+        unset($this->fixturePath, $this->sphinxReader, $this->buffer);
     }
 
     /**
      * @expectedException \RuntimeException
      * @test
      */
-    public function pathIsMandatory()
+    public function pathIsMandatory(): void
     {
         // No path specified
         $this->sphinxReader->load();
@@ -64,7 +63,7 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * @expectedException \RuntimeException
      * @test
      */
-    public function documentIsMandatory()
+    public function documentIsMandatory(): void
     {
         $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
             ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
@@ -79,7 +78,7 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function canLoadExistingDocument()
+    public function canLoadExistingDocument(): void
     {
         $this->assertTrue($this->initializeReader('index/'));
     }
@@ -87,7 +86,7 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function canExtractTitle()
+    public function canExtractTitle(): void
     {
         $this->initializeReader('intro/');
         $value = $this->sphinxReader->getTitle();
@@ -98,7 +97,7 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function canExtractSourceName()
+    public function canExtractSourceName(): void
     {
         $this->initializeReader('intro/');
         $value = $this->sphinxReader->getSourceName();
@@ -109,7 +108,7 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function canExtractCurrentPageName()
+    public function canExtractCurrentPageName(): void
     {
         $this->initializeReader('intro/');
         $value = $this->sphinxReader->getCurrentPageName();
@@ -120,7 +119,7 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function canRetrieveListOfLabels()
+    public function canRetrieveListOfLabels(): void
     {
         $this->initializeReader('index/');
         $references = $this->sphinxReader->getReferences();
@@ -133,13 +132,13 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function canExtractTableOfContentsForIndex()
+    public function canExtractTableOfContentsForIndex(): void
     {
         $this->initializeReader('index/');
         $this->buffer = array();
 
         $toc = $this->sphinxReader->getTableOfContents(array($this, 'getLink'));
-        $this->assertTrue($toc !== '');
+        $this->assertNotSame($toc, '');
 
         $expectedLinks = array(
             'index/#',
@@ -151,13 +150,13 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function canExtractTableOfContentsForChapterIntroduction()
+    public function canExtractTableOfContentsForChapterIntroduction(): void
     {
         $this->initializeReader('intro/');
         $this->buffer = array();
 
         $toc = $this->sphinxReader->getTableOfContents(array($this, 'getLink'));
-        $this->assertTrue($toc !== '');
+        $this->assertNotSame($toc, '');
 
         $expectedLinks = array(
             'intro/#',
@@ -168,7 +167,7 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function canExtractPreviousDocumentInSameDirectory()
+    public function canExtractPreviousDocumentInSameDirectory(): void
     {
         $this->initializeReader('intro/');
         $value = $this->sphinxReader->getPreviousDocument();
@@ -182,7 +181,7 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function canExtractPreviousDocumentInOtherDirectory()
+    public function canExtractPreviousDocumentInOtherDirectory(): void
     {
         $this->initializeReader('subdirectory/index/');
         $value = $this->sphinxReader->getPreviousDocument();
@@ -196,7 +195,7 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function canExtractNextDocumentInSameDirectory()
+    public function canExtractNextDocumentInSameDirectory(): void
     {
         $this->initializeReader('index/');
         $value = $this->sphinxReader->getNextDocument();
@@ -210,7 +209,7 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function canExtractNextDocumentInOtherDirectory()
+    public function canExtractNextDocumentInOtherDirectory(): void
     {
         $this->initializeReader('intro/');
         $value = $this->sphinxReader->getNextDocument();
@@ -224,11 +223,11 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function canExtractIndexEntries()
+    public function canExtractIndexEntries(): void
     {
         $this->initializeReader('genindex/');
         $value = $this->sphinxReader->getIndexEntries();
-        $this->assertTrue(is_array($value), 'null instead of array');
+        $this->assertIsArray($value, 'null instead of array');
         $this->assertTrue(count($value) > 0, 'Expected at least 1 index entry');
     }
 
@@ -236,11 +235,11 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * Generates a link to navigate within a reST documentation project.
      *
      * @param string $document Target document
-     * @param boolean $absolute Whether absolute URI should be generated
-     * @param integer $rootPage UID of the page showing the documentation
+     * @param bool $absolute Whether absolute URI should be generated
+     * @param int $rootPage UID of the page showing the documentation
      * @return string
      */
-    public function getLink($document, $absolute = false, $rootPage = 0)
+    public function getLink(string $document, bool $absolute = false, int $rootPage = 0): string
     {
         $this->buffer[] = $document;
         return $document;
@@ -250,9 +249,9 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      * Initializes the reader.
      *
      * @param string $document
-     * @return boolean
+     * @return bool
      */
-    protected function initializeReader($document)
+    protected function initializeReader(string $document): bool
     {
         $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
             ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
