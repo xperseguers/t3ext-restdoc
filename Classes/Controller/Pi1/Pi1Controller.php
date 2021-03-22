@@ -373,6 +373,12 @@ class Pi1Controller extends AbstractPlugin
                 ];
                 if (!empty($prependParentItems)) {
                     $data = array_merge($prependParentItems, $data);
+                    if (self::$sphinxReader->getDocument() === self::$sphinxReader->getDefaultFile() . '/') {
+                        // We are at root, remove "current page" from the breadcrumb menu
+                        $depth = count($data);
+                        unset($data[$depth - 1]);
+                        $data[$depth - 2]['ITEM_STATE'] = 'CUR';
+                    }
                 }
                 break;
 
