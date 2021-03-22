@@ -23,9 +23,10 @@
   "license": "GPL-2.0-or-later",
   "require": {
     "php": ">= 7.2.0, <= 7.4.99",
-    "typo3/cms-core": "^8.7 || ^9.5 || ^10.4 || ^11",
+    "typo3/cms-core": "^9.5 || ^10.4 || ^11",
     "ext-dom": "*",
-    "ext-json": "*"
+    "ext-json": "*",
+    "ext-zlib": "*"
   },
   "autoload": {
     "psr-4": {
@@ -37,7 +38,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "2.0.x-dev"
+      "dev-master": "2.1.x-dev"
     },
     "typo3/cms": {
       "extension-key": "restdoc"
