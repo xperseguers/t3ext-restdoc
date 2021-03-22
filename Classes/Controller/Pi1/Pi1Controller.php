@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Causal\Restdoc\Utility\RestHelper;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
@@ -294,6 +295,7 @@ class Pi1Controller extends AbstractPlugin
 
         $documentRoot = self::$sphinxReader->getPath();
         $document = self::$sphinxReader->getDocument();
+        $prependParentItems = [];
 
         switch ($type) {
             case 'menu':
@@ -339,6 +341,16 @@ class Pi1Controller extends AbstractPlugin
                 }
                 break;
 
+            case 'rootline_breadcrumb':
+                $rootline = $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $GLOBALS['TSFE']->id)->get();
+                foreach (array_reverse($rootLine) as $page) {
+                    $prependParentItems[] = [
+                        'title' => $page['title'],
+                        '_OVERRIDE_HREF' => $this->cObj->getTypoLink_URL($page['uid']),
+                    ];
+                }
+                // BEWARE: NO "break" here as we want to continue to 'breadcrumb' below
+
             case 'breadcrumb':
                 $parentDocuments = self::$sphinxReader->getParentDocuments((bool)($conf['userFunc.']['showRoot'] ?? '0'));
                 foreach ($parentDocuments as $parent) {
@@ -359,6 +371,9 @@ class Pi1Controller extends AbstractPlugin
                     '_OVERRIDE_HREF' => $this->getLink($document),
                     'ITEM_STATE' => 'CUR',
                 ];
+                if (!empty($prependParentItems)) {
+                    $data = array_merge($prependParentItems, $data);
+                }
                 break;
 
             case 'updated':

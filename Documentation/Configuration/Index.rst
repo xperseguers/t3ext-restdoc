@@ -21,3 +21,4 @@ This chapter describes the TypoScript extension parameters.
    TxRestdocPi1/Index
    TxRestdocPi1Setup/Index
    RestMetadata/Index
+   BootstrapPackage/Index

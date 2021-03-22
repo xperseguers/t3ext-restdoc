@@ -11,7 +11,8 @@
 Development
 ===========
 
-This chapter describes some internals of the restdoc extension to let you extend it easily.
+This chapter describes some internals of the restdoc extension to let you extend
+it easily.
 
 
 .. _development-hooks:

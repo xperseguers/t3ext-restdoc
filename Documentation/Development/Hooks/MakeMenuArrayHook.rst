@@ -9,7 +9,9 @@
 makeMenuArrayHook
 ^^^^^^^^^^^^^^^^^
 
-This hook can be used to post-process the menu entries when generating a menu in TypoScript (general menu, previous/next page, breadcrumb menu, updated chapters).
+This hook can be used to post-process the menu entries when generating a menu in
+TypoScript (general menu, previous/next page, breadcrumb menu, updated
+chapters).
 
 Registration
 """"""""""""
