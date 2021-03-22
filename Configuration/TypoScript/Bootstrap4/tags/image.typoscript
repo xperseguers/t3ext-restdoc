@@ -6,7 +6,13 @@ plugin.tx_restdoc_pi1.setup {
         wrap = <p class="text-center"> | </p>
         wrap.if {
             value.field = class
-            equals = align-center
+            value.replacement {
+                10 {
+                    search.char = 32
+                    replace = ,
+                }
+            }
+            isInList = align-center
         }
     }
 }
