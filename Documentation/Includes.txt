@@ -26,8 +26,6 @@
 
 .. _`5 min tutorial video`: https://www.youtube.com/watch?v=YeGqHMDT7R8
 
-.. _dd_googlesitemap: https://extensions.typo3.org/extension/dd_googlesitemap
-
 .. _`post of mine in Google+`: https://plus.google.com/117624290123792924579/posts/R5H1ZUMcwEm
 
 .. _reStructuredText: https://docutils.sourceforge.io/rst.html

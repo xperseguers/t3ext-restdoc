@@ -20,14 +20,6 @@ defined('TYPO3_MODE') || die();
         '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:restdoc/Configuration/TsConfig/Page/Mod/Wizards/NewContentElement.tsconfig">'
     );
 
-    if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('dd_googlesitemap')) {
-        // Hook for integrating ReStructured documentation into the Google Sitemap (requires EXT:dd_googlesitemap)
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dd_googlesitemap']['generateSitemapForPagesClass'][] = \Causal\Restdoc\Hooks\TxDdgooglesitemap::class;
-
-        // Implement our own hook to slowly populate complete document structure
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['renderHook'][] = \Causal\Restdoc\Hooks\TableOfContents::class;
-    }
-
     // Register new TypoScript content object
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'][] = [
         0 => 'REST_METADATA',

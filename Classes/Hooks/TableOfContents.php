@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Storing the documentation structure into the database for integration
- * within EXT:dd_googlesitemap.
+ * within a sitemap generator.
  *
  * @category    Hooks
  * @package     TYPO3
@@ -71,7 +71,7 @@ class TableOfContents
     protected $processedDocuments = [];
 
     /**
-     * Stores the TOC into database for future inclusion within EXT:dd_googlesitemap.
+     * Stores the TOC into database for future inclusion within a sitemap generator.
      *
      * @param array $params
      */

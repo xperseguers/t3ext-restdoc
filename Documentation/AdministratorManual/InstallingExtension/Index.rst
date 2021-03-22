@@ -25,8 +25,7 @@ the Extension Manager.
 
 The Extension Manager will create a new table in your database. This table is used to store references to the chapters
 in the context of the plugin and is used to both generate the menu of recent updates in your documentation and to
-integrate the structure of your documentation within your website's sitemap, when using this extension together with
-dd_googlesitemap_.
+integrate the structure of your documentation within your website's sitemap.
 
 
 .. _admin-manual-install-routing:

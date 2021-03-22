@@ -108,8 +108,7 @@ documentStructureMaxDocuments
 
 :typoscript:`plugin.tx_restdoc_pi1.documentStructureMaxDocuments =` :ref:`t3tsref:data-type-integer`
 
-Maximal number of documents to be processed at once when generating the documentation's structure (requires
-EXT:`dd_googlesitemap`_).
+Maximal number of documents to be processed at once when generating the documentation's structure.
 
 
 .. _ts-plugin-tx-restdoc-pi1-advertiseSphinx:
