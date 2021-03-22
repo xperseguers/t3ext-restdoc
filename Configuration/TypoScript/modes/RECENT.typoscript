@@ -1,0 +1,29 @@
+plugin.tx_restdoc_pi1.setup.RECENT {
+    renderObj = HMENU
+    renderObj {
+        special = userfunction
+        special {
+            userFunc = Causal\Restdoc\Controller\Pi1\Pi1Controller->makeMenuArray
+            userFunc.type = updated
+            # chapters must have been updated within the last 60 days (3600*24*60)
+            maxAge = 3600*24*60
+            limit = 10
+            # comma-separated list of chapters to exclude
+            excludeChapters = genindex/
+        }
+        wrap = <ul> | </ul>
+
+        1 = TMENU
+        1 {
+            noBlur = 1
+            NO {
+                wrapItemAndSub = <li> | </li>
+
+                # Prepend the date
+                before.field = SYS_LASTCHANGED
+                before.strftime = %d.%m.%Y
+                before.noTrimWrap = |<span class="tx-restdoc-date">|:</span> |
+            }
+        }
+    }
+}

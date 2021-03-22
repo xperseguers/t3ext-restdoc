@@ -1,0 +1,20 @@
+plugin.tx_restdoc_pi1.setup.MASTER_TOC {
+    renderObj = HMENU
+    renderObj {
+        special = userfunction
+        special.userFunc = Causal\Restdoc\Controller\Pi1\Pi1Controller->makeMenuArray
+        special.userFunc.type = master_menu
+
+        1 = TMENU
+        1 {
+            wrap = <ul> | </ul>
+            noBlur = 1
+            NO.wrapItemAndSub = <li> | </li>
+
+            CUR = 1
+            CUR.wrapItemAndSub = <li class="current"> | </li>
+        }
+        2 < .1
+        3 < .2
+    }
+}

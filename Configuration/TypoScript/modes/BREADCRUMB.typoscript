@@ -1,0 +1,19 @@
+plugin.tx_restdoc_pi1.setup.BREADCRUMB {
+    renderObj = HMENU
+    renderObj {
+        special = userfunction
+        special.userFunc = Causal\Restdoc\Controller\Pi1\Pi1Controller->makeMenuArray
+        special.userFunc.type = breadcrumb
+
+        1 = TMENU
+        1 {
+            noBlur = 1
+            NO.linkWrap = | &raquo; |*||*| |
+            NO.stdWrap.noTrimWrap = | | |
+
+            CUR < .NO
+            CUR = 1
+            CUR.doNotLinkIt = 1
+        }
+    }
+}

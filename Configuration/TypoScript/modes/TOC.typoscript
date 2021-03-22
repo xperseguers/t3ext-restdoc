@@ -1,0 +1,36 @@
+plugin.tx_restdoc_pi1.setup.TOC {
+    renderObj = COA
+    renderObj {
+        10 = HMENU
+        10 {
+            special = userfunction
+            special.userFunc = Causal\Restdoc\Controller\Pi1\Pi1Controller->makeMenuArray
+            special.userFunc.type = menu
+
+            1 = TMENU
+            1 {
+                wrap = <ul> | </ul>
+                noBlur = 1
+                NO.wrapItemAndSub = <li> | </li>
+
+                CUR = 1
+                CUR.wrapItemAndSub = <li class="current"> | </li>
+            }
+            2 < .1
+
+            stdWrap.preCObject = TEXT
+            stdWrap.preCObject.data = LLL:EXT:restdoc/Resources/Private/Language/locallang.xlf:header_toc
+            stdWrap.preCObject.wrap = <h2> | </h2>
+        }
+
+        20 < .10
+        20.stdWrap.preCObject.data = LLL:EXT:restdoc/Resources/Private/Language/locallang.xlf:header_previous_topic
+        20.stdWrap.preCObject.wrap = <h3> | </h3>
+        20.stdWrap.required = 1
+        20.special.userFunc.type = previous
+
+        30 < .20
+        30.stdWrap.preCObject.data = LLL:EXT:restdoc/Resources/Private/Language/locallang.xlf:header_next_topic
+        30.special.userFunc.type = next
+    }
+}
