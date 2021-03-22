@@ -1,4 +1,7 @@
 plugin.tx_restdoc_pi1._CSS_DEFAULT_STYLE >
 
+# No need for any useless <div class="tx-restdoc-pi1"> ... </div>
+plugin.tx_restdoc_pi1.baseWrap.wrap = |
+
 <INCLUDE_TYPOSCRIPT: source="DIR: ./tags/" extensions="typoscript">
 <INCLUDE_TYPOSCRIPT: source="DIR: ./components/" extensions="typoscript">
