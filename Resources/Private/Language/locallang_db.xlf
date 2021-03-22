@@ -33,6 +33,9 @@
 			<trans-unit id="pi_flexform.mode.RECENT">
 				<source>Recently updated chapters</source>
 			</trans-unit>
+			<trans-unit id="pi_flexform.mode.BREADCRUMB">
+				<source>Breadcrumb menu</source>
+			</trans-unit>
 			<trans-unit id="pi_flexform.mode.QUICK_NAVIGATION">
 				<source>Quick navigation</source>
 			</trans-unit>

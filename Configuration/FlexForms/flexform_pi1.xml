@@ -56,14 +56,18 @@
 										<numIndex index="1">RECENT</numIndex>
 									</numIndex>
 									<numIndex index="5" type="array">
+										<numIndex index="0">LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.mode.BREADCRUMB</numIndex>
+										<numIndex index="1">BREADCRUMB</numIndex>
+									</numIndex>
+									<numIndex index="6" type="array">
 										<numIndex index="0">LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.mode.QUICK_NAVIGATION</numIndex>
 										<numIndex index="1">QUICK_NAVIGATION</numIndex>
 									</numIndex>
-									<numIndex index="6" type="array">
+									<numIndex index="7" type="array">
 										<numIndex index="0">LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.mode.REFERENCES</numIndex>
 										<numIndex index="1">REFERENCES</numIndex>
 									</numIndex>
-									<numIndex index="7" type="array">
+									<numIndex index="8" type="array">
 										<numIndex index="0">LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.mode.SEARCH</numIndex>
 										<numIndex index="1">SEARCH</numIndex>
 									</numIndex>
