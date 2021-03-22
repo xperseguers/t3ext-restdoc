@@ -13,9 +13,9 @@ plugin.tx_restdoc_pi1.setup
 
 .. only:: html
 
-	.. contents::
-		:local:
-		:depth: 1
+   .. contents::
+      :local:
+      :depth: 1
 
 
 Properties
@@ -23,17 +23,17 @@ Properties
 
 .. container:: ts-properties
 
-	===================================================== ===================================================================== ======================= ==================
-	Property                                              Data type                                                             :ref:`t3tsref:stdwrap`  Default
-	===================================================== ===================================================================== ======================= ==================
-	`BODY.image.renderObj`_                               :ref:`cObject <t3tsref:cobjects>`                                     no                      *see* `setup.txt`_
-	`TOC.renderObj`_                                      :ref:`cObject <t3tsref:cobjects>`                                     no                      *see* `setup.txt`_
-	`MASTER_TOC.renderObj`_                               :ref:`cObject <t3tsref:cobjects>`                                     no                      *see* `setup.txt`_
-	`RECENT.renderObj`_                                   :ref:`cObject <t3tsref:cobjects>`                                     no                      *see* `setup.txt`_
-	`QUICK_NAVIGATION.renderObj`_                         :ref:`cObject <t3tsref:cobjects>`                                     no                      *see* `setup.txt`_
-	`BREADCRUMB.renderObj`_                               :ref:`cObject <t3tsref:cobjects>`                                     no                      *see* `setup.txt`_
-	`REFERENCES.renderObj`_                               :ref:`cObject <t3tsref:cobjects>`                                     no                      *see* `setup.txt`_
-	===================================================== ===================================================================== ======================= ==================
+   ===================================================== ===================================================================== ======================= ==================
+   Property                                              Data type                                                             :ref:`t3tsref:stdwrap`  Default
+   ===================================================== ===================================================================== ======================= ==================
+   `BODY.image.renderObj`_                               :ref:`cObject <t3tsref:cobjects>`                                     no                      *see* `setup.txt`_
+   `TOC.renderObj`_                                      :ref:`cObject <t3tsref:cobjects>`                                     no                      *see* `setup.txt`_
+   `MASTER_TOC.renderObj`_                               :ref:`cObject <t3tsref:cobjects>`                                     no                      *see* `setup.txt`_
+   `RECENT.renderObj`_                                   :ref:`cObject <t3tsref:cobjects>`                                     no                      *see* `setup.txt`_
+   `QUICK_NAVIGATION.renderObj`_                         :ref:`cObject <t3tsref:cobjects>`                                     no                      *see* `setup.txt`_
+   `BREADCRUMB.renderObj`_                               :ref:`cObject <t3tsref:cobjects>`                                     no                      *see* `setup.txt`_
+   `REFERENCES.renderObj`_                               :ref:`cObject <t3tsref:cobjects>`                                     no                      *see* `setup.txt`_
+   ===================================================== ===================================================================== ======================= ==================
 
 
 Property details
@@ -41,9 +41,9 @@ Property details
 
 .. only:: html
 
-	.. contents::
-		:local:
-		:depth: 1
+   .. contents::
+      :local:
+      :depth: 1
 
 
 .. _ts-plugin-tx-restdoc-pi1-setup-BODY-image:

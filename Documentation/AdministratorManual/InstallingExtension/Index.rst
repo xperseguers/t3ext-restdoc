@@ -11,8 +11,9 @@
 Installing the extension
 ------------------------
 
-There are a few steps necessary to install the Sphinx Documentation Viewer Plugin extension. If you have installed other
-extensions in the past, you will run into little new here.
+There are a few steps necessary to install the Sphinx Documentation Viewer
+Plugin extension. If you have installed other extensions in the past, you will
+run into little new here.
 
 
 .. _admin-manual-install-em:
@@ -20,11 +21,12 @@ extensions in the past, you will run into little new here.
 Install the extension from Extension Manager
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Sphinx Documentation Viewer Plugin extension can ben installed through the typical TYPO3 installation process using
-the Extension Manager.
+The Sphinx Documentation Viewer Plugin extension can ben installed through the
+typical TYPO3 installation process using the Extension Manager.
 
-The Extension Manager will create a new table in your database. This table is used to store references to the chapters
-in the context of the plugin and is used to both generate the menu of recent updates in your documentation and to
+The Extension Manager will create a new table in your database. This table is
+used to store references to the chapters in the context of the plugin and is
+used to both generate the menu of recent updates in your documentation and to
 integrate the structure of your documentation within your website's sitemap.
 
 
@@ -33,7 +35,8 @@ integrate the structure of your documentation within your website's sitemap.
 Configure Routing
 ^^^^^^^^^^^^^^^^^
 
-In order to get pretty URL, you are advised to edit file :file:`config/sites/*/config.yaml` and extend it like that:
+In order to get pretty URL, you are advised to edit file
+:file:`config/sites/*/config.yaml` and extend it like that:
 
 .. code-block:: yaml
 
@@ -42,9 +45,10 @@ In order to get pretty URL, you are advised to edit file :file:`config/sites/*/c
        type: RestdocPlugin
        limitToPages: [1]
 
-You should naturally adapt ``limitToPages`` to the pages where the restdoc plugin is located. If you don't, the plugin
-will determine that dynamically but this will have a small performance penalty. You may figure out the list by running
-this SQL query:
+You should naturally adapt ``limitToPages`` to the pages where the restdoc
+plugin is located. If you don't, the plugin will determine that dynamically but
+this will have a small performance penalty. You may figure out the list by
+running this SQL query:
 
 .. code-block:: sql
 
@@ -71,5 +75,5 @@ this SQL query:
           requirements:
             doc: '.+'
 
-   Naturally you may override the `routePath` and corresponding requirements to fit your own
-   special use case, if needed.
+   Naturally you may override the `routePath` and corresponding requirements to
+   fit your own special use case, if needed.

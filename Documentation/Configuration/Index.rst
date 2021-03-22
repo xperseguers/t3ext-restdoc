@@ -14,10 +14,10 @@ Configuration
 This chapter describes the TypoScript extension parameters.
 
 .. toctree::
-	:maxdepth: 5
-	:titlesonly:
-	:glob:
+   :maxdepth: 5
+   :titlesonly:
+   :glob:
 
-	TxRestdocPi1/Index
-	TxRestdocPi1Setup/Index
-	RestMetadata/Index
+   TxRestdocPi1/Index
+   TxRestdocPi1Setup/Index
+   RestMetadata/Index

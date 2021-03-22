@@ -11,12 +11,13 @@
 Administrator manual
 ====================
 
-This chapter describes how to manage the extension from a superuser point of view.
+This chapter describes how to manage the extension from a superuser point of
+view.
 
 .. toctree::
-	:maxdepth: 5
-	:titlesonly:
-	:glob:
+   :maxdepth: 5
+   :titlesonly:
+   :glob:
 
-	InstallingExtension/Index
-	TypoScriptConfiguration/Index
+   InstallingExtension/Index
+   TypoScriptConfiguration/Index

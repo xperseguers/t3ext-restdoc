@@ -38,14 +38,16 @@ Parameters
 ``$params`` is an array with following keys:
 
 config
-	A reference to the configuration of the search form:
+   A reference to the configuration of the search form:
 
-	* **jsLibs:** Array of JavaScript libraries to be loaded (``underscore.js``, ``doctools.js``, ``searchtools.js``)
+   * **jsLibs:** Array of JavaScript libraries to be loaded (``underscore.js``,
+     ``doctools.js``, ``searchtools.js``)
 
-	* **jsInline:** Inline JavaScript code (loading the index resource)
+   * **jsInline:** Inline JavaScript code (loading the index resource)
 
-	* **advertiseSphinx:** Whether to advertise Sphinx (standard inline JavaScript code needed by ``searchtools.js``,
-	  thus default to ``TRUE``)
+   * **advertiseSphinx:** Whether to advertise Sphinx (standard inline
+     JavaScript code needed by ``searchtools.js``, thus default to ``TRUE``)
 
 pObj
-	A reference to the current ``\Causal\Restdoc\Controller\Pi1\Pi1Controller`` instance
+   A reference to the current ``\Causal\Restdoc\Controller\Pi1\Pi1Controller``
+   instance

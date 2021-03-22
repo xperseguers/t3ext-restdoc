@@ -38,16 +38,18 @@ Parameters
 ``$params`` is an array with following keys:
 
 documentRoot
-	Absolute path to the documentation's root
+   Absolute path to the documentation's root
 
 document
-	Relative path to the current document
+   Relative path to the current document
 
 data
-	A reference to an array of menu entries compatible with the various ``*MENU`` content objects, may thus be changed within your hook
+   A reference to an array of menu entries compatible with the various ``*MENU``
+   content objects, may thus be changed within your hook
 
 config
-	Configuration of the plugin
+   Configuration of the plugin
 
 pObj
-	A reference to the current ``\Causal\Restdoc\Controller\Pi1\Pi1Controller`` instance
+   A reference to the current ``\Causal\Restdoc\Controller\Pi1\Pi1Controller``
+   instance

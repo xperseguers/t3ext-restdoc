@@ -13,9 +13,9 @@ REST_METADATA
 
 .. only:: html
 
-	.. contents::
-		:local:
-		:depth: 1
+   .. contents::
+      :local:
+      :depth: 1
 
 
 Properties
@@ -23,12 +23,12 @@ Properties
 
 .. container:: ts-properties
 
-	===================================================== ===================================================================== ======================= ==================
-	Property                                              Data type                                                             :ref:`t3tsref:stdwrap`  Default
-	===================================================== ===================================================================== ======================= ==================
-	path_                                                 :ref:`t3tsref:data-type-string`                                       yes                     *empty*
-	`(stdWrap properties)`_                               :ref:`stdWrap property <t3tsref:stdwrap>`
-	===================================================== ===================================================================== ======================= ==================
+   ===================================================== ===================================================================== ======================= ==================
+   Property                                              Data type                                                             :ref:`t3tsref:stdwrap`  Default
+   ===================================================== ===================================================================== ======================= ==================
+   path_                                                 :ref:`t3tsref:data-type-string`                                       yes                     *empty*
+   `(stdWrap properties)`_                               :ref:`stdWrap property <t3tsref:stdwrap>`
+   ===================================================== ===================================================================== ======================= ==================
 
 
 Property details
@@ -36,9 +36,9 @@ Property details
 
 .. only:: html
 
-	.. contents::
-		:local:
-		:depth: 1
+   .. contents::
+      :local:
+      :depth: 1
 
 
 .. _ts-rest-metadata-path:
@@ -66,8 +66,7 @@ Available fields:
 * sphinx_version
 * ...
 
-.. tip::
-	See ``globalcontext.json`` for additional fields.
+.. tip:: See ``globalcontext.json`` for additional fields.
 
 Example
 ~~~~~~~

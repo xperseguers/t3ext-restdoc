@@ -11,13 +11,9 @@
 ChangeLog
 =========
 
-The following is a very high level overview of the changes in this extension. For more details,
+The following is a very high level overview of the changes in this extension.
+For more details,
 `read the online log <https://github.com/xperseguers/t3ext-restdoc/commits/master>`__.
-
-.. tip::
-
-   Release notes and possible quick fixes for published versions are available in the project's wiki:
-   https://forge.typo3.org/projects/extension-restdoc/wiki.
 
 
 .. tabularcolumns:: |r|p{13.7cm}|

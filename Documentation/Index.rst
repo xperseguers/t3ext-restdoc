@@ -14,57 +14,60 @@ Sphinx Documentation Viewer Plugin
 
 .. only:: html
 
-	:Classification:
-		restdoc
+   :Classification:
+      restdoc
 
-	:Version:
-		|release|
+   :Version:
+      |release|
 
-	:Language:
-		en
+   :Language:
+      en
 
-	:Description:
-		Seamlessly embeds Sphinx/reStructuredText-based documentation into your TYPO3 website. Instead of publishing
-		your various manual, in-house documents, guides, references, ... solely as PDF, render them as JSON and use this
-		extension to show them as part of your website to enhance the overall user experience and Search Engine
-		Optimization (SEO). Lets you merge the chapter structure with the breadcrumb menu and much more. Documentation
-		styles automatically inherit from your corporate design.
+   :Description:
+      Seamlessly embeds Sphinx/reStructuredText-based documentation into your
+      TYPO3 website. Instead of publishing your various manual, in-house
+      documents, guides, references, ... solely as PDF, render them as JSON and
+      use this extension to show them as part of your website to enhance the
+      overall user experience and Search Engine Optimization (SEO). Lets you
+      merge the chapter structure with the breadcrumb menu and much more.
+      Documentation styles automatically inherit from your corporate design.
 
-	:Keywords:
-		reStructuredText, sphinx-doc, documentation
+   :Keywords:
+      reStructuredText, sphinx-doc, documentation
 
-	:Copyright:
-		2012-2021
+   :Copyright:
+      2012-2021
 
-	:Author:
-		Xavier Perseguers
+   :Author:
+      Xavier Perseguers
 
-	:Email:
-		xavier@causal.ch
+   :Email:
+      xavier@causal.ch
 
-	:License:
-		This document is published under the Open Publication License
-		available from http://www.opencontent.org/openpub/
+   :License:
+      This document is published under the Open Publication License
+      available from http://www.opencontent.org/openpub/
 
-	:Rendered:
-		|today|
+   :Rendered:
+      |today|
 
-	The content of this document is related to TYPO3,
-	a GNU/GPL CMS/Framework available from `www.typo3.org <https://typo3.org/>`__.
+   The content of this document is related to TYPO3,
+   a GNU/GPL CMS/Framework available from
+   `www.typo3.org <https://typo3.org/>`__.
 
 
-	**Table of Contents**
+   **Table of Contents**
 
 .. toctree::
-	:maxdepth: 3
-	:titlesonly:
+   :maxdepth: 3
+   :titlesonly:
 
-	Introduction/Index
-	UsersManual/Index
-	AdministratorManual/Index
-	Configuration/Index
-	Development/Index
-	KnownProblems/Index
-	ToDoList/Index
-	ChangeLog/Index
-	Links
+   Introduction/Index
+   UsersManual/Index
+   AdministratorManual/Index
+   Configuration/Index
+   Development/Index
+   KnownProblems/Index
+   ToDoList/Index
+   ChangeLog/Index
+   Links

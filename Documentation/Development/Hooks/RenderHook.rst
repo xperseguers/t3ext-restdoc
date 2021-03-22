@@ -44,19 +44,20 @@ Parameters
 ``$params`` is an array with following keys:
 
 mode
-	The plugin's mode
+   The plugin's mode
 
 documentRoot
-	Absolute path to the documentation's root
+   Absolute path to the documentation's root
 
 document
-	Relative path to the current document
+   Relative path to the current document
 
 output
-	Reference to the output of the plugin, may thus be changed within your hook
+   Reference to the output of the plugin, may thus be changed within your hook
 
 config
-	Configuration of the plugin
+   Configuration of the plugin
 
 pObj
-	A reference to the current ``\Causal\Restdoc\Controller\Pi1\Pi1Controller`` instance
+   A reference to the current ``\Causal\Restdoc\Controller\Pi1\Pi1Controller``
+   instance
