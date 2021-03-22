@@ -1,0 +1,10 @@
+plugin.tx_restdoc_pi1.setup {
+    BODY.table.renderObj = TEXT
+    BODY.table.renderObj {
+        value = table
+        wrap2 = <|>
+
+        noTrimWrap = || class="table {field:class}"|
+        noTrimWrap.insertData = 1
+    }
+}

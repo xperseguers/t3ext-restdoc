@@ -1,0 +1,16 @@
+plugin.tx_restdoc_pi1.setup.BODY.stdWrap {
+    replacement {
+        900 {
+            search = <dl class="docutils">
+            replace = <dl class="row">
+        }
+        901 {
+            search = <dt>
+            replace = <dt class="col-sm-3">
+        }
+        902 {
+            search = <dd>
+            replace = <dd class="col-sm-9">
+        }
+    }
+}

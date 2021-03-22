@@ -1,0 +1,32 @@
+plugin.tx_restdoc_pi1.setup.BODY.stdWrap {
+    replacement {
+        1000 {
+            search = <div class="admonition important">
+            replace = <div class="alert alert-primary" role="alert">
+        }
+        1001 {
+            search = <div class="admonition note">
+            replace = <div class="alert alert-info" role="alert">
+        }
+        1002 {
+            search = #<div class="admonition (hint|tip)">#
+            replace = <div class="alert alert-success" role="alert">
+            useRegExp = 1
+        }
+        1003 {
+            search = #<div class="admonition (attention|caution|warning)">#
+            replace = <div class="alert alert-warning" role="alert">
+            useRegExp = 1
+        }
+        1004 {
+            search = #<div class="admonition (danger|error)">#
+            replace = <div class="alert alert-danger" role="alert">
+            useRegExp = 1
+        }
+        1010 {
+            search = #<p class="first admonition-title">(.*)</p>#
+            replace = <h4 class="alert-heading">$1</h4>
+            useRegExp = 1
+        }
+    }
+}

@@ -1,12 +1,4 @@
 plugin.tx_restdoc_pi1._CSS_DEFAULT_STYLE >
 
-plugin.tx_restdoc_pi1.setup.BODY {
-    # Ensure images are responsive
-    image.renderObj.params = class="img-fluid"
-
-    image.renderObj.wrap = <p class="text-center"> | </p>
-    image.renderObj.wrap.if {
-        value.field = class
-        equals = align-center
-    }
-}
+<INCLUDE_TYPOSCRIPT: source="DIR: ./tags/" extensions="typoscript">
+<INCLUDE_TYPOSCRIPT: source="DIR: ./components/" extensions="typoscript">

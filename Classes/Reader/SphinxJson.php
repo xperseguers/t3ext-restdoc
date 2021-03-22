@@ -278,10 +278,11 @@ class SphinxJson
      *
      * @param callback $callbackLinks Callback to generate Links in current context
      * @param callback $callbackImages function to process images in current context
+     * @param callback $callbackTags function to process some well-known tags in current context
      * @return string
      * @throws \RuntimeException
      */
-    public function getBody($callbackLinks, $callbackImages): string
+    public function getBody($callbackLinks, $callbackImages, $callbackTags): string
     {
         $this->enforceIsLoaded();
         $callableName = '';
@@ -290,6 +291,9 @@ class SphinxJson
         }
         if (!is_callable($callbackImages, false, $callableName)) {
             throw new \RuntimeException('Invalid callback for images: ' . $callableName, 1365630854);
+        }
+        if (!is_callable($callbackTags, false, $callableName)) {
+            throw new \RuntimeException('Invalid callback for tags: ' . $callableName, 1616417936);
         }
 
         $body = $this->data['body'];
@@ -303,6 +307,11 @@ class SphinxJson
 
         // Replace images in body
         $body = $this->replaceImages($body, $callbackImages);
+
+        // Possibly process some well-known tags
+        foreach (['table'] as $tag) {
+            $body = $this->processTags($body, $tag, $callbackTags);
+        }
 
         $body = $this->invokePostProcessors('body', $body);
 
@@ -726,6 +735,59 @@ class SphinxJson
             }
 
             return $callbackImages($attributes);
+        }, $content);
+
+        return $ret;
+    }
+
+    /**
+     * Replaces well-known tags in a reST document.
+     *
+     * @param string $content
+     * @param string $tagName
+     * @param callback $callbackTags function to process matched tags in current context
+     * @return string
+     */
+    protected function processTags(string $content, string $tagName, callable $callbackTags): string
+    {
+        $tagPattern =
+            '@<' . $tagName . '         # <tagName
+            (?P<attributes>\s[^>]+)?    # attributes, if any
+            \s*>                        # >
+            @xsi';
+        $attributePattern =
+            '@
+                (?P<name>\w+)                                           # attribute name
+                \s*=\s*
+                (
+                    (?P<quote>[\"\'])(?P<value_quoted>.*?)(?P=quote)    # a quoted value
+                    |                                                   # or
+                    (?P<value_unquoted>[^\s"\']+?)(?:\s+|$)             # an unquoted value (terminated by whitespace or EOF)
+                )
+            @xsi';
+
+        $ret = preg_replace_callback($tagPattern, static function (array $matches) use ($attributePattern, $tagName, $callbackTags) {
+            // Parse tag attributes, if any
+            $attributes = [];
+            if (!empty($matches['attributes'][0])) {
+                if (preg_match_all($attributePattern, $matches['attributes'], $attributeData, PREG_SET_ORDER)) {
+                    // Turn the attribute data into a name->value array
+                    foreach ($attributeData as $attr) {
+                        if (!empty($attr['value_quoted'])) {
+                            $value = $attr['value_quoted'];
+                        } elseif (!empty($attr['value_unquoted'])) {
+                            $value = $attr['value_unquoted'];
+                        } else {
+                            $value = '';
+                        }
+
+                        $value = html_entity_decode($value, ENT_QUOTES, 'utf-8');
+                        $attributes[$attr['name']] = $value;
+                    }
+                }
+            }
+
+            return $callbackTags($tagName, $matches[0], $attributes);
         }, $content);
 
         return $ret;

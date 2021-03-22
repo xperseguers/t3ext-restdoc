@@ -1,0 +1,12 @@
+plugin.tx_restdoc_pi1.setup {
+    BODY.image.renderObj {
+        # Ensure images are responsive
+        params = class="img-fluid"
+
+        wrap = <p class="text-center"> | </p>
+        wrap.if {
+            value.field = class
+            equals = align-center
+        }
+    }
+}

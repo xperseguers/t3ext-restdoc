@@ -678,10 +678,19 @@ JS;
     protected function generateBody(): string
     {
         $this->renderingConfig = $this->conf['setup.']['BODY.'];
+
         $body = self::$sphinxReader->getBody(
             [$this, 'getLink'],
-            [$this, 'processImage']
+            [$this, 'processImage'],
+            [$this, 'processTag']
         );
+
+        if (!empty($this->renderingConfig['stdWrap.'])) {
+            /** @var ContentObjectRenderer $contentObj */
+            $contentObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+            $body = $contentObj->stdWrap($body, $this->renderingConfig['stdWrap.']);
+        }
+
         return $body;
     }
 
@@ -874,6 +883,34 @@ HTML;
         return $contentObj->cObjGetSingle(
             $this->renderingConfig['image.']['renderObj'],
             $this->renderingConfig['image.']['renderObj.']
+        );
+    }
+
+    /**
+     * Processes a tag.
+     *
+     * @param string $tagName
+     * @param string $raw
+     * @param array $data
+     * @return string
+     * @internal This method is made public to be accessible from a lambda-function scope
+     */
+    public function processTag(string $tagName, string $raw, array $data): string
+    {
+        $tsKey = $tagName . '.';
+        if (empty($this->renderingConfig[$tsKey]['renderObj.'])) {
+            // Nothing to do
+            return $raw;
+        }
+
+        /** @var ContentObjectRenderer $contentObj */
+        $contentObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $contentObj->start($data);
+
+        $this->renderingConfig[$tsKey]['renderObj'];
+        return $contentObj->cObjGetSingle(
+            $this->renderingConfig[$tsKey]['renderObj'],
+            $this->renderingConfig[$tsKey]['renderObj.']
         );
     }
 
