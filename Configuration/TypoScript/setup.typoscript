@@ -26,9 +26,12 @@ plugin.tx_restdoc_pi1 {
 				file.maxW < tt_content.image.20.maxW
 				altText.field = alt
 				titleText.field = alt
-				params.field = style
-				params.wrap = style="|"
-				params.required = 1
+				params.prepend = TEXT
+				params.prepend {
+					field = style
+					wrap = style="|"
+					required = 1
+				}
 
 				layoutKey = sphinx
 				layout {

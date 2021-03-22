@@ -10,7 +10,13 @@ TypoScript configuration
 ------------------------
 
 In order for this extension to be usable, make sure to include the static
-template that is provided with this extension.
+template that is provided with this extension
+("Sphinx Documentation Viewer: Base").
+
+.. hint::
+
+   If you are using Bootstrap 4, you are likely to want to include the
+   additional Bootstrap static template we provide.
 
 The TypoScript configuration should be generic enough to let you fine tune the
 rendering process to fit your needs. As an example, for a project I changed the
