@@ -381,13 +381,37 @@ class SphinxJson
     /**
      * Returns parents of current document.
      *
+     * @param bool $includeRoot
      * @return array
      */
-    public function getParentDocuments(): array
+    public function getParentDocuments(bool $includeRoot = false): array
     {
         $this->enforceIsLoaded();
 
-        return $this->data['parents'];
+        $parents = $this->data['parents'];
+
+        if ($includeRoot && $this->getDocument() !== $this->getDefaultFile() . '/') {
+            static $rootDocument;
+            if ($rootDocument === null) {
+                $rootDocument = [];
+                $sphinxReader = (new self())
+                    ->setStorage($this->getStorage())
+                    ->setPath($this->getPath())
+                    ->setDocument($this->getDefaultFile() . '/');
+                if ($sphinxReader->load()) {
+                    $rootDocument = [
+                        'link' => '/',
+                        'title' => $sphinxReader->data['title'],
+                    ];
+                }
+                unset($sphinxReader);
+            }
+            if (!empty($rootDocument)) {
+                array_unshift($parents, $rootDocument);
+            }
+        }
+
+        return $parents;
     }
 
     /**

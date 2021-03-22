@@ -340,10 +340,14 @@ class Pi1Controller extends AbstractPlugin
                 break;
 
             case 'breadcrumb':
-                $parentDocuments = self::$sphinxReader->getParentDocuments();
+                $parentDocuments = self::$sphinxReader->getParentDocuments((bool)($conf['userFunc.']['showRoot'] ?? '0'));
                 foreach ($parentDocuments as $parent) {
-                    $absolute = RestHelper::relativeToAbsolute($documentRoot . $document, '../' . $parent['link']);
-                    $link = $this->getLink(substr($absolute, strlen($documentRoot)));
+                    if ($parent['link'] === '/') {
+                        $link = $this->cObj->getTypoLink_URL($GLOBALS['TSFE']->id);
+                    } else {
+                        $absolute = RestHelper::relativeToAbsolute($documentRoot . $document, '../' . $parent['link']);
+                        $link = $this->getLink(substr($absolute, strlen($documentRoot)));
+                    }
                     $data[] = [
                         'title' => $parent['title'],
                         '_OVERRIDE_HREF' => $link,

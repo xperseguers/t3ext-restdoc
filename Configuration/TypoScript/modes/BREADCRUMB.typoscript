@@ -4,6 +4,7 @@ plugin.tx_restdoc_pi1.setup.BREADCRUMB {
         special = userfunction
         special.userFunc = Causal\Restdoc\Controller\Pi1\Pi1Controller->makeMenuArray
         special.userFunc.type = breadcrumb
+        special.userFunc.showRoot = 1
 
         1 = TMENU
         1 {
