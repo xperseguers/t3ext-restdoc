@@ -34,12 +34,7 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     public function setUp(): void
     {
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
-        $pathSite = version_compare($typo3Branch, '9.0', '<')
-            ? PATH_site
-            : Environment::getPublicPath() . '/';
+        $pathSite = Environment::getPublicPath() . '/';
         $this->fixturePath = substr(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('restdoc') . 'Tests/Functional/Fixtures/_build/json/', strlen($pathSite));
         $this->sphinxReader = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(SphinxJson::class);
     }
@@ -65,12 +60,7 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function documentIsMandatory(): void
     {
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
-        $pathSite = version_compare($typo3Branch, '9.0', '<')
-            ? PATH_site
-            : Environment::getPublicPath() . '/';
+        $pathSite = Environment::getPublicPath() . '/';
         $this->sphinxReader->setPath($pathSite . $this->fixturePath);
         $this->sphinxReader->load();
     }
@@ -253,12 +243,7 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     protected function initializeReader(string $document): bool
     {
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
-        $pathSite = version_compare($typo3Branch, '9.0', '<')
-            ? PATH_site
-            : Environment::getPublicPath() . '/';
+        $pathSite = Environment::getPublicPath() . '/';
         $this->sphinxReader->setPath($pathSite . $this->fixturePath);
         $this->sphinxReader->setDocument($document);
         return $this->sphinxReader->load();

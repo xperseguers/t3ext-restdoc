@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Causal\Restdoc\Utility\RestHelper;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Storing the documentation structure into the database for integration
@@ -88,15 +89,11 @@ class TableOfContents
             $basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
         } else {
             // FAL is not used
-            $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-                ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-                : TYPO3_branch;
-            $basePath = version_compare($typo3Branch, '9.0', '<')
-                ? PATH_site
-                : Environment::getPublicPath() . '/';
+            trigger_error('FAL is not used, please upgrade your plugin configuration.', E_USER_DEPRECATED);
+            $basePath = Environment::getPublicPath() . '/';
         }
 
-        $this->maxDocuments = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($params['config']['documentStructureMaxDocuments'], 1, 9999);
+        $this->maxDocuments = MathUtility::forceIntegerInRange($params['config']['documentStructureMaxDocuments'], 1, 9999);
         $this->pageId = (int)$this->pObj->cObj->data['pid'];
         $this->root = substr($params['documentRoot'], strlen($basePath));
         $this->flushCache();

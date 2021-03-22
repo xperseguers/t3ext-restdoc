@@ -31,8 +31,6 @@ Properties
 	mode_                                                 :ref:`t3tsref:data-type-string`                                       yes                     *empty*
 	rootPage_                                             :ref:`t3tsref:data-type-integer`                                      yes                     *empty*
 	showPermanentLink_                                    :ref:`t3tsref:data-type-boolean`                                      yes                     0
-	pathSeparator_                                        :ref:`t3tsref:data-type-string`                                       yes                     "|" (vertical bar)
-	fallbackPathSeparator_                                :ref:`t3tsref:data-type-string`                                       yes                     "\\" (backslash)
 	documentStructureMaxDocuments_                        :ref:`t3tsref:data-type-integer`                                      yes                     50
 	advertiseSphinx_                                      :ref:`t3tsref:data-type-boolean`                                      yes                     1
 	addHeadPagination_                                    :ref:`t3tsref:data-type-boolean`                                      yes                     1
@@ -101,39 +99,6 @@ showPermanentLink
 :typoscript:`plugin.tx_restdoc_pi1.showPermanentLink =` :ref:`t3tsref:data-type-boolean`
 
 Whether permanent links should be added to each section.
-
-
-.. _ts-plugin-tx-restdoc-pi1-pathSeparator:
-
-pathSeparator
-"""""""""""""
-
-:typoscript:`plugin.tx_restdoc_pi1.pathSeparator =` :ref:`t3tsref:data-type-string`
-
-Separator to be used between directories of the documentation. You may use multiple characters as well.
-
-.. warning::
-
-   Make sure to read http://forges.typo3.org/issues/45560 before using special characters such as ``\`` (backslash)
-   or ``/`` (forward slash).
-
-.. hint::
-
-   Since version 1.5, the forward slash is properly supported when using EXT:realurl but it requires a proper
-   configuration as suggested in the chapter describing :ref:`how to install this extension <admin-manual-install-realurl>`.
-
-
-.. _ts-plugin-tx-restdoc-pi1-fallbackPathSeparator:
-
-fallbackPathSeparator
-"""""""""""""""""""""
-
-:typoscript:`plugin.tx_restdoc_pi1.fallbackPathSeparator =` :ref:`t3tsref:data-type-string`
-
-Comma-separated list of fallback path separators.
-
-When a documentation structure has been indexed (e.g., by Google) with an old directory separator (such as the backslash
-``\``), the indexed page cannot be shown anymore and fails with a page not found exception (Error code 404).
 
 
 .. _ts-plugin-tx-restdoc-pi1-documentStructureMaxDocuments:

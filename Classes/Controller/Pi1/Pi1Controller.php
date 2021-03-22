@@ -80,16 +80,8 @@ class Pi1Controller extends AbstractPlugin
      */
     public function __construct()
     {
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
-        if (version_compare($typo3Branch, '9.0', '>=')) {
-            $this->settings = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
-            $this->pi_checkCHash = true;
-        } else {
-            $this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey] ?? '') ?? [];
-            $this->pi_checkCHash = (bool)$this->settings['cache_plugin_output'];
-        }
+        $this->settings = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
+        $this->pi_checkCHash = true;
 
         parent::__construct();
     }
@@ -109,33 +101,20 @@ class Pi1Controller extends AbstractPlugin
         $this->pi_loadLL();
         $this->pi_USER_INT_obj = (bool)$this->settings['cache_plugin_output'] ? 0 : 1;
 
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
-
         $storage = self::$sphinxReader->getStorage();
         if ($storage !== null) {
             $storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
             $basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
         } else {
             // FAL is not used
-            $basePath = version_compare($typo3Branch, '9.0', '<')
-                ? PATH_site
-                : Environment::getPublicPath() . '/';
+            trigger_error('FAL is not used, please upgrade your plugin configuration.', E_USER_DEPRECATED);
+            $basePath = Environment::getPublicPath() . '/';
         }
 
         $documentRoot = $basePath . rtrim($this->conf['path'], '/') . '/';
         $document = self::$defaultFile . '/';
-        if (version_compare($typo3Branch, '9.0', '>=')) {
-            $pathSeparators = [];
-        } else {
-            $pathSeparators = isset($this->conf['fallbackPathSeparators'])
-                ? GeneralUtility::trimExplode(',', $this->conf['fallbackPathSeparators'], true)
-                : [];
-        }
-        $pathSeparators[] = $this->conf['pathSeparator'];
         if (isset($this->piVars['doc']) && strpos($this->piVars['doc'], '..') === false) {
-            $document = rtrim(str_replace($pathSeparators, '/', $this->piVars['doc']), '/') . '/';
+            $document = rtrim($this->piVars['doc'], '/') . '/';
         }
 
         // Sources are requested, if allowed and available, return them
@@ -173,7 +152,6 @@ class Pi1Controller extends AbstractPlugin
 
         self::$current = [
             'path' => $this->conf['path'],
-            'pathSeparator' => $this->conf['pathSeparator'],
         ];
 
         if (self::$sphinxReader->getIndexEntries() === null) {
@@ -248,11 +226,7 @@ class Pi1Controller extends AbstractPlugin
         // Hook for post-processing the output
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['renderHook'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['renderHook'] as $classRef) {
-                if (version_compare($typo3Branch, '9.0', '>=')) {
-                    $hookObject = GeneralUtility::makeInstance($classRef);
-                } else {
-                    $hookObject = GeneralUtility::getUserObj($classRef);
-                }
+                $hookObject = GeneralUtility::makeInstance($classRef);
                 $params = [
                     'mode' => $this->conf['mode'],
                     'documentRoot' => $documentRoot,
@@ -309,19 +283,14 @@ class Pi1Controller extends AbstractPlugin
         $data = [];
         $type = $conf['userFunc.']['type'] ?? 'menu';
 
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
-
         $storage = self::$sphinxReader->getStorage();
         if ($storage !== null) {
             $storageConfiguration = self::$sphinxReader->getStorage()->getConfiguration();
             $basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
         } else {
             // FAL is not used
-            $basePath = version_compare($typo3Branch, '9.0', '<')
-                ? PATH_site
-                : Environment::getPublicPath() . '/';
+            trigger_error('FAL is not used, please upgrade your plugin configuration.', E_USER_DEPRECATED);
+            $basePath = Environment::getPublicPath() . '/';
         }
 
         $documentRoot = self::$sphinxReader->getPath();
@@ -437,11 +406,7 @@ class Pi1Controller extends AbstractPlugin
         // Hook for post-processing the menu entries
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['makeMenuArrayHook'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['makeMenuArrayHook'] as $classRef) {
-                if (version_compare($typo3Branch, '9.0', '>=')) {
-                    $hookObject = GeneralUtility::makeInstance($classRef);
-                } else {
-                    $hookObject = GeneralUtility::getUserObj($classRef);
-                }
+                $hookObject = GeneralUtility::makeInstance($classRef);
                 $params = [
                     'documentRoot' => $documentRoot,
                     'document' => $document,
@@ -468,12 +433,8 @@ class Pi1Controller extends AbstractPlugin
             $basePath = rtrim($storageConfiguration['basePath'], '/') . '/';
         } else {
             // FAL is not used
-            $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-                ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-                : TYPO3_branch;
-            $basePath = version_compare($typo3Branch, '9.0', '<')
-                ? PATH_site
-                : Environment::getPublicPath() . '/';
+            trigger_error('FAL is not used, please upgrade your plugin configuration.', E_USER_DEPRECATED);
+            $basePath = Environment::getPublicPath() . '/';
         }
         $metadata = RestHelper::getMetadata($basePath . $this->conf['path']);
         if (!empty($metadata['release'])) {
@@ -493,9 +454,6 @@ class Pi1Controller extends AbstractPlugin
         $urlRoot = rtrim($urlRoot, '/') . '/';
         $hasSource = isset($metadata['has_source']) && $metadata['has_source'] && $this->conf['publishSources'];
         $hasSource = $hasSource ? 'true' : 'false';
-        $separator = self::$current['pathSeparator'] === '/'
-            ? self::$current['pathSeparator']
-            : urlencode(self::$current['pathSeparator']);
 
         $GLOBALS['TSFE']->additionalJavaScript[$this->prefixId . '_sphinx'] = <<<JS
 var DOCUMENTATION_OPTIONS = {
@@ -504,7 +462,7 @@ var DOCUMENTATION_OPTIONS = {
     COLLAPSE_INDEX: false,
     FILE_SUFFIX: '',
     HAS_SOURCE:  $hasSource,
-    SEPARATOR: '$separator'
+    SEPARATOR: '/'
 };
 JS;
     }
@@ -523,10 +481,6 @@ JS;
         $previousDocument = self::$sphinxReader->getPreviousDocument();
         $nextDocument = self::$sphinxReader->getNextDocument();
         $parentDocuments = self::$sphinxReader->getParentDocuments();
-
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
 
         $data = [];
         $data['home_title'] = $this->pi_getLL('home_title', 'Home');
@@ -586,11 +540,7 @@ JS;
         // Hook for post-processing the quick navigation
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['quickNavigationHook'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['quickNavigationHook'] as $classRef) {
-                if (version_compare($typo3Branch, '9.0', '>=')) {
-                    $hookObject = GeneralUtility::makeInstance($classRef);
-                } else {
-                    $hookObject = GeneralUtility::getUserObj($classRef);
-                }
+                $hookObject = GeneralUtility::makeInstance($classRef);
                 $params = [
                     'documentRoot' => $documentRoot,
                     'document' => $document,
@@ -697,7 +647,7 @@ JS;
 
             $conf = [
                 $this->prefixId => [
-                    'doc' => str_replace('/', $this->conf['pathSeparator'], substr($document, 0, -1)),
+                    'doc' => substr($document, 0, -1),
                 ]
             ];
             $link = $this->pi_getPageLink($GLOBALS['TSFE']->id, '', $conf);
@@ -742,10 +692,6 @@ JS;
      */
     protected function generateSearchForm(): string
     {
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
-
         $searchIndexFile = self::$sphinxReader->getPath() . 'searchindex.json';
         if (!is_file($searchIndexFile)) {
             return 'ERROR: File ' . $this->conf['path'] . 'searchindex.json was not found.';
@@ -769,11 +715,7 @@ JS;
         // Hook for pre-processing the search form
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['searchFormHook'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['searchFormHook'] as $classRef) {
-                if (version_compare($typo3Branch, '9.0', '>=')) {
-                    $hookObject = GeneralUtility::makeInstance($classRef);
-                } else {
-                    $hookObject = GeneralUtility::getUserObj($classRef);
-                }
+                $hookObject = GeneralUtility::makeInstance($classRef);
                 $params = [
                     'config' => &$config,
                     'pObj' => $this,
@@ -833,12 +775,7 @@ HTML;
      */
     protected function includeJsFile(string $file): void
     {
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
-        $pathSite = version_compare($typo3Branch, '9.0', '<')
-            ? PATH_site
-            : Environment::getPublicPath() . '/';
+        $pathSite = Environment::getPublicPath() . '/';
         $relativeFile = substr(ExtensionManagementUtility::extPath($this->extKey), strlen($pathSite)) . $file;
         $relativeFile = $this->cObj->typoLink_URL(['parameter' => $relativeFile]);
         $GLOBALS['TSFE']->additionalHeaderData[$relativeFile] = '<script type="text/javascript" src="' . $relativeFile . '"></script>';
@@ -880,8 +817,8 @@ HTML;
             if (substr($document, -5) === '.html') {
                 $document = substr($document, 0, -5) . '/';
             }
-            $doc = str_replace('/', self::$current['pathSeparator'], substr($document, 0, -1));
-            if ($doc) {
+            $doc = substr($document, 0, -1);
+            if (!empty($doc)) {
                 $urlParameters = [
                     $this->prefixId => [
                         'doc' => $doc,
@@ -914,9 +851,6 @@ HTML;
             // Prettier to have those additional parameters after the document itself
             $typolinkConfig['additionalParams'] .= $additionalParameters;
             $link = $this->cObj->typoLink('', $typolinkConfig);
-            // When using forward slash as separator (beware: needs proper configuration),
-            // it is encoded as %2F and should be decoded
-            $link = str_replace('%2F', '/', $link);
             if ($anchor !== '') {
                 $link .= '#' . $anchor;
             }
@@ -972,8 +906,6 @@ HTML;
         $this->applyStdWrap($this->conf, 'mode');
         $this->applyStdWrap($this->conf, 'rootPage');
         $this->applyStdWrap($this->conf, 'showPermanentLink');
-        $this->applyStdWrap($this->conf, 'pathSeparator');
-        $this->applyStdWrap($this->conf, 'fallbackPathSeparators');
         $this->applyStdWrap($this->conf, 'documentStructureMaxDocuments');
         $this->applyStdWrap($this->conf, 'advertiseSphinx');
         $this->applyStdWrap($this->conf, 'addHeadPagination');
@@ -1045,26 +977,6 @@ HTML;
 
         if (isset($this->conf['defaultFile'])) {
             self::$defaultFile = $this->conf['defaultFile'];
-        }
-
-        $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-            ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-            : TYPO3_branch;
-        if (version_compare($typo3Branch, '9.0', '>=')) {
-            // Path separator is always a forward slash, why would someone ever use something different now?
-            $this->conf['pathSeparator'] = '/';
-        } else {
-            if (empty($this->conf['pathSeparator'])) {
-                // The path separator CANNOT be empty
-                $this->conf['pathSeparator'] = '|';
-            }
-
-            if (!(isset($this->settings['enable_slash_as_separator']) && (bool)$this->settings['enable_slash_as_separator'])) {
-                if ($this->conf['pathSeparator'] === '/') {
-                    // Slash ("/") is not valid separator
-                    $this->conf['pathSeparator'] = '|';
-                }
-            }
         }
 
         if (GeneralUtility::inList('REFERENCES,SEARCH', $this->conf['mode'])) {

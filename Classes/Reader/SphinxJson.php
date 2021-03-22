@@ -720,12 +720,8 @@ class SphinxJson
                 $attributes['src'] = $storage->getUid() . ':' . $fileIdentifier;
             } else {
                 // FAL is not used
-                $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-                    ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-                    : TYPO3_branch;
-                $pathSite = version_compare($typo3Branch, '9.0', '<')
-                    ? PATH_site
-                    : Environment::getPublicPath() . '/';
+                trigger_error('FAL is not used, please upgrade your plugin configuration.', E_USER_DEPRECATED);
+                $pathSite = Environment::getPublicPath() . '/';
                 $attributes['src'] = substr($src, strlen($pathSite));
             }
 

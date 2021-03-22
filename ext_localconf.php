@@ -2,14 +2,7 @@
 defined('TYPO3_MODE') || die();
 
 (static function (string $_EXTKEY) {
-    $typo3Branch = class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class)
-        ? (new \TYPO3\CMS\Core\Information\Typo3Version())->getBranch()
-        : TYPO3_branch;
-    if (version_compare($typo3Branch, '9.0', '>=')) {
-        $config = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get($_EXTKEY);
-    } else {
-        $config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY]);
-    }
+    $config = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get($_EXTKEY);
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43($_EXTKEY, 'Classes/Controller/Pi1/Pi1Controller.php', '_pi1', 'list_type', (bool)$config['cache_plugin_output']);
 
@@ -41,15 +34,4 @@ defined('TYPO3_MODE') || die();
         1 => \Causal\Restdoc\ContentObject\RestMetadataContentObject::class,
     ];
 
-    if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('realurl')) {
-        // RealURL auto-configuration
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/realurl/class.tx_realurl_autoconfgen.php']['extensionConfiguration'][$_EXTKEY] =
-            \Causal\Restdoc\Hooks\Realurl::class . '->registerDefaultConfiguration';
-
-        // Hook to grant access to reStructuredText source files, works only for EXT:realurl 1.x
-        if (is_dir(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('realurl') . 'doc')) {
-            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['decodeSpURL_preProc'][] =
-                \Causal\Restdoc\Hooks\Realurl::class . '->decodeSpURL_preProc';
-        }
-    }
 })('restdoc');
