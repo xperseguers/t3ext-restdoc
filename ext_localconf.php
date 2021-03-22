@@ -26,4 +26,5 @@ defined('TYPO3_MODE') || die();
         1 => \Causal\Restdoc\ContentObject\RestMetadataContentObject::class,
     ];
 
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['routing']['enhancers']['RestdocPlugin'] = \Causal\Restdoc\Routing\Enhancer\RestdocPluginEnhancer::class;
 })('restdoc');
