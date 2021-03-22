@@ -18,7 +18,16 @@ You may naturally inspire from this even if you are not using the
 ``bootstrap_package`` extension.
 
 The idea is to create an extension template on the page where you put the
-Sphinx Documentation Viewer Plugin:
+Sphinx Documentation Viewer Plugin.
+
+**Constants**
+
+.. code-block:: typoscript
+
+   # Configure the path for the documentation (here: fileadmin/documentation/en/)
+   plugin.tx_restdoc.path = t3://folder?storage=1&identifier=%2Fdocumentation%2Fen%2F
+
+**Setup**
 
 .. code-block:: typoscript
 
