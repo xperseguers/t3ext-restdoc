@@ -1,0 +1,19 @@
+plugin.tx_restdoc_pi1.setup.BREADCRUMB.renderObj {
+    wrap = <nav aria-label="breadcrumb"> | </nav>
+
+    1 >
+    1 = TMENU
+    1 {
+        wrap = <ol class="breadcrumb"> | </ol>
+
+        NO {
+            allWrap = <li class="breadcrumb-item">|</li>
+        }
+
+        CUR = 1
+        CUR {
+            allWrap = <li class="breadcrumb-item active" aria-current="page">|</li>
+            doNotLinkIt = 1
+        }
+    }
+}
