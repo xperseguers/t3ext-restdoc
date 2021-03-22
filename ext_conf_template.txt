@@ -1,2 +1,0 @@
-# cat=basic//10; type=boolean; label=LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xlf:settings.cache_plugin_output
-cache_plugin_output = 0

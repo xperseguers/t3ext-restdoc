@@ -99,7 +99,6 @@ class Pi1Controller extends AbstractPlugin
         $this->init($conf);
         $this->pi_setPiVarDefaults();
         $this->pi_loadLL();
-        $this->pi_USER_INT_obj = (bool)$this->settings['cache_plugin_output'] ? 0 : 1;
 
         $storage = self::$sphinxReader->getStorage();
         if ($storage !== null) {
