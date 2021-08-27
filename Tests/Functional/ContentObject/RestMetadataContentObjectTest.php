@@ -40,13 +40,13 @@ class RestMetadataContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->fixturePath = substr(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('restdoc') . 'Tests/Functional/Fixtures/_build/json/', strlen($pathSite));
 
         $this->backupCObjTypeAndClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'];
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'][] = array(
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'][] = [
             0 => 'REST_METADATA',
             1 => 'EXT:restdoc/Classes/ContentObject/RestMetadataContentObject.php:Causal\\Restdoc\\ContentObject\\RestMetadataContentObject',
-        );
+        ];
 
         $this->contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $this->contentObject->start(array());
+        $this->contentObject->start([]);
 
         $GLOBALS['TT'] = GeneralUtility::makeInstance(NullTimeTracker::class);
         if ($GLOBALS['TSFE'] === null) {
@@ -66,17 +66,17 @@ class RestMetadataContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function canExtractProject(): void
     {
-        $config = array(
+        $config = [
             'path' => $this->fixturePath,
             'cObject' => 'TEXT',
-            'cObject.' => array(
+            'cObject.' => [
                 'field' => 'project',
-            ),
-        );
+            ],
+        ];
         $value = $this->contentObject->cObjGetSingle('REST_METADATA', $config);
         $expected = 'Test Project';
 
-        $this->assertEquals($expected, $value);
+        self::assertEquals($expected, $value);
     }
 
     /**
@@ -85,21 +85,20 @@ class RestMetadataContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function canProcessCopyrightWithDynamicPath(): void
     {
         $pathParts = explode('/', $this->fixturePath, 2);
-        $config = array(
+        $config = [
             'path' => $pathParts[0],
-            'path.' => array(
+            'path.' => [
                 'wrap' => '|/' . $pathParts[1],
-            ),
+            ],
             'cObject' => 'TEXT',
-            'cObject.' => array(
+            'cObject.' => [
                 'field' => 'copyright',
                 'noTrimWrap' => '|© ||'
-            ),
-        );
+            ],
+        ];
         $value = $this->contentObject->cObjGetSingle('REST_METADATA', $config);
         $expected = '© 2013, Xavier Perseguers';
 
-        $this->assertEquals($expected, $value);
+        self::assertEquals($expected, $value);
     }
-
 }

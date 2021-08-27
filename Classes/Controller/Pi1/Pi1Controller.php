@@ -15,6 +15,7 @@
 namespace Causal\Restdoc\Controller\Pi1;
 
 use Causal\Restdoc\Reader\SphinxJson;
+use Causal\Restdoc\Utility\RestHelper;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -25,7 +26,6 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Causal\Restdoc\Utility\RestHelper;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
@@ -34,15 +34,12 @@ use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
  * Plugin 'Sphinx Documentation Viewer Plugin' for the 'restdoc' extension.
  *
  * @category    Plugin
- * @package     TYPO3
- * @subpackage  tx_restdoc
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class Pi1Controller extends AbstractPlugin
 {
-
     public $prefixId = 'tx_restdoc_pi1';
     public $scriptRelPath = 'Classes/Controller/Pi1/Pi1Controller.php';
     public $extKey = 'restdoc';
@@ -351,6 +348,7 @@ class Pi1Controller extends AbstractPlugin
                 }
                 // BEWARE: NO "break" here as we want to continue to 'breadcrumb' below
 
+                // no break
             case 'breadcrumb':
                 $parentDocuments = self::$sphinxReader->getParentDocuments((bool)($conf['userFunc.']['showRoot'] ?? '0'));
                 foreach ($parentDocuments as $parent) {
@@ -798,7 +796,6 @@ $hiddenFields
 
 </div>
 HTML;
-
     }
 
     /**
@@ -1088,5 +1085,4 @@ HTML;
         }
         $this->LOCAL_LANG_loaded = 1;
     }
-
 }

@@ -14,8 +14,8 @@
 
 namespace Causal\Restdoc\Tests\Functional\Reader;
 
-use TYPO3\CMS\Core\Core\Environment;
 use Causal\Restdoc\Reader\SphinxJson;
+use TYPO3\CMS\Core\Core\Environment;
 
 /**
  * Testcase for class \Causal\Restdoc\Reader\SphinxJson.
@@ -70,7 +70,7 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function canLoadExistingDocument(): void
     {
-        $this->assertTrue($this->initializeReader('index/'));
+        self::assertTrue($this->initializeReader('index/'));
     }
 
     /**
@@ -81,7 +81,7 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->initializeReader('intro/');
         $value = $this->sphinxReader->getTitle();
         $expected = 'Introduction';
-        $this->assertEquals($expected, $value);
+        self::assertEquals($expected, $value);
     }
 
     /**
@@ -92,7 +92,7 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->initializeReader('intro/');
         $value = $this->sphinxReader->getSourceName();
         $expected = 'intro.txt';
-        $this->assertEquals($expected, $value);
+        self::assertEquals($expected, $value);
     }
 
     /**
@@ -103,7 +103,7 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->initializeReader('intro/');
         $value = $this->sphinxReader->getCurrentPageName();
         $expected = 'intro';
-        $this->assertEquals($expected, $value);
+        self::assertEquals($expected, $value);
     }
 
     /**
@@ -114,9 +114,9 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->initializeReader('index/');
         $references = $this->sphinxReader->getReferences();
 
-        $this->assertEquals('Welcome to Test Project\'s documentation!', $references['#']['start']['title']);
-        $this->assertEquals('Introduction', $references['intro']['introduction']['title']);
-        $this->assertEquals('Some Other Chapter', $references['subdirectory']['some_other_chapter']['title']);
+        self::assertEquals('Welcome to Test Project\'s documentation!', $references['#']['start']['title']);
+        self::assertEquals('Introduction', $references['intro']['introduction']['title']);
+        self::assertEquals('Some Other Chapter', $references['subdirectory']['some_other_chapter']['title']);
     }
 
     /**
@@ -125,16 +125,16 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function canExtractTableOfContentsForIndex(): void
     {
         $this->initializeReader('index/');
-        $this->buffer = array();
+        $this->buffer = [];
 
-        $toc = $this->sphinxReader->getTableOfContents(array($this, 'getLink'));
-        $this->assertNotSame($toc, '');
+        $toc = $this->sphinxReader->getTableOfContents([$this, 'getLink']);
+        self::assertNotSame($toc, '');
 
-        $expectedLinks = array(
+        $expectedLinks = [
             'index/#',
             'index/#indices-and-tables',
-        );
-        $this->assertEquals($expectedLinks, $this->buffer);
+        ];
+        self::assertEquals($expectedLinks, $this->buffer);
     }
 
     /**
@@ -143,15 +143,15 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function canExtractTableOfContentsForChapterIntroduction(): void
     {
         $this->initializeReader('intro/');
-        $this->buffer = array();
+        $this->buffer = [];
 
-        $toc = $this->sphinxReader->getTableOfContents(array($this, 'getLink'));
-        $this->assertNotSame($toc, '');
+        $toc = $this->sphinxReader->getTableOfContents([$this, 'getLink']);
+        self::assertNotSame($toc, '');
 
-        $expectedLinks = array(
+        $expectedLinks = [
             'intro/#',
-        );
-        $this->assertEquals($expectedLinks, $this->buffer);
+        ];
+        self::assertEquals($expectedLinks, $this->buffer);
     }
 
     /**
@@ -161,11 +161,11 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->initializeReader('intro/');
         $value = $this->sphinxReader->getPreviousDocument();
-        $expected = array(
+        $expected = [
             'link' => '../',
             'title' => 'Welcome to Test Project&#8217;s documentation!',
-        );
-        $this->assertEquals($expected, $value);
+        ];
+        self::assertEquals($expected, $value);
     }
 
     /**
@@ -175,11 +175,11 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->initializeReader('subdirectory/index/');
         $value = $this->sphinxReader->getPreviousDocument();
-        $expected = array(
+        $expected = [
             'link' => '../intro/',
             'title' => 'Introduction',
-        );
-        $this->assertEquals($expected, $value);
+        ];
+        self::assertEquals($expected, $value);
     }
 
     /**
@@ -189,11 +189,11 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->initializeReader('index/');
         $value = $this->sphinxReader->getNextDocument();
-        $expected = array(
+        $expected = [
             'link' => 'intro/',
             'title' => 'Introduction',
-        );
-        $this->assertEquals($expected, $value);
+        ];
+        self::assertEquals($expected, $value);
     }
 
     /**
@@ -203,11 +203,11 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->initializeReader('intro/');
         $value = $this->sphinxReader->getNextDocument();
-        $expected = array(
+        $expected = [
             'link' => '../subdirectory/',
             'title' => 'Some other chapter',
-        );
-        $this->assertEquals($expected, $value);
+        ];
+        self::assertEquals($expected, $value);
     }
 
     /**
@@ -217,8 +217,8 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->initializeReader('genindex/');
         $value = $this->sphinxReader->getIndexEntries();
-        $this->assertIsArray($value, 'null instead of array');
-        $this->assertTrue(count($value) > 0, 'Expected at least 1 index entry');
+        self::assertIsArray($value, 'null instead of array');
+        self::assertTrue(count($value) > 0, 'Expected at least 1 index entry');
     }
 
     /**
@@ -248,5 +248,4 @@ class SphinxJsonTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->sphinxReader->setDocument($document);
         return $this->sphinxReader->load();
     }
-
 }

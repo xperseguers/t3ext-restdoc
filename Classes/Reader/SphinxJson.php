@@ -14,17 +14,15 @@
 
 namespace Causal\Restdoc\Reader;
 
+use Causal\Restdoc\Utility\RestHelper;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Causal\Restdoc\Utility\RestHelper;
 
 /**
  * Sphinx JSON reader.
  *
  * @category    Reader
- * @package     TYPO3
- * @subpackage  tx_restdoc
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
@@ -646,7 +644,8 @@ class SphinxJson
                 if (preg_match('#^[a-zA-Z]+://#', $matches[2])) {
                     // External URL
                     return $matches[0];
-                } elseif (GeneralUtility::isFirstPartOfStr($matches[2], 'mailto:')) {
+                }
+                if (GeneralUtility::isFirstPartOfStr($matches[2], 'mailto:')) {
                     // Email address
                     $email = preg_replace_callback('/(&#(\d{2});)/', static function ($m) {
                         return chr($m[2]);
@@ -654,7 +653,8 @@ class SphinxJson
                     $link = $callbackLinks(urldecode($email));
 
                     return $matches[1] . $link;
-                } elseif (strpos($matches[2], '#') === 0) {
+                }
+                if (strpos($matches[2], '#') === 0) {
                     $anchor = $matches[2];
                 }
 
@@ -838,5 +838,4 @@ class SphinxJson
 
         return $content;
     }
-
 }

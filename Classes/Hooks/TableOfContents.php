@@ -15,10 +15,10 @@
 namespace Causal\Restdoc\Hooks;
 
 use Causal\Restdoc\Controller\Pi1\Pi1Controller;
+use Causal\Restdoc\Utility\RestHelper;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Causal\Restdoc\Utility\RestHelper;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
@@ -26,8 +26,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * within a sitemap generator.
  *
  * @category    Hooks
- * @package     TYPO3
- * @subpackage  tx_restdoc
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
@@ -303,7 +301,8 @@ class TableOfContents
                 if (preg_match('#^[a-zA-Z]+://#', $matches[2])) {
                     // External URL
                     return $matches[0];
-                } elseif ($matches[2]{0} === '#') {
+                }
+                if ($matches[2]{0} === '#') {
                     $anchor = $matches[2];
                 }
 
@@ -343,5 +342,4 @@ class TableOfContents
             )
             ->execute();
     }
-
 }

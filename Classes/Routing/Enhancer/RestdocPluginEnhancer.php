@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -26,7 +27,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class RestdocPluginEnhancer
- * @package Causal\Restdoc\Routing\Enhancer
  */
 class RestdocPluginEnhancer extends PluginEnhancer
 {
@@ -101,5 +101,4 @@ class RestdocPluginEnhancer extends PluginEnhancer
         $type = $this->resolveType($route, $remainingQueryParameters);
         return new PageArguments($pageId, $type, $routeArguments, $staticArguments, $remainingQueryParameters);
     }
-
 }

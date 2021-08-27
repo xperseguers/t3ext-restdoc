@@ -37,18 +37,18 @@ class RestHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 </div>
 HTML;
 
-        $expected = array(
-            'ul' => array(
-                'li' => array(
+        $expected = [
+            'ul' => [
+                'li' => [
                     0 => 'Menu 1',
                     1 => 'Menu 2',
                     2 => 'Menu 3',
-                )
-            ),
-        );
+                ]
+            ],
+        ];
 
         $arr = RestHelper::xmlstr_to_array($html);
-        $this->assertEquals($expected, $arr);
+        self::assertEquals($expected, $arr);
     }
 
     /**
@@ -70,23 +70,23 @@ HTML;
 </div>
 HTML;
 
-        $expected = array(
-            'ul' => array(
-                'li' => array(
+        $expected = [
+            'ul' => [
+                'li' => [
                     0 => 'Menu 1',
-                    1 => array(
+                    1 => [
                         0 => 'Menu 2',
-                        'ul' => array(
+                        'ul' => [
                             'li' => 'Menu 2.1'
-                        ),
-                    ),
+                        ],
+                    ],
                     2 => 'Menu 3',
-                )
-            ),
-        );
+                ]
+            ],
+        ];
 
         $arr = RestHelper::xmlstr_to_array($html);
-        $this->assertEquals($expected, $arr);
+        self::assertEquals($expected, $arr);
     }
 
     /**
@@ -103,17 +103,16 @@ HTML;
 </div>
 HTML;
 
-        $expected = array(
-            'ul' => array(
-                'li' => array(
+        $expected = [
+            'ul' => [
+                'li' => [
                     0 => 'Some <em>important</em> word',
                     1 => '<strong>Very</strong> important',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
         $arr = RestHelper::xmlstr_to_array($html);
-        $this->assertEquals($expected, $arr);
+        self::assertEquals($expected, $arr);
     }
-
 }

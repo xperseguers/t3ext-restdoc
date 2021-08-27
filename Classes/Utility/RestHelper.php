@@ -14,7 +14,6 @@
 
 namespace Causal\Restdoc\Utility;
 
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 
@@ -22,8 +21,6 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
  * Utility class.
  *
  * @category    Utility
- * @package     TYPO3
- * @subpackage  tx_restdoc
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
@@ -90,7 +87,7 @@ final class RestHelper
      * Marks menu entries as ACTIVE or CURRENT and generate real links.
      *
      * @param array &$data
-     * @param null|string $currentDocument This parameter should probably be deprecated altogether, internally passed as null
+     * @param string|null $currentDocument This parameter should probably be deprecated altogether, internally passed as null
      * @param callback $callbackLinks Callback to generate Links in current context
      * @return bool
      * @throws \RuntimeException
@@ -352,5 +349,4 @@ final class RestHelper
 
         return $output;
     }
-
 }

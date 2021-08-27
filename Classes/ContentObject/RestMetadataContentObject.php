@@ -14,17 +14,15 @@
 
 namespace Causal\Restdoc\ContentObject;
 
+use Causal\Restdoc\Utility\RestHelper;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Causal\Restdoc\Utility\RestHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Implementation of the REST_METADATA content object.
  *
  * @category    Content Objects
- * @package     TYPO3
- * @subpackage  tx_restdoc
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
@@ -79,5 +77,4 @@ class RestMetadataContentObject
             unset($conf[$baseKey . '.']);
         }
     }
-
 }
