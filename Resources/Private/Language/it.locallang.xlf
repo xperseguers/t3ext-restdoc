@@ -11,33 +11,33 @@
         <source>Adds a viewer for a Sphinx-based documentation.</source>
         <target state="needs-translation">Adds a viewer for a Sphinx-based documentation.</target>
       </trans-unit>
-      <trans-unit id="header_toc">
+      <trans-unit id="header_toc" approved="yes">
         <source>Table of Contents</source>
-        <target state="needs-translation">Table of Contents</target>
+        <target state="final">Tabella dei contenuti</target>
       </trans-unit>
-      <trans-unit id="header_previous_topic">
+      <trans-unit id="header_previous_topic" approved="yes">
         <source>Previous Topic</source>
-        <target state="needs-translation">Previous Topic</target>
+        <target state="final">Argomento precedente</target>
       </trans-unit>
-      <trans-unit id="header_next_topic">
+      <trans-unit id="header_next_topic" approved="yes">
         <source>Next Topic</source>
-        <target state="needs-translation">Next Topic</target>
+        <target state="final">Argomento successivo</target>
       </trans-unit>
       <trans-unit id="quicknavigation_home">
         <source>home</source>
         <target state="needs-translation">home</target>
       </trans-unit>
-      <trans-unit id="quicknavigation_previous_topic">
+      <trans-unit id="quicknavigation_previous_topic" approved="yes">
         <source>previous</source>
-        <target state="needs-translation">previous</target>
+        <target state="final">precedente</target>
       </trans-unit>
-      <trans-unit id="quicknavigation_next_topic">
+      <trans-unit id="quicknavigation_next_topic" approved="yes">
         <source>next</source>
-        <target state="needs-translation">next</target>
+        <target state="final">successivo</target>
       </trans-unit>
-      <trans-unit id="quicknavigation_index">
+      <trans-unit id="quicknavigation_index" approved="yes">
         <source>index</source>
-        <target state="needs-translation">index</target>
+        <target state="final">indice</target>
       </trans-unit>
       <trans-unit id="reference_name">
         <source>Reference</source>
@@ -47,21 +47,21 @@
         <source>Title</source>
         <target state="needs-translation">Title</target>
       </trans-unit>
-      <trans-unit id="search_placeholder">
+      <trans-unit id="search_placeholder" approved="yes">
         <source>search</source>
-        <target state="needs-translation">search</target>
+        <target state="final">ricerca</target>
       </trans-unit>
-      <trans-unit id="search_action">
+      <trans-unit id="search_action" approved="yes">
         <source>search</source>
-        <target state="needs-translation">search</target>
+        <target state="final">ricerca</target>
       </trans-unit>
       <trans-unit id="home_title">
         <source>Home</source>
         <target state="needs-translation">Home</target>
       </trans-unit>
-      <trans-unit id="index_title">
+      <trans-unit id="index_title" approved="yes">
         <source>Index</source>
-        <target state="needs-translation">Index</target>
+        <target state="final">Indice</target>
       </trans-unit>
     </body>
   </file>
