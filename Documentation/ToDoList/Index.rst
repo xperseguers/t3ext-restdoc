@@ -29,7 +29,7 @@ Translation
 -----------
 
 Another very easy way to contribute to the success of this extension is to
-translate it on the `TYPO3 translation server`_; other users will thank you
+translate it on the `Crowdin translation server`_; other users will thank you
 much.
 
-.. _`TYPO3 translation server`: https://translation.typo3.org/projects/TYPO3.TYPO3.ext.restdoc/
+.. _`Crowdin translation server`: https://crowdin.com/project/typo3-extension-restdoc
