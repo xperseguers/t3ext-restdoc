@@ -11,53 +11,53 @@
         <source>Adds a viewer for a Sphinx-based documentation.</source>
         <target state="needs-translation">Adds a viewer for a Sphinx-based documentation.</target>
       </trans-unit>
-      <trans-unit id="header_toc">
+      <trans-unit id="header_toc" approved="yes">
         <source>Table of Contents</source>
-        <target state="needs-translation">Table of Contents</target>
+        <target state="final">Inhaltsverzeichnis</target>
       </trans-unit>
-      <trans-unit id="header_previous_topic">
+      <trans-unit id="header_previous_topic" approved="yes">
         <source>Previous Topic</source>
-        <target state="needs-translation">Previous Topic</target>
+        <target state="final">Vorheriges Thema</target>
       </trans-unit>
-      <trans-unit id="header_next_topic">
+      <trans-unit id="header_next_topic" approved="yes">
         <source>Next Topic</source>
-        <target state="needs-translation">Next Topic</target>
+        <target state="final">Nächstes Thema</target>
       </trans-unit>
-      <trans-unit id="quicknavigation_home">
+      <trans-unit id="quicknavigation_home" approved="yes">
         <source>home</source>
-        <target state="needs-translation">home</target>
+        <target state="final">start</target>
       </trans-unit>
-      <trans-unit id="quicknavigation_previous_topic">
+      <trans-unit id="quicknavigation_previous_topic" approved="yes">
         <source>previous</source>
-        <target state="needs-translation">previous</target>
+        <target state="final">zurück</target>
       </trans-unit>
-      <trans-unit id="quicknavigation_next_topic">
+      <trans-unit id="quicknavigation_next_topic" approved="yes">
         <source>next</source>
-        <target state="needs-translation">next</target>
+        <target state="final">weiter</target>
       </trans-unit>
       <trans-unit id="quicknavigation_index">
         <source>index</source>
         <target state="needs-translation">index</target>
       </trans-unit>
-      <trans-unit id="reference_name">
+      <trans-unit id="reference_name" approved="yes">
         <source>Reference</source>
-        <target state="needs-translation">Reference</target>
+        <target state="final">Referenz</target>
       </trans-unit>
-      <trans-unit id="reference_title">
+      <trans-unit id="reference_title" approved="yes">
         <source>Title</source>
-        <target state="needs-translation">Title</target>
+        <target state="final">Titel</target>
       </trans-unit>
-      <trans-unit id="search_placeholder">
+      <trans-unit id="search_placeholder" approved="yes">
         <source>search</source>
-        <target state="needs-translation">search</target>
+        <target state="final">suchen</target>
       </trans-unit>
-      <trans-unit id="search_action">
+      <trans-unit id="search_action" approved="yes">
         <source>search</source>
-        <target state="needs-translation">search</target>
+        <target state="final">suchen</target>
       </trans-unit>
-      <trans-unit id="home_title">
+      <trans-unit id="home_title" approved="yes">
         <source>Home</source>
-        <target state="needs-translation">Home</target>
+        <target state="final">Startseite</target>
       </trans-unit>
       <trans-unit id="index_title">
         <source>Index</source>
