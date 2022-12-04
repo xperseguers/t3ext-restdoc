@@ -7,9 +7,9 @@
         <source>Sphinx Documentation Viewer Plugin</source>
         <target state="needs-translation">Sphinx Documentation Viewer Plugin</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.sheet_general">
+      <trans-unit id="pi_flexform.sheet_general" approved="yes">
         <source>General</source>
-        <target state="needs-translation">General</target>
+        <target state="final">Generale</target>
       </trans-unit>
       <trans-unit id="pi_flexform.path">
         <source>Documentation Root:</source>
@@ -23,41 +23,41 @@
         <source>Page showing the documentation:</source>
         <target state="needs-translation">Page showing the documentation:</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.mode">
+      <trans-unit id="pi_flexform.mode" approved="yes">
         <source>Show:</source>
-        <target state="needs-translation">Show:</target>
+        <target state="final">Visualizza :</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.mode.BODY">
+      <trans-unit id="pi_flexform.mode.BODY" approved="yes">
         <source>Documentation</source>
-        <target state="needs-translation">Documentation</target>
+        <target state="final">Documentazione</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.mode.TOC">
+      <trans-unit id="pi_flexform.mode.TOC" approved="yes">
         <source>Table of contents</source>
-        <target state="needs-translation">Table of contents</target>
+        <target state="final">Tabella dei contenuti</target>
       </trans-unit>
       <trans-unit id="pi_flexform.mode.MASTER_TOC">
         <source>Master table of contents</source>
         <target state="needs-translation">Master table of contents</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.mode.RECENT">
+      <trans-unit id="pi_flexform.mode.RECENT" approved="yes">
         <source>Recently updated chapters</source>
-        <target state="needs-translation">Recently updated chapters</target>
+        <target state="final">Recentemente aggiornati capitoli</target>
       </trans-unit>
       <trans-unit id="pi_flexform.mode.BREADCRUMB">
         <source>Breadcrumb menu</source>
         <target state="needs-translation">Breadcrumb menu</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.mode.QUICK_NAVIGATION">
+      <trans-unit id="pi_flexform.mode.QUICK_NAVIGATION" approved="yes">
         <source>Quick navigation</source>
-        <target state="needs-translation">Quick navigation</target>
+        <target state="final">Navigazione rapida</target>
       </trans-unit>
       <trans-unit id="pi_flexform.mode.REFERENCES">
         <source>References</source>
         <target state="needs-translation">References</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.mode.SEARCH">
+      <trans-unit id="pi_flexform.mode.SEARCH" approved="yes">
         <source>Search form</source>
-        <target state="needs-translation">Search form</target>
+        <target state="final">Modulo di ricerca</target>
       </trans-unit>
     </body>
   </file>
