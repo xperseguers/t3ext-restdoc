@@ -3,65 +3,65 @@
   <file source-language="en" datatype="plaintext" original="messages" date="2013-04-04T12:23:56Z" product-name="restdoc" target-language="fr">
     <header/>
     <body>
-      <trans-unit id="pi1_title" approved="yes">
+      <trans-unit id="pi1_title">
         <source>Sphinx Documentation Viewer Plugin</source>
-        <target state="final">Visionneuse de documentation Sphinx/reStructuredText</target>
+        <target state="translated">Visionneuse de documentation Sphinx</target>
       </trans-unit>
-      <trans-unit id="pi1_plus_wiz_description" approved="yes">
+      <trans-unit id="pi1_plus_wiz_description">
         <source>Adds a viewer for a Sphinx-based documentation.</source>
-        <target state="final">Ajoute une visionneuse pour une documentation Sphinx/ReStructuredText.</target>
+        <target state="translated">Ajoute une visionneuse pour une documentation Sphinx.</target>
       </trans-unit>
-      <trans-unit id="header_toc" approved="yes">
+      <trans-unit id="header_toc">
         <source>Table of Contents</source>
-        <target state="final">Table des matières</target>
+        <target state="translated">Table des matières</target>
       </trans-unit>
-      <trans-unit id="header_previous_topic" approved="yes">
+      <trans-unit id="header_previous_topic">
         <source>Previous Topic</source>
-        <target state="final">Sujet précédent</target>
+        <target state="translated">Sujet précédent</target>
       </trans-unit>
-      <trans-unit id="header_next_topic" approved="yes">
+      <trans-unit id="header_next_topic">
         <source>Next Topic</source>
-        <target state="final">Sujet suivant</target>
+        <target state="translated">Sujet suivant</target>
       </trans-unit>
-      <trans-unit id="quicknavigation_home" approved="yes">
+      <trans-unit id="quicknavigation_home">
         <source>home</source>
-        <target state="final">accueil</target>
+        <target state="translated">accueil</target>
       </trans-unit>
-      <trans-unit id="quicknavigation_previous_topic" approved="yes">
+      <trans-unit id="quicknavigation_previous_topic">
         <source>previous</source>
-        <target state="final">précédent</target>
+        <target state="translated">précédent</target>
       </trans-unit>
-      <trans-unit id="quicknavigation_next_topic" approved="yes">
+      <trans-unit id="quicknavigation_next_topic">
         <source>next</source>
-        <target state="final">suivant</target>
+        <target state="translated">suivant</target>
       </trans-unit>
       <trans-unit id="quicknavigation_index">
         <source>index</source>
-        <target state="needs-translation">index</target>
+        <target state="translated">index</target>
       </trans-unit>
-      <trans-unit id="reference_name" approved="yes">
+      <trans-unit id="reference_name">
         <source>Reference</source>
-        <target state="final">Référence</target>
+        <target state="translated">Référence</target>
       </trans-unit>
-      <trans-unit id="reference_title" approved="yes">
+      <trans-unit id="reference_title">
         <source>Title</source>
-        <target state="final">Titre</target>
+        <target state="translated">Titre</target>
       </trans-unit>
-      <trans-unit id="search_placeholder" approved="yes">
+      <trans-unit id="search_placeholder">
         <source>search</source>
-        <target state="final">rechercher</target>
+        <target state="translated">rechercher</target>
       </trans-unit>
-      <trans-unit id="search_action" approved="yes">
+      <trans-unit id="search_action">
         <source>search</source>
-        <target state="final">rechercher</target>
+        <target state="translated">rechercher</target>
       </trans-unit>
-      <trans-unit id="home_title" approved="yes">
+      <trans-unit id="home_title">
         <source>Home</source>
-        <target state="final">Accueil</target>
+        <target state="translated">Accueil</target>
       </trans-unit>
       <trans-unit id="index_title">
         <source>Index</source>
-        <target state="needs-translation">Index</target>
+        <target state="translated">Index</target>
       </trans-unit>
     </body>
   </file>
