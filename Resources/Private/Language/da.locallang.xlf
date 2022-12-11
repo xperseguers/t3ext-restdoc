@@ -39,9 +39,9 @@
         <source>index</source>
         <target state="final">indeks</target>
       </trans-unit>
-      <trans-unit id="reference_name">
+      <trans-unit id="reference_name" approved="yes">
         <source>Reference</source>
-        <target state="needs-translation">Reference</target>
+        <target state="final">Reference</target>
       </trans-unit>
       <trans-unit id="reference_title" approved="yes">
         <source>Title</source>
