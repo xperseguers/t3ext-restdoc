@@ -43,9 +43,9 @@
         <source>Recently updated chapters</source>
         <target state="final">Nyligt opdaterede kapitler</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.mode.BREADCRUMB">
+      <trans-unit id="pi_flexform.mode.BREADCRUMB" approved="yes">
         <source>Breadcrumb menu</source>
-        <target state="needs-translation">Breadcrumb menu</target>
+        <target state="final">Brødkrumme menu</target>
       </trans-unit>
       <trans-unit id="pi_flexform.mode.QUICK_NAVIGATION" approved="yes">
         <source>Quick navigation</source>
