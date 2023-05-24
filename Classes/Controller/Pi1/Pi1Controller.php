@@ -983,7 +983,7 @@ HTML;
             // and assign each configuration option to $this->settings array...
             foreach ($piFlexForm['data'] as $sheet => $data) {
                 foreach ($data as $lang => $value) {
-                    /** @var $value array */
+                    /** @var array $value */
                     foreach ($value as $key => $val) {
                         $value = $this->pi_getFFvalue($piFlexForm, $key, $sheet);
                         if (trim($value) !== '' && in_array($key, $multiValueKeys, true)) {
@@ -1020,9 +1020,9 @@ HTML;
         }
 
         if (preg_match('/^file:(\d+):(.*)$/', $this->conf['path'], $matches)) {
-            /** @var $storageRepository StorageRepository */
+            /** @var StorageRepository $storageRepository */
             $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-            /** @var $storage ResourceStorage */
+            /** @var ResourceStorage $storage */
             $storage = $storageRepository->findByUid((int)$matches[1]);
             $storageRecord = $storage->getStorageRecord();
             if ($storageRecord['driver'] === 'Local') {
@@ -1055,7 +1055,7 @@ HTML;
             $basePath = 'EXT:' . $this->extKey . '/Resources/Private/Language/locallang.xlf';
 
             // Read the strings in the required charset (since TYPO3 4.2)
-            /** @var $languageFactory LocalizationFactory */
+            /** @var LocalizationFactory $languageFactory */
             $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
             $this->LOCAL_LANG = $languageFactory->getParsedData($basePath, $this->LLkey, 'utf-8');
             if ($this->altLLkey) {
