@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" date="2013-04-04T12:23:56Z" product-name="restdoc" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="pi1_title">
+        <source>Sphinx Documentation Viewer Plugin</source>
+        <target state="needs-translation">Sphinx Documentation Viewer Plugin</target>
+      </trans-unit>
+      <trans-unit id="pi1_plus_wiz_description">
+        <source>Adds a viewer for a Sphinx-based documentation.</source>
+        <target state="needs-translation">Adds a viewer for a Sphinx-based documentation.</target>
+      </trans-unit>
+      <trans-unit id="header_toc">
+        <source>Table of Contents</source>
+        <target state="needs-translation">Table of Contents</target>
+      </trans-unit>
+      <trans-unit id="header_previous_topic">
+        <source>Previous Topic</source>
+        <target state="needs-translation">Previous Topic</target>
+      </trans-unit>
+      <trans-unit id="header_next_topic">
+        <source>Next Topic</source>
+        <target state="needs-translation">Next Topic</target>
+      </trans-unit>
+      <trans-unit id="quicknavigation_home">
+        <source>home</source>
+        <target state="needs-translation">home</target>
+      </trans-unit>
+      <trans-unit id="quicknavigation_previous_topic">
+        <source>previous</source>
+        <target state="needs-translation">previous</target>
+      </trans-unit>
+      <trans-unit id="quicknavigation_next_topic">
+        <source>next</source>
+        <target state="needs-translation">next</target>
+      </trans-unit>
+      <trans-unit id="quicknavigation_index">
+        <source>index</source>
+        <target state="needs-translation">index</target>
+      </trans-unit>
+      <trans-unit id="reference_name">
+        <source>Reference</source>
+        <target state="needs-translation">Reference</target>
+      </trans-unit>
+      <trans-unit id="reference_title">
+        <source>Title</source>
+        <target state="needs-translation">Title</target>
+      </trans-unit>
+      <trans-unit id="search_placeholder">
+        <source>search</source>
+        <target state="needs-translation">search</target>
+      </trans-unit>
+      <trans-unit id="search_action">
+        <source>search</source>
+        <target state="needs-translation">search</target>
+      </trans-unit>
+      <trans-unit id="home_title">
+        <source>Home</source>
+        <target state="needs-translation">Home</target>
+      </trans-unit>
+      <trans-unit id="index_title">
+        <source>Index</source>
+        <target state="needs-translation">Index</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

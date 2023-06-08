@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" date="2013-04-04T12:23:56Z" product-name="restdoc" target-language="pt-PT">
+    <header/>
+    <body>
+      <trans-unit id="pi1_title" approved="yes">
+        <source>Sphinx Documentation Viewer Plugin</source>
+        <target state="final">Visualizador de Documentação Sphinx/reStructuredText</target>
+      </trans-unit>
+      <trans-unit id="pi1_plus_wiz_description" approved="yes">
+        <source>Adds a viewer for a Sphinx-based documentation.</source>
+        <target state="final">Adiciona um visualizador para uma documentação Sphinx/reStructuredText.</target>
+      </trans-unit>
+      <trans-unit id="header_toc" approved="yes">
+        <source>Table of Contents</source>
+        <target state="final">Tabela de Conteúdos</target>
+      </trans-unit>
+      <trans-unit id="header_previous_topic" approved="yes">
+        <source>Previous Topic</source>
+        <target state="final">Tópico Anterior</target>
+      </trans-unit>
+      <trans-unit id="header_next_topic" approved="yes">
+        <source>Next Topic</source>
+        <target state="final">Proximo Tópico</target>
+      </trans-unit>
+      <trans-unit id="quicknavigation_home" approved="yes">
+        <source>home</source>
+        <target state="final">início</target>
+      </trans-unit>
+      <trans-unit id="quicknavigation_previous_topic" approved="yes">
+        <source>previous</source>
+        <target state="final">anterior</target>
+      </trans-unit>
+      <trans-unit id="quicknavigation_next_topic" approved="yes">
+        <source>next</source>
+        <target state="final">próximo</target>
+      </trans-unit>
+      <trans-unit id="quicknavigation_index" approved="yes">
+        <source>index</source>
+        <target state="final">índice</target>
+      </trans-unit>
+      <trans-unit id="reference_name" approved="yes">
+        <source>Reference</source>
+        <target state="final">Referência</target>
+      </trans-unit>
+      <trans-unit id="reference_title" approved="yes">
+        <source>Title</source>
+        <target state="final">Título</target>
+      </trans-unit>
+      <trans-unit id="search_placeholder" approved="yes">
+        <source>search</source>
+        <target state="final">pesquisa</target>
+      </trans-unit>
+      <trans-unit id="search_action" approved="yes">
+        <source>search</source>
+        <target state="final">pesquisar</target>
+      </trans-unit>
+      <trans-unit id="home_title" approved="yes">
+        <source>Home</source>
+        <target state="final">Início</target>
+      </trans-unit>
+      <trans-unit id="index_title" approved="yes">
+        <source>Index</source>
+        <target state="final">Índice</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
