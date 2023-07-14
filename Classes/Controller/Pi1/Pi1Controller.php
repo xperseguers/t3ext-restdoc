@@ -534,7 +534,7 @@ JS;
             $data['next_uri_absolute'] = $linkAbsolute;
         }
 
-        if (count($parentDocuments) > 0) {
+        if (!empty($parentDocuments)) {
             $parent = array_pop($parentDocuments);
             $absolute = RestHelper::relativeToAbsolute($documentRoot . $document, '../' . $parent['link']);
             $link = $this->getLink(substr($absolute, strlen($documentRoot)));
