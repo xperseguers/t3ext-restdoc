@@ -221,20 +221,18 @@ class Pi1Controller extends AbstractPlugin
         }
 
         // Hook for post-processing the output
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['renderHook'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['renderHook'] as $classRef) {
-                $hookObject = GeneralUtility::makeInstance($classRef);
-                $params = [
-                    'mode' => $this->conf['mode'],
-                    'documentRoot' => $documentRoot,
-                    'document' => $document,
-                    'output' => &$output,
-                    'config' => $this->conf,
-                    'pObj' => $this,
-                ];
-                if (is_callable([$hookObject, 'postProcessOutput'])) {
-                    $hookObject->postProcessOutput($params);
-                }
+        foreach (($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['renderHook'] ?? []) as $classRef) {
+            $hookObject = GeneralUtility::makeInstance($classRef);
+            $params = [
+                'mode' => $this->conf['mode'],
+                'documentRoot' => $documentRoot,
+                'document' => $document,
+                'output' => &$output,
+                'config' => $this->conf,
+                'pObj' => $this,
+            ];
+            if (is_callable([$hookObject, 'postProcessOutput'])) {
+                $hookObject->postProcessOutput($params);
             }
         }
 
@@ -426,18 +424,16 @@ class Pi1Controller extends AbstractPlugin
         }
 
         // Hook for post-processing the menu entries
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['makeMenuArrayHook'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['makeMenuArrayHook'] as $classRef) {
-                $hookObject = GeneralUtility::makeInstance($classRef);
-                $params = [
-                    'documentRoot' => $documentRoot,
-                    'document' => $document,
-                    'data' => &$data,
-                    'pObj' => $this,
-                ];
-                if (is_callable([$hookObject, 'postProcessMakeMenuArray'])) {
-                    $hookObject->postProcessTOC($params);
-                }
+        foreach (($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['makeMenuArrayHook'] ?? []) as $classRef) {
+            $hookObject = GeneralUtility::makeInstance($classRef);
+            $params = [
+                'documentRoot' => $documentRoot,
+                'document' => $document,
+                'data' => &$data,
+                'pObj' => $this,
+            ];
+            if (is_callable([$hookObject, 'postProcessMakeMenuArray'])) {
+                $hookObject->postProcessTOC($params);
             }
         }
 
@@ -560,18 +556,16 @@ JS;
         $data['has_index'] = !empty($data['index_uri']) ? 1 : 0;
 
         // Hook for post-processing the quick navigation
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['quickNavigationHook'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['quickNavigationHook'] as $classRef) {
-                $hookObject = GeneralUtility::makeInstance($classRef);
-                $params = [
-                    'documentRoot' => $documentRoot,
-                    'document' => $document,
-                    'data' => &$data,
-                    'pObj' => $this,
-                ];
-                if (is_callable([$hookObject, 'postProcessQUICK_NAVIGATION'])) {
-                    $hookObject->postProcessQUICK_NAVIGATION($params);
-                }
+        foreach (($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['quickNavigationHook'] ?? []) as $classRef) {
+            $hookObject = GeneralUtility::makeInstance($classRef);
+            $params = [
+                'documentRoot' => $documentRoot,
+                'document' => $document,
+                'data' => &$data,
+                'pObj' => $this,
+            ];
+            if (is_callable([$hookObject, 'postProcessQUICK_NAVIGATION'])) {
+                $hookObject->postProcessQUICK_NAVIGATION($params);
             }
         }
 
@@ -744,16 +738,14 @@ jQuery(function() { Search.setIndex($searchIndexContent); });
 JS;
 
         // Hook for pre-processing the search form
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['searchFormHook'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['searchFormHook'] as $classRef) {
-                $hookObject = GeneralUtility::makeInstance($classRef);
-                $params = [
-                    'config' => &$config,
-                    'pObj' => $this,
-                ];
-                if (is_callable([$hookObject, 'preProcessSEARCH'])) {
-                    $hookObject->preProcessSEARCH($params);
-                }
+        foreach (($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['searchFormHook'] ?? []) as $classRef) {
+            $hookObject = GeneralUtility::makeInstance($classRef);
+            $params = [
+                'config' => &$config,
+                'pObj' => $this,
+            ];
+            if (is_callable([$hookObject, 'preProcessSEARCH'])) {
+                $hookObject->preProcessSEARCH($params);
             }
         }
 

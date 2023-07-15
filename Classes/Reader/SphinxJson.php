@@ -827,13 +827,11 @@ class SphinxJson
     protected function invokePostProcessors(string $name, string $content): string
     {
         $key = 'postProcess' . ucfirst($name);
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['restdoc'][$key])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['restdoc'][$key] as $funcRef) {
-                $params = [
-                    'content' => &$content,
-                ];
-                GeneralUtility::callUserFunction($funcRef, $params, $this);
-            }
+        foreach (($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['restdoc'][$key] ?? []) as $funcRef) {
+            $params = [
+                'content' => &$content,
+            ];
+            GeneralUtility::callUserFunction($funcRef, $params, $this);
         }
 
         return $content;
