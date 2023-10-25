@@ -11,7 +11,7 @@ defined('TYPO3_MODE') || die();
     'restdoc'
 );
 
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['restdoc_pi1'] = 'layout,select_key,pages,recursive';
+$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['restdoc_pi1'] = 'layout,pages,recursive';
 
 // Register the FlexForms
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['restdoc_pi1'] = 'pi_flexform';
