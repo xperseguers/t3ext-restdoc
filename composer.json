@@ -23,7 +23,7 @@
   "license": "GPL-2.0-or-later",
   "require": {
     "php": ">= 7.4.0, <= 8.3.99",
-    "typo3/cms-core": "^9.5 || ^10.4 || ^11",
+    "typo3/cms-core": "^9.5 || ^10 || ^11 || ^12 || ^13",
     "ext-dom": "*",
     "ext-json": "*",
     "ext-zlib": "*"
@@ -33,12 +33,10 @@
       "Causal\\Restdoc\\": "Classes/"
     }
   },
-  "replace": {
-    "typo3-ter/restdoc": "self.version"
-  },
   "extra": {
     "branch-alias": {
-      "dev-master": "2.1.x-dev"
+      "dev-master": "2.1.x-dev",
+      "dev-feature/TYPO3v13": "2.2.x-dev"
     },
     "typo3/cms": {
       "extension-key": "restdoc"
