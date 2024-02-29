@@ -1,6 +1,5 @@
 <?php
-
-defined('TYPO3_MODE') || die();
+defined('TYPO3') || defined('TYPO3_MODE') || die();
 
 // Initialize static extension templates
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
