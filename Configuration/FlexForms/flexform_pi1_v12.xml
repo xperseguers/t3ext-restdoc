@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3DataStructure>
+	<meta>
+		<langDisable>1</langDisable>
+	</meta>
+	<sheets>
+		<sDEF>
+			<ROOT>
+				<sheetTitle>LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.sheet_general</sheetTitle>
+				<type>array</type>
+				<el>
+					<path>
+						<exclude>0</exclude>
+						<label>LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.path</label>
+						<config>
+							<type>input</type>
+							<renderType>inputLink</renderType>
+							<size>48</size>
+							<eval>required,trim</eval>
+							<fieldControl>
+								<linkPopup>
+									<options>
+										<blindLinkOptions>page,url,mail,spec,file,telephone</blindLinkOptions>
+										<blindLinkFields>class,target,title,params</blindLinkFields>
+									</options>
+								</linkPopup>
+							</fieldControl>
+						</config>
+					</path>
+					<mode>
+						<exclude>0</exclude>
+						<label>LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.mode</label>
+						<config>
+							<type>select</type>
+							<renderType>selectSingle</renderType>
+							<items>
+								<numIndex index="1" type="array">
+									<numIndex index="0">LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.mode.BODY</numIndex>
+									<numIndex index="1">BODY</numIndex>
+								</numIndex>
+								<numIndex index="2" type="array">
+									<numIndex index="0">LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.mode.TOC</numIndex>
+									<numIndex index="1">TOC</numIndex>
+								</numIndex>
+								<numIndex index="3" type="array">
+									<numIndex index="0">LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.mode.MASTER_TOC</numIndex>
+									<numIndex index="1">MASTER_TOC</numIndex>
+								</numIndex>
+								<numIndex index="4" type="array">
+									<numIndex index="0">LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.mode.RECENT</numIndex>
+									<numIndex index="1">RECENT</numIndex>
+								</numIndex>
+								<numIndex index="5" type="array">
+									<numIndex index="0">LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.mode.BREADCRUMB</numIndex>
+									<numIndex index="1">BREADCRUMB</numIndex>
+								</numIndex>
+								<numIndex index="6" type="array">
+									<numIndex index="0">LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.mode.QUICK_NAVIGATION</numIndex>
+									<numIndex index="1">QUICK_NAVIGATION</numIndex>
+								</numIndex>
+								<numIndex index="7" type="array">
+									<numIndex index="0">LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.mode.REFERENCES</numIndex>
+									<numIndex index="1">REFERENCES</numIndex>
+								</numIndex>
+								<numIndex index="8" type="array">
+									<numIndex index="0">LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.mode.SEARCH</numIndex>
+									<numIndex index="1">SEARCH</numIndex>
+								</numIndex>
+							</items>
+							<size>1</size>
+							<maxitems>1</maxitems>
+						</config>
+						<onChange>reload</onChange>
+					</mode>
+					<rootPage>
+						<exclude>0</exclude>
+						<label>LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xml:pi_flexform.rootPage</label>
+						<displayCond><![CDATA[FIELD:mode:IN:REFERENCES,SEARCH]]></displayCond>
+						<config>
+							<type>group</type>
+							<internal_type>db</internal_type>
+							<allowed>pages</allowed>
+							<minitems>1</minitems>
+							<maxitems>1</maxitems>
+							<size>1</size>
+							<show_thumbs>1</show_thumbs>
+							<wizards>
+								<suggest>
+									<type>suggest</type>
+								</suggest>
+							</wizards>
+						</config>
+					</rootPage>
+				</el>
+			</ROOT>
+		</sDEF>
+	</sheets>
+</T3DataStructure>
