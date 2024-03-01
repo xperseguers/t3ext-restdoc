@@ -10,7 +10,7 @@
 				<source>General</source>
 			</trans-unit>
 			<trans-unit id="pi_flexform.path">
-				<source>Documentation Root:</source>
+				<source>Documentation Root</source>
 			</trans-unit>
 			<trans-unit id="pi_flexform.path.wizard">
 				<source>Select the path to the documentation</source>
@@ -19,7 +19,7 @@
 				<source>Page showing the documentation:</source>
 			</trans-unit>
 			<trans-unit id="pi_flexform.mode">
-				<source>Show:</source>
+				<source>Show</source>
 			</trans-unit>
 			<trans-unit id="pi_flexform.mode.BODY">
 				<source>Documentation</source>
