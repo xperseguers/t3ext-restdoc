@@ -18,6 +18,7 @@ use Causal\Restdoc\Reader\SphinxJson;
 use Causal\Restdoc\Utility\RestHelper;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
@@ -399,11 +400,11 @@ class Pi1Controller extends AbstractPlugin
                     }
                 }
                 if ($maxAge > 0) {
-                    $conditions[] = $queryBuilder->expr()->gt($sortField, $queryBuilder->createNamedParameter($GLOBALS['SIM_ACCESS_TIME'] - $maxAge, \PDO::PARAM_INT));
+                    $conditions[] = $queryBuilder->expr()->gt($sortField, $queryBuilder->createNamedParameter($GLOBALS['SIM_ACCESS_TIME'] - $maxAge, Connection::PARAM_INT));
                 }
                 // TODO: prefix root entries with the storage UID when using FAL, to prevent clashes with multiple
                 //       directories with similar names
-                $conditions[] = $queryBuilder->expr()->eq('root', $queryBuilder->createNamedParameter(substr($documentRoot, strlen($basePath)), \PDO::PARAM_STR));
+                $conditions[] = $queryBuilder->expr()->eq('root', $queryBuilder->createNamedParameter(substr($documentRoot, strlen($basePath)), Connection::PARAM_STR));
 
                 $rows = $queryBuilder
                     ->select('*')

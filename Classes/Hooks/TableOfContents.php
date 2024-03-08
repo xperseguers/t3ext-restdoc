@@ -17,6 +17,7 @@ namespace Causal\Restdoc\Hooks;
 use Causal\Restdoc\Controller\Pi1\Pi1Controller;
 use Causal\Restdoc\Utility\RestHelper;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -336,8 +337,8 @@ class TableOfContents
             ->where(
                 $queryBuilder->expr()->eq('pid', $this->pageId),
                 $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->neq('root', $queryBuilder->createNamedParameter($this->root, \PDO::PARAM_STR)),
-                    $queryBuilder->expr()->lte('tstamp', $queryBuilder->createNamedParameter($GLOBALS['ACCESS_TIME'] - static::CACHE_MAX_AGE, \PDO::PARAM_INT))
+                    $queryBuilder->expr()->neq('root', $queryBuilder->createNamedParameter($this->root, Connection::PARAM_STR)),
+                    $queryBuilder->expr()->lte('tstamp', $queryBuilder->createNamedParameter($GLOBALS['ACCESS_TIME'] - static::CACHE_MAX_AGE, Connection::PARAM_INT))
                 )
             )
             ->execute();
