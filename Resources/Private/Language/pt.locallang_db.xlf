@@ -11,21 +11,21 @@
         <source>General</source>
         <target state="final">Geral</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.path" approved="yes">
-        <source>Documentation Root:</source>
-        <target state="final">Raíz da Documentação:</target>
+      <trans-unit id="pi_flexform.path">
+        <source>Documentation Root</source>
+        <target state="needs-translation">Documentation Root</target>
       </trans-unit>
       <trans-unit id="pi_flexform.path.wizard" approved="yes">
         <source>Select the path to the documentation</source>
         <target state="final">Selecione o caminho para documentação</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.rootPage" approved="yes">
-        <source>Page showing the documentation:</source>
-        <target state="final">Página exibindo a documentação:</target>
+      <trans-unit id="pi_flexform.rootPage">
+        <source>Page showing the documentation</source>
+        <target state="needs-translation">Page showing the documentation</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.mode" approved="yes">
-        <source>Show:</source>
-        <target state="final">Exibir:</target>
+      <trans-unit id="pi_flexform.mode">
+        <source>Show</source>
+        <target state="needs-translation">Show</target>
       </trans-unit>
       <trans-unit id="pi_flexform.mode.BODY" approved="yes">
         <source>Documentation</source>
