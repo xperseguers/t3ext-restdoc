@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" date="2013-04-04T12:23:51Z" product-name="restdoc" target-language="da">
+    <header/>
+    <body>
+      <trans-unit id="tt_content.list_type_pi1" approved="yes">
+        <source>Sphinx Documentation Viewer Plugin</source>
+        <target state="final">Sphinx Dokumentations-viser Plugin</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.sheet_general" approved="yes">
+        <source>General</source>
+        <target state="final">Generelt</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.path" approved="yes">
+        <source>Documentation Root</source>
+        <target state="final">Dokumentations-rod</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.path.wizard" approved="yes">
+        <source>Select the path to the documentation</source>
+        <target state="final">Vælg stien til dokumentationen</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.rootPage" approved="yes">
+        <source>Page showing the documentation</source>
+        <target state="final">Side der viser dokumentation</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.mode" approved="yes">
+        <source>Show</source>
+        <target state="final">Vis</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.mode.BODY" approved="yes">
+        <source>Documentation</source>
+        <target state="final">Dokumentation</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.mode.TOC" approved="yes">
+        <source>Table of contents</source>
+        <target state="final">Indholdsfortegnelse</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.mode.MASTER_TOC" approved="yes">
+        <source>Master table of contents</source>
+        <target state="final">Mastertabel af indhold</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.mode.RECENT" approved="yes">
+        <source>Recently updated chapters</source>
+        <target state="final">Nyligt opdaterede kapitler</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.mode.BREADCRUMB" approved="yes">
+        <source>Breadcrumb menu</source>
+        <target state="final">Brødkrumme menu</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.mode.QUICK_NAVIGATION" approved="yes">
+        <source>Quick navigation</source>
+        <target state="final">Hurtig navigation</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.mode.REFERENCES" approved="yes">
+        <source>References</source>
+        <target state="final">Referencer</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.mode.SEARCH" approved="yes">
+        <source>Search form</source>
+        <target state="final">Søgeformular</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
