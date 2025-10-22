@@ -16,7 +16,7 @@
 				<source>Select the path to the documentation</source>
 			</trans-unit>
 			<trans-unit id="pi_flexform.rootPage">
-				<source>Page showing the documentation:</source>
+				<source>Page showing the documentation</source>
 			</trans-unit>
 			<trans-unit id="pi_flexform.mode">
 				<source>Show</source>

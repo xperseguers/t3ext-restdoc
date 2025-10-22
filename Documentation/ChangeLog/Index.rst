@@ -16,8 +16,6 @@ For more details,
 `read the online log <https://github.com/xperseguers/t3ext-restdoc/commits/master>`__.
 
 
-.. tabularcolumns:: |r|p{13.7cm}|
-
 =======  ======================================================
 Version  Changes
 =======  ======================================================
