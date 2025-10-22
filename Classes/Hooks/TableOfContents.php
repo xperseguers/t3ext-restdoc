@@ -303,7 +303,7 @@ class TableOfContents
                     // External URL
                     return $matches[0];
                 }
-                if ($matches[2]{0} === '#') {
+                if ($matches[2][0] === '#') {
                     $anchor = $matches[2];
                 }
 

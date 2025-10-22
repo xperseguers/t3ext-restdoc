@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -12,14 +14,16 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace Causal\Restdoc\Controller\Pi1;
+namespace Causal\Restdoc\Controller;
 
 use Causal\Restdoc\Reader\SphinxJson;
 use Causal\Restdoc\Utility\RestHelper;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -28,8 +32,8 @@ use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
 /**
  * Plugin 'Sphinx Documentation Viewer Plugin' for the 'restdoc' extension.
@@ -39,13 +43,8 @@ use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Pi1Controller extends AbstractPlugin
+class Pi1Controller extends ActionController
 {
-    public $prefixId = 'tx_restdoc_pi1';
-    public $scriptRelPath = 'Classes/Controller/Pi1/Pi1Controller.php';
-    public $extKey = 'restdoc';
-    public $pi_checkCHash;
-
     /**
      * @var string
      */
@@ -56,10 +55,7 @@ class Pi1Controller extends AbstractPlugin
      */
     public $renderingConfig = [];
 
-    /**
-     * @var array
-     */
-    protected $settings = [];
+    public array $conf = [];
 
     /**
      * Current chapter information as static to be accessible from
@@ -75,28 +71,23 @@ class Pi1Controller extends AbstractPlugin
     protected static $sphinxReader;
 
     /**
-     * Pi1Controller constructor.
+     * The main method of the plugin.
+     *
+     * @return ResponseInterface
      */
-    public function __construct()
+    public function mainAction(): ResponseInterface
     {
-        $this->settings = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get($this->extKey);
-        $this->pi_checkCHash = true;
-
-        parent::__construct();
+        return new HtmlResponse('Plugin goes here...');
     }
 
     /**
-     * The main method of the Plugin.
-     *
      * @param string $content The plugin content
      * @param array $conf The plugin configuration
      * @return string The content that is displayed on the website
-     * @throws \RuntimeException
      */
-    public function main(string $content, array $conf): string
+    private function main(): string
     {
-        $this->init($conf);
-        $this->pi_setPiVarDefaults();
+        $this->init();
         $this->pi_loadLL();
 
         $storage = self::$sphinxReader->getStorage();
@@ -947,7 +938,7 @@ HTML;
      *
      * @param array $conf : Plugin configuration, as received by the main() method
      */
-    protected function init(array $conf): void
+    protected function init(array $conf = []): void
     {
         $this->conf = $conf;
 

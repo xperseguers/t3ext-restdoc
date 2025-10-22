@@ -1,13 +1,11 @@
 <?php
 defined('TYPO3') || die();
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
-    [
-        'LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi1',
-        'restdoc_pi1'
-    ],
-    'list_type',
-    'restdoc'
+// Register Frontend plugins
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+    'restdoc',
+    'Pi1',
+    'LLL:EXT:restdoc/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi1',
 );
 
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['restdoc_pi1'] = 'layout,pages,recursive';
