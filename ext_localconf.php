@@ -1,18 +1,20 @@
 <?php
-defined('TYPO3') || defined('TYPO3_MODE') || die();
+defined('TYPO3') || die();
 
 (static function (string $_EXTKEY) {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43($_EXTKEY, 'Classes/Controller/Pi1/Pi1Controller.php', '_pi1', 'list_type', true);
 
-    /** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
-    $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
-    $iconRegistry->registerIcon(
-        'extensions-restdoc-wizard',
-        \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-        [
-            'source' => 'EXT:restdoc/Resources/Public/Icons/pi1_ce_wizard.png',
-        ]
-    );
+    if ((new \TYPO3\CMS\Core\Information\Typo3Version())->getMajorVersion() < 11) {
+        /** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
+        $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+        $iconRegistry->registerIcon(
+            'extensions-restdoc-wizard',
+            \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+            [
+                'source' => 'EXT:restdoc/Resources/Public/Icons/pi1_ce_wizard.png',
+            ]
+        );
+    }
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
         '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:restdoc/Configuration/TsConfig/Page/Mod/Wizards/NewContentElement.tsconfig">'
