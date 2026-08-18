@@ -5,59 +5,59 @@
     <body>
       <trans-unit id="tt_content.list_type_pi1">
         <source>Sphinx Documentation Viewer Plugin</source>
-        <target state="needs-translation">Sphinx Documentation Viewer Plugin</target>
+        <target state="translated">Sphinx dokumentáció-megjelenítő bővítmény</target>
       </trans-unit>
       <trans-unit id="pi_flexform.sheet_general">
         <source>General</source>
-        <target state="needs-translation">General</target>
+        <target state="translated">Általános</target>
       </trans-unit>
       <trans-unit id="pi_flexform.path">
         <source>Documentation Root</source>
-        <target state="needs-translation">Documentation Root</target>
+        <target state="translated">Dokumentáció gyökér</target>
       </trans-unit>
       <trans-unit id="pi_flexform.path.wizard">
         <source>Select the path to the documentation</source>
-        <target state="needs-translation">Select the path to the documentation</target>
+        <target state="translated">Válassza ki a dokumentáció elérési útját</target>
       </trans-unit>
       <trans-unit id="pi_flexform.rootPage">
         <source>Page showing the documentation</source>
-        <target state="needs-translation">Page showing the documentation</target>
+        <target state="translated">A dokumentációt megjelenítő oldal</target>
       </trans-unit>
       <trans-unit id="pi_flexform.mode">
         <source>Show</source>
-        <target state="needs-translation">Show</target>
+        <target state="translated">Megjelenítés</target>
       </trans-unit>
       <trans-unit id="pi_flexform.mode.BODY">
         <source>Documentation</source>
-        <target state="needs-translation">Documentation</target>
+        <target state="translated">Dokumentáció</target>
       </trans-unit>
       <trans-unit id="pi_flexform.mode.TOC">
         <source>Table of contents</source>
-        <target state="needs-translation">Table of contents</target>
+        <target state="translated">Tartalomjegyzék</target>
       </trans-unit>
       <trans-unit id="pi_flexform.mode.MASTER_TOC">
         <source>Master table of contents</source>
-        <target state="needs-translation">Master table of contents</target>
+        <target state="translated">Fő tartalomjegyzék</target>
       </trans-unit>
       <trans-unit id="pi_flexform.mode.RECENT">
         <source>Recently updated chapters</source>
-        <target state="needs-translation">Recently updated chapters</target>
+        <target state="translated">Legutóbb frissített fejezetek</target>
       </trans-unit>
       <trans-unit id="pi_flexform.mode.BREADCRUMB">
         <source>Breadcrumb menu</source>
-        <target state="needs-translation">Breadcrumb menu</target>
+        <target state="translated">Kenyérmorzsa menü</target>
       </trans-unit>
       <trans-unit id="pi_flexform.mode.QUICK_NAVIGATION">
         <source>Quick navigation</source>
-        <target state="needs-translation">Quick navigation</target>
+        <target state="translated">Gyors navigáció</target>
       </trans-unit>
       <trans-unit id="pi_flexform.mode.REFERENCES">
         <source>References</source>
-        <target state="needs-translation">References</target>
+        <target state="translated">Hivatkozások</target>
       </trans-unit>
       <trans-unit id="pi_flexform.mode.SEARCH">
         <source>Search form</source>
-        <target state="needs-translation">Search form</target>
+        <target state="translated">Kereső űrlap</target>
       </trans-unit>
     </body>
   </file>
