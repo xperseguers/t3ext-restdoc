@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" date="2013-04-04T12:23:56Z" product-name="restdoc" target-language="hu">
+    <header/>
+    <body>
+      <trans-unit id="pi1_title">
+        <source>Sphinx Documentation Viewer Plugin</source>
+        <target state="translated">Sphinx dokumentáció-megjelenítő bővítmény</target>
+      </trans-unit>
+      <trans-unit id="pi1_plus_wiz_description">
+        <source>Adds a viewer for a Sphinx-based documentation.</source>
+        <target state="translated">Sphinx-alapú dokumentáció megjelenítőjét adja hozzá.</target>
+      </trans-unit>
+      <trans-unit id="header_toc">
+        <source>Table of Contents</source>
+        <target state="translated">Tartalomjegyzék</target>
+      </trans-unit>
+      <trans-unit id="header_previous_topic">
+        <source>Previous Topic</source>
+        <target state="translated">Előző témakör</target>
+      </trans-unit>
+      <trans-unit id="header_next_topic">
+        <source>Next Topic</source>
+        <target state="translated">Következő témakör</target>
+      </trans-unit>
+      <trans-unit id="quicknavigation_home">
+        <source>home</source>
+        <target state="translated">kezdőlap</target>
+      </trans-unit>
+      <trans-unit id="quicknavigation_previous_topic">
+        <source>previous</source>
+        <target state="translated">előző</target>
+      </trans-unit>
+      <trans-unit id="quicknavigation_next_topic">
+        <source>next</source>
+        <target state="translated">következő</target>
+      </trans-unit>
+      <trans-unit id="quicknavigation_index">
+        <source>index</source>
+        <target state="translated">tárgymutató</target>
+      </trans-unit>
+      <trans-unit id="reference_name">
+        <source>Reference</source>
+        <target state="translated">Referencia</target>
+      </trans-unit>
+      <trans-unit id="reference_title">
+        <source>Title</source>
+        <target state="translated">Cím</target>
+      </trans-unit>
+      <trans-unit id="search_placeholder">
+        <source>search</source>
+        <target state="translated">keresés</target>
+      </trans-unit>
+      <trans-unit id="search_action">
+        <source>search</source>
+        <target state="translated">keresés</target>
+      </trans-unit>
+      <trans-unit id="home_title">
+        <source>Home</source>
+        <target state="translated">Kezdőlap</target>
+      </trans-unit>
+      <trans-unit id="index_title">
+        <source>Index</source>
+        <target state="translated">Tárgymutató</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

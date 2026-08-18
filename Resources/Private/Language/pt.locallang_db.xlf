@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" date="2013-04-04T12:23:51Z" product-name="restdoc" target-language="pt-PT">
+    <header/>
+    <body>
+      <trans-unit id="tt_content.list_type_pi1" approved="yes">
+        <source>Sphinx Documentation Viewer Plugin</source>
+        <target state="final">Visualizador de Documentação reST</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.sheet_general" approved="yes">
+        <source>General</source>
+        <target state="final">Geral</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.path">
+        <source>Documentation Root</source>
+        <target state="needs-translation">Documentation Root</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.path.wizard" approved="yes">
+        <source>Select the path to the documentation</source>
+        <target state="final">Selecione o caminho para documentação</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.rootPage">
+        <source>Page showing the documentation</source>
+        <target state="needs-translation">Page showing the documentation</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.mode">
+        <source>Show</source>
+        <target state="needs-translation">Show</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.mode.BODY" approved="yes">
+        <source>Documentation</source>
+        <target state="final">Documentação</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.mode.TOC" approved="yes">
+        <source>Table of contents</source>
+        <target state="final">Tabela de conteúdos</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.mode.MASTER_TOC" approved="yes">
+        <source>Master table of contents</source>
+        <target state="final">Tabela mestre de conteúdos</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.mode.RECENT" approved="yes">
+        <source>Recently updated chapters</source>
+        <target state="final">Capítulos atualizados recentemente</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.mode.BREADCRUMB">
+        <source>Breadcrumb menu</source>
+        <target state="needs-translation">Breadcrumb menu</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.mode.QUICK_NAVIGATION" approved="yes">
+        <source>Quick navigation</source>
+        <target state="final">Navegação rápida</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.mode.REFERENCES" approved="yes">
+        <source>References</source>
+        <target state="final">Referências</target>
+      </trans-unit>
+      <trans-unit id="pi_flexform.mode.SEARCH">
+        <source>Search form</source>
+        <target state="needs-translation">Search form</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
