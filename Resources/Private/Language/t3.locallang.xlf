@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" date="2013-04-04T12:23:56Z" product-name="restdoc" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="pi1_title">
+        <source>Sphinx Documentation Viewer Plugin</source>
+        <target>crwdns228415:0crwdne228415:0</target>
+      </trans-unit>
+      <trans-unit id="pi1_plus_wiz_description">
+        <source>Adds a viewer for a Sphinx-based documentation.</source>
+        <target>crwdns228417:0crwdne228417:0</target>
+      </trans-unit>
+      <trans-unit id="header_toc">
+        <source>Table of Contents</source>
+        <target>crwdns228419:0crwdne228419:0</target>
+      </trans-unit>
+      <trans-unit id="header_previous_topic">
+        <source>Previous Topic</source>
+        <target>crwdns228421:0crwdne228421:0</target>
+      </trans-unit>
+      <trans-unit id="header_next_topic">
+        <source>Next Topic</source>
+        <target>crwdns228423:0crwdne228423:0</target>
+      </trans-unit>
+      <trans-unit id="quicknavigation_home">
+        <source>home</source>
+        <target>crwdns228425:0crwdne228425:0</target>
+      </trans-unit>
+      <trans-unit id="quicknavigation_previous_topic">
+        <source>previous</source>
+        <target>crwdns228427:0crwdne228427:0</target>
+      </trans-unit>
+      <trans-unit id="quicknavigation_next_topic">
+        <source>next</source>
+        <target>crwdns228429:0crwdne228429:0</target>
+      </trans-unit>
+      <trans-unit id="quicknavigation_index">
+        <source>index</source>
+        <target>crwdns228431:0crwdne228431:0</target>
+      </trans-unit>
+      <trans-unit id="reference_name">
+        <source>Reference</source>
+        <target>crwdns228433:0crwdne228433:0</target>
+      </trans-unit>
+      <trans-unit id="reference_title">
+        <source>Title</source>
+        <target>crwdns228435:0crwdne228435:0</target>
+      </trans-unit>
+      <trans-unit id="search_placeholder">
+        <source>search</source>
+        <target>crwdns228437:0crwdne228437:0</target>
+      </trans-unit>
+      <trans-unit id="search_action">
+        <source>search</source>
+        <target>crwdns228439:0crwdne228439:0</target>
+      </trans-unit>
+      <trans-unit id="home_title">
+        <source>Home</source>
+        <target>crwdns228441:0crwdne228441:0</target>
+      </trans-unit>
+      <trans-unit id="index_title">
+        <source>Index</source>
+        <target>crwdns228443:0crwdne228443:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
