@@ -3,61 +3,61 @@
   <file source-language="en" datatype="plaintext" original="messages" date="2013-04-04T12:23:51Z" product-name="restdoc" target-language="hu">
     <header/>
     <body>
-      <trans-unit id="tt_content.list_type_pi1">
+      <trans-unit id="tt_content.list_type_pi1" approved="yes">
         <source>Sphinx Documentation Viewer Plugin</source>
-        <target state="translated">Sphinx dokumentáció-megjelenítő bővítmény</target>
+        <target state="final">Sphinx dokumentáció-megjelenítő bővítmény</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.sheet_general">
+      <trans-unit id="pi_flexform.sheet_general" approved="yes">
         <source>General</source>
-        <target state="translated">Általános</target>
+        <target state="final">Általános</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.path">
+      <trans-unit id="pi_flexform.path" approved="yes">
         <source>Documentation Root</source>
-        <target state="translated">Dokumentáció gyökér</target>
+        <target state="final">Dokumentáció gyökér</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.path.wizard">
+      <trans-unit id="pi_flexform.path.wizard" approved="yes">
         <source>Select the path to the documentation</source>
-        <target state="translated">Válassza ki a dokumentáció elérési útját</target>
+        <target state="final">Válassza ki a dokumentáció elérési útját</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.rootPage">
+      <trans-unit id="pi_flexform.rootPage" approved="yes">
         <source>Page showing the documentation</source>
-        <target state="translated">A dokumentációt megjelenítő oldal</target>
+        <target state="final">A dokumentációt megjelenítő oldal</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.mode">
+      <trans-unit id="pi_flexform.mode" approved="yes">
         <source>Show</source>
-        <target state="translated">Megjelenítés</target>
+        <target state="final">Megjelenítés</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.mode.BODY">
+      <trans-unit id="pi_flexform.mode.BODY" approved="yes">
         <source>Documentation</source>
-        <target state="translated">Dokumentáció</target>
+        <target state="final">Dokumentáció</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.mode.TOC">
+      <trans-unit id="pi_flexform.mode.TOC" approved="yes">
         <source>Table of contents</source>
-        <target state="translated">Tartalomjegyzék</target>
+        <target state="final">Tartalomjegyzék</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.mode.MASTER_TOC">
+      <trans-unit id="pi_flexform.mode.MASTER_TOC" approved="yes">
         <source>Master table of contents</source>
-        <target state="translated">Fő tartalomjegyzék</target>
+        <target state="final">Fő tartalomjegyzék</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.mode.RECENT">
+      <trans-unit id="pi_flexform.mode.RECENT" approved="yes">
         <source>Recently updated chapters</source>
-        <target state="translated">Legutóbb frissített fejezetek</target>
+        <target state="final">Legutóbb frissített fejezetek</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.mode.BREADCRUMB">
+      <trans-unit id="pi_flexform.mode.BREADCRUMB" approved="yes">
         <source>Breadcrumb menu</source>
-        <target state="translated">Kenyérmorzsa menü</target>
+        <target state="final">Kenyérmorzsa menü</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.mode.QUICK_NAVIGATION">
+      <trans-unit id="pi_flexform.mode.QUICK_NAVIGATION" approved="yes">
         <source>Quick navigation</source>
-        <target state="translated">Gyors navigáció</target>
+        <target state="final">Gyors navigáció</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.mode.REFERENCES">
+      <trans-unit id="pi_flexform.mode.REFERENCES" approved="yes">
         <source>References</source>
-        <target state="translated">Hivatkozások</target>
+        <target state="final">Hivatkozások</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.mode.SEARCH">
+      <trans-unit id="pi_flexform.mode.SEARCH" approved="yes">
         <source>Search form</source>
-        <target state="translated">Kereső űrlap</target>
+        <target state="final">Kereső űrlap</target>
       </trans-unit>
     </body>
   </file>
