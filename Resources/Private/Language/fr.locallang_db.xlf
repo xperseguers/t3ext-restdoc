@@ -3,21 +3,21 @@
   <file source-language="en" datatype="plaintext" original="messages" date="2013-04-04T12:23:51Z" product-name="restdoc" target-language="fr">
     <header/>
     <body>
-      <trans-unit id="tt_content.list_type_pi1">
+      <trans-unit id="tt_content.list_type_pi1" approved="yes">
         <source>Sphinx Documentation Viewer Plugin</source>
-        <target state="translated">Visionneuse de documentation Sphinx</target>
+        <target state="final">Visionneuse de documentation Sphinx</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.sheet_general">
+      <trans-unit id="pi_flexform.sheet_general" approved="yes">
         <source>General</source>
-        <target state="translated">Général</target>
+        <target state="final">Général</target>
       </trans-unit>
       <trans-unit id="pi_flexform.path">
         <source>Documentation Root</source>
         <target state="needs-translation">Documentation Root</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.path.wizard">
+      <trans-unit id="pi_flexform.path.wizard" approved="yes">
         <source>Select the path to the documentation</source>
-        <target state="translated">Sélectionnez le chemin vers la documentation</target>
+        <target state="final">Sélectionnez le chemin vers la documentation</target>
       </trans-unit>
       <trans-unit id="pi_flexform.rootPage">
         <source>Page showing the documentation</source>
@@ -27,37 +27,37 @@
         <source>Show</source>
         <target state="needs-translation">Show</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.mode.BODY">
+      <trans-unit id="pi_flexform.mode.BODY" approved="yes">
         <source>Documentation</source>
-        <target state="translated">Documentation</target>
+        <target state="final">Documentation</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.mode.TOC">
+      <trans-unit id="pi_flexform.mode.TOC" approved="yes">
         <source>Table of contents</source>
-        <target state="translated">Table des matières</target>
+        <target state="final">Table des matières</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.mode.MASTER_TOC">
+      <trans-unit id="pi_flexform.mode.MASTER_TOC" approved="yes">
         <source>Master table of contents</source>
-        <target state="translated">Table des matières principale</target>
+        <target state="final">Table des matières principale</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.mode.RECENT">
+      <trans-unit id="pi_flexform.mode.RECENT" approved="yes">
         <source>Recently updated chapters</source>
-        <target state="translated">Chapitres mis à jour récemment</target>
+        <target state="final">Chapitres mis à jour récemment</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.mode.BREADCRUMB">
+      <trans-unit id="pi_flexform.mode.BREADCRUMB" approved="yes">
         <source>Breadcrumb menu</source>
-        <target state="translated">Fil d'Ariane</target>
+        <target state="final">Fil d'Ariane</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.mode.QUICK_NAVIGATION">
+      <trans-unit id="pi_flexform.mode.QUICK_NAVIGATION" approved="yes">
         <source>Quick navigation</source>
-        <target state="translated">Navigation rapide</target>
+        <target state="final">Navigation rapide</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.mode.REFERENCES">
+      <trans-unit id="pi_flexform.mode.REFERENCES" approved="yes">
         <source>References</source>
-        <target state="translated">Références</target>
+        <target state="final">Références</target>
       </trans-unit>
-      <trans-unit id="pi_flexform.mode.SEARCH">
+      <trans-unit id="pi_flexform.mode.SEARCH" approved="yes">
         <source>Search form</source>
-        <target state="translated">Formulaire de recherche</target>
+        <target state="final">Formulaire de recherche</target>
       </trans-unit>
     </body>
   </file>
